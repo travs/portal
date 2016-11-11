@@ -1,0 +1,34 @@
+<template name="pagesWallet">
+  <!-- Index-banner -->
+  <div class="section blue darken-2 white-text" id="index-banner">
+    <div class="container">
+      <div class="row center">
+        <div class="col s12 m8">
+          <h1 class="header center-on-small-only grey-text text-lighten-4">{{i18n 'dapp.wallet.header'}}</h1>
+          <h4 class ="center-on-small-only light grey-text text-lighten-5">{{i18n 'dapp.wallet.description'}}</h4>
+        </div>
+        <div class="col s12 m2">
+          {{> network_summary}}
+        </div>
+        <div class="col s12 m2">
+          {{> executive_summary}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Outer row -->
+  <div class="container">
+    <div class="row">
+      <!-- Wallets exist for this user -->
+      {{#if walletCount}}
+        <div class="col s12">
+          {{> wallet_list}}
+        </div>
+      {{/if}}
+      <div class="col s12">
+        {{> wallet_manage}}
+      </div>
+    </div>
+  </div>
+</template>

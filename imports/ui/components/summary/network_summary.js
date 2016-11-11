@@ -1,6 +1,5 @@
 import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
-import web3 from '/imports/lib/client/ethereum/web3.js'
 
 import './network_summary.html';
 
@@ -21,8 +20,9 @@ Template.network_summary.helpers({
   isSynced() {
     return Session.get('syncing') === false;
   },
-  currentBlock() {
-    return Session.get('currentBlock');
+  latestBlock() {
+    console.log(Session.get('latestBlock'))
+    return Session.get('latestBlock');
   },
 });
 

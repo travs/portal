@@ -1,11 +1,1 @@
-.site {
-}
-
-.site-content {
-  flex: 1 0 auto;
-}
-
-// No margin
-.page-footer {
-  margin: 0;
-}
+.site {  display: flex;  min-height: 100vh;  flex-direction: column;}.site-content {  flex: 1 0 auto;}// No margin.page-footer {  margin: 0;}

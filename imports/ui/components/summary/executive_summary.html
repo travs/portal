@@ -1,0 +1,55 @@
+<template name="executive_summary">
+  <div class="buysellads-header center-on-small-only">
+    <!-- Executive Summary -->
+    <ul>
+      <li class="truncate text-light">Executive Summary</li>
+      <!-- Wallet Status -->
+      <li> Wallet:
+        {{#if currentUser}}
+          {{#if walletCount}}
+            {{#if isWalletUnlocked}}
+              <a href="/wallet/" class="truncate green-text text-lighten-2">{{unlockedWallet}}</a>
+            {{else}}
+              <a href="/wallet/" class="truncate red-text text-lighten-2">Locked</a>
+            {{/if}}
+          {{else}}
+            <a href="/wallet/" class="truncate blue-text text-lighten-2">Create wallet</a>
+          {{/if}}
+        {{else}}
+          <a href="/sign-in/" class="truncate blue-text text-lighten-2">Not logged in</a>
+        {{/if}}
+      </li>
+
+      <!-- Portfolio Status -->
+      <li> Portfolio:
+        {{#if currentUser}}
+          {{#if portfolioCount}}
+            <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{selectedPortfolioName}}</a>
+          {{else}}
+            {{#if walletCount}}
+              <a href="/portfolio/" class="truncate blue-text text-lighten-2">Create portfolio</a>
+            {{else}}
+              <a href="/portfolio/" class="truncate red-text text-lighten-2">N/A</a>
+            {{/if}}
+          {{/if}}
+        {{else}}
+          <a href="/sign-in/" class="truncate blue-text text-lighten-2">Not logged in</a>
+        {{/if}}
+      </li>
+
+      <!-- Overall Performance -->
+      <li> Delta:
+        {{#if currentUser}}
+          {{#if portfolioCount}}
+            <a href="/portfolio/" class="truncate green-text text-lighten-2">{{selectedPortfolioDelta}}</a>
+          {{else}}
+            <a href="/portfolio/" class="truncate red-text text-lighten-2">N/A</a>
+          {{/if}}
+        {{else}}
+          <a href="/sign-in/" class="truncate blue-text text-lighten-2">Not logged in</a>
+        {{/if}}
+
+      </li>
+    </ul>
+  </div>
+</template>

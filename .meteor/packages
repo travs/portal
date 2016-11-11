@@ -26,6 +26,10 @@ fortawesome:fontawesome       # Icons and fonts
 # User Experience
 kadira:flow-router            # Routing of pages
 kadira:blaze-layout           # Rendering
+http                          # Interact through HTTP
+
+# Deployment and Monitoring
+okgrow:analytics              # Google analytics for flow-router
 
 # Internationalisation
 tap:i18n
@@ -33,3 +37,7 @@ tap:i18n
 check@1.2.3
 underscore@1.0.9
 session@1.1.6
+
+# Ethereum specific packages
+ethereum:elements
+ethereum:tools

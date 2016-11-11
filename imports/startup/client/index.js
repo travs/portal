@@ -6,7 +6,8 @@ import '/imports/ui/components/summary/network_summary.js';
 
 import '/imports/ui/client/helpers.js';
 
+import './ethereum-config.js';
+
 import './network.js';
 
-// Load routes
 import './routes.js';
