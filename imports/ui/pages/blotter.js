@@ -12,12 +12,12 @@ import '/imports/ui/components/blotter/blotter_transaction_list.js';
 import './blotter.html';
 
 
-Template.pagesBlotter.onCreated(() => {
+Template.blotter.onCreated(() => {
   Meteor.subscribe('portfolios');
 });
 
 
-Template.pagesBlotter.helpers({
+Template.blotter.helpers({
   getPortfolioName() {
     const portfolioId = FlowRouter.getParam('_id');
     const doc = Portfolios.findOne(portfolioId);
@@ -31,5 +31,5 @@ Template.pagesBlotter.helpers({
 });
 
 
-Template.pagesBlotter.onRendered(() => {
+Template.blotter.onRendered(() => {
 });

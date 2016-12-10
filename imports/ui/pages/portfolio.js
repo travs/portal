@@ -2,23 +2,21 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { Session } from 'meteor/session';
 // Collections
 import { Portfolios } from '/imports/api/portfolios.js';
-import { Wallets } from '/imports/api/wallets.js';
-import WalletInstance from '/imports/lib/ethereum/wallet.js';
 // Components
 import '/imports/ui/components/summary/network_summary.js';
 import '/imports/ui/components/summary/executive_summary.js';
 import '/imports/ui/components/portfolio/portfolio_new.js';
-import '/imports/ui/components/portfolio/portfolio_list.js';
-import '/imports/ui/components/portfolio/portfolio_manage.js';
+// import '/imports/ui/components/portfolio/portfolio_list.js';
+// import '/imports/ui/components/portfolio/portfolio_manage.js';
 // Corresponding html file
 import './portfolio.html';
 
 
-Template.pagesPortfolio.onCreated(() => {
+Template.portfolio.onCreated(() => {
   Meteor.subscribe('portfolios');
-  Meteor.subscribe('wallets');
 
   //TODO better
   // No Portfolio created
@@ -41,21 +39,12 @@ Template.pagesPortfolio.onCreated(() => {
 });
 
 
-Template.pagesPortfolio.helpers({
+Template.portfolio.helpers({
   portfolioCount() {
-    return Portfolios.find({ owner: Meteor.userId() }).count();
-  },
-  accountCount() {
-    return Wallets.find({ owner: Meteor.userId() }).count();
-  },
-  isWalletUnlocked() {
-    if (Wallets.find({ open: true }).count() !== 0) {
-      return true;
-    }
-    return false;
+    return Portfolios.find({ owner: Session.get('clientDefaultAccount') }).count();
   },
 });
 
 
-Template.pagesPortfolio.onRendered(() => {
+Template.portfolio.onRendered(() => {
 });

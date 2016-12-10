@@ -5,7 +5,7 @@ import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { Template } from 'meteor/templating';
 import { BigNumber } from 'meteor/ethereum:web3';
-import WalletInstance from '/imports/lib/ethereum/wallet.js';
+import WalletInstance from '/imports/lib/client/ethereum/wallet.js';
 
 import { Portfolios } from '/imports/api/portfolios.js';
 

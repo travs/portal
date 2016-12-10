@@ -20,6 +20,13 @@ function checkAccounts() {
         }
       }
       localStorage.setItem('clientDefaultAccount', web3.eth.defaultAccount);
+      web3.eth.getBalance(web3.eth.defaultAccount, (error, result) => {
+        if(!error) {
+          Session.set('clientDefaultAccountBalance', result.toNumber());
+        } else {
+          Session.set('clientDefaultAccountBalance', undefined);
+        }
+      });
       Session.set('clientDefaultAccount', web3.eth.defaultAccount);
       Session.set('accountCount', accounts.length);
       Session.set('clientAccountList', accounts);
