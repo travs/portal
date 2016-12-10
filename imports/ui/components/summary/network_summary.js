@@ -11,8 +11,11 @@ Template.network_summary.helpers({
   isMainNetwork() {
     return Session.get('network') == 'main';
   },
-  isTestNetwork() {
-    return Session.get('network') == 'test';
+  isMordenNetwork() {
+    return Session.get('network') == 'morden';
+  },
+  isRopstenNetwork() {
+    return Session.get('network') == 'ropsten';
   },
   getNetwork() {
     return Session.get('network');
@@ -21,7 +24,6 @@ Template.network_summary.helpers({
     return Session.get('syncing') === false;
   },
   latestBlock() {
-    console.log(Session.get('latestBlock'))
     return Session.get('latestBlock');
   },
 });

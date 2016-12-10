@@ -5,24 +5,8 @@
         <a href="/" class="brand-logo hide-on-med-and-down"><img height="64" id="logo" src="melonwebsite.svg"/></a>
         <a href="/" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
 
-        <ul class="right">
-          <li>
-            <!-- isConnected - display address -->
-            <!-- {{#if currentUser}}
-              <a class="logout">Signed in as {{username}}</a>
-            {{else}}
-              <a href="/sign-in">{{{i18n 'dapp.app.buttons.signin'}}}</a>
-            {{/if}} -->
-          </li>
-        </ul>
-
         <ul class="right hide-on-med-and-down">
-          {{#if walletCount}}
-            <!-- Portfolio -->
-            <li><a href="/portfolio/">{{{i18n 'dapp.app.buttons.portfolio'}}}</a></li>
-          {{/if}}
-          <!-- Wallet -->
-          <li><a href="/wallet/">{{{i18n 'dapp.app.buttons.wallet'}}}</a></li>
+          <li><a href="http://chat.melonport.com" target="_blank">Chat</a></li>
         </ul>
 
         <ul class="right hide-on-med-and-down">
@@ -30,15 +14,7 @@
         <ul class="side-nav blue darken-2" id="nav-mobile">
           <li><a class="brand-logo center"><img height="64" id="logo" src="melonwebsite.svg"/></a></li>
           <li><a class="waves-effect waves-indigo white-text" href="/"></a></li>
-          <li><a class="waves-effect waves-indigo white-text" href="http://chat.melonport.com">Chat</a></li>
-          {{#if walletCount}}
-            <!-- Portfolio -->
-            <li class="divider"></li>
-            <li><a class="waves-effect waves-blue white-text" href="/portfolio/">{{{i18n 'dapp.app.buttons.portfolio'}}}</a></li>
-          {{/if}}
-          <!-- Wallet -->
-          <li class="divider"></li>
-          <li><a class="waves-effect waves-blue white-text" href="/wallet/">{{{i18n 'dapp.app.buttons.wallet'}}}</a></li>
+          <li><a class="waves-effect waves-indigo white-text" href="http://chat.melonport.com" target="_blank">Chat</a></li>
         </ul>
       </div>
     </div>

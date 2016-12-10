@@ -9,19 +9,20 @@ function checkAccounts() {
   web3.eth.getAccounts((error, accounts) => {
     if (!error) {
       if (!_.contains(accounts, web3.eth.defaultAccount)) {
-        if (_.contains(accounts, localStorage.getItem('address'))) {
-          web3.eth.defaultAccount = localStorage.getItem('address');
-        } else if (_.contains(accounts, Session.get('address'))) {
-          web3.eth.defaultAccount = Session.get('address');
+        if (_.contains(accounts, localStorage.getItem('clientDefaultAccount'))) {
+          web3.eth.defaultAccount = localStorage.getItem('clientDefaultAccount');
+        } else if (_.contains(accounts, Session.get('clientDefaultAccount'))) {
+          web3.eth.defaultAccount = Session.get('clientDefaultAccount');
         } else if (accounts.length > 0) {
           web3.eth.defaultAccount = accounts[0];
         } else {
           web3.eth.defaultAccount = undefined;
         }
       }
-      localStorage.setItem('address', web3.eth.defaultAccount);
-      Session.set('address', web3.eth.defaultAccount);
-      Session.set('accounts', accounts);
+      localStorage.setItem('clientDefaultAccount', web3.eth.defaultAccount);
+      Session.set('clientDefaultAccount', web3.eth.defaultAccount);
+      Session.set('accountCount', accounts.length);
+      Session.set('clientAccountList', accounts);
     }
   });
 }
@@ -30,7 +31,7 @@ function checkAccounts() {
 function initNetwork(newNetwork) {
   checkAccounts();
   Session.set('network', newNetwork);
-  Session.set('isConnected', true);
+  Session.set('isClientConnected', true);
   Session.set('latestBlock', 0);
   Session.set('startBlock', 0);
 }
@@ -38,10 +39,10 @@ function initNetwork(newNetwork) {
 // CHECK FOR NETWORK
 function checkNetwork() {
   web3.version.getNode((error) => {
-    const isConnected = !error;
+    const isClientConnected = !error;
 
     // Check if we are synced
-    if (isConnected) {
+    if (isClientConnected) {
       web3.eth.getBlock('latest', (e, res) => {
         if (res.number >= Session.get('latestBlock')) {
           Session.set('outOfSync', e != null || (new Date().getTime() / 1000) - res.timestamp > 600);
@@ -59,14 +60,17 @@ function checkNetwork() {
 
     // Check which network are we connected to
     // https://github.com/ethereum/meteor-dapp-wallet/blob/90ad8148d042ef7c28610115e97acfa6449442e3/app/client/lib/ethereum/walletInterface.js#L32-L46
-    if (!Session.equals('isConnected', isConnected)) {
-      if (isConnected === true) {
+    if (!Session.equals('isClientConnected', isClientConnected)) {
+      if (isClientConnected === true) {
         web3.eth.getBlock(0, (e, res) => {
           let network = false;
           if (!e) {
             switch (res.hash) {
               case '0x0cd786a2425d16f152c658316c423e6ce1181e15c3295826d7c9904cba9ce303':
-                network = 'test';
+                network = 'morden';
+                break;
+              case '0x41941023680923e0fe4d74a34bdac8141f2540e3ae90623718e47d66d1ca4a2d':
+                network = 'ropsten';
                 break;
               case '0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3':
                 network = 'main';
@@ -76,11 +80,11 @@ function checkNetwork() {
             }
           }
           if (!Session.equals('network', network)) {
-            initNetwork(network, isConnected);
+            initNetwork(network, isClientConnected);
           }
         });
       } else {
-        Session.set('isConnected', isConnected);
+        Session.set('isClientConnected', isClientConnected);
         Session.set('network', false);
         Session.set('latestBlock', 0);
       }
@@ -93,7 +97,8 @@ function initSession() {
   Session.set('loading', false);
   Session.set('outOfSync', false);
   Session.set('syncing', false);
-  Session.set('isConnected', false);
+  Session.set('isClientConnected', false);
+  Session.set('isServerConnected', true);
   Session.set('latestBlock', 0);
 }
 
@@ -124,5 +129,13 @@ Meteor.startup(() => {
     }
   });
 
-  Meteor.setInterval(checkNetwork, 2503);  
+  Meteor.call('isServerConnected', (err, result) => {
+    if(!err) {
+      Session.set('isServerConnected', result);
+    } else {
+      console.log(err);
+    }
+  });
+
+  Meteor.setInterval(checkNetwork, 2503);
 });

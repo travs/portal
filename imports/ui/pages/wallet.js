@@ -17,9 +17,9 @@ Template.pagesWallet.onCreated(() => {
 
 
 Template.pagesWallet.helpers({
-  walletCount() {
-    return Wallets.find({ owner: Meteor.userId() }).count();
-  },
+  // accountCount() {
+  //   return Wallets.find({ owner: Meteor.userId() }).count();
+  // },
 });
 
 

@@ -45,7 +45,7 @@ Template.pagesPortfolio.helpers({
   portfolioCount() {
     return Portfolios.find({ owner: Meteor.userId() }).count();
   },
-  walletCount() {
+  accountCount() {
     return Wallets.find({ owner: Meteor.userId() }).count();
   },
   isWalletUnlocked() {

@@ -1,45 +1,44 @@
 <template name="welcome_list">
   <div class="card grey lighten-4">
-    <div class="card-content">
-      <!-- Portfolio list of best performers -->
-      {{#if portfolioCount}}
-        <table class="highlight centered responsive-table">
-          <thead>
+
+    {{#if portfolioCount}}
+      <table class="highlight centered responsive-table">
+        <thead>
+          <tr>
+            <th>{{i18n 'dapp.app.headers.portfolioManager'}}</th>
+            <th>{{i18n 'dapp.app.headers.portfolioName'}}</th>
+            <th>{{i18n 'dapp.app.headers.portfolioPx'}}</th>
+            <th>{{i18n 'dapp.app.headers.investment'}}</th>
+            <th>{{i18n 'dapp.app.headers.intraday'}}</th>
+            <th>{{i18n 'dapp.app.headers.intramonth'}}</th>
+            <th>{{i18n 'dapp.app.headers.intrayear'}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each portfolios}}
             <tr>
-              <th>{{i18n 'dapp.app.headers.portfolioManager'}}</th>
-              <th>{{i18n 'dapp.app.headers.portfolioName'}}</th>
-              <th>{{i18n 'dapp.app.headers.portfolioPx'}}</th>
-              <th>{{i18n 'dapp.app.headers.investment'}}</th>
-              <th>{{i18n 'dapp.app.headers.intraday'}}</th>
-              <th>{{i18n 'dapp.app.headers.intramonth'}}</th>
-              <th>{{i18n 'dapp.app.headers.intrayear'}}</th>
+              <td>{{username}}</td>
+              <td>
+                <a href="/portfolio/{{_id}}" class="waves-effect waves-light btn blue lighten-2"><strong>{{portfolioName}}</strong></a>
+              </td>
+              <td>
+                <a href="http://testnet.etherscan.io/address/{{coreAddress}}" target="_blank">
+                  {{dapp_formatBalance sharePrice "0,0.0[00] unit" "finney"}}/share
+                </a>
+              </td>
+              <td>
+                <a href="http://testnet.etherscan.io/address/{{coreAddress}}" target="_blank">
+                  {{dapp_formatBalance notional "0,0.0[00] unit" 'eur'}}
+                </a>
+              </td>
+              <td>{{intraday}}</td>
+              <td>{{mtd}}</td>
+              <td>{{ytd}}</td>
             </tr>
-          </thead>
-          <tbody>
-            {{#each portfolios}}
-              <tr>
-                <td>{{username}}</td>
-                <td>
-                  <a href="/portfolio/{{_id}}" class="waves-effect waves-light btn blue lighten-2"><strong>{{portfolioName}}</strong></a>
-                </td>
-                <td>
-                  <a href="http://testnet.etherscan.io/address/{{coreAddress}}" target="_blank">
-                    {{dapp_formatBalance sharePrice "0,0.0[00] unit" "finney"}}/share
-                  </a>
-                </td>
-                <td>
-                  <a href="http://testnet.etherscan.io/address/{{coreAddress}}" target="_blank">
-                    {{dapp_formatBalance notional "0,0.0[00] unit" 'eur'}}
-                  </a>
-                </td>
-                <td>{{intraday}}</td>
-                <td>{{mtd}}</td>
-                <td>{{ytd}}</td>
-              </tr>
-            {{/each}}
-          </tbody>
-        </table>
-      {{/if}}
-    </div>
+          {{/each}}
+        </tbody>
+      </table>
+    {{/if}}
+
   </div>
 </template>
