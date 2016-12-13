@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("TradingProtocol error: Please call setProvider() first before calling new().");
+      throw new Error("PriceFeedProtocol error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("TradingProtocol error: contract binary not set. Can't deploy new instance.");
+      throw new Error("PriceFeedProtocol error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("TradingProtocol contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of TradingProtocol: " + unlinked_libraries);
+      throw new Error("PriceFeedProtocol contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of PriceFeedProtocol: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to TradingProtocol.at(): " + address);
+      throw new Error("Invalid address passed to PriceFeedProtocol.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: TradingProtocol not deployed or address not set.");
+      throw new Error("Cannot find deployed address: PriceFeedProtocol not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -347,25 +347,17 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   };
 
   Contract.all_networks = {
-  "2": {
+  "3": {
     "abi": [
       {
         "constant": true,
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
+        "inputs": [
           {
-            "name": "",
+            "name": "ofAsset",
             "type": "address"
           }
         ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "fee",
+        "name": "getPrice",
         "outputs": [
           {
             "name": "",
@@ -374,32 +366,80 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         ],
         "payable": false,
         "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "newFee",
+            "type": "uint256"
+          }
+        ],
+        "name": "setFee",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "payOut",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "precision",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "ofAssets",
+            "type": "address[]"
+          },
+          {
+            "name": "newPrices",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "setPrice",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
       }
     ],
-    "unlinked_binary": "0x6060604052608f8060106000396000f3606060405260e060020a60003504638da5cb5b81146026578063ddca3f43146048575b6002565b34600257605460005473ffffffffffffffffffffffffffffffffffffffff1681565b34600257607d60015481565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60408051918252519081900360200190f3",
+    "unlinked_binary": "0x606060405234610000575b610164806100186000396000f3606060405260e060020a600035046341976e09811461004a57806369fe0e2d1461004a578063c20524031461008e578063d3b5dc3b1461009d578063d441987d146100bc575b610000565b346100005761005a600435610146565b60408051918252519081900360200190f35b346100005761005a600435610146565b60408051918252519081900360200190f35b346100005761009b610156565b005b346100005761005a610159565b60408051918252519081900360200190f35b346100005761009b600480803590602001908201803590602001908080602002602001604051908101604052809392919081815260200183836020028082843750506040805187358901803560208181028481018201909552818452989a99890198929750908201955093508392508501908490808284375094965061015f95505050505050565b005b60005b919050565b60005b919050565b5b565b60005b90565b5b505056",
     "events": {},
-    "updated_at": 1478732205944,
+    "updated_at": 1481459632377,
     "links": {}
   },
   "default": {
     "abi": [
       {
         "constant": true,
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
+        "inputs": [
           {
-            "name": "",
+            "name": "ofAsset",
             "type": "address"
           }
         ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "fee",
+        "name": "getPrice",
         "outputs": [
           {
             "name": "",
@@ -408,12 +448,67 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         ],
         "payable": false,
         "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "newFee",
+            "type": "uint256"
+          }
+        ],
+        "name": "setFee",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "payOut",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "precision",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "ofAssets",
+            "type": "address[]"
+          },
+          {
+            "name": "newPrices",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "setPrice",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
       }
     ],
-    "unlinked_binary": "0x6060604052608f8060106000396000f3606060405260e060020a60003504638da5cb5b81146026578063ddca3f43146048575b6002565b34600257605460005473ffffffffffffffffffffffffffffffffffffffff1681565b34600257607d60015481565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60408051918252519081900360200190f3",
+    "unlinked_binary": "0x606060405234610000575b610164806100186000396000f3606060405260e060020a600035046341976e09811461004a57806369fe0e2d1461004a578063c20524031461008e578063d3b5dc3b1461009d578063d441987d146100bc575b610000565b346100005761005a600435610146565b60408051918252519081900360200190f35b346100005761005a600435610146565b60408051918252519081900360200190f35b346100005761009b610156565b005b346100005761005a610159565b60408051918252519081900360200190f35b346100005761009b600480803590602001908201803590602001908080602002602001604051908101604052809392919081815260200183836020028082843750506040805187358901803560208181028481018201909552818452989a99890198929750908201955093508392508501908490808284375094965061015f95505050505050565b005b60005b919050565b60005b919050565b5b565b60005b90565b5b505056",
     "events": {},
-    "updated_at": 1478730045361,
-    "links": {}
+    "updated_at": 1481459308034
   }
 };
 
@@ -498,7 +593,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "TradingProtocol";
+  Contract.contract_name   = Contract.prototype.contract_name   = "PriceFeedProtocol";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -538,6 +633,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.TradingProtocol = Contract;
+    window.PriceFeedProtocol = Contract;
   }
 })();

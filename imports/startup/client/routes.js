@@ -7,8 +7,9 @@ import '/imports/ui/layouts/header.js';
 import '/imports/ui/layouts/footer.js';
 import '/imports/ui/pages/portal.js';
 import '/imports/ui/pages/portfolio.js';
-// import '/imports/ui/pages/wallet.js';
-// import '/imports/ui/pages/blotter.js';
+import '/imports/ui/pages/blotter.js';
+import '/imports/ui/pages/wallet.js';
+
 
 // Default route
 FlowRouter.route('/', {
@@ -33,7 +34,7 @@ FlowRouter.route('/portfolio', {
   },
 });
 
-FlowRouter.route('/portfolio/:_id', {
+FlowRouter.route('/portfolio/:portfolioAddress', {
   name: 'blotter',
   action() {
     BlazeLayout.render('layout_main', {

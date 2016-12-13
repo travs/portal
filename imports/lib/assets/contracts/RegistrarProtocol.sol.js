@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("SafeMath error: Please call setProvider() first before calling new().");
+      throw new Error("RegistrarProtocol error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("SafeMath error: contract binary not set. Can't deploy new instance.");
+      throw new Error("RegistrarProtocol error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("SafeMath contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of SafeMath: " + unlinked_libraries);
+      throw new Error("RegistrarProtocol contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of RegistrarProtocol: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to SafeMath.at(): " + address);
+      throw new Error("Invalid address passed to RegistrarProtocol.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: SafeMath not deployed or address not set.");
+      throw new Error("Cannot find deployed address: RegistrarProtocol not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -347,19 +347,190 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   };
 
   Contract.all_networks = {
-  "2": {
-    "abi": [],
-    "unlinked_binary": "0x606060405260088060106000396000f36060604052600256",
+  "3": {
+    "abi": [
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "numAssignedAssets",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "priceFeedsAt",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "assetAt",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "ofAsset",
+            "type": "address"
+          }
+        ],
+        "name": "availability",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "ofAsset",
+            "type": "address"
+          }
+        ],
+        "name": "assignedExchange",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      }
+    ],
+    "unlinked_binary": "0x606060405234610000575b610137806100186000396000f3606060405260e060020a60003504630132d160811461004a5780636532aad914610069578063aa9239f514610069578063ab3a7425146100c1578063d211c3d814610069575b610000565b3461000057610057610111565b60408051918252519081900360200190f35b3461000057610079600435610117565b60408051600160a060020a039092168252519081900360200190f35b3461000057610079600435610117565b60408051600160a060020a039092168252519081900360200190f35b34610000576100d1600435610117565b604080519115158252519081900360200190f35b3461000057610079600435610117565b60408051600160a060020a039092168252519081900360200190f35b60005b90565b60005b919050565b60005b919050565b60005b919050565b60005b91905056",
     "events": {},
-    "updated_at": 1478732205924,
+    "updated_at": 1481459632384,
     "links": {}
   },
   "default": {
-    "abi": [],
-    "unlinked_binary": "0x606060405260088060106000396000f36060604052600256",
+    "abi": [
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "numAssignedAssets",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "priceFeedsAt",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "assetAt",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "ofAsset",
+            "type": "address"
+          }
+        ],
+        "name": "availability",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "ofAsset",
+            "type": "address"
+          }
+        ],
+        "name": "assignedExchange",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      }
+    ],
+    "unlinked_binary": "0x606060405234610000575b610137806100186000396000f3606060405260e060020a60003504630132d160811461004a5780636532aad914610069578063aa9239f514610069578063ab3a7425146100c1578063d211c3d814610069575b610000565b3461000057610057610111565b60408051918252519081900360200190f35b3461000057610079600435610117565b60408051600160a060020a039092168252519081900360200190f35b3461000057610079600435610117565b60408051600160a060020a039092168252519081900360200190f35b34610000576100d1600435610117565b604080519115158252519081900360200190f35b3461000057610079600435610117565b60408051600160a060020a039092168252519081900360200190f35b60005b90565b60005b919050565b60005b919050565b60005b919050565b60005b91905056",
     "events": {},
-    "updated_at": 1478730045348,
-    "links": {}
+    "updated_at": 1481459308035
   }
 };
 
@@ -444,7 +615,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "SafeMath";
+  Contract.contract_name   = Contract.prototype.contract_name   = "RegistrarProtocol";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -484,6 +655,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.SafeMath = Contract;
+    window.RegistrarProtocol = Contract;
   }
 })();

@@ -7,7 +7,7 @@ import WalletInstance from '/imports/lib/client/ethereum/wallet.js';
 import { Portfolios } from '/imports/api/portfolios.js';
 
 // Load Truffle artifact
-import Core from '/imports/lib/assets/Core.sol.js';
+import Core from '/imports/lib/assets/contracts/Core.sol.js';
 
 import './portfolio_new.html';
 

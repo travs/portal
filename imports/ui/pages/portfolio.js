@@ -9,8 +9,8 @@ import { Portfolios } from '/imports/api/portfolios.js';
 import '/imports/ui/components/summary/network_summary.js';
 import '/imports/ui/components/summary/executive_summary.js';
 import '/imports/ui/components/portfolio/portfolio_new.js';
-// import '/imports/ui/components/portfolio/portfolio_list.js';
-// import '/imports/ui/components/portfolio/portfolio_manage.js';
+import '/imports/ui/components/portfolio/portfolio_list.js';
+import '/imports/ui/components/portfolio/portfolio_manage.js';
 // Corresponding html file
 import './portfolio.html';
 

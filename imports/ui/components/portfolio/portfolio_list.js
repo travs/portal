@@ -5,17 +5,17 @@ import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 
 import { Portfolios } from '/imports/api/portfolios.js';
-import { Wallets } from '/imports/api/wallets.js';
+// import { Wallets } from '/imports/api/wallets.js';
 
-import Core from '/imports/lib/assets/Core.sol.js';
+import Core from '/imports/lib/assets/contracts/Core.sol.js';
 // const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 // ConvertLib.setProvider(provider)
-Core.setProvider(WalletInstance.setWeb3Provider(WalletInstance.keystore));
+// Core.setProvider(WalletInstance.setWeb3Provider(WalletInstance.keystore));
 
 
 Template.portfolio_list.onCreated(function portfolioListOnCreated() {
   Meteor.subscribe('portfolios');
-  Meteor.subscribe('wallets');
+  // Meteor.subscribe('wallets');
 
   Session.set('sharePrice', 1);
   Session.set('sumInvested', 0);

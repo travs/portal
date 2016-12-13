@@ -19,12 +19,12 @@ Template.blotter.onCreated(() => {
 
 Template.blotter.helpers({
   getPortfolioName() {
-    const portfolioId = FlowRouter.getParam('_id');
+    const portfolioId = FlowRouter.getParam('portfolioAddress');
     const doc = Portfolios.findOne(portfolioId);
     return doc.portfolioName;
   },
   getPortfolioOwner() {
-    const portfolioId = FlowRouter.getParam('_id');
+    const portfolioId = FlowRouter.getParam('portfolioAddress');
     const doc = Portfolios.findOne(portfolioId);
     return doc.owner;
   },

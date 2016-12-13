@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("PerformanceFee error: Please call setProvider() first before calling new().");
+      throw new Error("TradingProtocol error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("PerformanceFee error: contract binary not set. Can't deploy new instance.");
+      throw new Error("TradingProtocol error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("PerformanceFee contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of PerformanceFee: " + unlinked_libraries);
+      throw new Error("TradingProtocol contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of TradingProtocol: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to PerformanceFee.at(): " + address);
+      throw new Error("Invalid address passed to TradingProtocol.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: PerformanceFee not deployed or address not set.");
+      throw new Error("Cannot find deployed address: TradingProtocol not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -347,115 +347,130 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   };
 
   Contract.all_networks = {
-  "2": {
+  "3": {
     "abi": [
       {
         "constant": false,
-        "inputs": [],
-        "name": "calculatePerformanceFee",
-        "outputs": [
+        "inputs": [
           {
-            "name": "",
+            "name": "id",
             "type": "uint256"
           }
         ],
+        "name": "cancel",
+        "outputs": [],
         "payable": false,
         "type": "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
+        "constant": false,
+        "inputs": [
           {
-            "name": "",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "name": "quantity",
+            "type": "uint256"
+          }
+        ],
+        "name": "buy",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "sell_how_much",
+            "type": "uint256"
+          },
+          {
+            "name": "sell_which_token",
+            "type": "address"
+          },
+          {
+            "name": "buy_how_much",
+            "type": "uint256"
+          },
+          {
+            "name": "buy_which_token",
             "type": "address"
           }
         ],
+        "name": "offer",
+        "outputs": [],
         "payable": false,
         "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "fee",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "type": "constructor"
-      },
-      {
-        "payable": false,
-        "type": "fallback"
       }
     ],
-    "unlinked_binary": "0x6060604052600080546c0100000000000000000000000033810204600160a060020a031990911617815560015560b08060386000396000f36060604052361560315760e060020a60003504634655e9878114603b5780638da5cb5b14605b578063ddca3f43146070575b3460025760006002565b34600257607c6000805433600160a060020a0390811691161460aa576002565b34600257608e600054600160a060020a031681565b34600257607c60015481565b60408051918252519081900360200190f35b60408051600160a060020a039092168252519081900360200190f35b5060009056",
+    "unlinked_binary": "0x6060604052346000575b6079806100166000396000f3606060405260e060020a600035046340e58ee581146030578063d6febde814603f578063f09ea2a6146051575b6000565b34600057603d6004356069565b005b34600057603d600435602435606d565b005b34600057603d6004356024356044356064356072565b005b5b50565b5b5050565b5b5050505056",
     "events": {},
-    "updated_at": 1478732205907,
+    "updated_at": 1481459632396,
     "links": {}
   },
   "default": {
     "abi": [
       {
         "constant": false,
-        "inputs": [],
-        "name": "calculatePerformanceFee",
-        "outputs": [
+        "inputs": [
           {
-            "name": "",
+            "name": "id",
             "type": "uint256"
           }
         ],
+        "name": "cancel",
+        "outputs": [],
         "payable": false,
         "type": "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
+        "constant": false,
+        "inputs": [
           {
-            "name": "",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "name": "quantity",
+            "type": "uint256"
+          }
+        ],
+        "name": "buy",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "sell_how_much",
+            "type": "uint256"
+          },
+          {
+            "name": "sell_which_token",
+            "type": "address"
+          },
+          {
+            "name": "buy_how_much",
+            "type": "uint256"
+          },
+          {
+            "name": "buy_which_token",
             "type": "address"
           }
         ],
+        "name": "offer",
+        "outputs": [],
         "payable": false,
         "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "fee",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "type": "constructor"
-      },
-      {
-        "payable": false,
-        "type": "fallback"
       }
     ],
-    "unlinked_binary": "0x6060604052600080546c0100000000000000000000000033810204600160a060020a031990911617815560015560b08060386000396000f36060604052361560315760e060020a60003504634655e9878114603b5780638da5cb5b14605b578063ddca3f43146070575b3460025760006002565b34600257607c6000805433600160a060020a0390811691161460aa576002565b34600257608e600054600160a060020a031681565b34600257607c60015481565b60408051918252519081900360200190f35b60408051600160a060020a039092168252519081900360200190f35b5060009056",
+    "unlinked_binary": "0x6060604052346000575b6079806100166000396000f3606060405260e060020a600035046340e58ee581146030578063d6febde814603f578063f09ea2a6146051575b6000565b34600057603d6004356069565b005b34600057603d600435602435606d565b005b34600057603d6004356024356044356064356072565b005b5b50565b5b5050565b5b5050505056",
     "events": {},
-    "updated_at": 1478730045329,
-    "links": {}
+    "updated_at": 1481459308038
   }
 };
 
@@ -540,7 +555,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "PerformanceFee";
+  Contract.contract_name   = Contract.prototype.contract_name   = "TradingProtocol";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -580,6 +595,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.PerformanceFee = Contract;
+    window.TradingProtocol = Contract;
   }
 })();

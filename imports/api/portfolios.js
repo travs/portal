@@ -20,8 +20,8 @@ if (Meteor.isServer) {
 
 
 Meteor.methods({
-  'portfolios.insert'(coreAddress, ownerAddress, portfolioName, sharePrice, notional, intraday, mtd, ytd) {
-    check(coreAddress, String);
+  'portfolios.insert'(portfolioAddress, ownerAddress, portfolioName, sharePrice, notional, intraday, mtd, ytd) {
+    check(portfolioAddress, String);
     check(ownerAddress, String);
     check(portfolioName, String);
     check(sharePrice, Number);
@@ -31,8 +31,7 @@ Meteor.methods({
     check(ytd, Number);
 
     Portfolios.insert({
-      coreAddress,
-      ownerAddress,
+      portfolioAddress,
       portfolioName,
       sharePrice,
       notional,

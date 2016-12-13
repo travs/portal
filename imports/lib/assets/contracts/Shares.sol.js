@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("CoreProtocol error: Please call setProvider() first before calling new().");
+      throw new Error("Shares error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("CoreProtocol error: contract binary not set. Can't deploy new instance.");
+      throw new Error("Shares error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("CoreProtocol contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of CoreProtocol: " + unlinked_libraries);
+      throw new Error("Shares contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of Shares: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to CoreProtocol.at(): " + address);
+      throw new Error("Invalid address passed to Shares.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: CoreProtocol not deployed or address not set.");
+      throw new Error("Cannot find deployed address: Shares not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -347,607 +347,444 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   };
 
   Contract.all_networks = {
-  "2": {
+  "3": {
     "abi": [
       {
-        "constant": true,
-        "inputs": [],
-        "name": "maxInvestment",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sumAssetsSold",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sharePrice",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sumInvested",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sumWithdrawn",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sumAssetsBought",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "anonymous": false,
+        "constant": false,
         "inputs": [
           {
-            "indexed": false,
-            "name": "buyer",
+            "name": "_spender",
             "type": "address"
           },
           {
-            "indexed": false,
-            "name": "numShares",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "sharePrice",
+            "name": "_value",
             "type": "uint256"
           }
         ],
-        "name": "SharesCreated",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
+        "name": "approve",
+        "outputs": [
           {
-            "indexed": false,
-            "name": "seller",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "numShares",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "sharePrice",
-            "type": "uint256"
-          }
-        ],
-        "name": "SharesAnnihilated",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Refund",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          }
-        ],
-        "name": "LogString",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "LogInt",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "value",
+            "name": "success",
             "type": "bool"
           }
         ],
-        "name": "LogBool",
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "name": "balance",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "name": "_spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "name": "remaining",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
         "type": "event"
       }
     ],
-    "unlinked_binary": "0x6060604052670de0b6b3a764000060055560ac80601c6000396000f360606040523615604e5760e060020a60003504622e1316811460525780630deff91e14605e5780638726972914606a578063a442414f146076578063e6e8a327146082578063f4d6f82814608e575b6002565b34600257609a60045481565b34600257609a60035481565b34600257609a60055481565b34600257609a60005481565b34600257609a60015481565b34600257609a60025481565b60408051918252519081900360200190f3",
+    "unlinked_binary": "0x606060405234610000575b6103ce806100186000396000f3606060405236156100565760e060020a6000350463095ea7b3811461005b57806318160ddd1461008257806323b872dd146100a157806370a08231146100cb578063a9059cbb146100ed578063dd62ed3e14610114575b610000565b346100005761006e600435602435610139565b604080519115158252519081900360200190f35b346100005761008f6101a4565b60408051918252519081900360200190f35b346100005761006e6004356024356044356101aa565b604080519115158252519081900360200190f35b346100005761008f6004356102bb565b60408051918252519081900360200190f35b346100005761006e6004356024356102da565b604080519115158252519081900360200190f35b346100005761008f6004356024356103a1565b60408051918252519081900360200190f35b600160a060020a03338116600081815260016020908152604080832094871680845294825280832086905580518681529051929493927f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925929181900390910190a35060015b92915050565b60025481565b600160a060020a0383166000908152602081905260408120548290108015906101fa5750600160a060020a0380851660009081526001602090815260408083203390941683529290522054829010155b801561021f5750600160a060020a038316600090815260208190526040902054828101115b156102af57600160a060020a0380841660008181526020818152604080832080548801905588851680845281842080548990039055600183528184203390961684529482529182902080548790039055815186815291519293927fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef9281900390910190a35060016102b3566102b3565b5060005b5b9392505050565b600160a060020a0381166000908152602081905260409020545b919050565b600160a060020a03331660009081526020819052604081205482901080159061031c5750600160a060020a038316600090815260208190526040902054828101115b1561039257600160a060020a0333811660008181526020818152604080832080548890039055938716808352918490208054870190558351868152935191937fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef929081900390910190a350600161019e5661019e565b50600061019e565b5b92915050565b600160a060020a038083166000908152600160209081526040808320938516835292905220545b9291505056",
     "events": {
-      "0xf8495c533745eb3efa4d74ccdbbd0938e9d1e88add51cdc7db168a9f15a73736": {
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
-            "name": "buyer",
+            "indexed": true,
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_to",
             "type": "address"
           },
           {
             "indexed": false,
-            "name": "numShares",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "sharePrice",
+            "name": "_value",
             "type": "uint256"
           }
         ],
-        "name": "SharesCreated",
+        "name": "Transfer",
         "type": "event"
       },
-      "0x6d1ea56dcd6dcf937743a4f926190b72632e8d241b3939423c443d3ad1d309d4": {
+      "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
-            "name": "seller",
+            "indexed": true,
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_spender",
             "type": "address"
           },
           {
             "indexed": false,
-            "name": "numShares",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "sharePrice",
+            "name": "_value",
             "type": "uint256"
           }
         ],
-        "name": "SharesAnnihilated",
-        "type": "event"
-      },
-      "0xbb28353e4598c3b9199101a66e0989549b659a59a54d2c27fbb183f1932c8e6d": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Refund",
-        "type": "event"
-      },
-      "0xa95e6e2a182411e7a6f9ed114a85c3761d87f9b8f453d842c71235aa64fff99f": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          }
-        ],
-        "name": "LogString",
-        "type": "event"
-      },
-      "0x3b53f2745f01e9cc7d8317d92cca0b2e25a1e0f710c5b65c2da4002d794e399f": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "LogInt",
-        "type": "event"
-      },
-      "0x4c34c2f9a78632f29fa59aaed5514cb742fd9fbcfd7ccc2c03c85f2bbc621c47": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "bool"
-          }
-        ],
-        "name": "LogBool",
+        "name": "Approval",
         "type": "event"
       }
     },
-    "updated_at": 1478732205931,
+    "updated_at": 1481459632388,
     "links": {}
   },
   "default": {
     "abi": [
       {
-        "constant": true,
-        "inputs": [],
-        "name": "maxInvestment",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sumAssetsSold",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sharePrice",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sumInvested",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sumWithdrawn",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "sumAssetsBought",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "anonymous": false,
+        "constant": false,
         "inputs": [
           {
-            "indexed": false,
-            "name": "buyer",
+            "name": "_spender",
             "type": "address"
           },
           {
-            "indexed": false,
-            "name": "numShares",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "sharePrice",
+            "name": "_value",
             "type": "uint256"
           }
         ],
-        "name": "SharesCreated",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
+        "name": "approve",
+        "outputs": [
           {
-            "indexed": false,
-            "name": "seller",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "numShares",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "sharePrice",
-            "type": "uint256"
-          }
-        ],
-        "name": "SharesAnnihilated",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Refund",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          }
-        ],
-        "name": "LogString",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "LogInt",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "value",
+            "name": "success",
             "type": "bool"
           }
         ],
-        "name": "LogBool",
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "name": "balance",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "name": "_spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "name": "remaining",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
         "type": "event"
       }
     ],
-    "unlinked_binary": "0x6060604052670de0b6b3a764000060055560ac80601c6000396000f360606040523615604e5760e060020a60003504622e1316811460525780630deff91e14605e5780638726972914606a578063a442414f146076578063e6e8a327146082578063f4d6f82814608e575b6002565b34600257609a60045481565b34600257609a60035481565b34600257609a60055481565b34600257609a60005481565b34600257609a60015481565b34600257609a60025481565b60408051918252519081900360200190f3",
+    "unlinked_binary": "0x606060405234610000575b6103ce806100186000396000f3606060405236156100565760e060020a6000350463095ea7b3811461005b57806318160ddd1461008257806323b872dd146100a157806370a08231146100cb578063a9059cbb146100ed578063dd62ed3e14610114575b610000565b346100005761006e600435602435610139565b604080519115158252519081900360200190f35b346100005761008f6101a4565b60408051918252519081900360200190f35b346100005761006e6004356024356044356101aa565b604080519115158252519081900360200190f35b346100005761008f6004356102bb565b60408051918252519081900360200190f35b346100005761006e6004356024356102da565b604080519115158252519081900360200190f35b346100005761008f6004356024356103a1565b60408051918252519081900360200190f35b600160a060020a03338116600081815260016020908152604080832094871680845294825280832086905580518681529051929493927f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925929181900390910190a35060015b92915050565b60025481565b600160a060020a0383166000908152602081905260408120548290108015906101fa5750600160a060020a0380851660009081526001602090815260408083203390941683529290522054829010155b801561021f5750600160a060020a038316600090815260208190526040902054828101115b156102af57600160a060020a0380841660008181526020818152604080832080548801905588851680845281842080548990039055600183528184203390961684529482529182902080548790039055815186815291519293927fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef9281900390910190a35060016102b3566102b3565b5060005b5b9392505050565b600160a060020a0381166000908152602081905260409020545b919050565b600160a060020a03331660009081526020819052604081205482901080159061031c5750600160a060020a038316600090815260208190526040902054828101115b1561039257600160a060020a0333811660008181526020818152604080832080548890039055938716808352918490208054870190558351868152935191937fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef929081900390910190a350600161019e5661019e565b50600061019e565b5b92915050565b600160a060020a038083166000908152600160209081526040808320938516835292905220545b9291505056",
     "events": {
-      "0xf8495c533745eb3efa4d74ccdbbd0938e9d1e88add51cdc7db168a9f15a73736": {
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
-            "name": "buyer",
+            "indexed": true,
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_to",
             "type": "address"
           },
           {
             "indexed": false,
-            "name": "numShares",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "sharePrice",
+            "name": "_value",
             "type": "uint256"
           }
         ],
-        "name": "SharesCreated",
+        "name": "Transfer",
         "type": "event"
       },
-      "0x6d1ea56dcd6dcf937743a4f926190b72632e8d241b3939423c443d3ad1d309d4": {
+      "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
         "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
-            "name": "seller",
+            "indexed": true,
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_spender",
             "type": "address"
           },
           {
             "indexed": false,
-            "name": "numShares",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "sharePrice",
+            "name": "_value",
             "type": "uint256"
           }
         ],
-        "name": "SharesAnnihilated",
-        "type": "event"
-      },
-      "0xbb28353e4598c3b9199101a66e0989549b659a59a54d2c27fbb183f1932c8e6d": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Refund",
-        "type": "event"
-      },
-      "0xa95e6e2a182411e7a6f9ed114a85c3761d87f9b8f453d842c71235aa64fff99f": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          }
-        ],
-        "name": "LogString",
-        "type": "event"
-      },
-      "0x3b53f2745f01e9cc7d8317d92cca0b2e25a1e0f710c5b65c2da4002d794e399f": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "LogInt",
-        "type": "event"
-      },
-      "0x4c34c2f9a78632f29fa59aaed5514cb742fd9fbcfd7ccc2c03c85f2bbc621c47": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "text",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "value",
-            "type": "bool"
-          }
-        ],
-        "name": "LogBool",
+        "name": "Approval",
         "type": "event"
       }
     },
-    "updated_at": 1478730045304,
-    "links": {}
+    "updated_at": 1481459308037
   }
 };
 
@@ -1032,7 +869,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "CoreProtocol";
+  Contract.contract_name   = Contract.prototype.contract_name   = "Shares";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -1072,6 +909,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.CoreProtocol = Contract;
+    window.Shares = Contract;
   }
 })();

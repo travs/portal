@@ -347,25 +347,12 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   };
 
   Contract.all_networks = {
-  "2": {
+  "3": {
     "abi": [
       {
         "constant": true,
         "inputs": [],
-        "name": "owner",
-        "outputs": [
-          {
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "fee",
+        "name": "calculateFee",
         "outputs": [
           {
             "name": "",
@@ -376,9 +363,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "function"
       }
     ],
-    "unlinked_binary": "0x6060604052608f8060106000396000f3606060405260e060020a60003504638da5cb5b81146026578063ddca3f43146048575b6002565b34600257605460005473ffffffffffffffffffffffffffffffffffffffff1681565b34600257607d60015481565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60408051918252519081900360200190f3",
+    "unlinked_binary": "0x6060604052346000575b603e8060156000396000f3606060405260e060020a6000350463e6af35f08114601c575b6000565b3460005760266038565b60408051918252519081900360200190f35b60005b9056",
     "events": {},
-    "updated_at": 1478732205905,
+    "updated_at": 1481459632359,
     "links": {}
   },
   "default": {
@@ -386,20 +373,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       {
         "constant": true,
         "inputs": [],
-        "name": "owner",
-        "outputs": [
-          {
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "fee",
+        "name": "calculateFee",
         "outputs": [
           {
             "name": "",
@@ -410,10 +384,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "function"
       }
     ],
-    "unlinked_binary": "0x6060604052608f8060106000396000f3606060405260e060020a60003504638da5cb5b81146026578063ddca3f43146048575b6002565b34600257605460005473ffffffffffffffffffffffffffffffffffffffff1681565b34600257607d60015481565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60408051918252519081900360200190f3",
+    "unlinked_binary": "0x6060604052346000575b603e8060156000396000f3606060405260e060020a6000350463e6af35f08114601c575b6000565b3460005760266038565b60408051918252519081900360200190f35b60005b9056",
     "events": {},
-    "updated_at": 1478730045333,
-    "links": {}
+    "updated_at": 1481459308031
   }
 };
 

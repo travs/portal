@@ -9,7 +9,7 @@ import WalletInstance from '/imports/lib/client/ethereum/wallet.js';
 
 import { Portfolios } from '/imports/api/portfolios.js';
 
-import Core from '/imports/lib/assets/Core.sol.js';
+import Core from '/imports/lib/assets/contracts/Core.sol.js';
 
 
 Template.portfolio_manage.onCreated(() => {
@@ -17,8 +17,8 @@ Template.portfolio_manage.onCreated(() => {
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ isInactive: true });
   Template.instance().state.set({ investingSelected: true });
-
-  Core.setProvider(WalletInstance.setWeb3Provider(WalletInstance.keystore));
+  // 
+  // Core.setProvider(WalletInstance.setWeb3Provider(WalletInstance.keystore));
 });
 
 
@@ -95,7 +95,7 @@ Template.portfolio_manage.events({
 
     // Init
     const doc = Portfolios.findOne({ owner: Meteor.userId() });
-    const coreInstance = Core.at(doc.coreAddress);
+    const coreInstance = Core.at(doc.portfolioAddress);
     const fromAddr = WalletInstance.currentAddress();
     const gasPrice = 100000000000;
     const gas = 2500000;

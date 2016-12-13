@@ -19,15 +19,15 @@
               {{#if isOwner}}
                 <tr>
                   <td>
-                    <a href="/portfolio/{{_id}}" class="waves-effect waves-light btn blue lighten-2">{{portfolioName}}</a>
+                    <a href="/portfolio/{{portfolioAddress}}" class="waves-effect waves-light btn blue lighten-2">{{portfolioName}}</a>
                   </td>
                   <td>
-                    <a href="http://testnet.etherscan.io/address/{{coreAddress}}" target="_blank">
+                    <a href="http://testnet.etherscan.io/address/{{portfolioAddress}}" target="_blank">
                       {{dapp_formatBalance sharePrice "0,0.0[00] unit" "finney"}}/share
                     </a>
                   </td>
                   <td>
-                    <a href="http://testnet.etherscan.io/address/{{coreAddress}}" target="_blank">
+                    <a href="http://testnet.etherscan.io/address/{{portfolioAddress}}" target="_blank">
                       {{dapp_formatBalance notional "0,0.0[00] unit" 'eur'}}
                     </a>
                   </td>

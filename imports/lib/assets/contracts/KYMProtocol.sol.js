@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("PriceFeedProtocol error: Please call setProvider() first before calling new().");
+      throw new Error("KYMProtocol error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("PriceFeedProtocol error: contract binary not set. Can't deploy new instance.");
+      throw new Error("KYMProtocol error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("PriceFeedProtocol contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of PriceFeedProtocol: " + unlinked_libraries);
+      throw new Error("KYMProtocol contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of KYMProtocol: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to PriceFeedProtocol.at(): " + address);
+      throw new Error("Invalid address passed to KYMProtocol.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: PriceFeedProtocol not deployed or address not set.");
+      throw new Error("Cannot find deployed address: KYMProtocol not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -347,39 +347,21 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   };
 
   Contract.all_networks = {
-  "2": {
+  "3": {
     "abi": [
       {
         "constant": true,
         "inputs": [
           {
-            "name": "_asset",
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
+        "name": "resolver",
+        "outputs": [
+          {
+            "name": "",
             "type": "address"
-          }
-        ],
-        "name": "getPrice",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_fee",
-            "type": "uint256"
-          }
-        ],
-        "name": "setFee",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
           }
         ],
         "payable": false,
@@ -387,7 +369,12 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       },
       {
         "constant": true,
-        "inputs": [],
+        "inputs": [
+          {
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
         "name": "owner",
         "outputs": [
           {
@@ -400,20 +387,55 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       },
       {
         "constant": false,
-        "inputs": [],
-        "name": "payOut",
+        "inputs": [
+          {
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "name": "label",
+            "type": "bytes32"
+          },
+          {
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "setSubnodeOwner",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "name": "ttl",
+            "type": "uint64"
+          }
+        ],
+        "name": "setTTL",
         "outputs": [],
         "payable": false,
         "type": "function"
       },
       {
         "constant": true,
-        "inputs": [],
-        "name": "precision",
+        "inputs": [
+          {
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
+        "name": "ttl",
         "outputs": [
           {
             "name": "",
-            "type": "uint256"
+            "type": "uint64"
           }
         ],
         "payable": false,
@@ -423,36 +445,186 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "constant": false,
         "inputs": [
           {
-            "name": "fungibles",
-            "type": "address[]"
+            "name": "node",
+            "type": "bytes32"
           },
           {
-            "name": "prices",
-            "type": "uint256[]"
+            "name": "resolver",
+            "type": "address"
           }
         ],
-        "name": "setPrice",
+        "name": "setResolver",
         "outputs": [],
         "payable": false,
         "type": "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "fee",
-        "outputs": [
+        "constant": false,
+        "inputs": [
           {
-            "name": "",
-            "type": "uint256"
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "name": "owner",
+            "type": "address"
           }
         ],
+        "name": "setOwner",
+        "outputs": [],
         "payable": false,
         "type": "function"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "name": "label",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "NewOwner",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "resolver",
+            "type": "address"
+          }
+        ],
+        "name": "NewResolver",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "ttl",
+            "type": "uint64"
+          }
+        ],
+        "name": "NewTTL",
+        "type": "event"
       }
     ],
-    "unlinked_binary": "0x606060405260008054600160a060020a0319166c01000000000000000000000000338102041781556001819055600860025561017190819061004090396000f3606060405236156100615760e060020a600035046341976e09811461006657806369fe0e2d146100665780638da5cb5b14610080578063c2052403146100a4578063d3b5dc3b146100ac578063d441987d146100ba578063ddca3f431461013a575b610002565b346100025760005b60408051918252519081900360200190f35b346100025761014860005473ffffffffffffffffffffffffffffffffffffffff1681565b34610002575b005b346100025761006e60025481565b3461000257604080516020600480358082013583810280860185019096528085526100aa95929460249490939285019282918501908490808284375050604080518735808a013560208181028481018201909552818452989a99604499939850919091019550935083925085019084908082843750505050505050505050565b346100025761006e60015481565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f3",
-    "events": {},
-    "updated_at": 1478787152238,
+    "events": {
+      "0xd4735d920b0f87494915f556dd9b54c8f309026070caea5c737245152564d266": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      "0xce0457fe73731f824cc272376169235128c118b49d344817417c6d108d155e82": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "name": "label",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "NewOwner",
+        "type": "event"
+      },
+      "0x335721b01866dc23fbee8b6b2c7b1e14d6f05c28cd35a2c934239f94095602a0": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "resolver",
+            "type": "address"
+          }
+        ],
+        "name": "NewResolver",
+        "type": "event"
+      },
+      "0x1d4f9bbfc9cab89d66e1a1562f2233ccbf1308cb4f63de2ead5787adddb8fa68": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "ttl",
+            "type": "uint64"
+          }
+        ],
+        "name": "NewTTL",
+        "type": "event"
+      }
+    },
+    "updated_at": 1481459632336,
     "links": {}
   },
   "default": {
@@ -461,33 +633,15 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "constant": true,
         "inputs": [
           {
-            "name": "_asset",
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
+        "name": "resolver",
+        "outputs": [
+          {
+            "name": "",
             "type": "address"
-          }
-        ],
-        "name": "getPrice",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_fee",
-            "type": "uint256"
-          }
-        ],
-        "name": "setFee",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
           }
         ],
         "payable": false,
@@ -495,7 +649,12 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       },
       {
         "constant": true,
-        "inputs": [],
+        "inputs": [
+          {
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
         "name": "owner",
         "outputs": [
           {
@@ -508,20 +667,55 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       },
       {
         "constant": false,
-        "inputs": [],
-        "name": "payOut",
+        "inputs": [
+          {
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "name": "label",
+            "type": "bytes32"
+          },
+          {
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "setSubnodeOwner",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "name": "ttl",
+            "type": "uint64"
+          }
+        ],
+        "name": "setTTL",
         "outputs": [],
         "payable": false,
         "type": "function"
       },
       {
         "constant": true,
-        "inputs": [],
-        "name": "precision",
+        "inputs": [
+          {
+            "name": "node",
+            "type": "bytes32"
+          }
+        ],
+        "name": "ttl",
         "outputs": [
           {
             "name": "",
-            "type": "uint256"
+            "type": "uint64"
           }
         ],
         "payable": false,
@@ -531,37 +725,186 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "constant": false,
         "inputs": [
           {
-            "name": "fungibles",
-            "type": "address[]"
+            "name": "node",
+            "type": "bytes32"
           },
           {
-            "name": "prices",
-            "type": "uint256[]"
+            "name": "resolver",
+            "type": "address"
           }
         ],
-        "name": "setPrice",
+        "name": "setResolver",
         "outputs": [],
         "payable": false,
         "type": "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "fee",
-        "outputs": [
+        "constant": false,
+        "inputs": [
           {
-            "name": "",
-            "type": "uint256"
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "name": "owner",
+            "type": "address"
           }
         ],
+        "name": "setOwner",
+        "outputs": [],
         "payable": false,
         "type": "function"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "name": "label",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "NewOwner",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "resolver",
+            "type": "address"
+          }
+        ],
+        "name": "NewResolver",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "ttl",
+            "type": "uint64"
+          }
+        ],
+        "name": "NewTTL",
+        "type": "event"
       }
     ],
-    "unlinked_binary": "0x606060405260008054600160a060020a0319166c01000000000000000000000000338102041781556001819055600860025561017190819061004090396000f3606060405236156100615760e060020a600035046341976e09811461006657806369fe0e2d146100665780638da5cb5b14610080578063c2052403146100a4578063d3b5dc3b146100ac578063d441987d146100ba578063ddca3f431461013a575b610002565b346100025760005b60408051918252519081900360200190f35b346100025761014860005473ffffffffffffffffffffffffffffffffffffffff1681565b34610002575b005b346100025761006e60025481565b3461000257604080516020600480358082013583810280860185019096528085526100aa95929460249490939285019282918501908490808284375050604080518735808a013560208181028481018201909552818452989a99604499939850919091019550935083925085019084908082843750505050505050505050565b346100025761006e60015481565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f3",
-    "events": {},
-    "updated_at": 1478730045341,
-    "links": {}
+    "events": {
+      "0xd4735d920b0f87494915f556dd9b54c8f309026070caea5c737245152564d266": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      "0xce0457fe73731f824cc272376169235128c118b49d344817417c6d108d155e82": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "name": "label",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "NewOwner",
+        "type": "event"
+      },
+      "0x335721b01866dc23fbee8b6b2c7b1e14d6f05c28cd35a2c934239f94095602a0": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "resolver",
+            "type": "address"
+          }
+        ],
+        "name": "NewResolver",
+        "type": "event"
+      },
+      "0x1d4f9bbfc9cab89d66e1a1562f2233ccbf1308cb4f63de2ead5787adddb8fa68": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "ttl",
+            "type": "uint64"
+          }
+        ],
+        "name": "NewTTL",
+        "type": "event"
+      }
+    },
+    "updated_at": 1481459308020
   }
 };
 
@@ -646,7 +989,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "PriceFeedProtocol";
+  Contract.contract_name   = Contract.prototype.contract_name   = "KYMProtocol";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -686,6 +1029,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.PriceFeedProtocol = Contract;
+    window.KYMProtocol = Contract;
   }
 })();

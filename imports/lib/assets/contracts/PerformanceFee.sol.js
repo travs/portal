@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("ERC20Protocol error: Please call setProvider() first before calling new().");
+      throw new Error("PerformanceFee error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("ERC20Protocol error: contract binary not set. Can't deploy new instance.");
+      throw new Error("PerformanceFee error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("ERC20Protocol contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of ERC20Protocol: " + unlinked_libraries);
+      throw new Error("PerformanceFee contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of PerformanceFee: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to ERC20Protocol.at(): " + address);
+      throw new Error("Invalid address passed to PerformanceFee.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: ERC20Protocol not deployed or address not set.");
+      throw new Error("Cannot find deployed address: PerformanceFee not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -347,25 +347,16 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   };
 
   Contract.all_networks = {
-  "2": {
+  "3": {
     "abi": [
       {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_spender",
-            "type": "address"
-          },
-          {
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "approve",
+        "constant": true,
+        "inputs": [],
+        "name": "owner",
         "outputs": [
           {
-            "name": "success",
-            "type": "bool"
+            "name": "",
+            "type": "address"
           }
         ],
         "payable": false,
@@ -374,37 +365,11 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       {
         "constant": true,
         "inputs": [],
-        "name": "totalSupply",
+        "name": "fee",
         "outputs": [
           {
-            "name": "supply",
+            "name": "",
             "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_from",
-            "type": "address"
-          },
-          {
-            "name": "_to",
-            "type": "address"
-          },
-          {
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "transferFrom",
-        "outputs": [
-          {
-            "name": "success",
-            "type": "bool"
           }
         ],
         "payable": false,
@@ -412,16 +377,11 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       },
       {
         "constant": true,
-        "inputs": [
-          {
-            "name": "_owner",
-            "type": "address"
-          }
-        ],
-        "name": "balanceOf",
+        "inputs": [],
+        "name": "calculateFee",
         "outputs": [
           {
-            "name": "balance",
+            "name": "",
             "type": "uint256"
           }
         ],
@@ -429,163 +389,26 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "function"
       },
       {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_to",
-            "type": "address"
-          },
-          {
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "transfer",
-        "outputs": [
-          {
-            "name": "success",
-            "type": "bool"
-          }
-        ],
+        "inputs": [],
         "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "_owner",
-            "type": "address"
-          },
-          {
-            "name": "_spender",
-            "type": "address"
-          }
-        ],
-        "name": "allowance",
-        "outputs": [
-          {
-            "name": "remaining",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "name": "_from",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "name": "_to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Transfer",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "name": "_owner",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "name": "_spender",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Approval",
-        "type": "event"
+        "type": "constructor"
       }
     ],
-    "unlinked_binary": "0x606060405260ac8060106000396000f360606040523615604f5760e060020a6000350463095ea7b38114605357806318160ddd14606857806323b872dd14608157806370a08231146068578063a9059cbb146053578063dd62ed3e14609c575b6002565b3460025760886004356024355b600092915050565b3460025760005b60408051918252519081900360200190f35b3460025760005b604080519115158252519081900360200190f35b34600257606f600435602435606056",
-    "events": {
-      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "name": "_from",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "name": "_to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Transfer",
-        "type": "event"
-      },
-      "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "name": "_owner",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "name": "_spender",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Approval",
-        "type": "event"
-      }
-    },
-    "updated_at": 1478732205893,
+    "unlinked_binary": "0x6060604052600060015534610000575b5b60008054600160a060020a0319166c01000000000000000000000000338102041790555b5b5b60c6806100436000396000f3606060405260e060020a60003504638da5cb5b81146030578063ddca3f43146056578063e6af35f0146072575b6000565b34600057603a608e565b60408051600160a060020a039092168252519081900360200190f35b346000576060609d565b60408051918252519081900360200190f35b34600057606060a3565b60408051918252519081900360200190f35b600054600160a060020a031681565b60015481565b6000805433600160a060020a0390811691161460bd576000565b506001545b5b9056",
+    "events": {},
+    "updated_at": 1481459632373,
     "links": {}
   },
   "default": {
     "abi": [
       {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_spender",
-            "type": "address"
-          },
-          {
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "approve",
+        "constant": true,
+        "inputs": [],
+        "name": "owner",
         "outputs": [
           {
-            "name": "success",
-            "type": "bool"
+            "name": "",
+            "type": "address"
           }
         ],
         "payable": false,
@@ -594,37 +417,11 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       {
         "constant": true,
         "inputs": [],
-        "name": "totalSupply",
+        "name": "fee",
         "outputs": [
           {
-            "name": "supply",
+            "name": "",
             "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_from",
-            "type": "address"
-          },
-          {
-            "name": "_to",
-            "type": "address"
-          },
-          {
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "transferFrom",
-        "outputs": [
-          {
-            "name": "success",
-            "type": "bool"
           }
         ],
         "payable": false,
@@ -632,16 +429,11 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       },
       {
         "constant": true,
-        "inputs": [
-          {
-            "name": "_owner",
-            "type": "address"
-          }
-        ],
-        "name": "balanceOf",
+        "inputs": [],
+        "name": "calculateFee",
         "outputs": [
           {
-            "name": "balance",
+            "name": "",
             "type": "uint256"
           }
         ],
@@ -649,143 +441,14 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "function"
       },
       {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "_to",
-            "type": "address"
-          },
-          {
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "transfer",
-        "outputs": [
-          {
-            "name": "success",
-            "type": "bool"
-          }
-        ],
+        "inputs": [],
         "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "_owner",
-            "type": "address"
-          },
-          {
-            "name": "_spender",
-            "type": "address"
-          }
-        ],
-        "name": "allowance",
-        "outputs": [
-          {
-            "name": "remaining",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "name": "_from",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "name": "_to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Transfer",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "name": "_owner",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "name": "_spender",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Approval",
-        "type": "event"
+        "type": "constructor"
       }
     ],
-    "unlinked_binary": "0x606060405260ac8060106000396000f360606040523615604f5760e060020a6000350463095ea7b38114605357806318160ddd14606857806323b872dd14608157806370a08231146068578063a9059cbb146053578063dd62ed3e14609c575b6002565b3460025760886004356024355b600092915050565b3460025760005b60408051918252519081900360200190f35b3460025760005b604080519115158252519081900360200190f35b34600257606f600435602435606056",
-    "events": {
-      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "name": "_from",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "name": "_to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Transfer",
-        "type": "event"
-      },
-      "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "name": "_owner",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "name": "_spender",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Approval",
-        "type": "event"
-      }
-    },
-    "updated_at": 1478730045312,
-    "links": {}
+    "unlinked_binary": "0x6060604052600060015534610000575b5b60008054600160a060020a0319166c01000000000000000000000000338102041790555b5b5b60c6806100436000396000f3606060405260e060020a60003504638da5cb5b81146030578063ddca3f43146056578063e6af35f0146072575b6000565b34600057603a608e565b60408051600160a060020a039092168252519081900360200190f35b346000576060609d565b60408051918252519081900360200190f35b34600057606060a3565b60408051918252519081900360200190f35b600054600160a060020a031681565b60015481565b6000805433600160a060020a0390811691161460bd576000565b506001545b5b9056",
+    "events": {},
+    "updated_at": 1481459308031
   }
 };
 
@@ -870,7 +533,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "ERC20Protocol";
+  Contract.contract_name   = Contract.prototype.contract_name   = "PerformanceFee";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -910,6 +573,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.ERC20Protocol = Contract;
+    window.PerformanceFee = Contract;
   }
 })();
