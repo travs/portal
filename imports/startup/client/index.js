@@ -7,8 +7,8 @@ import '/imports/ui/components/summary/executive_summary.js';
 
 import '/imports/ui/client/helpers.js';
 
-import './ethereum-config.js';
+import '/imports/startup/client/ethereum-config.js';
 
-import './network.js';
+import '/imports/startup/client/network.js';
 
-import './routes.js';
+import '/imports/startup/client/routes.js';

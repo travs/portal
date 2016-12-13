@@ -1,13 +1,16 @@
-import './wallet_list.html';
-
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { Session } from 'meteor/session';
 import { Materialize } from 'meteor/poetic:materialize-scss';
 import { $ } from 'meteor/jquery';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { EthTools } from 'meteor/ethereum:tools';
+import { BigNumber } from 'web3';
+
 
 // import { Wallets } from '../../../api/wallets.js';
+
+import './wallet_list.html';
 
 
 Template.wallet_list.onCreated(function walletListOnCreated() {
@@ -19,16 +22,20 @@ Template.wallet_list.onCreated(function walletListOnCreated() {
 });
 
 Template.wallet_list.helpers({
-  // wallets() {
-  //   return Wallets.find({ owner: Meteor.userId() }, { sort: { createdAt: -1 } }).fetch();
-  // },
+  wallets() {
+    console.log(Session.get('clientAccountList'))
+    return Session.get('clientAccountList');
+    // return Wallets.find({ owner: Meteor.userId() }, { sort: { createdAt: -1 } }).fetch();
+  },
   // walletCount() {
   //   return Wallets.find({ owner: Meteor.userId() }).count();
   // },
-  // isUnlocked(address) {
-  //   const doc = Wallets.findOne({ owner: Meteor.userId(), address });
-  //   return doc.open;
-  // },
+  isUnlocked(address) {
+    console.log(address)
+    return true;
+    // const doc = Wallets.findOne({ owner: Meteor.userId(), address });
+    // return doc.open;
+  },
   // getSeed(event) {
   //   return Template.instance().state.get('seed');
   // },
@@ -45,9 +52,10 @@ Template.wallet_list.helpers({
   // fromWei(weiValue, type) {
   //   return web3.fromWei(weiValue, type).toString(10);
   // },
-  // displayBalance(balance) {
-  //   return EthTools.formatBalance(balance.toString(10), '0,0.0[00] UNIT');
-  // },
+  displayBalance(balance) {
+    return 0;
+    // return EthTools.formatBalance(balance.toString(10), '0,0.0[00] UNIT');
+  },
 });
 
 
