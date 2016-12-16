@@ -24,7 +24,7 @@ Template.portal.onCreated(() => {
 
 Template.portal.helpers({
   portfolioCount() {
-    return Portfolios.find({ owner: Session.get('clientDefaultAccount') }).count();
+    return Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count();
   },
 });
 

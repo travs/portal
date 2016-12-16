@@ -13,14 +13,14 @@ Template.executive_summary.onCreated(() => {
 
 Template.executive_summary.helpers({
   portfolioCount() {
-    return Portfolios.find({ owner: Session.get('clientDefaultAccount') }).count();
+    return Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count();
   },
   selectedPortfolioName() {
-    const doc = Portfolios.findOne({ owner: Session.get('clientDefaultAccount') });
-    return doc.portfolioName;
+    const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
+    return doc.name;
   },
   selectedPortfolioDelta() {
-    const doc = Portfolios.findOne({ owner: Session.get('clientDefaultAccount') });
+    const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
     return doc.delta;
   },
 });

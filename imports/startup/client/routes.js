@@ -34,7 +34,7 @@ FlowRouter.route('/portfolio', {
   },
 });
 
-FlowRouter.route('/portfolio/:portfolioAddress', {
+FlowRouter.route('/portfolio/:address', {
   name: 'blotter',
   action() {
     BlazeLayout.render('layout_main', {

@@ -61,21 +61,20 @@ Template.portfolio_new.events({
 
     // Get value from form element
     const target = event.target;
-    const fund_name = target.fund_name.value;
-    if (!fund_name) {
-      console.log('empty string');
-    }
+    const manager_name = target.manager_name.value;
+    const portfolio_name = target.portfolio_name.value;
 
     // Clear form
-    target.fund_name.value = '';
+    target.manager_name.value = '';
+    target.portfolio_name.value = '';
 
     reactiveState.set({ isInactive: false, isMining: true });
 
     // Init
     // var provider = new Web3.providers.HttpProvider("http://localhost:8545");
     // Core.setProvider(provider);
-    // const fromAddr = WalletInstance.currentAddress();
-    const fromAddr = Session.get('clientDefaultAccount');
+    // const manager_address = WalletInstance.currentAddress();
+    const manager_address = Session.get('clientDefaultAccount');
     const gasPrice = 100000000000;
     const gas = 2500000;
 
@@ -92,28 +91,28 @@ Template.portfolio_new.events({
     //   }
     //   if (result.address) {
     //     reactiveState.set({ isMining: false, isMined: true, address: result.address });
-    //     // Insert a fund into the Collection
+    //     // Insert a portfolio into the Collection
     //     const sharePrice = 1.0;
     //     const notional = 0;
     //     const intraday = 1.0;
     //     const mtd = 1.0;
     //     const ytd = 1.0;
     //     Meteor.call(
-    //       'portfolios.insert', result.address, fromAddr,
-    //       fund_name, sharePrice, notional, intraday, mtd, ytd
+    //       'portfolios.insert', result.address, manager_address,
+    //       portfolio_name, sharePrice, notional, intraday, mtd, ytd
     //     );
     //   }
     // });
     reactiveState.set({ isMining: false, isMined: true, address: '0x0' });
-    // Insert a fund into the Collection
+    // Insert a portfolio into the Collection
     const sharePrice = 1.0;
     const notional = 0;
     const intraday = 1.0;
     const mtd = 1.0;
     const ytd = 1.0;
     Meteor.call(
-      'portfolios.insert', '0x0', fromAddr,
-      fund_name, sharePrice, notional, intraday, mtd, ytd
+      'portfolios.insert', '0x0', portfolio_name, manager_address, manager_name,
+      sharePrice, notional, intraday, mtd, ytd
     );
   },
 });

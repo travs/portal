@@ -45,25 +45,31 @@
           <form class="col s12 new-portfolio">
             <div class="row">
               <div class="input-field col s12">
-                <input id="fund_name" type="text" class="validate" aria-required="true">
-                <label for="fund_name">Fund Name</label>
+                <input id="manager_name" type="text" class="validate" aria-required="true">
+                <label for="manager_name">Manager Name</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="portfolio_name" type="text" class="validate" aria-required="true">
+                <label for="portfolio_name">Portfolio Name</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
                 <select id="categorySelect">
-                  <option value="" disabled selected>Categorize your fund.</option>
+                  <option value="" disabled selected>Categorize your Portfolio.</option>
                   <option value="1">Short term trading</option>
                   <option value="2">Long term trading</option>
-                  <option value="3">Thematic Fund</option>
+                  <option value="3">Thematic Portfolio</option>
                 </select>
-                <label>Fund Category</label>
+                <label>Portfolio Category</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
                 <select id="assetSelect" multiple>
-                  <option value="" disabled selected>Trading of your fund is restricted to the following assets.</option>
+                  <option value="" disabled selected>Trading of your portfolio is restricted to the following assets.</option>
                   <option value="1">Augur (REP)</option>
                   <option value="2">All Augur Markets</option>
                   <option value="3">DigixDAO (DGD)</option>
@@ -76,7 +82,7 @@
             <div class="row">
               <div class="input-field col s12">
                 <select id="exchangeSelect">
-                  <option value="" disabled selected>Exchange used to trade assets of your fund.</option>
+                  <option value="" disabled selected>Exchange used to trade assets of your portfolio.</option>
                   <option value="1">Melon Standard</option>
                   <option value="2">EtherEx</option>
                   <option value="3">Maker OTC</option>
@@ -87,7 +93,7 @@
             <div class="row">
               <div class="input-field col s12">
                 <select id="pricefeedSelect">
-                  <option value="" disabled selected>Price Feed used to evaluate your fund performance.</option>
+                  <option value="" disabled selected>Price Feed used to evaluate your portfolio performance.</option>
                   <option value="1">Melon Standard</option>
                   <option value="2">Kraken Public API</option>
                 </select>

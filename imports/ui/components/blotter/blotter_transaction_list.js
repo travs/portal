@@ -18,6 +18,6 @@ Template.blotter_transaction_list.helpers({
     return Transactions.find({}).count();
   },
   isOwner() {
-    return this.owner === Meteor.userId();
+    return this.managerAddress === Meteor.userId();
   },
 });

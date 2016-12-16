@@ -25,15 +25,15 @@ Template.wallet_list.helpers({
   wallets() {
     console.log(Session.get('clientAccountList'))
     return Session.get('clientAccountList');
-    // return Wallets.find({ owner: Session.get('clientDefaultAccount') }, { sort: { createdAt: -1 } }).fetch();
+    // return Wallets.find({ managerAddress: Session.get('clientDefaultAccount') }, { sort: { createdAt: -1 } }).fetch();
   },
   // walletCount() {
-  //   return Wallets.find({ owner: Session.get('clientDefaultAccount') }).count();
+  //   return Wallets.find({ managerAddress: Session.get('clientDefaultAccount') }).count();
   // },
   isUnlocked(address) {
     console.log(address)
     return true;
-    // const doc = Wallets.findOne({ owner: Session.get('clientDefaultAccount'), address });
+    // const doc = Wallets.findOne({ managerAddress: Session.get('clientDefaultAccount'), address });
     // return doc.open;
   },
   // getSeed(event) {

@@ -31,7 +31,7 @@ Template.portfolio_list.helpers({
     return false;
   },
   isOwner() {
-    return this.owner === Session.get('clientDefaultAccount');
+    return this.managerAddress === Session.get('clientDefaultAccount');
   },
 });
 

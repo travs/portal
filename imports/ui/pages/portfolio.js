@@ -20,7 +20,7 @@ Template.portfolio.onCreated(() => {
 
   //TODO better
   // No Portfolio created
-  // if (Portfolios.find({ owner: Session.get('clientDefaultAccount') }).count() === 0) {
+  // if (Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count() === 0) {
   //   // No wallet
   //   if (Wallets.find({}).count() === 0) {
   //     Materialize.toast('Get started by creating a Wallet', 4000, 'blue');
@@ -41,7 +41,7 @@ Template.portfolio.onCreated(() => {
 
 Template.portfolio.helpers({
   portfolioCount() {
-    return Portfolios.find({ owner: Session.get('clientDefaultAccount') }).count();
+    return Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count();
   },
 });
 

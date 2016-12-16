@@ -7,12 +7,21 @@
           <h1 class="header center-on-small-only grey-text text-lighten-4">{{i18n 'dapp.wallet.header'}}</h1>
           <h4 class ="center-on-small-only light grey-text text-lighten-5">{{i18n 'dapp.wallet.description'}}</h4>
         </div>
-        <div class="col s12 m2">
-          {{> network_summary}}
-        </div>
-        <div class="col s12 m2">
-          {{> executive_summary}}
-        </div>
+        <!-- Client is connected -->
+        {{#if isClientConnected}}
+          <div class="col s12 m2">
+            {{> network_summary}}
+          </div>
+          <div class="col s12 m2">
+            {{> executive_summary}}
+          </div>
+        {{else}}
+          <div class="col s12 m4">
+            <span class="text-light">Try to use me with</span>
+            <li><a class="white-text" href="https://metamask.io/" target="_blank"><b>MetaMask</b></a></li>
+            <li><a class="white-text" href="https://github.com/ethereum/mist" target="_blank"><b>Mist</b></a></li>
+          </div>
+        {{/if}}
       </div>
     </div>
   </div>

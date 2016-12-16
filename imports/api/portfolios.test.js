@@ -17,7 +17,7 @@ if (Meteor.isServer) {
         portfolioId = Portfolios.insert({
           text: 'test portfolio',
           createdAt: new Date(),
-          owner: userId,
+          managerAddress: userId,
           username: 'Joe Plumber',
         });
       });

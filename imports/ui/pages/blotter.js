@@ -19,15 +19,15 @@ Template.blotter.onCreated(() => {
 
 Template.blotter.helpers({
   getPortfolioName() {
-    const portfolioAddress = FlowRouter.getParam('portfolioAddress');
-    console.log(portfolioAddress)
+    const address = FlowRouter.getParam('address');
+    console.log(address)
     const doc = Portfolios.findOne('0x0');
     console.log(doc)
-    return doc.portfolioName;
+    return doc.name;
   },
   getPortfolioOwner() {
-    const portfolioAddress = FlowRouter.getParam('portfolioAddress');
-    const doc = Portfolios.findOne(portfolioAddress);
+    const address = FlowRouter.getParam('address');
+    const doc = Portfolios.findOne(address);
     return doc.owner;
   },
 });

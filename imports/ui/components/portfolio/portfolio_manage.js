@@ -30,11 +30,11 @@ Template.portfolio_manage.helpers({
     return Portfolios.find({}).count();
   },
   isOwner() {
-    return this.owner === Meteor.userId();
+    return this.managerAddress === Session.get('clientDefaultAccount');
   },
   selectedPortfolioName() {
-    const doc = Portfolios.findOne({ owner: Session.get('clientDefaultAccount') });
-    return doc.portfolioName;
+    const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
+    return doc.name;
   },
   isInvestingSelected() {
     if (Template.instance().state.get('investingSelected')) {
@@ -94,8 +94,8 @@ Template.portfolio_manage.events({
     reactiveState.set({ isInactive: false, isMining: true });
 
     // Init
-    const doc = Portfolios.findOne({ owner: Session.get('clientDefaultAccount') });
-    const coreInstance = Core.at(doc.portfolioAddress);
+    const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
+    const coreInstance = Core.at(doc.address);
     const fromAddr = WalletInstance.currentAddress();
     const gasPrice = 100000000000;
     const gas = 2500000;

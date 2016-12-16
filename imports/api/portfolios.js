@@ -12,7 +12,7 @@ if (Meteor.isServer) {
     return Portfolios.find({
       $or: [
         { private: { $ne: true } },
-        { owner: this.userId },
+        { managerAddress: this.userId },
       ],
     });
   });
@@ -20,10 +20,11 @@ if (Meteor.isServer) {
 
 
 Meteor.methods({
-  'portfolios.insert'(portfolioAddress, ownerAddress, portfolioName, sharePrice, notional, intraday, mtd, ytd) {
-    check(portfolioAddress, String);
-    check(ownerAddress, String);
-    check(portfolioName, String);
+  'portfolios.insert'(address, name, managerAddress, managerName, sharePrice, notional, intraday, mtd, ytd) {
+    check(address, String);
+    check(name, String);
+    check(managerAddress, String);
+    check(managerName, String);
     check(sharePrice, Number);
     check(notional, Number);
     check(intraday, Number);
@@ -31,8 +32,10 @@ Meteor.methods({
     check(ytd, Number);
 
     Portfolios.insert({
-      portfolioAddress,
-      portfolioName,
+      address,
+      name,
+      managerAddress,
+      managerName,
       sharePrice,
       notional,
       intraday,
@@ -40,7 +43,6 @@ Meteor.methods({
       ytd,
       delta: "±0.0",
       username: 'N/A',
-      owner: ownerAddress,
       createdAt: new Date(),
     });
   },
