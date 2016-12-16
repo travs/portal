@@ -20,12 +20,6 @@ Template.portal.helpers({
 
 
 Template.portal.onRendered(() => {
-  this.$('.modal-trigger').leanModal({
-    dismissible: false,
-    opacity: 0.5, // Opacity of modal background
-    in_duration: 300, // Transition in duration
-    out_duration: 200, // Transition out duration
-  });
 });
 
 

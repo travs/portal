@@ -2,21 +2,27 @@
   <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
 
   <!-- Index-banner -->
-  <div class="section blue darken-2 white-text" id="index-banner">
+  <div class="section blue-grey darken-2 white-text" id="index-banner">
     <div class="container">
       <div class="row center">
         <div class="col s12 m7 offset-m1 l6 offset-l2">
-          <h1 class="header center-on-small-only grey-text text-lighten-4">Portal</h1>
-          <h4 class ="center-on-small-only light grey-text text-lighten-5">Blockchain software for wealth preservation</h4>
+          {{#if isClientConnected}}
+            {{#if clientDefaultAccount}}
+            {{/if}}
+          {{else}}
+            <!-- <h1 class="header center-on-small-only grey-text text-lighten-4">Portal</h1>
+            <h4 class ="center-on-small-only light grey-text text-lighten-5">Blockchain software for wealth preservation</h4> -->
+          {{/if}}
+
+
           <div class="row center">
             {{#if isClientConnected}}
-              {{#if isManagingWalletSet}}
-                <a href="/wallet" class="btn-large waves-effect waves-light blue darken-1 modal-trigger">Get started</a>
+              {{#if clientDefaultAccount}}
+                <a href="/wallet" class="btn-large waves-effect waves-light blue-grey darken-1 modal-trigger">Get started</a>
               {{else}}
-                <a href="#modalDisclaimer" class="btn-large waves-effect waves-light blue darken-1 modal-trigger">Get started</a>
               {{/if}}
             {{else}}
-                <a href="https://metamask.io/" class="btn-large waves-effect waves-light blue darken-1">Get MetaMask Plugin</a>
+                <!-- <a href="https://metamask.io/" class="btn-large waves-effect waves-light blue-grey darken-1">Get MetaMask Plugin</a> -->
             {{/if}}
           </div>
         </div>
@@ -57,26 +63,10 @@
         <div class="col s12 m9 offset-m1 l8 offset-l2">
           <div id="results" class="section scrollspy">
             <h4 class="light">Ethereum node down</h4>
-            <p>Unfortunately the Ethereum node seems to be down. <a href="mailto:team@melonport.com?subject=Ethereum Node Down on Portal app" target="_top">Please contact us</a>. Thanks.</p>
+            <p>Unfortunately the server-side Ethereum node seems to be down. <a href="mailto:team@melonport.com?subject=Server Side Ethereum Node Down on Portal app" target="_top">Please contact us</a>. Thanks.</p>
           </div>
         </div>
       </div>
     </div>
   {{/if}}
-
-  <!-- Modal Disclaimer -->
-  <div id="modalDisclaimer" class="modal">
-    <div class="modal-content">
-      <h4>{{i18n 'dapp.agreement.header'}}</h4>
-      <p>{{i18n 'dapp.agreement.description'}}</p>
-      <p>This software is in an HIGHLY EXPERIMENTAL stage. Melonport assumes no responsibility whatsoever for its use by other parties, and makes no guarantees, expressed or implied, about its quality, reliability, or any other characteristic. </p>
-      <p>All data is likely to be modified and/or deleted at some stage in the develompent phase.</p>
-      <p>Do not send any real ether to any of the addresses shown in this prototype.</p>
-      <p>This software is intended for demonstration purposes only. USE AT YOUR OWN RISK!</p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Disagree</a>
-      <a href="wallet" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-    </div>
-  </div>
 </template>

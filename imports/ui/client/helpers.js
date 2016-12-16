@@ -7,5 +7,5 @@ Template.registerHelper('clientDefaultAccount', () => Session.get('clientDefault
 Template.registerHelper('clientDefaultAccountBalance', () => Session.get('clientDefaultAccountBalance'));
 Template.registerHelper('clientAccountList', () => Session.get('clientAccountList'));
 Template.registerHelper('accountCount', () => Session.get('accountCount'));
-Template.registerHelper('isManagingWalletSet', () => Session.get('isManagingWalletSet'));
+Template.registerHelper('clientDefaultAccount', () => Session.get('clientDefaultAccount'));
 Template.registerHelper('latestBlock', () => Session.get('latestBlock'));
