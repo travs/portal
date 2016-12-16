@@ -1,22 +1,16 @@
-import './portfolio_list.html';
-
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
-
+// Collections
 import { Portfolios } from '/imports/api/portfolios.js';
-// import { Wallets } from '/imports/api/wallets.js';
-
+// Smart contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
-// const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-// ConvertLib.setProvider(provider)
-// Core.setProvider(WalletInstance.setWeb3Provider(WalletInstance.keystore));
+// Corresponding html file
+import './portfolio_list.html';
 
 
 Template.portfolio_list.onCreated(function portfolioListOnCreated() {
   Meteor.subscribe('portfolios');
-  // Meteor.subscribe('wallets');
-
   Session.set('sharePrice', 1);
   Session.set('sumInvested', 0);
   Session.set('sumWithdrawn', 0);
@@ -37,7 +31,7 @@ Template.portfolio_list.helpers({
     return false;
   },
   isOwner() {
-    return this.owner === Meteor.userId();
+    return this.owner === Session.get('clientDefaultAccount');
   },
 });
 

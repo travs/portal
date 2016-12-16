@@ -17,7 +17,7 @@ Template.portfolio_manage.onCreated(() => {
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ isInactive: true });
   Template.instance().state.set({ investingSelected: true });
-  // 
+  //
   // Core.setProvider(WalletInstance.setWeb3Provider(WalletInstance.keystore));
 });
 
@@ -33,7 +33,7 @@ Template.portfolio_manage.helpers({
     return this.owner === Meteor.userId();
   },
   selectedPortfolioName() {
-    const doc = Portfolios.findOne({ owner: Meteor.userId() });
+    const doc = Portfolios.findOne({ owner: Session.get('clientDefaultAccount') });
     return doc.portfolioName;
   },
   isInvestingSelected() {
@@ -94,7 +94,7 @@ Template.portfolio_manage.events({
     reactiveState.set({ isInactive: false, isMining: true });
 
     // Init
-    const doc = Portfolios.findOne({ owner: Meteor.userId() });
+    const doc = Portfolios.findOne({ owner: Session.get('clientDefaultAccount') });
     const coreInstance = Core.at(doc.portfolioAddress);
     const fromAddr = WalletInstance.currentAddress();
     const gasPrice = 100000000000;

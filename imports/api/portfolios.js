@@ -50,8 +50,9 @@ Meteor.methods({
     const portfolio = Portfolios.findOne(portfolioId);
 
     // Only the owner can delete it
-    if (portfolio.owner !== Meteor.userId())
-      throw new Meteor.Error('not-authorized');
+    // TODO assert portflio address
+    // if (portfolio.owner !== Meteor.userId())
+    //   throw new Meteor.Error('not-authorized');
 
     Portfolios.remove(portfolioId);
   },
