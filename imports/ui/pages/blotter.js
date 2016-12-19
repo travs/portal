@@ -8,6 +8,7 @@ import '/imports/ui/components/summary/network_summary.js';
 import '/imports/ui/components/summary/executive_summary.js';
 import '/imports/ui/components/blotter/blotter_chart.js';
 import '/imports/ui/components/blotter/blotter_transaction_list.js';
+import '/imports/ui/components/portfolio/portfolio_manage.js';
 // Corresponding html file
 import './blotter.html';
 
