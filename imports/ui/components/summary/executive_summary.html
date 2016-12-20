@@ -5,7 +5,7 @@
       <li class="truncate text-light">Executive Summary</li>
       <!-- Wallet Balance -->
       <li> Wallet Balance:
-        {{#if accountCount}}
+        {{#if getAccountCount}}
           {{#if clientDefaultAccount}}
             <a href="/wallet" class="truncate green-text text-lighten-2">
               {{dapp_formatBalance clientDefaultAccountBalance "0,0.0[00] UNIT" 'eur'}}
@@ -23,24 +23,20 @@
         {{#if getPortfolioCountOfDefaultAccount}}
           <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{selectedPortfolioName}}</a>
         {{else}}
-          {{#if accountCount}}
-            <a href="/portfolio/" class="truncate blue-text text-lighten-2">Create portfolio</a>
+          {{#if getAccountCount}}
+            <a class="truncate blue-text text-lighten-2">Create portfolio</a>
           {{else}}
-            <a href="/portfolio/" class="truncate red-text text-lighten-2">N/A</a>
+            <a class="truncate red-text text-lighten-2">N/A</a>
           {{/if}}
         {{/if}}
       </li>
 
       <!-- Overall Performance -->
       <li> Delta:
-        {{#if isClientConnected}}
-          {{#if getPortfolioCount}}
-            <a href="/portfolio/" class="truncate green-text text-lighten-2">{{selectedPortfolioDelta}}</a>
-          {{else}}
-            <a href="/portfolio/" class="truncate red-text text-lighten-2">N/A</a>
-          {{/if}}
+        {{#if getPortfolioCountOfDefaultAccount}}
+            <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{selectedPortfolioDelta}}</a>
         {{else}}
-          <a href="/sign-in/" class="truncate blue-text text-lighten-2">Not logged in</a>
+          <a class="truncate blue-text text-lighten-2">Create portfolio</a>
         {{/if}}
       </li>
     </ul>

@@ -4,10 +4,10 @@ import { Session } from 'meteor/session';
 import { Portfolios } from '/imports/api/portfolios.js';
 
 
-// Network connectivity
-Template.registerHelper('isClientConnected', () => Session.get('isClientConnected'));
+// Server network
 Template.registerHelper('isServerConnected', () => Session.get('isServerConnected'));
 // Client network
+Template.registerHelper('isClientConnected', () => Session.get('isClientConnected'));
 Template.registerHelper('isMainNetwork', () => Session.get('network') === 'Main');
 Template.registerHelper('isRopstenNetwork', () => Session.get('network') === 'Ropsten');
 Template.registerHelper('getNetwork', () => Session.get('network'));
@@ -17,10 +17,20 @@ Template.registerHelper('latestBlock', () => Session.get('latestBlock'));
 Template.registerHelper('clientDefaultAccount', () => Session.get('clientDefaultAccount'));
 Template.registerHelper('clientDefaultAccountBalance', () => Session.get('clientDefaultAccountBalance'));
 Template.registerHelper('clientAccountList', () => Session.get('clientAccountList'));
-Template.registerHelper('accountCount', () => Session.get('accountCount'));
+Template.registerHelper('getAccountCount', () => Session.get('getAccountCount'));
 Template.registerHelper('clientDefaultAccount', () => Session.get('clientDefaultAccount'));
 // Portfolios
 Template.registerHelper('getPortfolioCountOfDefaultAccount', () => Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count());
 Template.registerHelper('getPortfolioCount', () => Portfolios.find().count());
 Template.registerHelper('getPortfolios', () => Portfolios.find({}, { sort: { createdAt: -1 } }));
 Template.registerHelper('isDefaultAccountThisPortfolioManager', managerAddress => managerAddress === Session.get('clientDefaultAccount'));
+// Contracts
+Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));
+Template.registerHelper('bitcoinTokenContractAddress', () => Session.get('bitcoinTokenContractAddress'));
+Template.registerHelper('dollarTokenContractAddress', () => Session.get('dollarTokenContractAddress'));
+Template.registerHelper('euroTokenContractAddress', () => Session.get('euroTokenContractAddress'));
+Template.registerHelper('priceFeedContractAddress', () => Session.get('priceFeedContractAddress'));
+Template.registerHelper('exchangeContractAddress', () => Session.get('exchangeContractAddress'));
+Template.registerHelper('registrarContractAddress', () => Session.get('registrarContractAddress'));
+Template.registerHelper('versionContractAddress', () => Session.get('versionContractAddress'));
+Template.registerHelper('metaContractAddress', () => Session.get('metaContractAddress'));

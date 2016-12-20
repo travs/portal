@@ -11,4 +11,6 @@ import '/imports/startup/client/ethereum-config.js';
 
 import '/imports/startup/client/network.js';
 
+import '/imports/startup/client/contracts.js';
+
 import '/imports/startup/client/routes.js';

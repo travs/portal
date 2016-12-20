@@ -30,7 +30,7 @@ function checkAccounts() {
         }
       });
       Session.set('clientDefaultAccount', web3.eth.defaultAccount);
-      Session.set('accountCount', accounts.length);
+      Session.set('getAccountCount', accounts.length);
       Session.set('clientAccountList', accounts);
     }
   });

@@ -2,8 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'web3';
-
-import WalletInstance from '/imports/lib/client/ethereum/wallet.js';
+// Collections
 import { Portfolios } from '/imports/api/portfolios.js';
 
 // Load Truffle artifact
@@ -20,9 +19,6 @@ Template.portfolio_new.onCreated(() => {
 
 
 Template.portfolio_new.helpers({
-  portfolios() {
-    return Portfolios.find({}, { sort: { createdAt: -1 } });
-  },
   isError() {
     return Template.instance().state.get('isError');
   },
@@ -70,39 +66,37 @@ Template.portfolio_new.events({
 
     reactiveState.set({ isInactive: false, isMining: true });
 
-    // Init
-    // var provider = new Web3.providers.HttpProvider("http://localhost:8545");
-    // Core.setProvider(provider);
-    // const manager_address = WalletInstance.currentAddress();
+    // Creation of contract object
+    Core.setProvider(web3.currentProvider);
     const manager_address = Session.get('clientDefaultAccount');
     const gasPrice = 100000000000;
     const gas = 2500000;
 
-    // Core.new(
-    //   '0x0B2D33E8a261D2481E3860C8ea9B073a740D32c8',
-    //   '0x0',
-    //   '0x0',
-    //   0,
-    //   // TODO: fix address
-    //   { from: web3.eth.accounts[0], gasPrice, gas }
-    // ).then((result, err) => {
-    //   if (err) {
-    //     reactiveState.set({ isMining: false, isError: true, error: String(err) });
-    //   }
-    //   if (result.address) {
-    //     reactiveState.set({ isMining: false, isMined: true, address: result.address });
-    //     // Insert a portfolio into the Collection
-    //     const sharePrice = 1.0;
-    //     const notional = 0;
-    //     const intraday = 1.0;
-    //     const mtd = 1.0;
-    //     const ytd = 1.0;
-    //     Meteor.call(
-    //       'portfolios.insert', result.address, manager_address,
-    //       portfolio_name, sharePrice, notional, intraday, mtd, ytd
-    //     );
-    //   }
-    // });
+    Core.new(
+      '0x0B2D33E8a261D2481E3860C8ea9B073a740D32c8',
+      '0x0',
+      '0x0',
+      0,
+      // TODO: fix address
+      { from: web3.eth.accounts[0], gasPrice, gas }
+    ).then((result, err) => {
+      if (err) {
+        reactiveState.set({ isMining: false, isError: true, error: String(err) });
+      }
+      if (result.address) {
+        reactiveState.set({ isMining: false, isMined: true, address: result.address });
+        // Insert a portfolio into the Collection
+        const sharePrice = 1.0;
+        const notional = 0;
+        const intraday = 1.0;
+        const mtd = 1.0;
+        const ytd = 1.0;
+        Meteor.call(
+          'portfolios.insert', result.address, manager_address,
+          portfolio_name, sharePrice, notional, intraday, mtd, ytd
+        );
+      }
+    });
     reactiveState.set({ isMining: false, isMined: true, address: '0x0' });
     // Insert a portfolio into the Collection
     const sharePrice = 1.0;
