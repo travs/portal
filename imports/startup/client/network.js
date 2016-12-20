@@ -3,6 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
 
+import { Materialize } from 'meteor/poetic:materialize-scss';
+import { HTTP } from 'meteor/http';
+
 // Check which accounts are available and if defaultAccount is still available,
 // Otherwise set it to localStorage, Session, or first element in accounts
 function checkAccounts() {
@@ -109,13 +112,7 @@ function initSession() {
   Session.set('latestBlock', 0);
 }
 
-/**
- * Startup code
- */
-Meteor.startup(() => {
-  initSession();
-  checkNetwork();
-
+function checkIfSynching() {
   web3.eth.isSyncing((error, sync) => {
     if (!error) {
       Session.set('syncing', sync !== false);
@@ -135,7 +132,9 @@ Meteor.startup(() => {
       }
     }
   });
+}
 
+function checkIfServerIsConncected() {
   Meteor.call('isServerConnected', (err, result) => {
     if(!err) {
       Session.set('isServerConnected', result);
@@ -143,6 +142,28 @@ Meteor.startup(() => {
       console.log(err);
     }
   });
+}
 
+function getTestnetEther() {
+  if (Session.get('network') === 'Ropsten' && Session.get('clientDefaultAccountBalance') <= web3.toWei('1', 'ether')) {
+    const address = Session.get('clientDefaultAccount');
+    Meteor.call('sendTestnetEther', address, (err) => {
+      if(!err) {
+        Materialize.toast('We have seen you\'re low on cash so we set you some. Wait a few seconds and let it rain!', 30000, 'green');
+      } else {
+        console.log(err);
+      }
+    });
+  }
+}
+
+// EXECUTION
+Meteor.startup(() => {
+  initSession();
+  checkNetwork();
+  checkIfSynching();
+  checkIfServerIsConncected();
+
+  Meteor.setInterval(getTestnetEther, 60 * 1000);
   Meteor.setInterval(checkNetwork, 2503);
 });
