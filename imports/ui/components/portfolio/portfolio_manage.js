@@ -23,12 +23,6 @@ Template.portfolio_manage.onCreated(() => {
 
 
 Template.portfolio_manage.helpers({
-  portfolios() {
-    return Portfolios.find({}, { sort: { createdAt: -1 } });
-  },
-  portfolioCount() {
-    return Portfolios.find({}).count();
-  },
   isOwner() {
     return this.managerAddress === Session.get('clientDefaultAccount');
   },

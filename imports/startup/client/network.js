@@ -2,9 +2,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
-
 import { Materialize } from 'meteor/poetic:materialize-scss';
-import { HTTP } from 'meteor/http';
+
 
 // Check which accounts are available and if defaultAccount is still available,
 // Otherwise set it to localStorage, Session, or first element in accounts
@@ -149,7 +148,7 @@ function getTestnetEther() {
     const address = Session.get('clientDefaultAccount');
     Meteor.call('sendTestnetEther', address, (err) => {
       if(!err) {
-        Materialize.toast('We have seen you\'re low on cash so we set you some. Wait a few seconds and let it rain!', 30000, 'green');
+        Materialize.toast('We\'ve seen you\'re low on cash so we\'ve set you some. Wait a few seconds and let it rain!', 30000, 'green');
       } else {
         console.log(err);
       }
@@ -164,6 +163,6 @@ Meteor.startup(() => {
   checkIfSynching();
   checkIfServerIsConncected();
 
-  Meteor.setInterval(getTestnetEther, 60 * 1000);
+  Meteor.setInterval(getTestnetEther, 90 * 1000);
   Meteor.setInterval(checkNetwork, 2503);
 });

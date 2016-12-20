@@ -8,7 +8,7 @@
         {{#if accountCount}}
           {{#if clientDefaultAccount}}
             <a href="/wallet" class="truncate green-text text-lighten-2">
-              {{dapp_formatBalance clientDefaultAccountBalance "0,0.0[00] unit" 'eur'}}
+              {{dapp_formatBalance clientDefaultAccountBalance "0,0.0[00] UNIT" 'eur'}}
             </a>
           {{else}}
             <a class="truncate red-text text-lighten-2">No account selected</a>
@@ -20,7 +20,7 @@
 
       <!-- Portfolio Status -->
       <li> Portfolio:
-        {{#if portfolioCount}}
+        {{#if getPortfolioCountOfDefaultAccount}}
           <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{selectedPortfolioName}}</a>
         {{else}}
           {{#if accountCount}}
@@ -34,7 +34,7 @@
       <!-- Overall Performance -->
       <li> Delta:
         {{#if isClientConnected}}
-          {{#if portfolioCount}}
+          {{#if getPortfolioCount}}
             <a href="/portfolio/" class="truncate green-text text-lighten-2">{{selectedPortfolioDelta}}</a>
           {{else}}
             <a href="/portfolio/" class="truncate red-text text-lighten-2">N/A</a>

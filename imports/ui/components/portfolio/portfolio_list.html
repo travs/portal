@@ -1,8 +1,8 @@
 <template name="portfolio_list">
   <div class="card grey lighten-5">
     <div class="card-content">
-      <span class="card-title">My Portfolio</span>
-      {{#if portfolioCount}}
+
+      {{#if getPortfolioCountOfDefaultAccount}}
         <table class="highlight centered responsive-table">
           <thead>
             <tr>
@@ -16,8 +16,8 @@
             </tr>
           </thead>
           <tbody>
-            {{#each portfolios}}
-              {{#if isOwner}}
+            {{#each getPortfolios}}
+              {{#if isDefaultAccountThisPortfolioManager managerAddress}}
                 <tr>
                   <td>
                     <a href="/portfolio/{{address}}" class="waves-effect waves-light btn blue lighten-2">{{name}}</a>
@@ -29,7 +29,7 @@
                   </td>
                   <td>
                     <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">
-                      {{dapp_formatBalance notional "0,0.0[00] unit" 'eur'}}
+                      {{dapp_formatBalance notional "0,0.0[00] UNIT" 'eur'}}
                     </a>
                   </td>
                   <td>{{intraday}}</td>
@@ -44,6 +44,7 @@
           </tbody>
         </table>
       {{/if}}
+
     </div>
   </div>
 </template>

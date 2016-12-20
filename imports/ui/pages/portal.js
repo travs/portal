@@ -4,8 +4,6 @@ import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { $ } from 'meteor/jquery';
-// Collections
-import { Portfolios } from '/imports/api/portfolios.js';
 // Components
 import '/imports/ui/components/welcome/welcome_list.js';
 import '/imports/ui/components/summary/network_summary.js';
@@ -18,14 +16,10 @@ import './portal.html';
 
 
 Template.portal.onCreated(() => {
-  Meteor.subscribe('portfolios');
 });
 
 
 Template.portal.helpers({
-  portfolioCount() {
-    return Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count();
-  },
 });
 
 

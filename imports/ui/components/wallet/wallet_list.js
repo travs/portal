@@ -130,7 +130,7 @@ Template.wallet_list.events({
   //   WalletInstance.clear();
   //   Meteor.call('wallets.remove', walletId);
   //   reactiveState.set({ walletId: '' });
-  //   Materialize.toast('Wallet deleted!', 4000, 'green') // 4000 is the duration of the toast
+  //   Materialize.toast('Wallet deleted!', 4000, 'green') 
   // },
   // 'click .lock'() {
   //   // Get Wallet document

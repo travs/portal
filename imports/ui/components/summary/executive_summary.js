@@ -12,9 +12,6 @@ Template.executive_summary.onCreated(() => {
 
 
 Template.executive_summary.helpers({
-  portfolioCount() {
-    return Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count();
-  },
   selectedPortfolioName() {
     const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
     return doc.name;

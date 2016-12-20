@@ -8,24 +8,6 @@ Template.network_summary.onCreated(() => {
 });
 
 Template.network_summary.helpers({
-  isMainNetwork() {
-    return Session.get('network') === 'Main';
-  },
-  isMordenNetwork() {
-    return Session.get('network') === 'Morden';
-  },
-  isRopstenNetwork() {
-    return Session.get('network') === 'Ropsten';
-  },
-  getNetwork() {
-    return Session.get('network');
-  },
-  isSynced() {
-    return Session.get('syncing') === false;
-  },
-  latestBlock() {
-    return Session.get('latestBlock');
-  },
 });
 
 

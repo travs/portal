@@ -40,7 +40,7 @@ Template.portfolio.onCreated(() => {
 
 
 Template.portfolio.helpers({
-  portfolioCount() {
+  getPortfolioCount() {
     return Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count();
   },
 });

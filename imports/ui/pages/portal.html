@@ -6,27 +6,24 @@
     <div class="container">
       <div class="row center">
         <div class="col s12 m7 offset-m1 l6 offset-l2">
+          <!-- Client is connected -->
           {{#if isClientConnected}}
+            <h4 class ="center-on-small-only grey-text text-lighten-5">Great you're connected!</h4>
             {{#if clientDefaultAccount}}
-            {{/if}}
-          {{else}}
-            <!-- <h1 class="header center-on-small-only grey-text text-lighten-4">Portal</h1> -->
-            <h4 class ="center-on-small-only light grey-text text-lighten-5">Start by installing <a class="white-text" href="https://metamask.io/" target="_blank"><b>MetaMask</b></a> or <a class="white-text" href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank"><b>Mist</b></a></h4>
-          {{/if}}
-
-
-          <div class="row center">
-            {{#if isClientConnected}}
-              {{#if clientDefaultAccount}}
-                <!-- <a href="/wallet" class="btn-large waves-effect waves-light blue-grey darken-1 modal-trigger">Get started</a> -->
+              {{#if isRopstenNetwork}}
+                <h5 class ="center-on-small-only light grey-text text-lighten-5">Explore the future of finance with Melon</h5>
+                <br/>
+                <a href="/portfolio" class="btn-large waves-effect waves-light blue-grey darken-1">Create a portfolio</a>
               {{else}}
+                <h5 class ="center-on-small-only light grey-text text-lighten-5">Now please switch to the <a class="blue-text text-lighten-2">Ethereum testnet</a> to use this application</h5>
               {{/if}}
             {{else}}
-                <!-- <a href="https://metamask.io/" class="btn-large waves-effect waves-light blue-grey darken-1">Get MetaMask Plugin</a> -->
+              <h4 class ="center-on-small-only light grey-text text-lighten-5">Now please select an <a class="blue-text text-lighten-2">Ethereum account</a> to use this application</h4>
             {{/if}}
-          </div>
+          {{else}}
+            <h4 class ="center-on-small-only light grey-text text-lighten-5">Start by installing <a class="white-text" href="https://metamask.io/" target="_blank"><b>MetaMask</b></a> or <a class="white-text" href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank"><b>Mist</b></a></h4>
+          {{/if}}
         </div>
-
         <!-- Client is connected -->
         {{#if isClientConnected}}
           <div class="col s12 m2">
