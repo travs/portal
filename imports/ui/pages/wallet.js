@@ -8,7 +8,7 @@ import '/imports/ui/components/wallet/wallet_list.js';
 import './wallet.html';
 
 
-Template.wallet.onCreated(() => { });
+Template.wallet.onCreated(() => {});
 
 
 Template.wallet.helpers({

@@ -1,9 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import { Materialize } from 'meteor/poetic:materialize-scss';
-import { FlowRouter } from 'meteor/kadira:flow-router';
-import { Session } from 'meteor/session';
-import { $ } from 'meteor/jquery';
 // Components
 import '/imports/ui/components/welcome/welcome_list.js';
 import '/imports/ui/components/summary/network_summary.js';

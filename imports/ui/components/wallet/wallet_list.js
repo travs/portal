@@ -23,38 +23,13 @@ Template.wallet_list.onCreated(function walletListOnCreated() {
 
 Template.wallet_list.helpers({
   wallets() {
-    console.log(Session.get('clientAccountList'))
     return Session.get('clientAccountList');
-    // return Wallets.find({ managerAddress: Session.get('clientDefaultAccount') }, { sort: { createdAt: -1 } }).fetch();
   },
-  // walletCount() {
-  //   return Wallets.find({ managerAddress: Session.get('clientDefaultAccount') }).count();
-  // },
-  isUnlocked(address) {
-    console.log(address)
-    return true;
-    // const doc = Wallets.findOne({ managerAddress: Session.get('clientDefaultAccount'), address });
-    // return doc.open;
+  fromWei(weiValue, type) {
+    return web3.fromWei(weiValue, type).toString(10);
   },
-  // getSeed(event) {
-  //   return Template.instance().state.get('seed');
-  // },
-  // totalBalance() {
-  //   let sum = 0.0;
-  //   const docs = Wallets.find({}, { sort: { createdAt: -1 } }).fetch();
-  //   let doc;
-  //   for (doc of docs) {
-  //     sum += parseInt(doc.balance, 10);
-  //   }
-  //
-  //   return EthTools.formatBalance(sum.toString(10), '0,0.0[00] UNIT');
-  // },
-  // fromWei(weiValue, type) {
-  //   return web3.fromWei(weiValue, type).toString(10);
-  // },
   displayBalance(balance) {
-    return 0;
-    // return EthTools.formatBalance(balance.toString(10), '0,0.0[00] UNIT');
+    return EthTools.formatBalance(balance.toString(10), '0,0.0[00] UNIT');
   },
 });
 
@@ -130,7 +105,7 @@ Template.wallet_list.events({
   //   WalletInstance.clear();
   //   Meteor.call('wallets.remove', walletId);
   //   reactiveState.set({ walletId: '' });
-  //   Materialize.toast('Wallet deleted!', 4000, 'green') 
+  //   Materialize.toast('Wallet deleted!', 4000, 'green')
   // },
   // 'click .lock'() {
   //   // Get Wallet document

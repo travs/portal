@@ -29,8 +29,7 @@
   <!-- Outer row -->
   <div class="container">
     <div class="row">
-      <!-- Portfolios exist for this user -->
-      {{#if getPortfolioCount}}
+      {{#if getPortfolioCountOfDefaultAccount}}
         <div class="col s12">
           {{> portfolio_list}}
         </div>

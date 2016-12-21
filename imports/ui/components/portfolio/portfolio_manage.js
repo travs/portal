@@ -1,15 +1,14 @@
-import './portfolio_manage.html';
-
 import { Meteor } from 'meteor/meteor';
+import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
-import { Template } from 'meteor/templating';
 import { BigNumber } from 'meteor/ethereum:web3';
-import WalletInstance from '/imports/lib/client/ethereum/wallet.js';
-
+// Collections
 import { Portfolios } from '/imports/api/portfolios.js';
-
+// Contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
+
+import './portfolio_manage.html';
 
 
 Template.portfolio_manage.onCreated(() => {
@@ -17,19 +16,12 @@ Template.portfolio_manage.onCreated(() => {
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ isInactive: true });
   Template.instance().state.set({ investingSelected: true });
-  //
-  // Core.setProvider(WalletInstance.setWeb3Provider(WalletInstance.keystore));
+  // Creation of contract object
+  Core.setProvider(web3.currentProvider);
 });
 
 
 Template.portfolio_manage.helpers({
-  isOwner() {
-    return this.managerAddress === Session.get('clientDefaultAccount');
-  },
-  selectedPortfolioName() {
-    const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
-    return doc.name;
-  },
   isInvestingSelected() {
     if (Template.instance().state.get('investingSelected')) {
       return 'invest';
@@ -65,13 +57,6 @@ Template.portfolio_manage.events({
     // Prevent default browser form submit
     event.preventDefault();
 
-    // Wallet needs to be unlocked
-    if (WalletInstance.currentAddress() === false) {
-      Materialize.toast('Unlock a Wallet first', 4000, 'orange');
-      FlowRouter.go('/wallet');
-      return;
-    }
-
     // Init Reactive Dict
     const reactiveState = Template.instance().state;
 
@@ -90,32 +75,21 @@ Template.portfolio_manage.events({
     // Init
     const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
     const coreInstance = Core.at(doc.address);
-    const fromAddr = WalletInstance.currentAddress();
-    const gasPrice = 100000000000;
-    const gas = 2500000;
+    const managerAddress = Session.get('clientDefaultAccount');
     const weiAmount = web3.toWei(amount, 'ether');
+
     // From sharePrice to amount of shares
     const weiShareAmount = web3.toWei(amount * sharePrice, 'ether');
 
     // Invest or Redeem
     const selectedOption = target.investOrRedeemSelect.value;
     if (selectedOption === '0') {
-      coreInstance.createShares(weiShareAmount, {from: fromAddr, value: weiAmount, gasPrice, gas }).then(function(tx_id) {
-        // If this callback is called, the transaction was successfully processed.
-        // Note that Ether Pudding takes care of watching the network and triggering
-        // this callback.
+      coreInstance.createShares(weiShareAmount, {from: managerAddress, value: weiAmount }).then((tx_id) => {
         Materialize.toast('Transaction sent ' + tx_id, 4000, 'green');
-      }).catch(function(e) {
-        // There was an error! Handle it.
       });
     } else if (selectedOption === '1') {
-      coreInstance.annihilateShares(weiShareAmount, weiAmount, {from: fromAddr, gasPrice, gas }).then(function(tx_id) {
-        // If this callback is called, the transaction was successfully processed.
-        // Note that Ether Pudding takes care of watching the network and triggering
-        // this callback.
+      coreInstance.annihilateShares(weiShareAmount, weiAmount, {from: managerAddress, gasPrice, gas }).then((tx_id) => {
         Materialize.toast('Transaction sent ' + tx_id, 4000, 'green');
-      }).catch(function(e) {
-        // There was an error! Handle it.
       });
     } else {
       console.log('Error invstingSelected value');

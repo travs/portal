@@ -20,9 +20,11 @@ Template.registerHelper('clientAccountList', () => Session.get('clientAccountLis
 Template.registerHelper('getAccountCount', () => Session.get('getAccountCount'));
 Template.registerHelper('clientDefaultAccount', () => Session.get('clientDefaultAccount'));
 // Portfolios
-Template.registerHelper('getPortfolioCountOfDefaultAccount', () => Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count());
-Template.registerHelper('getPortfolioCount', () => Portfolios.find().count());
 Template.registerHelper('getPortfolios', () => Portfolios.find({}, { sort: { createdAt: -1 } }));
+Template.registerHelper('getPortfolioCount', () => Portfolios.find().count());
+Template.registerHelper('getPortfolioCountOfDefaultAccount', () => Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count());
+Template.registerHelper('getPortfolioNameOfDefaultAccount', () => Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') }).name);
+Template.registerHelper('getPortfolioDeltaOfDefaultAccount', () => Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') }).delta);
 Template.registerHelper('isDefaultAccountThisPortfolioManager', managerAddress => managerAddress === Session.get('clientDefaultAccount'));
 // Contracts
 Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));

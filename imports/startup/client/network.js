@@ -148,7 +148,7 @@ function getTestnetEther() {
     const address = Session.get('clientDefaultAccount');
     Meteor.call('sendTestnetEther', address, (err) => {
       if(!err) {
-        Materialize.toast('We\'ve seen you\'re low on cash so we\'ve set you some. Wait a few seconds and let it rain!', 30000, 'green');
+        Materialize.toast('We\'ve seen you\'re low on cash so we\'ve sent you some. Wait a few seconds and let it rain!', 30000, 'green');
       } else {
         console.log(err);
       }
@@ -163,6 +163,6 @@ Meteor.startup(() => {
   checkIfSynching();
   checkIfServerIsConncected();
 
-  Meteor.setInterval(getTestnetEther, 90 * 1000);
+  Meteor.setInterval(getTestnetEther, 30 * 1000);
   Meteor.setInterval(checkNetwork, 2503);
 });

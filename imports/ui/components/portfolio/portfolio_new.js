@@ -4,8 +4,7 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'web3';
 // Collections
 import { Portfolios } from '/imports/api/portfolios.js';
-
-// Load Truffle artifact
+// Contracts
 import Version from '/imports/lib/assets/contracts/Version.sol.js';
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
 

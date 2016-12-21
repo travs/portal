@@ -21,7 +21,7 @@
       <!-- Portfolio Status -->
       <li> Portfolio:
         {{#if getPortfolioCountOfDefaultAccount}}
-          <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{selectedPortfolioName}}</a>
+          <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioNameOfDefaultAccount}}</a>
         {{else}}
           {{#if getAccountCount}}
             <a class="truncate blue-text text-lighten-2">Create portfolio</a>
@@ -34,7 +34,7 @@
       <!-- Overall Performance -->
       <li> Delta:
         {{#if getPortfolioCountOfDefaultAccount}}
-            <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{selectedPortfolioDelta}}</a>
+            <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioDeltaOfDefaultAccount}}</a>
         {{else}}
           <a class="truncate blue-text text-lighten-2">Create portfolio</a>
         {{/if}}

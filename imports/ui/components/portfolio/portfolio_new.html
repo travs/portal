@@ -1,5 +1,5 @@
 <template name="portfolio_new">
-  <div class="card grey lighten-5">
+  <div class="card">
     <div class="card-content">
       <div class="card-title">{{i18n 'dapp.components.create.header'}}</div>
       <p>{{i18n 'dapp.components.create.description'}}</p>
@@ -41,15 +41,22 @@
         <div class="row">
           <form class="col s12 new-portfolio">
             <div class="row">
-              <div class="input-field col s12">
-                <input id="manager_name" type="text" class="validate" aria-required="true">
-                <label for="manager_name">Manager Name</label>
+              <div class="input-field col s6">
+                <input id="manager_name" type="text" class="validate" minlength="3" required>
+                <label for="manager_name">Your Name (Visible to others)</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="portfolio_name" type="text" class="validate" minlength="3" required>
+                <label for="portfolio_name">Portfolio Name (Visible to others)</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
-                <input id="portfolio_name" type="text" class="validate" aria-required="true">
-                <label for="portfolio_name">Portfolio Name</label>
+                <select id="registrarSelect" required>
+                  <option value="" disabled selected>Specify the registar contract of your portfolio</option>
+                  <option value="1">Melon Registrar - <a href="http://testnet.etherscan.io/address/{{registrarContractAddress}}" target="_blank">explore</a></option>
+                </select>
+                <label>Registrar Module</label>
               </div>
             </div>
             <div class="row">
