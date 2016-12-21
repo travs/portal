@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+// Collections
+import { Portfolios } from '/imports/api/portfolios.js';
 // Components
 import '/imports/ui/components/welcome/welcome_list.js';
 import '/imports/ui/components/summary/network_summary.js';
@@ -12,6 +14,7 @@ import './portal.html';
 
 
 Template.portal.onCreated(() => {
+  Meteor.subscribe('portfolios');
 });
 
 
