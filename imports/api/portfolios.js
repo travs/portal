@@ -58,31 +58,6 @@ Meteor.methods({
 
     Portfolios.remove(portfolioId);
   },
-  'portfolios.setChecked'(portfolioId, setChecked) {
-    check(portfolioId, String);
-    check(setChecked, Boolean);
-
-    const portfolio = Portfolios.findOne(portfolioId);
-    if (portfolio.private && portfolio.owner !== Meteor.userId()) {
-      // If the portfolio is private, make sure only the owner can delete it
-      throw new Meteor.Error('not-authorized');
-    }
-
-    Portfolios.update(portfolioId, { $set: { checked: setChecked } });
-  },
-  'portfolios.setPrivate'(portfolioId, setToPrivate) {
-    check(portfolioId, String);
-    check(setToPrivate, Boolean);
-
-    const portfolio = Portfolios.findOne(portfolioId);
-
-    // Make sure only the portfolio owner can make a portfolio private
-    if (portfolio.owner !== Meteor.userId()) {
-      throw new Meteor.Error('not-authorized');
-    }
-
-    Portfolios.update(portfolioId, { $set: { private: setToPrivate } });
-  },
   'portfolios.setSharePrice'(portfolioId, setToSharePrice) {
     check(portfolioId, String);
     check(setToSharePrice, Number);

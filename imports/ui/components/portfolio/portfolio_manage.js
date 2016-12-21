@@ -62,8 +62,6 @@ Template.portfolio_manage.events({
 
     // Get value from form element
     const target = event.target;
-    console.log(target.investOrRedeemSelect.value);
-
     const amount = target.amount.value;
     const sharePrice = target.sharePrice.value;
     if (!amount || !sharePrice) {
@@ -74,7 +72,7 @@ Template.portfolio_manage.events({
 
     // Init
     const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
-    const coreInstance = Core.at(doc.address);
+    const coreContract = Core.at(doc.address);
     const managerAddress = Session.get('clientDefaultAccount');
     const weiAmount = web3.toWei(amount, 'ether');
 
@@ -84,12 +82,46 @@ Template.portfolio_manage.events({
     // Invest or Redeem
     const selectedOption = target.investOrRedeemSelect.value;
     if (selectedOption === '0') {
-      coreInstance.createShares(weiShareAmount, {from: managerAddress, value: weiAmount }).then((tx_id) => {
-        Materialize.toast('Transaction sent ' + tx_id, 4000, 'green');
+      coreContract.createShares(weiShareAmount, {from: managerAddress, value: weiAmount })
+      .then((result) => {
+        Materialize.toast('Transaction sent ' + result, 4000, 'green');
+        return coreContract.totalSupply();
+      })
+      .then((result) => {
+        // Update Portfolio collection
+        Meteor.call('portfolios.setNotional',
+          doc._id,
+          result.toNumber()
+        );
+        return coreContract.calcSharePrice();
+      })
+      .then((result) => {
+        // Update Portfolio collection
+        Meteor.call('portfolios.setSharePrice',
+          doc._id,
+          result.toNumber()
+        );
       });
     } else if (selectedOption === '1') {
-      coreInstance.annihilateShares(weiShareAmount, weiAmount, {from: managerAddress, gasPrice, gas }).then((tx_id) => {
-        Materialize.toast('Transaction sent ' + tx_id, 4000, 'green');
+      coreContract.annihilateShares(weiShareAmount, weiAmount, {from: managerAddress })
+      .then((result) => {
+        Materialize.toast('Transaction sent ' + result, 4000, 'green');
+        return coreContract.totalSupply();
+      })
+      .then((result) => {
+        // Update Portfolio collection
+        Meteor.call('portfolios.setNotional',
+          doc._id,
+          result.toNumber()
+        );
+        return coreContract.calcSharePrice();
+      })
+      .then((result) => {
+        // Update Portfolio collection
+        Meteor.call('portfolios.setSharePrice',
+          doc._id,
+          result.toNumber()
+        );
       });
     } else {
       console.log('Error invstingSelected value');
