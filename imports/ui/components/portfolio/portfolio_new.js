@@ -6,15 +6,21 @@ import { BigNumber } from 'web3';
 import { Portfolios } from '/imports/api/portfolios.js';
 
 // Load Truffle artifact
+import Version from '/imports/lib/assets/contracts/Version.sol.js';
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
 
 import './portfolio_new.html';
 
 
+const ADDRESS_PLACEHOLDER = '0x0';
+
 Template.portfolio_new.onCreated(() => {
   Meteor.subscribe('portfolios');
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ isInactive: true });
+  // Creation of contract object
+  Version.setProvider(web3.currentProvider);
+  Core.setProvider(web3.currentProvider);
 });
 
 
@@ -38,7 +44,7 @@ Template.portfolio_new.helpers({
     return Template.instance().state.get('isInactive');
   },
   source() {
-    return Core.abi;
+    return Version.abi;
   },
 });
 
@@ -48,65 +54,64 @@ Template.portfolio_new.onRendered(() => {
 
 
 Template.portfolio_new.events({
-  'submit .new-portfolio'(event, instance) {
+  'submit .new-portfolio'(event) {
     // Prevent default browser form submit
     event.preventDefault();
 
     // Init Reactive Dict
     const reactiveState = Template.instance().state;
+    reactiveState.set({ isInactive: false, isMining: true });
 
     // Get value from form element
     const target = event.target;
-    const manager_name = target.manager_name.value;
-    const portfolio_name = target.portfolio_name.value;
 
-    // Clear form
-    target.manager_name.value = '';
-    target.portfolio_name.value = '';
-
-    reactiveState.set({ isInactive: false, isMining: true });
-
-    // Creation of contract object
-    Core.setProvider(web3.currentProvider);
-    const manager_address = Session.get('clientDefaultAccount');
-    const gasPrice = 100000000000;
-    const gas = 2500000;
-
-    Core.new(
-      '0x0B2D33E8a261D2481E3860C8ea9B073a740D32c8',
-      '0x0',
-      '0x0',
-      0,
-      // TODO: fix address
-      { from: web3.eth.accounts[0], gasPrice, gas }
-    ).then((result, err) => {
-      if (err) {
-        reactiveState.set({ isMining: false, isError: true, error: String(err) });
-      }
-      if (result.address) {
-        reactiveState.set({ isMining: false, isMined: true, address: result.address });
-        // Insert a portfolio into the Collection
-        const sharePrice = 1.0;
-        const notional = 0;
-        const intraday = 1.0;
-        const mtd = 1.0;
-        const ytd = 1.0;
-        Meteor.call(
-          'portfolios.insert', result.address, manager_address,
-          portfolio_name, sharePrice, notional, intraday, mtd, ytd
-        );
-      }
-    });
-    reactiveState.set({ isMining: false, isMined: true, address: '0x0' });
-    // Insert a portfolio into the Collection
+    // Collection parameters
+    let portfolioAddress;
+    const portfolioName = target.portfolio_name.value;
+    const managerAddress = Session.get('clientDefaultAccount');
+    const managerName = target.manager_name.value;
     const sharePrice = 1.0;
     const notional = 0;
     const intraday = 1.0;
     const mtd = 1.0;
     const ytd = 1.0;
-    Meteor.call(
-      'portfolios.insert', '0x0', portfolio_name, manager_address, manager_name,
-      sharePrice, notional, intraday, mtd, ytd
-    );
+
+    // Init contract instance
+    const versionContract = Version.at(Session.get('versionContractAddress'));
+    versionContract.createPortfolio(
+      Session.get('registrarContractAddress'),
+      ADDRESS_PLACEHOLDER,
+      ADDRESS_PLACEHOLDER,
+      ADDRESS_PLACEHOLDER,
+      { from: managerAddress }
+    )
+    .then(() => versionContract.numPortfolios())
+    .then((result) => {
+      return versionContract.portfolios(result.toNumber() - 1);
+    })
+    .then((result) => {
+      portfolioAddress = result;
+      const coreContract = Core.at(portfolioAddress);
+      return coreContract.owner();
+    })
+    .then((result) => {
+      if (result !== managerAddress) {
+        reactiveState.set({ isMining: false, isError: true, error: String('Portfolio Owner != Manager Address') });
+      } else {
+        reactiveState.set({ isMining: false, isMined: true, address: portfolioAddress });
+        // Insert into Portfolio collection
+        Meteor.call('portfolios.insert',
+          portfolioAddress,
+          portfolioName,
+          managerAddress,
+          managerName,
+          sharePrice,
+          notional,
+          intraday,
+          mtd,
+          ytd
+        );
+      }
+    });
   },
 });
