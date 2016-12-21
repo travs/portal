@@ -7,6 +7,8 @@ import { BigNumber } from 'meteor/ethereum:web3';
 import { Portfolios } from '/imports/api/portfolios.js';
 // Contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
+const SolKeywords = require('/imports/lib/assets/lib/SolKeywords.js');
+
 
 import './portfolio_manage.html';
 
@@ -103,7 +105,15 @@ Template.portfolio_manage.events({
         );
       });
     } else if (selectedOption === '1') {
-      coreContract.annihilateShares(weiShareAmount, weiAmount, {from: managerAddress })
+      console.log(weiShareAmount)
+      const roundingError = 0.01;
+
+      coreContract.calcSharePrice()
+      .then((result) => {
+        console.log(`sharePrice: ${result.toString()}`)
+        console.log(weiShareAmount * result.toString() / SolKeywords.ether * (1.0 - roundingError))
+        return coreContract.annihilateShares(weiShareAmount, weiShareAmount * result.toString() / SolKeywords.ether * (1.0 - roundingError), {from: managerAddress });
+      })
       .then((result) => {
         Materialize.toast('Transaction sent ' + result, 4000, 'green');
         return coreContract.totalSupply();
