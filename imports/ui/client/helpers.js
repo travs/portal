@@ -36,3 +36,5 @@ Template.registerHelper('exchangeContractAddress', () => Session.get('exchangeCo
 Template.registerHelper('registrarContractAddress', () => Session.get('registrarContractAddress'));
 Template.registerHelper('versionContractAddress', () => Session.get('versionContractAddress'));
 Template.registerHelper('metaContractAddress', () => Session.get('metaContractAddress'));
+// UX
+Template.registerHelper('isNewPortfolio', () => Session.get('isNewPortfolio'));

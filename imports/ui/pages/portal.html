@@ -49,7 +49,7 @@
   </div>
 
   {{#if isServerConnected}}
-    <!-- Outer row -->
+    <!-- Server is connected -->
     <div class="container">
       <div class="row">
         <div class="col s12">
@@ -61,7 +61,11 @@
                 {{else}}
                   {{> portfolio_new}}
                 {{/if}}
+              {{else}}
+                {{> welcome_list}}
               {{/if}}
+            {{else}}
+              {{> welcome_list}}
             {{/if}}
           {{else}}
             {{> welcome_list}}

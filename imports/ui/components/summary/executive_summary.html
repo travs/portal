@@ -24,9 +24,10 @@
           <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioNameOfDefaultAccount}}</a>
         {{else}}
           {{#if getAccountCount}}
-            <a class="truncate blue-text text-lighten-2">Create portfolio</a>
+            <a href="/" class="truncate blue-text text-lighten-2 new badge">Create portfolio</a>
+
           {{else}}
-            <a class="truncate red-text text-lighten-2">N/A</a>
+            <a href="/" class="truncate red-text text-lighten-2">N/A</a>
           {{/if}}
         {{/if}}
       </li>
@@ -36,7 +37,7 @@
         {{#if getPortfolioCountOfDefaultAccount}}
             <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioDeltaOfDefaultAccount}}</a>
         {{else}}
-          <a class="truncate blue-text text-lighten-2">Create portfolio</a>
+          <a href="/" class="truncate blue-text text-lighten-2">Create portfolio</a>
         {{/if}}
       </li>
     </ul>
