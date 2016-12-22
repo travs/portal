@@ -6,9 +6,9 @@
       <!-- Wallet Balance -->
       <li> Wallet Balance:
         {{#if getAccountCount}}
-          {{#if clientDefaultAccount}}
+          {{#if clientMangerAccount}}
             <a href="/wallet" class="truncate green-text text-lighten-2">
-              {{dapp_formatBalance clientDefaultAccountBalance "0,0.0[00] UNIT" 'eur'}}
+              {{dapp_formatBalance clientMangerAccountBalance "0,0.0[00] UNIT" 'eur'}}
             </a>
           {{else}}
             <a class="truncate red-text text-lighten-2">No account selected</a>
@@ -20,8 +20,8 @@
 
       <!-- Portfolio Status -->
       <li> Portfolio:
-        {{#if getPortfolioCountOfDefaultAccount}}
-          <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioNameOfDefaultAccount}}</a>
+        {{#if hasManagerCreatedPortfolio}}
+          <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioOfManagerName}}</a>
         {{else}}
           {{#if getAccountCount}}
             <a href="/" class="truncate blue-text text-lighten-2 new badge">Create portfolio</a>
@@ -34,8 +34,8 @@
 
       <!-- Overall Performance -->
       <li> Delta:
-        {{#if getPortfolioCountOfDefaultAccount}}
-            <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioDeltaOfDefaultAccount}}</a>
+        {{#if hasManagerCreatedPortfolio}}
+            <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioOfManagerDelta}}</a>
         {{else}}
           <a href="/" class="truncate blue-text text-lighten-2">Create portfolio</a>
         {{/if}}

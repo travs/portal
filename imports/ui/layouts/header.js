@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { Materialize } from 'meteor/poetic:materialize-scss';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
 import { Portfolios } from '/imports/api/portfolios.js';
 
@@ -20,12 +21,14 @@ Template.layout_header.events({
     event.preventDefault();
 
     // Update Portfolio collection
-    if (Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count() !== 0) {
-      const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
+    const portfoliosCount = Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count()
+    if (portfoliosCount !== 0) {
+      const doc = Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') });
       if (doc.isNew === true) {
         Meteor.call('portfolios.setToUsed', doc._id);
-        Materialize.toast('Here is your very own portfolio. Well done! Now show us your managing skills!', 8000, 'green');
+        Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
       }
     }
+    FlowRouter.go('/portfolio');
   },
 });

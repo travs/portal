@@ -7,11 +7,11 @@
 
         <ul class="right hide-on-med-and-down">
           {{#if isClientConnected}}
-            {{#if clientDefaultAccount}}
+            {{#if clientMangerAccount}}
               {{#if isRopstenNetwork}}
-                <li><a href="/portfolio" class="portfolio">
-                  {{#unless getPortfolioCountOfDefaultAccount}}Portfolio <span class="new badge" data-badge-caption="create"></span>{{/unless}}
-                  {{#if getPortfolioIsNewOfDefaultAccount}}{{getPortfolioNameOfDefaultAccount}} <span class="new badge"></span>{{/if}}</a>
+                <li><a class="portfolio">
+                  {{#unless hasManagerCreatedPortfolio}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
+                  {{getPortfolioOfManagerName}} {{#if getPortfolioOfManagerIsNew}}<span class="new badge"></span>{{/if}}</a>
                 </li>
                 <li><a href="/wallet">Wallet</a></li>
               {{/if}}
@@ -26,10 +26,13 @@
           <li><a class="waves-effect waves-indigo white-text" href="/"></a></li>
           <li><a class="waves-effect waves-indigo white-text" href="http://chat.melonport.com" target="_blank">Chat</a></li>
           {{#if isClientConnected}}
-            {{#if clientDefaultAccount}}
+            {{#if clientMangerAccount}}
               {{#if isRopstenNetwork}}
-                {{#if getPortfolioCountOfDefaultAccount}}
-                  <li><a class="waves-effect waves-indigo white-text" href="/portfolio">Portfolio{{#if getPortfolioIsNewOfDefaultAccount}}<span class="new badge"></span>{{/if}}</a></li>
+                {{#if hasManagerCreatedPortfolio}}
+                  <li><a class="portfolio waves-effect waves-indigo white-text">
+                    {{#unless hasManagerCreatedPortfolio}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
+                    {{getPortfolioOfManagerName}} {{#if getPortfolioOfManagerIsNew}}<span class="new badge"></span>{{/if}}</a>
+                  </li>
                   <li><a href="">sass <span class="new badge">4</span></a></li>
                 {{/if}}
                 <li><a class="waves-effect waves-indigo white-text" href="/wallet">Wallet</a></li>

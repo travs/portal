@@ -1,6 +1,6 @@
 <template name="portfolio_list">
 
-  {{#if getPortfolioCountOfDefaultAccount}}
+  {{#if hasManagerCreatedPortfolio}}
     <table class="highlight centered responsive-table">
       <thead>
         <tr>
@@ -15,7 +15,7 @@
       </thead>
       <tbody>
         {{#each getPortfolios}}
-          {{#if isDefaultAccountThisPortfolioManager managerAddress}}
+          {{#if isManagerThisPortfolioManager managerAddress}}
             <tr>
               <td>
                 <a href="/portfolio/{{address}}" class="waves-effect waves-light btn blue lighten-2">{{name}}</a>

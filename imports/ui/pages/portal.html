@@ -8,9 +8,9 @@
         <div class="col s12 m8">
           <!-- Client is connected -->
           {{#if isClientConnected}}
-            {{#if clientDefaultAccount}}
+            {{#if clientMangerAccount}}
               {{#if isRopstenNetwork}}
-                {{#if getPortfolioCountOfDefaultAccount}}
+                {{#if hasManagerCreatedPortfolio}}
                   <h2 class="header center-on-small-only grey-text text-lighten-4">Portal</h2>
                   <h4 class ="center-on-small-only light grey-text text-lighten-5">Explore the future of finance with Melon</h4>
                 {{else}}
@@ -54,9 +54,9 @@
       <div class="row">
         <div class="col s12">
           {{#if isClientConnected}}
-            {{#if clientDefaultAccount}}
+            {{#if clientMangerAccount}}
               {{#if isRopstenNetwork}}
-                {{#if getPortfolioCountOfDefaultAccount}}
+                {{#if hasManagerCreatedPortfolio}}
                   {{> welcome_list}}
                 {{else}}
                   {{> portfolio_new}}

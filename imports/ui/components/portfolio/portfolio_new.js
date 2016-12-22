@@ -67,7 +67,7 @@ Template.portfolio_new.events({
     // Collection parameters
     let portfolioAddress;
     const portfolioName = target.portfolio_name.value;
-    const managerAddress = Session.get('clientDefaultAccount');
+    const managerAddress = Session.get('clientMangerAccount');
     const managerName = target.manager_name.value;
     const sharePrice = 1.0;
     const notional = 0;

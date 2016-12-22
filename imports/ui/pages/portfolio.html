@@ -6,9 +6,9 @@
         <div class="col s12 m8">
           <!-- Client is connected -->
           {{#if isClientConnected}}
-            {{#if clientDefaultAccount}}
+            {{#if clientMangerAccount}}
               {{#if isRopstenNetwork}}
-                {{#if getPortfolioCountOfDefaultAccount}}
+                {{#if hasManagerCreatedPortfolio}}
                   <h2 class="header center-on-small-only grey-text text-lighten-4">{{i18n 'dapp.portfolio.header'}}</h2>
                   <h4 class ="center-on-small-only light grey-text text-lighten-5">{{i18n 'dapp.portfolio.description'}}</h4>
                 {{else}}
@@ -49,7 +49,7 @@
   <!-- Outer row -->
   <div class="container">
     <div class="row">
-      {{#if getPortfolioCountOfDefaultAccount}}
+      {{#if hasManagerCreatedPortfolio}}
         <div class="col s12">
           {{> portfolio_list}}
         </div>

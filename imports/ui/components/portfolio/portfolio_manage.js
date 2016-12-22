@@ -73,9 +73,9 @@ Template.portfolio_manage.events({
     reactiveState.set({ isInactive: false, isMining: true });
 
     // Init
-    const doc = Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') });
+    const doc = Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') });
     const coreContract = Core.at(doc.address);
-    const managerAddress = Session.get('clientDefaultAccount');
+    const managerAddress = Session.get('clientMangerAccount');
     const weiAmount = web3.toWei(amount, 'ether');
 
     // From sharePrice to amount of shares

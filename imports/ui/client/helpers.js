@@ -14,19 +14,19 @@ Template.registerHelper('getNetwork', () => Session.get('network'));
 Template.registerHelper('isSynced', () => Session.get('syncing') === false);
 Template.registerHelper('latestBlock', () => Session.get('latestBlock'));
 // Account
-Template.registerHelper('clientDefaultAccount', () => Session.get('clientDefaultAccount'));
-Template.registerHelper('clientDefaultAccountBalance', () => Session.get('clientDefaultAccountBalance'));
+Template.registerHelper('clientMangerAccount', () => Session.get('clientMangerAccount'));
+Template.registerHelper('clientMangerAccountBalance', () => Session.get('clientMangerAccountBalance'));
 Template.registerHelper('clientAccountList', () => Session.get('clientAccountList'));
 Template.registerHelper('getAccountCount', () => Session.get('getAccountCount'));
-Template.registerHelper('clientDefaultAccount', () => Session.get('clientDefaultAccount'));
+Template.registerHelper('clientMangerAccount', () => Session.get('clientMangerAccount'));
 // Portfolios
 Template.registerHelper('getPortfolios', () => Portfolios.find({}, { sort: { createdAt: -1 } }));
 Template.registerHelper('getPortfolioCount', () => Portfolios.find().count());
-Template.registerHelper('getPortfolioCountOfDefaultAccount', () => Portfolios.find({ managerAddress: Session.get('clientDefaultAccount') }).count());
-Template.registerHelper('getPortfolioNameOfDefaultAccount', () => Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') }).name);
-Template.registerHelper('getPortfolioDeltaOfDefaultAccount', () => Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') }).delta);
-Template.registerHelper('getPortfolioIsNewOfDefaultAccount', () => Portfolios.findOne({ managerAddress: Session.get('clientDefaultAccount') }).isNew);
-Template.registerHelper('isDefaultAccountThisPortfolioManager', managerAddress => managerAddress === Session.get('clientDefaultAccount'));
+Template.registerHelper('hasManagerCreatedPortfolio', () => Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0);
+Template.registerHelper('getPortfolioOfManagerName', () => (Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') }).name : false));
+Template.registerHelper('getPortfolioOfManagerDelta', () => (Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') }).delta : false));
+Template.registerHelper('getPortfolioOfManagerIsNew', () => (Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') }).isNew : false));
+Template.registerHelper('isManagerThisPortfolioManager', portfolioManagerAccount => portfolioManagerAccount === Session.get('clientMangerAccount'));
 // Contracts
 Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));
 Template.registerHelper('bitcoinTokenContractAddress', () => Session.get('bitcoinTokenContractAddress'));

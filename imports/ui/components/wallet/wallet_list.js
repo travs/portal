@@ -43,7 +43,7 @@ Template.wallet_list.onRendered(function walletListOnRendered() {
 
 Template.wallet_list.events({
   'click .fund_wallet'() {
-    const address = Session.get('clientDefaultAccount');
+    const address = Session.get('clientMangerAccount');
     Meteor.call('sendTestnetEther', address, (err) => {
       if(!err) {
         Materialize.toast('We\'ve sent you some funds', 30000, 'green');
@@ -53,14 +53,14 @@ Template.wallet_list.events({
     });
 
     // Wallet listen
-    const balance = Session.get('clientDefaultAccountBalance');
+    const balance = Session.get('clientMangerAccountBalance');
     var filter = web3.eth.filter('latest').watch(() => {
       let currBalance;
       web3.eth.getBalance(address, (error, result) => {
         if(!error) {
           currBalance = result.toNumber();
         } else {
-          Session.set('clientDefaultAccountBalance', undefined);
+          Session.set('clientMangerAccountBalance', undefined);
         }
       });
       // Check if Balance has changed
@@ -83,9 +83,9 @@ Template.wallet_list.events({
     // Refresh all wallets
     web3.eth.getBalance(web3.eth.defaultAccount, (error, result) => {
       if (!error) {
-        Session.set('clientDefaultAccountBalance', result.toNumber());
+        Session.set('clientMangerAccountBalance', result.toNumber());
       } else {
-        Session.set('clientDefaultAccountBalance', undefined);
+        Session.set('clientMangerAccountBalance', undefined);
       }
     });
 
