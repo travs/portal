@@ -9,9 +9,10 @@
           {{#if isClientConnected}}
             {{#if clientDefaultAccount}}
               {{#if isRopstenNetwork}}
-                {{#if getPortfolioCountOfDefaultAccount}}
-                  <li><a href="/portfolio" class="portfolio">Portfolio{{#if isNewPortfolio}}<span class="new badge"></span>{{/if}}</a></li>
-                {{/if}}
+                <li><a href="/portfolio" class="portfolio">
+                  {{#unless getPortfolioCountOfDefaultAccount}}Portfolio <span class="new badge" data-badge-caption="create"></span>{{/unless}}
+                  {{#if getPortfolioIsNewOfDefaultAccount}}{{getPortfolioNameOfDefaultAccount}} <span class="new badge"></span>{{/if}}</a>
+                </li>
                 <li><a href="/wallet">Wallet</a></li>
               {{/if}}
             {{/if}}
@@ -28,7 +29,8 @@
             {{#if clientDefaultAccount}}
               {{#if isRopstenNetwork}}
                 {{#if getPortfolioCountOfDefaultAccount}}
-                  <li><a class="waves-effect waves-indigo white-text" href="/portfolio">Portfolio{{#if isNewPortfolio}}<span class="new badge"></span>{{/if}}</a></li>
+                  <li><a class="waves-effect waves-indigo white-text" href="/portfolio">Portfolio{{#if getPortfolioIsNewOfDefaultAccount}}<span class="new badge"></span>{{/if}}</a></li>
+                  <li><a href="">sass <span class="new badge">4</span></a></li>
                 {{/if}}
                 <li><a class="waves-effect waves-indigo white-text" href="/wallet">Wallet</a></li>
               {{/if}}

@@ -4,8 +4,28 @@
     <div class="container">
       <div class="row center">
         <div class="col s12 m8">
-          <h1 class="header center-on-small-only grey-text text-lighten-4">{{i18n 'dapp.portfolio.header'}}</h1>
-          <h4 class ="center-on-small-only light grey-text text-lighten-5">{{i18n 'dapp.portfolio.description'}}</h4>
+          <!-- Client is connected -->
+          {{#if isClientConnected}}
+            {{#if clientDefaultAccount}}
+              {{#if isRopstenNetwork}}
+                {{#if getPortfolioCountOfDefaultAccount}}
+                  <h2 class="header center-on-small-only grey-text text-lighten-4">{{i18n 'dapp.portfolio.header'}}</h2>
+                  <h4 class ="center-on-small-only light grey-text text-lighten-5">{{i18n 'dapp.portfolio.description'}}</h4>
+                {{else}}
+                  <h2 class="header center-on-small-only grey-text text-lighten-4">You are good to go!</h2>
+                  <h4 class ="center-on-small-only light grey-text text-lighten-5">Explore the future of finance with Melon</h4>
+                {{/if}}
+              {{else}}
+                <h2 class ="center-on-small-only light grey-text text-lighten-5">Great you're connected!</h2>
+                <h4 class ="center-on-small-only light grey-text text-lighten-5">Now switch to the <a class="blue-text text-lighten-2">Ethereum testnet</a> to use this application</h4>
+              {{/if}}
+            {{else}}
+              <h2 class ="center-on-small-only light grey-text text-lighten-5">Great you're connected!</h2>
+              <h4 class ="center-on-small-only light grey-text text-lighten-5">Now select an <a class="blue-text text-lighten-2">Ethereum account</a> to use this application</h4>
+            {{/if}}
+          {{else}}
+            <h4 class ="center-on-small-only light grey-text text-lighten-5">Start by installing <a class="white-text" href="https://metamask.io/" target="_blank"><b>MetaMask</b></a> or <a class="white-text" href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank"><b>Mist</b></a></h4>
+          {{/if}}
         </div>
         <!-- Client is connected -->
         {{#if isClientConnected}}

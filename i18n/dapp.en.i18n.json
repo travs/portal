@@ -75,15 +75,15 @@
     }
     , "wallet": {
       "header": "Wallet"
-      , "description": "Ethereum light wallets"
+      , "description": "Details of selected Ethereum wallet"
     }
     , "blotter": {
       "header": "Portfolio Blotter"
-      , "description": "Detailed information of selected portfolio"
+      , "description": "Details of selected Melon portfolio"
     }
     , "portfolio": {
       "header": "Portfolio"
-      , "description": "Overview of portfolio performances"
+      , "description": "Details of selected Melon portfolio"
     }
     , "exchange": {
       "header": "Exchange"

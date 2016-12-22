@@ -7,15 +7,13 @@ import Core from '/imports/lib/assets/contracts/Core.sol.js';
 import './portfolio_list.html';
 
 
-Template.portfolio_list.onCreated(function portfolioListOnCreated() {
-  Session.set('sharePrice', 1);
-  Session.set('sumInvested', 0);
-  Session.set('sumWithdrawn', 0);
-});
+Template.portfolio_list.onCreated(() => {});
 
 
-Template.portfolio_list.helpers({
-});
+Template.portfolio_list.helpers({});
+
+
+Template.portfolio_list.onRendered(() => {});
 
 
 Template.portfolio_list.events({

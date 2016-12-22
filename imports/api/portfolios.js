@@ -41,6 +41,7 @@ Meteor.methods({
       intraday,
       mtd,
       ytd,
+      isNew: true,
       delta: "±0.0",
       username: 'N/A',
       createdAt: new Date(),
@@ -69,5 +70,10 @@ Meteor.methods({
     check(setToNotional, Number);
 
     Portfolios.update(portfolioId, { $set: { notional: setToNotional } });
+  },
+  'portfolios.setToUsed'(portfolioId) {
+    check(portfolioId, String);
+
+    Portfolios.update(portfolioId, { $set: { isNew: false } });
   },
 });

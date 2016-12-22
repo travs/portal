@@ -110,7 +110,6 @@ Template.portfolio_new.events({
           mtd,
           ytd
         );
-        Session.set('isNewPortfolio', true);
       }
     });
   },

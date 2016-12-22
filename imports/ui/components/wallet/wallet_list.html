@@ -1,74 +1,46 @@
 <template name="wallet_list">
-  <div class="card">
-    <div class="card-content">
-      <!-- Wallets have been created -->
-      <table class="highlight centered responsive-table">
-        <thead>
+
+    <!-- Wallets have been created -->
+    <table class="highlight centered responsive-table">
+      <thead>
+        <tr>
+          <th>{{i18n 'dapp.app.headers.identicon'}}</th>
+          <th>Address</th>
+          <th>{{i18n 'dapp.app.headers.balance'}}</th>
+          <th>{{i18n 'dapp.app.headers.performance'}}</th>
+          <th>Fund</th>
+          <th>Refresh</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each wallets}}
           <tr>
-            <th>{{i18n 'dapp.app.headers.identicon'}}</th>
-            <th>Address</th>
-            <th>{{i18n 'dapp.app.headers.balance'}}</th>
-            <th>{{i18n 'dapp.app.headers.performance'}}</th>
-            <th>Fund</th>
+            <td>
+              <a href="http://testnet.etherscan.io/address/{{clientDefaultAccount}}" target="_blank">
+                {{> dapp_identicon identity=clientDefaultAccount class="dapp-small"}}
+              </a>
+            </td>
+            <td>
+              <a href="http://testnet.etherscan.io/address/{{clientDefaultAccount}}" target="_blank">
+                {{clientDefaultAccount}}
+              </a>
+            </td>
+            <td>
+              <a href="http://testnet.etherscan.io/address/{{clientDefaultAccount}}" target="_blank">
+                {{displayBalance clientDefaultAccountBalance}}
+              </a>
+            </td>
+            <td>N/A</td>
+            <!-- Fund -->
+            <td>
+              <a class="fund_wallet waves-effect waves-light btn green lighten-2"><i class="material-icons">thumb_up</i></a>
+            </td>
+            <td>
+              <a class="refresh-wallets waves-effect waves-light btn blue lighten-2"><i class="material-icons">replay</i></a>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {{#each wallets}}
-            <tr>
-              <td>
-                <a href="http://testnet.etherscan.io/address/{{clientDefaultAccount}}" target="_blank">
-                  {{> dapp_identicon identity=clientDefaultAccount class="dapp-small"}}
-                </a>
-              </td>
-              <td>
-                <a href="http://testnet.etherscan.io/address/{{clientDefaultAccount}}" target="_blank">
-                  {{clientDefaultAccount}}
-                </a>
-              </td>
-              <td>
-                <a href="http://testnet.etherscan.io/address/{{clientDefaultAccount}}" target="_blank">
-                  {{displayBalance clientDefaultAccountBalance}}
-                </a>
-              </td>
-              <td>N/A</td>
-              <!-- Fund -->
-              <td>
-                <a class="fund_wallet waves-effect waves-light btn green lighten-2"><i class="material-icons">thumb_up</i></a>
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
+        {{/each}}
+      </tbody>
+    </table>
 
-      <p>{{i18n 'dapp.components.balance.total'}}: <strong>{{totalBalance}}</strong></p>
-      <br/>
-      <div class="card-action">
-        <button type="button" class="btn btn-default refresh-wallets">{{i18n 'dapp.components.wallet.refresh'}}</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Export -->
-  <div id="modalExport" class="modal">
-    <div class="modal-content">
-      <h4>12-word seed</h4>
-      <p>From this seed you can generate addresses and private keys, and use the private keys to sign transactions.</p>
-      <p>Your secret seed is: <b>{{getSeed}}</b></p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="modal-action modal-close waves-effect waves-green btn-flat new-wallet">Ok</button>
-    </div>
-  </div>
-
-  <!-- Modal Delete -->
-  <div id="modalDelete" class="modal">
-    <div class="modal-content">
-      <h4>Permanently Delete my Wallet</h4>
-      <p>Are you sure you want to delete your wallet?</p>
-    </div>
-    <div class="modal-footer">
-      <a href="wallet/" class="modal-action modal-close waves-effect waves-green btn-flat">No</a>
-      <button type="button" class="deleteAgreed modal-action modal-close waves-effect waves-green btn-flat delete-wallet">Yes</button>
-    </div>
-  </div>
 </template>

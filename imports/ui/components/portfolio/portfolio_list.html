@@ -1,50 +1,46 @@
 <template name="portfolio_list">
-  <div class="card">
-    <div class="card-content">
 
-      {{#if getPortfolioCountOfDefaultAccount}}
-        <table class="highlight centered responsive-table">
-          <thead>
+  {{#if getPortfolioCountOfDefaultAccount}}
+    <table class="highlight centered responsive-table">
+      <thead>
+        <tr>
+          <th>{{i18n 'dapp.app.headers.name'}}</th>
+          <th>{{i18n 'dapp.app.headers.portfolioPx'}}</th>
+          <th>{{i18n 'dapp.app.headers.investment'}}</th>
+          <th>{{i18n 'dapp.app.headers.intraday'}}</th>
+          <th>{{i18n 'dapp.app.headers.intramonth'}}</th>
+          <th>{{i18n 'dapp.app.headers.intrayear'}}</th>
+          <th>{{i18n 'dapp.app.headers.delete'}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each getPortfolios}}
+          {{#if isDefaultAccountThisPortfolioManager managerAddress}}
             <tr>
-              <th>{{i18n 'dapp.app.headers.name'}}</th>
-              <th>{{i18n 'dapp.app.headers.portfolioPx'}}</th>
-              <th>{{i18n 'dapp.app.headers.investment'}}</th>
-              <th>{{i18n 'dapp.app.headers.intraday'}}</th>
-              <th>{{i18n 'dapp.app.headers.intramonth'}}</th>
-              <th>{{i18n 'dapp.app.headers.intrayear'}}</th>
-              <th>{{i18n 'dapp.app.headers.delete'}}</th>
+              <td>
+                <a href="/portfolio/{{address}}" class="waves-effect waves-light btn blue lighten-2">{{name}}</a>
+              </td>
+              <td>
+                <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">
+                  {{dapp_formatBalance sharePrice "0,0.0[00] unit" "finney"}}/share
+                </a>
+              </td>
+              <td>
+                <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">
+                  {{dapp_formatBalance notional "0,0.0[00] UNIT" 'eur'}}
+                </a>
+              </td>
+              <td>{{intraday}}</td>
+              <td>{{mtd}}</td>
+              <td>{{ytd}}</td>
+              <td>
+                <a class="delete waves-effect waves-light btn black lighten-2"><i class="material-icons">delete</i></a>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {{#each getPortfolios}}
-              {{#if isDefaultAccountThisPortfolioManager managerAddress}}
-                <tr>
-                  <td>
-                    <a href="/portfolio/{{address}}" class="waves-effect waves-light btn blue lighten-2">{{name}}</a>
-                  </td>
-                  <td>
-                    <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">
-                      {{dapp_formatBalance sharePrice "0,0.0[00] unit" "finney"}}/share
-                    </a>
-                  </td>
-                  <td>
-                    <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">
-                      {{dapp_formatBalance notional "0,0.0[00] UNIT" 'eur'}}
-                    </a>
-                  </td>
-                  <td>{{intraday}}</td>
-                  <td>{{mtd}}</td>
-                  <td>{{ytd}}</td>
-                  <td>
-                    <a class="delete waves-effect waves-light btn black lighten-2"><i class="material-icons">delete</i></a>
-                  </td>
-                </tr>
-              {{/if}}
-            {{/each}}
-          </tbody>
-        </table>
-      {{/if}}
+          {{/if}}
+        {{/each}}
+      </tbody>
+    </table>
+  {{/if}}
 
-    </div>
-  </div>
 </template>
