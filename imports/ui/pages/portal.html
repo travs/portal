@@ -1,7 +1,7 @@
 <template name="portal">
 
   <!-- Index-banner -->
-  {{> ux_index_banner header=(getPortfolioName) description=(i18n 'dapp.portal.description')}}
+  {{> ux_index_banner header=(i18n 'dapp.portal.header') description=(i18n 'dapp.portal.description')}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
