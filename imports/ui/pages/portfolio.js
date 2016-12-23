@@ -4,8 +4,6 @@ import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 // Components
-import '/imports/ui/components/summary/melon_summary.js';
-import '/imports/ui/components/summary/executive_summary.js';
 import '/imports/ui/components/portfolio/portfolio_new.js';
 import '/imports/ui/components/portfolio/portfolio_list.js';
 import '/imports/ui/components/portfolio/portfolio_manage.js';
@@ -13,13 +11,10 @@ import '/imports/ui/components/portfolio/portfolio_manage.js';
 import './portfolio.html';
 
 
-Template.portfolio.onCreated(() => {
-});
+Template.portfolio.onCreated(() => {});
 
 
-Template.portfolio.helpers({
-});
+Template.portfolio.helpers({});
 
 
-Template.portfolio.onRendered(() => {
-});
+Template.portfolio.onRendered(() => {});

@@ -1,4 +1,5 @@
 <template name="melon_summary">
+
   <div class="buysellads-header center-on-small-only">
     <ul>
       <li class="truncate text-light">Melon Summary</li>
@@ -28,11 +29,11 @@
           {{/if}}
         {{/if}}
       </li>
-
-      <!-- Current Block or Spinner -->
+      <!-- Spinner -->
       {{#if isMiningNetworkStatus}}
         <br/>
         {{> spinner}}
+      <!-- Current Block and Transactions -->
       {{else}}
         <li> Current Block
           {{#if isSynced}}
@@ -41,12 +42,12 @@
             <a class="truncate blue-text text-lighten-2">Syncing</a>
           {{/if}}
         </li>
+        <!-- Transactions -->
+        <li> Transactions
+          <a class="truncate green-text text-lighten-2">None</a>
+        </li>
       {{/if}}
-
-      <!-- Transactions -->
-      <li> Transactions
-        <a class="truncate green-text text-lighten-2">None</a>
-      </li>
     </ul>
   </div>
+
 </template>

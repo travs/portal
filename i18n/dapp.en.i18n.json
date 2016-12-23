@@ -51,12 +51,7 @@
         , "shareprice": "Share Price"
         , "performance": "Performance"
         , "account": "Account"
-        , "listening": "Listening"
-        , "peerCount": "Peer Count"
-        , "blockNumber": "Block Numbr"
-        , "defaultBlock": "Default Block"
         , "setup": "Set up"
-        , "gasPrice": "Gas Price"
         , "buying": "Buying"
         , "selling": "Selling"
         , "price": "Price"
@@ -65,13 +60,9 @@
       , "signin": "Sign in to view your personal overview."
       , "copyright": "Copyright © Melonport AG 2016. All Rights Reserved."
     }
-    , "welcome": {
-      "header": "melonport"
-      , "description": "A portal to decentralised asset management"
-    }
-    , "agreement": {
-      "header": "Disclaimer"
-      , "description": "Please agree to the following disclaimer before you continue."
+    , "portal": {
+      "header": "Portal"
+      , "description": "Explore the future of finance with Melon"
     }
     , "wallet": {
       "header": "Wallet"
@@ -93,16 +84,8 @@
       "header": "Explore"
       , "description": "Explore the melon protocol in its depths"
     }
-    , "create": {
-      "header": "New Portfolio"
-      , "description": "Customize and create a new portfolio"
-    }
     , "components": {
-      "balance": {
-        "header": "Balance"
-        , "total": "Total Balance"
-      }
-      , "portfolio": {
+      "portfolio": {
         "header": "Portfolio"
         , "description": "Click on one of your portfolios to place a trade, define a strategy and/or see the trade blotter."
         , "create": "Create"
@@ -115,17 +98,6 @@
         , "deploy": "Create New Portfolio"
         , "deployed": "The contract was deployed to this address"
         , "placeholder": "Number To Multiply"
-      }
-      , "wallet": {
-        "header": "Wallet"
-        , "description": "These are your Lightwallets."
-        , "wellDescriptionStart": "Start by creating your own wallet."
-        , "wellDescription": "Click on the lock symbol to unlock your wallet."
-        , "create": "Create"
-        , "import": "Import"
-        , "refresh": "Refresh"
-        , "manage": "Manage"
-        , "deployed": "The contract was deployed to this address"
       }
       , "listfunds": {
         "header": "Discoveries made"
