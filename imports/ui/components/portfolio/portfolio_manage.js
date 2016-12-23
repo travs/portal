@@ -4,7 +4,7 @@ import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
 // Collections
-import { Portfolios } from '/imports/api/portfolios.js';
+import { Portfolios } from '/imports/api/portfolios';
 // Contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
 const SolKeywords = require('/imports/lib/assets/lib/SolKeywords.js');

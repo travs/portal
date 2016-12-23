@@ -1,31 +1,24 @@
 <template name="portfolio_assets">
-  <div class="card">
-    <div class="card-content">
-      <span class="card-title">Asset list</span>
-      <!-- <p>List of assets w relevant information</p> -->
-
-      {{#if hasManagerCreatedPortfolio}}
-        <table class="highlight centered responsive-table">
-          <thead>
+  {{#if hasManagerCreatedPortfolio}}
+    <table class="highlight centered responsive-table">
+      <thead>
+        <tr>
+          <th>{{i18n 'dapp.app.headers.asset'}}</th>
+          <th>{{i18n 'dapp.app.headers.symbol'}}</th>
+          <th>{{i18n 'dapp.app.headers.precision'}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each getRegistrars}}
             <tr>
-              <th>{{i18n 'dapp.app.headers.name'}}</th>
+              <td>
+                <a href="/" class="waves-effect waves-light btn blue lighten-2">{{name}}</a>
+              </td>
+              <td>{{symbol}}</td>
+              <td>{{precision}}</td>
             </tr>
-          </thead>
-          <tbody>
-            {{#each assetList}}
-              {{#if isManagerThisPortfolioManager managerAddress}}
-                <tr>
-                  <td>
-                    <!-- <a href="/" class="waves-effect waves-light btn blue lighten-2">{{name}}</a> -->
-                    hello
-                  </td>
-                </tr>
-              {{/if}}
-            {{/each}}
-          </tbody>
-        </table>
-      {{/if}}
-
-    </div>
-  </div>
+        {{/each}}
+      </tbody>
+    </table>
+  {{/if}}
 </template>

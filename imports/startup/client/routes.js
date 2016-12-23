@@ -23,23 +23,23 @@ FlowRouter.route('/', {
   },
 });
 
-FlowRouter.route('/portfolio', {
-  name: 'portfolio',
-  action() {
-    BlazeLayout.render('layout_main', {
-      nav: 'layout_header',
-      main: 'portfolio',
-      footer: 'layout_footer',
-    });
-  },
-});
+// FlowRouter.route('/portfolio', {
+//   name: 'portfolio',
+//   action() {
+//     BlazeLayout.render('layout_main', {
+//       nav: 'layout_header',
+//       main: 'portfolio',
+//       footer: 'layout_footer',
+//     });
+//   },
+// });
 
 FlowRouter.route('/portfolio/:address', {
   name: 'blotter',
   action() {
     BlazeLayout.render('layout_main', {
       nav: 'layout_header',
-      main: 'blotter',
+      main: 'portfolio',
       footer: 'layout_footer',
     });
   },

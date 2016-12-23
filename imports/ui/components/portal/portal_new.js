@@ -2,7 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 // Collections
-import { Portfolios } from '/imports/api/portfolios.js';
+import { Portfolios } from '/imports/api/portfolios';
+import { Registrars } from '/imports/api/modules';
 // Contracts
 import Version from '/imports/lib/assets/contracts/Version.sol.js';
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
@@ -14,6 +15,7 @@ const ADDRESS_PLACEHOLDER = '0x0';
 
 Template.portal_new.onCreated(() => {
   Meteor.subscribe('portfolios');
+  Meteor.subscribe('registrars');
   // Creation of contract object
   Version.setProvider(web3.currentProvider);
   Core.setProvider(web3.currentProvider);
@@ -88,5 +90,7 @@ Template.portal_new.events({
         );
       }
     });
+
+    Meteor.call('registrars.insert', Session.get('registrarContractAddress'));
   },
 });

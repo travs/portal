@@ -1,8 +1,8 @@
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 // Collections
-import { Portfolios } from '/imports/api/portfolios.js';
-
+import { Portfolios } from '/imports/api/portfolios';
+import { Registrars } from '/imports/api/modules';
 
 // Server network
 Template.registerHelper('isServerConnected', () => Session.get('isServerConnected'));
@@ -23,10 +23,14 @@ Template.registerHelper('clientMangerAccount', () => Session.get('clientMangerAc
 Template.registerHelper('getPortfolios', () => Portfolios.find({}, { sort: { createdAt: -1 } }));
 Template.registerHelper('getPortfolioCount', () => Portfolios.find().count());
 Template.registerHelper('hasManagerCreatedPortfolio', () => Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0);
+Template.registerHelper('getPortfolioOfManagerAddress', () => (Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') }).address : false));
 Template.registerHelper('getPortfolioOfManagerName', () => (Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') }).name : false));
 Template.registerHelper('getPortfolioOfManagerDelta', () => (Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') }).delta : false));
 Template.registerHelper('getPortfolioOfManagerIsNew', () => (Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') }).isNew : false));
 Template.registerHelper('isManagerThisPortfolioManager', portfolioManagerAccount => portfolioManagerAccount === Session.get('clientMangerAccount'));
+// Modules
+Template.registerHelper('getRegistrars', () => Registrars.find({}, { sort: { index: 1 } }));
+
 // Contracts
 Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));
 Template.registerHelper('bitcoinTokenContractAddress', () => Session.get('bitcoinTokenContractAddress'));

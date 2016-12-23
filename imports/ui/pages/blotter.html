@@ -1,7 +1,7 @@
 <template name="blotter">
 
   <!-- Index-banner -->
-  {{> ux_index_banner header=(getPortfolioOfManagerName) description=(i18n 'dapp.blotter.description')}}
+  {{> ux_index_banner header=(getPortfolioName) description=(i18n 'dapp.blotter.description')}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}

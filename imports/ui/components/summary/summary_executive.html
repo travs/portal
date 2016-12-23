@@ -21,7 +21,7 @@
       <!-- Portfolio Status -->
       <li> Portfolio
         {{#if hasManagerCreatedPortfolio}}
-          <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioOfManagerName}}</a>
+          <a href="/portfolio/{{getPortfolioOfManagerAddress}}" class="truncate green-text text-lighten-2">{{getPortfolioOfManagerName}}</a>
         {{else}}
           {{#if getAccountCount}}
             <a href="/" class="truncate blue-text text-lighten-2 new badge">Create portfolio</a>
@@ -35,7 +35,7 @@
       <!-- Overall Performance -->
       <li> Delta
         {{#if hasManagerCreatedPortfolio}}
-            <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioOfManagerDelta}}</a>
+            <a href="/portfolio/{{getPortfolioOfManagerAddress}}" class="truncate green-text text-lighten-2">{{getPortfolioOfManagerDelta}}</a>
         {{else}}
           <a href="/" class="truncate blue-text text-lighten-2">Create portfolio</a>
         {{/if}}

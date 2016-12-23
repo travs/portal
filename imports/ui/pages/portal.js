@@ -1,5 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+// Collections
+import { Portfolios } from '/imports/api/portfolios';
 // Components
 import '/imports/ui/components/portal/portal_list.js';
 import '/imports/ui/components/portal/portal_new.js';
