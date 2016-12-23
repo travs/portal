@@ -4,7 +4,7 @@
     <ul>
       <li class="truncate text-light">Executive Summary</li>
       <!-- Wallet Balance -->
-      <li> Wallet Balance:
+      <li> Wallet Balance
         {{#if getAccountCount}}
           {{#if clientMangerAccount}}
             <a href="/wallet" class="truncate green-text text-lighten-2">
@@ -19,7 +19,7 @@
       </li>
 
       <!-- Portfolio Status -->
-      <li> Portfolio:
+      <li> Portfolio
         {{#if hasManagerCreatedPortfolio}}
           <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioOfManagerName}}</a>
         {{else}}
@@ -33,7 +33,7 @@
       </li>
 
       <!-- Overall Performance -->
-      <li> Delta:
+      <li> Delta
         {{#if hasManagerCreatedPortfolio}}
             <a href="/portfolio/{{selectedPortfolioId}}" class="truncate green-text text-lighten-2">{{getPortfolioOfManagerDelta}}</a>
         {{else}}

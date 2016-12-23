@@ -38,3 +38,7 @@ Template.registerHelper('registrarContractAddress', () => Session.get('registrar
 Template.registerHelper('versionContractAddress', () => Session.get('versionContractAddress'));
 Template.registerHelper('metaContractAddress', () => Session.get('metaContractAddress'));
 // UX
+Template.registerHelper('isInactiveNetworkStatus', () => Session.get('NetworkStatus').isInactive);
+Template.registerHelper('isMiningNetworkStatus', () => Session.get('NetworkStatus').isMining);
+Template.registerHelper('isErrorNetworkStatus', () => Session.get('NetworkStatus').isError);
+Template.registerHelper('isMinedNetworkStatus', () => Session.get('NetworkStatus').isMined);

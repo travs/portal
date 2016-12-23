@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import { ReactiveDict } from 'meteor/reactive-dict';
-import { BigNumber } from 'web3';
+import { Session } from 'meteor/session';
 // Collections
 import { Portfolios } from '/imports/api/portfolios.js';
 // Contracts
@@ -15,37 +14,14 @@ const ADDRESS_PLACEHOLDER = '0x0';
 
 Template.portfolio_new.onCreated(() => {
   Meteor.subscribe('portfolios');
-  Template.instance().state = new ReactiveDict();
-  Template.instance().state.set({ isInactive: true });
   // Creation of contract object
   Version.setProvider(web3.currentProvider);
   Core.setProvider(web3.currentProvider);
 });
 
 
-Template.portfolio_new.helpers({
-  isError() {
-    return Template.instance().state.get('isError');
-  },
-  isMining() {
-    return Template.instance().state.get('isMining');
-  },
-  isMined() {
-    return Template.instance().state.get('isMined');
-  },
-  address() {
-    return Template.instance().state.get('address');
-  },
-  isCreated() {
-    return Template.instance().state.get('isCreated');
-  },
-  isInactive() {
-    return Template.instance().state.get('isInactive');
-  },
-  source() {
-    return Version.abi;
-  },
-});
+Template.portfolio_new.helpers({});
+
 
 Template.portfolio_new.onRendered(() => {
   this.$('select').material_select();
@@ -56,10 +32,6 @@ Template.portfolio_new.events({
   'submit .new-portfolio'(event) {
     // Prevent default browser form submit
     event.preventDefault();
-
-    // Init Reactive Dict
-    const reactiveState = Template.instance().state;
-    reactiveState.set({ isInactive: false, isMining: true });
 
     // Get value from form element
     const target = event.target;
@@ -74,6 +46,9 @@ Template.portfolio_new.events({
     const intraday = 1.0;
     const mtd = 1.0;
     const ytd = 1.0;
+
+    // Is mining
+    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
     // Init contract instance
     const versionContract = Version.at(Session.get('versionContractAddress'));
@@ -95,9 +70,10 @@ Template.portfolio_new.events({
     })
     .then((result) => {
       if (result !== managerAddress) {
-        reactiveState.set({ isMining: false, isError: true, error: String('Portfolio Owner != Manager Address') });
+        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
+        console.log('Portfolio Owner != Manager Address');
       } else {
-        reactiveState.set({ isMining: false, isMined: true, address: portfolioAddress });
+        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         // Insert into Portfolio collection
         Meteor.call('portfolios.insert',
           portfolioAddress,

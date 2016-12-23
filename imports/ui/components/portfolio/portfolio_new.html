@@ -1,103 +1,73 @@
 <template name="portfolio_new">
-  <div class="card">
-    <div class="card-content">
-      <div class="card-title">{{i18n 'dapp.components.create.header'}}</div>
-      <p>{{i18n 'dapp.components.create.description'}}</p>
-      <br/>
 
-      {{#if isError}}
-        <div class="alert alert-warning">
-          There was an error deploying your contract.
-          The error was: "{{error}}".
-        </div>
-      {{/if}}
-
-      {{#if isMining}}
-        <div class="alert alert-info">
-          Your portfolio is being set up...
-          <div class="progress">
-            <div class="indeterminate"></div>
+  {{#if isInactiveNetworkStatus}}
+    <div class="card">
+      <div class="card-content">
+        <div class="card-title">{{i18n 'dapp.components.create.header'}}</div>
+        <p>{{i18n 'dapp.components.create.description'}}</p>
+        <br/>
+          <div class="row">
+            <form class="col s12 new-portfolio">
+              <div class="row">
+                <div class="input-field col s6">
+                  <input id="manager_name" type="text" class="validate" minlength="3" required>
+                  <label for="manager_name">Your Name (Visible to others)</label>
+                </div>
+                <div class="input-field col s6">
+                  <input id="portfolio_name" type="text" class="validate" minlength="3" required>
+                  <label for="portfolio_name">Portfolio Name (Visible to others)</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <select id="registrarSelect" required>
+                    <option value="" disabled selected>Specify the registar contract of your portfolio</option>
+                    <option value="1">Melon Registrar - <a href="http://testnet.etherscan.io/address/{{registrarContractAddress}}" target="_blank">explore</a></option>
+                  </select>
+                  <label>Registrar Module</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <select id="assetSelect" multiple>
+                    <option value="" disabled selected>Trading of your portfolio is restricted to the following assets.</option>
+                    <option value="1">Ether Token (ETT) - <a href="http://testnet.etherscan.io/address/{{etherTokenContractAddress}}" target="_blank">explore</a></option>
+                    <option value="2">Bitcoin Token (BTT) - <a href="http://testnet.etherscan.io/address/{{bitcoinTokenContractAddress}}" target="_blank">explore</a></option>
+                    <option value="3">Dollar Token (DUSD) - <a href="http://testnet.etherscan.io/address/{{dollarTokenContractAddress}}" target="_blank">explore</a></option>
+                    <option value="4">Euro Token (DEUR) - <a href="http://testnet.etherscan.io/address/{{euroTokenContractAddress}}" target="_blank">explore</a></option>
+                    <option value="5" disabled>Augur (REP) - soon</option>
+                    <option value="6" disabled>DigixDAO (DGD) - soon</option>
+                    <option value="7" disabled>Digix Gold (DGX) - soon</option>
+                    <option value="8" disabled>Maker (MKR) - soon</option>
+                    <option value="9" disabled>Maker (Dai) - soon</option>
+                  </select>
+                  <label>Asset Class Module</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <select id="exchangeSelect">
+                    <option value="" disabled selected>Exchange used to trade assets of your portfolio.</option>
+                    <option value="1">Melon Exchange</option>
+                  </select>
+                  <label>Exchange Module</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <select id="pricefeedSelect">
+                    <option value="" disabled selected>Price Feed used to evaluate your portfolio performance.</option>
+                    <option value="1">Melon Price Feed</option>
+                  </select>
+                  <label>Price Feed Module</label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-default">{{i18n 'dapp.components.create.deploy'}}</button>
+            </form>
           </div>
-        </div>
-      {{/if}}
-
-      {{#if isMined}}
-        <div class="alert alert-success">
-          Your melon portfolio has been set up!
-        </div>
-        <hr />
-
-        <label>
-          Your portfolio has been deployed to this address:
-        </label>
-        <input type="text" class="form-control" value="{{address}}" placeholder="Address" />
-
-        <br />
-        <pre class="well well-info">{{source}}</pre>
-        <hr />
-      {{/if}}
-
-      {{#if isInactive}}
-        <div class="row">
-          <form class="col s12 new-portfolio">
-            <div class="row">
-              <div class="input-field col s6">
-                <input id="manager_name" type="text" class="validate" minlength="3" required>
-                <label for="manager_name">Your Name (Visible to others)</label>
-              </div>
-              <div class="input-field col s6">
-                <input id="portfolio_name" type="text" class="validate" minlength="3" required>
-                <label for="portfolio_name">Portfolio Name (Visible to others)</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s12">
-                <select id="registrarSelect" required>
-                  <option value="" disabled selected>Specify the registar contract of your portfolio</option>
-                  <option value="1">Melon Registrar - <a href="http://testnet.etherscan.io/address/{{registrarContractAddress}}" target="_blank">explore</a></option>
-                </select>
-                <label>Registrar Module</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s12">
-                <select id="assetSelect" multiple>
-                  <option value="" disabled selected>Trading of your portfolio is restricted to the following assets.</option>
-                  <option value="1">Ether Token (ETT) - <a href="http://testnet.etherscan.io/address/{{etherTokenContractAddress}}" target="_blank">explore</a></option>
-                  <option value="2">Bitcoin Token (BTT) - <a href="http://testnet.etherscan.io/address/{{bitcoinTokenContractAddress}}" target="_blank">explore</a></option>
-                  <option value="3">Dollar Token (DUSD) - <a href="http://testnet.etherscan.io/address/{{dollarTokenContractAddress}}" target="_blank">explore</a></option>
-                  <option value="4">Euro Token (DEUR) - <a href="http://testnet.etherscan.io/address/{{euroTokenContractAddress}}" target="_blank">explore</a></option>
-                  <option value="5" disabled>Augur (REP) - soon</option>
-                  <option value="6" disabled>DigixDAO (DGD) - soon</option>
-                  <option value="7" disabled>Digix Gold (DGX) - soon</option>
-                  <option value="8" disabled>Maker (MKR) - soon</option>
-                  <option value="9" disabled>Maker (Dai) - soon</option>
-                </select>
-                <label>Asset Class Module</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s12">
-                <select id="exchangeSelect">
-                  <option value="" disabled selected>Exchange used to trade assets of your portfolio.</option>
-                  <option value="1">Melon Exchange</option>
-                </select>
-                <label>Exchange Module</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s12">
-                <select id="pricefeedSelect">
-                  <option value="" disabled selected>Price Feed used to evaluate your portfolio performance.</option>
-                  <option value="1">Melon Price Feed</option>
-                </select>
-                <label>Price Feed Module</label>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-default">{{i18n 'dapp.components.create.deploy'}}</button>
-          </form>
-        </div>
-      {{/if}}
+      </div>
     </div>
-  </div>
+  {{else}}
+
+  {{/if}}
 </template>

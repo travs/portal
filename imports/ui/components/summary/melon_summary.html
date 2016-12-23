@@ -1,0 +1,52 @@
+<template name="melon_summary">
+  <div class="buysellads-header center-on-small-only">
+    <ul>
+      <li class="truncate text-light">Melon Summary</li>
+      <!-- Status -->
+      <li> Status
+        {{#if isErrorNetworkStatus}}
+          <a class="truncate red-text text-lighten-2">TX Error</a>
+        {{/if}}
+
+        {{#if isMiningNetworkStatus}}
+          <a class="truncate blue-text text-lighten-2">Sending</a>
+        {{/if}}
+
+        {{#if isMinedNetworkStatus}}
+          <a class="truncate green-text text-lighten-2">Sent</a>
+        {{/if}}
+
+        {{#if isInactiveNetworkStatus}}
+          {{#if isMainNetwork}}
+            <a class="truncate blue-text text-lighten-2">{{getNetwork}} != Ropsten</a>
+          {{/if}}
+          {{#if isMordenNetwork}}
+            <a class="truncate blue-text text-lighten-2">{{getNetwork}} != Ropsten</a>
+          {{/if}}
+          {{#if isRopstenNetwork}}
+            <a class="truncate green-text text-lighten-2">Connected</a>
+          {{/if}}
+        {{/if}}
+      </li>
+
+      <!-- Current Block or Spinner -->
+      {{#if isMiningNetworkStatus}}
+        <br/>
+        {{> spinner}}
+      {{else}}
+        <li> Current Block
+          {{#if isSynced}}
+            <a class="truncate green-text text-lighten-2">{{latestBlock}}</a>
+          {{else}}
+            <a class="truncate blue-text text-lighten-2">Syncing</a>
+          {{/if}}
+        </li>
+      {{/if}}
+
+      <!-- Transactions -->
+      <li> Transactions
+        <a class="truncate green-text text-lighten-2">None</a>
+      </li>
+    </ul>
+  </div>
+</template>
