@@ -1,4 +1,4 @@
-<template name="index_banner">
+<template name="ux_index_banner">
 
   <div class="section blue-grey darken-2 white-text" id="index-banner">
     <div class="container">
@@ -30,10 +30,10 @@
         <!-- Client is connected -->
         {{#if isClientConnected}}
           <div class="col s12 m2">
-            {{> melon_summary}}
+            {{> summary_melon}}
           </div>
           <div class="col s12 m2">
-            {{> executive_summary}}
+            {{> summary_executive}}
           </div>
         {{else}}
           <div class="col s12 m4">

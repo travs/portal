@@ -1,17 +1,22 @@
 <template name="wallet">
 
   <!-- Index-banner -->
-  {{> index_banner header=(i18n 'dapp.wallet.header') description=(i18n 'dapp.wallet.description')}}
+  {{> ux_index_banner header=(i18n 'dapp.wallet.header') description=(i18n 'dapp.wallet.description')}}
 
-  <!-- Outer row -->
-  <div class="container">
-    <div class="row">
-      <!-- Wallets exist for this user -->
-      {{#if getAccountCount}}
-        <div class="col s12">
-          {{> wallet_list}}
-        </div>
-      {{/if}}
+  <!-- Server is connected -->
+  {{#if isServerConnected}}
+    <div class="container">
+      <div class="row">
+        <!-- Wallets exist for this user -->
+        {{#if getAccountCount}}
+          <div class="col s12">
+            {{> wallet_list}}
+          </div>
+        {{/if}}
+      </div>
     </div>
-  </div>
+  {{else}}
+    {{> ux_server_connection}}
+  {{/if}}
+
 </template>

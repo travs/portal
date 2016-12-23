@@ -1,24 +1,29 @@
 <template name="portfolio">
-  <!-- Index-banner -->
-  {{> index_banner header=(i18n 'dapp.portfolio.header') description=(i18n 'dapp.portfolio.description')}}
 
-  <!-- Outer row -->
-  <div class="container">
-    <div class="row">
-      {{#if isClientConnected}}
-        {{#if clientMangerAccount}}
-          {{#if isRopstenNetwork}}
-            {{#if hasManagerCreatedPortfolio}}
-              <div class="col s12">
-                {{> portfolio_list}}
-              </div>
-              <div class="col s12">
-                {{> portfolio_manage}}
-              </div>
+  <!-- Index-banner -->
+  {{> ux_index_banner header=(i18n 'dapp.portfolio.header') description=(i18n 'dapp.portfolio.description')}}
+
+  <!-- Server is connected -->
+  {{#if isServerConnected}}
+    <div class="container">
+      <div class="row">
+        {{#if isClientConnected}}
+          {{#if clientMangerAccount}}
+            {{#if isRopstenNetwork}}
+              {{#if hasManagerCreatedPortfolio}}
+                <div class="col s12">
+                  {{> portfolio_list}}
+                </div>
+                <div class="col s12">
+                  {{> portfolio_manage}}
+                </div>
+              {{else}}
+                <div class="col s12">
+                  {{> portfolio_new}}
+                </div>
+              {{/if}}
             {{else}}
-              <div class="col s12">
-                {{> portfolio_new}}
-              </div>
+              {{> welcome_list}}
             {{/if}}
           {{else}}
             {{> welcome_list}}
@@ -26,9 +31,10 @@
         {{else}}
           {{> welcome_list}}
         {{/if}}
-      {{else}}
-        {{> welcome_list}}
-      {{/if}}
+      </div>
     </div>
-  </div>
+  {{else}}
+    {{> ux_server_connection}}
+  {{/if}}
+
 </template>
