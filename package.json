@@ -2,6 +2,7 @@
   "name": "portal",
   "private": true,
   "dependencies": {
+    "async": "^2.1.4",
     "highcharts": "^5.0.2",
     "meteor-node-stubs": "~0.2.0",
     "web3": "^0.17.0-beta"

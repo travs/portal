@@ -7,12 +7,12 @@ import { Portfolios } from '/imports/api/portfolios.js';
 import Version from '/imports/lib/assets/contracts/Version.sol.js';
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
 
-import './portfolio_new.html';
+import './portal_new.html';
 
 
 const ADDRESS_PLACEHOLDER = '0x0';
 
-Template.portfolio_new.onCreated(() => {
+Template.portal_new.onCreated(() => {
   Meteor.subscribe('portfolios');
   // Creation of contract object
   Version.setProvider(web3.currentProvider);
@@ -20,15 +20,15 @@ Template.portfolio_new.onCreated(() => {
 });
 
 
-Template.portfolio_new.helpers({});
+Template.portal_new.helpers({});
 
 
-Template.portfolio_new.onRendered(() => {
+Template.portal_new.onRendered(() => {
   this.$('select').material_select();
 });
 
 
-Template.portfolio_new.events({
+Template.portal_new.events({
   'submit .new-portfolio'(event) {
     // Prevent default browser form submit
     event.preventDefault();

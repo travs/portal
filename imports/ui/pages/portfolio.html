@@ -7,30 +7,15 @@
   {{#if isServerConnected}}
     <div class="container">
       <div class="row">
-        {{#if isClientConnected}}
-          {{#if clientMangerAccount}}
-            {{#if isRopstenNetwork}}
-              {{#if hasManagerCreatedPortfolio}}
-                <div class="col s12">
-                  {{> portfolio_list}}
-                </div>
-                <div class="col s12">
-                  {{> portfolio_manage}}
-                </div>
-              {{else}}
-                <div class="col s12">
-                  {{> portfolio_new}}
-                </div>
-              {{/if}}
-            {{else}}
-              {{> welcome_list}}
-            {{/if}}
-          {{else}}
-            {{> welcome_list}}
-          {{/if}}
-        {{else}}
-          {{> welcome_list}}
-        {{/if}}
+        <div class="col s12">
+          {{> portfolio_list}}
+        </div>
+        <div class="col s12">
+          {{> portfolio_assets}}
+        </div>
+        <div class="col s12">
+          {{> portfolio_manage}}
+        </div>
       </div>
     </div>
   {{else}}

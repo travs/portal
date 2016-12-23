@@ -8,7 +8,27 @@
     <div class="container">
       <div class="row">
         <div class="col s12">
-          {{> welcome_list}}
+          {{#if isClientConnected}}
+            {{#if clientMangerAccount}}
+              {{#if isRopstenNetwork}}
+                {{#if hasManagerCreatedPortfolio}}
+                  <div class="col s12">
+                    {{> portal_list}}
+                  </div>
+                {{else}}
+                  <div class="col s12">
+                    {{> portal_new}}
+                  </div>
+                {{/if}}
+              {{else}}
+                {{> portal_list}}
+              {{/if}}
+            {{else}}
+              {{> portal_list}}
+            {{/if}}
+          {{else}}
+            {{> portal_list}}
+          {{/if}}
         </div>
       </div>
     </div>

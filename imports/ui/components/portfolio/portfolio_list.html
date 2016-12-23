@@ -11,6 +11,7 @@
           <th>{{i18n 'dapp.app.headers.intramonth'}}</th>
           <th>{{i18n 'dapp.app.headers.intrayear'}}</th>
           <th>{{i18n 'dapp.app.headers.delete'}}</th>
+          <th>Refresh</th>
         </tr>
       </thead>
       <tbody>
@@ -35,6 +36,9 @@
               <td>{{ytd}}</td>
               <td>
                 <a class="delete waves-effect waves-light btn black lighten-2"><i class="material-icons">delete</i></a>
+              </td>
+              <td>
+                <a class="refresh-wallets waves-effect waves-light btn blue lighten-2"><i class="material-icons">replay</i></a>
               </td>
             </tr>
           {{/if}}

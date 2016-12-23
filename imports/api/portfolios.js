@@ -7,15 +7,7 @@ export const Portfolios = new Mongo.Collection('portfolios');
 
 
 if (Meteor.isServer) {
-  // This code only runs on the server
-  Meteor.publish('portfolios', function portfoliosPublication() {
-    return Portfolios.find({
-      $or: [
-        { private: { $ne: true } },
-        { managerAddress: this.userId },
-      ],
-    });
-  });
+  Meteor.publish('portfolios', () => Portfolios.find());
 }
 
 

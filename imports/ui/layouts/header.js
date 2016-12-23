@@ -22,13 +22,15 @@ Template.layout_header.events({
 
     // Update Portfolio collection
     const portfoliosCount = Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count()
-    if (portfoliosCount !== 0) {
+    if (portfoliosCount === 0) {
+      FlowRouter.go('/');
+    } else {
       const doc = Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') });
       if (doc.isNew === true) {
         Meteor.call('portfolios.setToUsed', doc._id);
         Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
       }
+      FlowRouter.go('/portfolio');
     }
-    FlowRouter.go('/portfolio');
   },
 });

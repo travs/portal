@@ -3,3 +3,4 @@
 import '/imports/api/ethereum.js';
 import '/imports/api/portfolios.js';
 import '/imports/api/transactions.js';
+import '/imports/api/modules.js';

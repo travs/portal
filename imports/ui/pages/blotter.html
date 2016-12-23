@@ -1,7 +1,7 @@
 <template name="blotter">
 
   <!-- Index-banner -->
-  {{> ux_index_banner header=(i18n 'dapp.blotter.header') description=(i18n 'dapp.blotter.description')}}
+  {{> ux_index_banner header=(getPortfolioOfManagerName) description=(i18n 'dapp.blotter.description')}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
@@ -10,9 +10,9 @@
         <div class="col s12">
           {{> blotter_chart}}
         </div>
-        <!-- <div class="col s12">
+        <div class="col s12">
           {{> portfolio_manage}}
-        </div> -->
+        </div>
         <div class="col s12">
           {{> blotter_transaction_list}}
         </div>
@@ -21,5 +21,5 @@
   {{else}}
     {{> ux_server_connection}}
   {{/if}}
-  
+
 </template>
