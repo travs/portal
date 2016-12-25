@@ -30,7 +30,7 @@ Template.layout_header.events({
         Meteor.call('portfolios.setToUsed', doc._id);
         Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
       }
-      FlowRouter.go(`/portfolio/${doc.address}!`);
+      FlowRouter.go(`/portfolio/${doc.address}`);
     }
   },
 });
