@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { Materialize } from 'meteor/poetic:materialize-scss';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
@@ -16,7 +17,6 @@ import './portfolio_manage.html';
 Template.portfolio_manage.onCreated(() => {
   Meteor.subscribe('portfolios');
   Template.instance().state = new ReactiveDict();
-  Template.instance().state.set({ isInactive: true });
   Template.instance().state.set({ investingSelected: true });
   // Creation of contract object
   Core.setProvider(web3.currentProvider);
@@ -55,7 +55,7 @@ Template.portfolio_manage.events({
       document.getElementById('input_sharePrice').value = '1.0';
     }
   },
-  'submit .investOrRedeem'(event, instance) {
+  'submit .investOrRedeem'(event) {
     // Prevent default browser form submit
     event.preventDefault();
 
@@ -70,7 +70,8 @@ Template.portfolio_manage.events({
       Materialize.toast('Please fill out the form', 4000, 'blue');
     }
 
-    reactiveState.set({ isInactive: false, isMining: true });
+    // Is mining
+    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
     // Init
     const doc = Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') });
@@ -84,9 +85,10 @@ Template.portfolio_manage.events({
     // Invest or Redeem
     const selectedOption = target.investOrRedeemSelect.value;
     if (selectedOption === '0') {
-      coreContract.createShares(weiShareAmount, {from: managerAddress, value: weiAmount })
+      coreContract.createShares(weiShareAmount, { from: managerAddress, value: weiAmount })
       .then((result) => {
-        Materialize.toast('Transaction sent ' + result, 4000, 'green');
+        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+        // TODO insert tx w ${result} as txhash
         return coreContract.totalSupply();
       })
       .then((result) => {
@@ -115,7 +117,8 @@ Template.portfolio_manage.events({
         return coreContract.annihilateShares(weiShareAmount, weiShareAmount * result.toString() / SolKeywords.ether * (1.0 - roundingError), {from: managerAddress });
       })
       .then((result) => {
-        Materialize.toast('Transaction sent ' + result, 4000, 'green');
+        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+        //TODO insert tx w ${result} as txhash
         return coreContract.totalSupply();
       })
       .then((result) => {

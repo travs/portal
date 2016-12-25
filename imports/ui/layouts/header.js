@@ -16,12 +16,12 @@ Template.layout_header.onRendered(() => {
 });
 
 Template.layout_header.events({
-  'click .portfolio'() {
+  'click .portfolio'(event) {
     // Prevent default browser form submit
     event.preventDefault();
 
     // Update Portfolio collection
-    const portfoliosCount = Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count()
+    const portfoliosCount = Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count();
     if (portfoliosCount === 0) {
       FlowRouter.go('/');
     } else {
