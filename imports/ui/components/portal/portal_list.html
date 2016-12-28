@@ -1,6 +1,6 @@
 <template name="portal_list">
 
-  {{#if getPortfolioCount}}
+  {{#if getCoreCount}}
     <table class="highlight centered responsive-table">
       <thead>
         <tr>
@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each getPortfolios}}
+        {{#each getCoreContracts}}
           <tr>
             <td>
               <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">

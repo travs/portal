@@ -1,20 +1,22 @@
 <template name="portfolio_assets">
-  {{#if hasManagerCreatedPortfolio}}
+  {{#if hasManagerCreatedCore}}
     <table class="highlight centered responsive-table">
       <thead>
         <tr>
-          <th>{{i18n 'dapp.app.headers.asset'}}</th>
-          <th>{{i18n 'dapp.app.headers.symbol'}}</th>
-          <th>{{i18n 'dapp.app.headers.precision'}}</th>
+          <th>Asset</th>
+          <th>Symbol</th>
+          <th>Precision</th>
+          <th>Price on Blockchain</th>
+          <th>Last update</th>
         </tr>
       </thead>
       <tbody>
         {{#each getRegistrars}}
             <tr>
-              <td>
-                <a href="/" class="waves-effect waves-light btn blue lighten-2">{{name}}</a>
-              </td>
+              <td>{{name}}</td>
               <td>{{symbol}}</td>
+              <td>{{precision}}</td>
+              <td>{{price}}</td>
               <td>{{precision}}</td>
             </tr>
         {{/each}}

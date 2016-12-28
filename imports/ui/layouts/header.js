@@ -4,12 +4,12 @@ import { Session } from 'meteor/session';
 import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
-import { Portfolios } from '/imports/api/portfolios';
+import { CoreContracts } from '/imports/api/coreContracts';
 
 import './header.html';
 
 Template.layout_header.onCreated(() => {
-  Meteor.subscribe('portfolios');
+  Meteor.subscribe('coreContracts');
 });
 
 Template.layout_header.onRendered(() => {
@@ -21,13 +21,13 @@ Template.layout_header.events({
     event.preventDefault();
 
     // Update Portfolio collection
-    const portfoliosCount = Portfolios.find({ managerAddress: Session.get('clientMangerAccount') }).count();
-    if (portfoliosCount === 0) {
+    const coreContractsCount = CoreContracts.find({ managerAddress: Session.get('clientMangerAccount') }).count();
+    if (coreContractsCount === 0) {
       FlowRouter.go('/');
     } else {
-      const doc = Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') });
+      const doc = CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') });
       if (doc.isNew === true) {
-        Meteor.call('portfolios.setToUsed', doc._id);
+        Meteor.call('coreContracts.setToUsed', doc._id);
         Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
       }
       FlowRouter.go(`/portfolio/${doc.address}`);

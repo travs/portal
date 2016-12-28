@@ -4,17 +4,17 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { assert } from 'meteor/practicalmeteor:chai';
 
-import { Portfolios } from './portfolios.js';
+import { CoreContracts } from './coreContracts.js';
 
 if (Meteor.isServer) {
-  describe('Portfolios', () => {
+  describe('CoreContracts', () => {
     describe('methods', () => {
       const userId = Random.id();
       let portfolioId;
 
       beforeEach(() => {
-        Portfolios.remove({});
-        portfolioId = Portfolios.insert({
+        CoreContracts.remove({});
+        portfolioId = CoreContracts.insert({
           text: 'test portfolio',
           createdAt: new Date(),
           managerAddress: userId,
@@ -25,7 +25,7 @@ if (Meteor.isServer) {
       it('can delete owned portfolio', () => {
         // Find the internal implementation of the portfolio method so we can
         // test it in isolation
-        const deletePortfolio = Meteor.server.method_handlers['portfolios.remove'];
+        const deletePortfolio = Meteor.server.method_handlers['coreContracts.remove'];
 
         // Set up a fake method invocation that looks like what the method expects
         const invocation = { userId };
@@ -34,7 +34,7 @@ if (Meteor.isServer) {
         deletePortfolio.apply(invocation, [portfolioId]);
 
         // Verify that the method does what we expected
-        assert.equal(Portfolios.find().count(), 0);
+        assert.equal(CoreContracts.find().count(), 0);
       });
     });
   });

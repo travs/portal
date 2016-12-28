@@ -3,31 +3,33 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 
-export const Portfolios = new Mongo.Collection('portfolios');
+export const CoreContracts = new Mongo.Collection('coreContracts');
 
 
 if (Meteor.isServer) {
-  Meteor.publish('portfolios', () => Portfolios.find());
+  Meteor.publish('coreContracts', () => CoreContracts.find());
 }
 
 
 Meteor.methods({
-  'portfolios.insert'(address, name, managerAddress, managerName, sharePrice, notional, intraday, mtd, ytd) {
+  'coreContracts.insert'(address, name, managerAddress, managerName, registrarAddress, sharePrice, notional, intraday, mtd, ytd) {
     check(address, String);
     check(name, String);
     check(managerAddress, String);
     check(managerName, String);
+    check(registrarAddress, String);
     check(sharePrice, Number);
     check(notional, Number);
     check(intraday, Number);
     check(mtd, Number);
     check(ytd, Number);
 
-    Portfolios.insert({
+    CoreContracts.insert({
       address,
       name,
       managerAddress,
       managerName,
+      registrarAddress,
       sharePrice,
       notional,
       intraday,
@@ -39,33 +41,33 @@ Meteor.methods({
       createdAt: new Date(),
     });
   },
-  'portfolios.remove'(portfolioId) {
+  'coreContracts.remove'(portfolioId) {
     check(portfolioId, String);
 
-    const portfolio = Portfolios.findOne(portfolioId);
+    const portfolio = CoreContracts.findOne(portfolioId);
 
     // Only the owner can delete it
     // TODO assert portflio address
     // if (portfolio.owner !== Meteor.userId())
     //   throw new Meteor.Error('not-authorized');
 
-    Portfolios.remove(portfolioId);
+    CoreContracts.remove(portfolioId);
   },
-  'portfolios.setSharePrice'(portfolioId, setToSharePrice) {
+  'coreContracts.setSharePrice'(portfolioId, setToSharePrice) {
     check(portfolioId, String);
     check(setToSharePrice, Number);
 
-    Portfolios.update(portfolioId, { $set: { sharePrice: setToSharePrice } });
+    CoreContracts.update(portfolioId, { $set: { sharePrice: setToSharePrice } });
   },
-  'portfolios.setNotional'(portfolioId, setToNotional) {
+  'coreContracts.setNotional'(portfolioId, setToNotional) {
     check(portfolioId, String);
     check(setToNotional, Number);
 
-    Portfolios.update(portfolioId, { $set: { notional: setToNotional } });
+    CoreContracts.update(portfolioId, { $set: { notional: setToNotional } });
   },
-  'portfolios.setToUsed'(portfolioId) {
+  'coreContracts.setToUsed'(portfolioId) {
     check(portfolioId, String);
 
-    Portfolios.update(portfolioId, { $set: { isNew: false } });
+    CoreContracts.update(portfolioId, { $set: { isNew: false } });
   },
 });

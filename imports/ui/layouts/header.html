@@ -10,8 +10,8 @@
             {{#if clientMangerAccount}}
               {{#if isRopstenNetwork}}
                 <li><a class="portfolio">
-                  {{#unless hasManagerCreatedPortfolio}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
-                  {{getPortfolioOfManagerName}} {{#if getPortfolioOfManagerIsNew}}<span class="new badge"></span>{{/if}}</a>
+                  {{#unless hasManagerCreatedCore}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
+                  {{getManagerNameOfCore}} {{#if getIsNewOfCore}}<span class="new badge"></span>{{/if}}</a>
                 </li>
                 <li><a href="/wallet">Wallet</a></li>
               {{/if}}
@@ -28,10 +28,10 @@
           {{#if isClientConnected}}
             {{#if clientMangerAccount}}
               {{#if isRopstenNetwork}}
-                {{#if hasManagerCreatedPortfolio}}
+                {{#if hasManagerCreatedCore}}
                   <li><a class="portfolio waves-effect waves-indigo white-text">
-                    {{#unless hasManagerCreatedPortfolio}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
-                    {{getPortfolioOfManagerName}} {{#if getPortfolioOfManagerIsNew}}<span class="new badge"></span>{{/if}}</a>
+                    {{#unless hasManagerCreatedCore}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
+                    {{getManagerNameOfCore}} {{#if getIsNewOfCore}}<span class="new badge"></span>{{/if}}</a>
                   </li>
                   <li><a href="">sass <span class="new badge">4</span></a></li>
                 {{/if}}

@@ -7,7 +7,7 @@
         <p>{{i18n 'dapp.components.create.description'}}</p>
         <br/>
           <div class="row">
-            <form class="col s12 new-portfolio">
+            <form class="col s12 new-portfolio" id="new_portfolio">
               <div class="row">
                 <div class="input-field col s6">
                   <input id="manager_name" type="text" class="validate" minlength="3" required>
@@ -20,14 +20,14 @@
               </div>
               <div class="row">
                 <div class="input-field col s12">
-                  <select id="registrarSelect" required>
+                  <select id="registrar_select" required>
                     <option value="" disabled selected>Specify the registar contract of your portfolio</option>
-                    <option value="1">Melon Registrar - <a href="http://testnet.etherscan.io/address/{{registrarContractAddress}}" target="_blank">explore</a></option>
+                    <option value="melon">Melon Registrar - <a href="http://testnet.etherscan.io/address/{{registrarContractAddress}}" target="_blank">explore</a></option>
                   </select>
                   <label>Registrar Module</label>
                 </div>
               </div>
-              <div class="row">
+              <!-- <div class="row">
                 <div class="input-field col s12">
                   <select id="assetSelect" multiple>
                     <option value="" disabled selected>Trading of your portfolio is restricted to the following assets.</option>
@@ -61,7 +61,7 @@
                   </select>
                   <label>Price Feed Module</label>
                 </div>
-              </div>
+              </div> -->
               <button type="submit" class="btn btn-default">{{i18n 'dapp.components.create.deploy'}}</button>
             </form>
           </div>

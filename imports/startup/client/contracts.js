@@ -2,10 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 
 // Collections
-import { Portfolios } from '/imports/api/portfolios';
+import { CoreContracts } from '/imports/api/coreContracts';
 import { Registrars } from '/imports/api/modules';
-
-
 
 import EtherToken from '/imports/lib/assets/contracts/EtherToken.sol.js';
 import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.sol.js';
@@ -28,9 +26,6 @@ Meteor.startup(() => {
   Session.set('versionContractAddress', Version.all_networks['3'].address);
   Session.set('metaContractAddress', Meta.all_networks['3'].address);
 
-  Meteor.subscribe('portfolios');
+  Meteor.subscribe('coreContracts');
   Meteor.subscribe('registrars');
-
-  // Meteor.call('registrars.insert', Session.get('registrarContractAddress'));
-  // console.log(Registrars.findOne({}, { sort: { createdAt: -1 } }));
 });

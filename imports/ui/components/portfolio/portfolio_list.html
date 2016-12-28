@@ -1,6 +1,6 @@
 <template name="portfolio_list">
 
-  {{#if hasManagerCreatedPortfolio}}
+  {{#if hasManagerCreatedCore}}
     <table class="highlight centered responsive-table">
       <thead>
         <tr>
@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each getPortfolios}}
+        {{#each getCoreContracts}}
           {{#if isManagerThisPortfolioManager managerAddress}}
             <tr>
               <td>

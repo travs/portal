@@ -18,7 +18,7 @@ Template.portfolio_list.onRendered(() => {});
 
 Template.portfolio_list.events({
   'click .delete'() {
-    Meteor.call('portfolios.remove', this._id);
+    Meteor.call('coreContracts.remove', this._id);
     Materialize.toast('Portfolio deleted!', 4000, 'blue');
   },
 });

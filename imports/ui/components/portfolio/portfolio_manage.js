@@ -5,7 +5,7 @@ import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
 // Collections
-import { Portfolios } from '/imports/api/portfolios';
+import { CoreContracts } from '/imports/api/coreContracts';
 // Contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
 const SolKeywords = require('/imports/lib/assets/lib/SolKeywords.js');
@@ -15,7 +15,7 @@ import './portfolio_manage.html';
 
 
 Template.portfolio_manage.onCreated(() => {
-  Meteor.subscribe('portfolios');
+  Meteor.subscribe('coreContracts');
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ investingSelected: true });
   // Creation of contract object
@@ -74,7 +74,7 @@ Template.portfolio_manage.events({
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
     // Init
-    const doc = Portfolios.findOne({ managerAddress: Session.get('clientMangerAccount') });
+    const doc = CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') });
     const coreContract = Core.at(doc.address);
     const managerAddress = Session.get('clientMangerAccount');
     const weiAmount = web3.toWei(amount, 'ether');
@@ -93,7 +93,7 @@ Template.portfolio_manage.events({
       })
       .then((result) => {
         // Update Portfolio collection
-        Meteor.call('portfolios.setNotional',
+        Meteor.call('coreContracts.setNotional',
           doc._id,
           result.toNumber()
         );
@@ -101,7 +101,7 @@ Template.portfolio_manage.events({
       })
       .then((result) => {
         // Update Portfolio collection
-        Meteor.call('portfolios.setSharePrice',
+        Meteor.call('coreContracts.setSharePrice',
           doc._id,
           result.toNumber()
         );
@@ -123,7 +123,7 @@ Template.portfolio_manage.events({
       })
       .then((result) => {
         // Update Portfolio collection
-        Meteor.call('portfolios.setNotional',
+        Meteor.call('coreContracts.setNotional',
           doc._id,
           result.toNumber()
         );
@@ -131,7 +131,7 @@ Template.portfolio_manage.events({
       })
       .then((result) => {
         // Update Portfolio collection
-        Meteor.call('portfolios.setSharePrice',
+        Meteor.call('coreContracts.setSharePrice',
           doc._id,
           result.toNumber()
         );

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
-import { Portfolios } from '/imports/api/portfolios';
+import { CoreContracts } from '/imports/api/coreContracts';
 // Components
 import '/imports/ui/components/blotter/blotter_chart.js';
 import '/imports/ui/components/blotter/blotter_transaction_list.js';
@@ -12,14 +12,14 @@ import './blotter.html';
 
 
 Template.blotter.onCreated(() => {
-  Meteor.subscribe('portfolios');
+  Meteor.subscribe('coreContracts');
 });
 
 
 Template.blotter.helpers({
   getPortfolioName() {
     const address = FlowRouter.getParam('address');
-    return (address === undefined) ? '' : Portfolios.findOne({ address }).name;
+    return (address === undefined) ? '' : CoreContracts.findOne({ address }).name;
   },
 });
 
