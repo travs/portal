@@ -1,33 +1,38 @@
 <template name="portfolio_manage">
 
-  <div class="card">
-    <div class="card-content">
-      <div class="row">
-        <div class="col s12">
-          <form class="col s12 investOrRedeem">
-            <div class="row">
-              <div class="input-field col s12">
-                <select id="investOrRedeemSelect">
-                  <option value="0" selected>Invest</option>
-                  <option value="1">Redeem</option>
-                </select>
-                <label>Manage your investments in {{getManagerNameOfCore}}</label>
-              </div>
+  {{#if hasManagerCreatedCore}}
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">
+          Manage your position in Portfolio
+        </span>
+        <div class="row">
+          <div class="col s12">
+            <form class="col s12 investOrRedeem">
+              <div class="row">
+                <div class="input-field col s12">
+                  <select id="investOrRedeemSelect">
+                    <option value="0" selected>Invest</option>
+                    <option value="1">Redeem</option>
+                  </select>
+                  <label>Manage your investments in {{getManagerNameOfCore}}</label>
+                </div>
 
-              <div class="input-field col s12">
-                <input id="input_amount" name="amount" type="text" class="validate">
-                <label for="input_amount">Amount to {{isInvestingSelected}} (eth)</label>
+                <div class="input-field col s12">
+                  <input id="input_amount" name="amount" type="text" class="validate">
+                  <label for="input_amount">Amount to {{isInvestingSelected}} (eth)</label>
+                </div>
+                <div class="input-field col s12">
+                  <input id="input_sharePrice" name="sharePrice" type="text" class="validate">
+                  <label for="input_sharePrice">Share price</label>
+                </div>
               </div>
-              <div class="input-field col s12">
-                <input id="input_sharePrice" name="sharePrice" type="text" class="validate">
-                <label for="input_sharePrice">Share price</label>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-default">{{isInvestingSelected}}</button>
-          </form>
+              <button type="submit" class="btn btn-default">{{isInvestingSelected}}</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  {{/if}}
 
 </template>

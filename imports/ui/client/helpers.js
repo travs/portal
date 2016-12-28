@@ -30,7 +30,6 @@ Template.registerHelper('getIsNewOfCore', () => (CoreContracts.find({ managerAdd
 Template.registerHelper('isManagerThisPortfolioManager', portfolioManagerAccount => portfolioManagerAccount === Session.get('clientMangerAccount'));
 // Modules
 Template.registerHelper('getRegistrars', () => Registrars.find({}, { sort: { index: 1 } }));
-
 // Contracts
 Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));
 Template.registerHelper('bitcoinTokenContractAddress', () => Session.get('bitcoinTokenContractAddress'));
