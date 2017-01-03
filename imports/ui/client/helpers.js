@@ -27,9 +27,17 @@ Template.registerHelper('getManagerAddressOfCore', () => (CoreContracts.find({ m
 Template.registerHelper('getManagerNameOfCore', () => (CoreContracts.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') }).name : false));
 Template.registerHelper('getManagerDeltaOfCore', () => (CoreContracts.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') }).delta : false));
 Template.registerHelper('getIsNewOfCore', () => (CoreContracts.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') }).isNew : false));
-Template.registerHelper('isManagerThisPortfolioManager', portfolioManagerAccount => portfolioManagerAccount === Session.get('clientMangerAccount'));
+Template.registerHelper('isCoreManagerThisManager', coreManagerAccount => coreManagerAccount === Session.get('clientMangerAccount'));
 // Modules
 Template.registerHelper('getRegistrars', () => Registrars.find({}, { sort: { index: 1 } }));
+Template.registerHelper('getRegistrarOfThisPortfolioManager', () => {
+  //TODO case for when portfolio manager has more than one core
+  const registrarAddress = CoreContracts.findOne({
+    managerAddress: Session.get('clientMangerAccount')
+  }).registrarAddress
+
+  return Registrars.find({ registrarAddress }, { sort: { createdAt: -1 } });
+});
 // Contracts
 Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));
 Template.registerHelper('bitcoinTokenContractAddress', () => Session.get('bitcoinTokenContractAddress'));

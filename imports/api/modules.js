@@ -67,7 +67,7 @@ Meteor.methods({
         })
         .then((result) => {
           exchangeAddress = result;
-          Registrars.upsert({ registrarAddress, index }, { $set: {
+          Registrars.insert({
             registrarAddress,
             index,
             assets: {
@@ -84,7 +84,7 @@ Meteor.methods({
               address: exchangeAddress,
             },
             createdAt: new Date(),
-          } });
+          });
           // Assets.upsert({ assetAddress }, { $set: {
           //   address: assetAddress,
           //   name: assetName,
