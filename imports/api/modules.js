@@ -67,35 +67,48 @@ Meteor.methods({
         })
         .then((result) => {
           exchangeAddress = result;
-          Registrars.insert({
-            registrarAddress,
-            index,
-            assets: {
+          let resMongo = Registrars.update(
+            { address: registrarAddress },
+            { $set: {
+              address: registrarAddress,
+              index,
+              assets: {
+                address: assetAddress,
+                name: assetName,
+                symbol: assetSymbol,
+                precision: assetPrecision,
+              },
+              priceFeeds: {
+                address: priceFeedAddress,
+                precision: priceFeedPrecision,
+              },
+              exchanges: {
+                address: exchangeAddress,
+              },
+              createdAt: new Date(),
+            }
+          }, {
+            upsert: true
+          });
+          console.log(`Update Registrar result: ${resMongo}`);
+
+          resMongo = Assets.update(
+            { address: assetAddress },
+            { $set: {
               address: assetAddress,
               name: assetName,
               symbol: assetSymbol,
               precision: assetPrecision,
-            },
-            priceFeeds: {
-              address: priceFeedAddress,
-              precision: priceFeedPrecision,
-            },
-            exchanges: {
-              address: exchangeAddress,
-            },
-            createdAt: new Date(),
+              priceFeed: {
+                address: priceFeedAddress,
+                precision: priceFeedPrecision,
+              },
+              createdAt: new Date(),
+            }
+          }, {
+            upsert: true
           });
-          // Assets.upsert({ assetAddress }, { $set: {
-          //   address: assetAddress,
-          //   name: assetName,
-          //   symbol: assetSymbol,
-          //   precision: assetPrecision,
-          //   priceFeeds: {
-          //     address: priceFeedAddress,
-          //     precision: priceFeedPrecision,
-          //   }
-          //   createdAt: new Date(),
-          // } });
+          console.log(`Update Assets result: ${resMongo}`);
         });
       }
     });

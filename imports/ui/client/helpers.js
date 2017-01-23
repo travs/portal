@@ -36,7 +36,7 @@ Template.registerHelper('getRegistrarOfThisPortfolioManager', () => {
     managerAddress: Session.get('clientMangerAccount')
   }).registrarAddress
 
-  return Registrars.find({ registrarAddress }, { sort: { createdAt: -1 } });
+  return Registrars.find({ address: registrarAddress }, { sort: { createdAt: -1 } });
 });
 // Contracts
 Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));
