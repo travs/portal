@@ -7,6 +7,7 @@ import '/imports/ui/layouts/header.js';
 import '/imports/ui/layouts/footer.js';
 import '/imports/ui/pages/portal.js';
 import '/imports/ui/pages/portfolio.js';
+import '/imports/ui/pages/manage.js';
 import '/imports/ui/pages/wallet.js';
 
 
@@ -32,6 +33,18 @@ FlowRouter.route('/portfolio/:address', {
     });
   },
 });
+
+FlowRouter.route('/manage/:address', {
+  name: 'manage',
+  action() {
+    BlazeLayout.render('layout_main', {
+      nav: 'layout_header',
+      main: 'manage',
+      footer: 'layout_footer',
+    });
+  },
+});
+
 
 // Route for wallet
 FlowRouter.route('/wallet', {

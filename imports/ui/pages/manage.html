@@ -1,0 +1,18 @@
+<template name="manage">
+
+  <!-- Index-banner -->
+  <!-- TODO: insert graph -->
+  {{> ux_index_banner header='Manage' description='Manage your asset holdings'}}
+
+  <!-- Server is connected -->
+  {{#if isServerConnected}}
+    <div class="container">
+      <div class="row">
+
+      </div>
+    </div>
+  {{else}}
+    {{> ux_server_connection}}
+  {{/if}}
+
+</template>
