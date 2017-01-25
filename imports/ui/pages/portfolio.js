@@ -17,9 +17,10 @@ Template.portfolio.onCreated(() => {
 
 
 Template.portfolio.helpers({
-  getPortfolioName() {
+  getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
-    return (address === undefined) ? '' : CoreContracts.findOne({ address }).name;
+    const doc = CoreContracts.findOne({ address });
+    return (doc === undefined || address === undefined) ? '' : doc;
   },
 });
 
