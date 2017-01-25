@@ -4,14 +4,12 @@
     <table class="highlight centered responsive-table">
       <thead>
         <tr>
-          <th>{{i18n 'dapp.app.headers.identicon'}}</th>
-          <th>{{i18n 'dapp.app.headers.portfolioManager'}}</th>
-          <th>{{i18n 'dapp.app.headers.name'}}</th>
-          <th>{{i18n 'dapp.app.headers.portfolioPx'}}</th>
-          <th>{{i18n 'dapp.app.headers.investment'}}</th>
-          <th>{{i18n 'dapp.app.headers.intraday'}}</th>
-          <th>{{i18n 'dapp.app.headers.intramonth'}}</th>
-          <th>{{i18n 'dapp.app.headers.intrayear'}}</th>
+          <th>Identicon</th>
+          <th>Manager</th>
+          <th>Portfolio</th>
+          <th>AUM</th>
+          <th>Share Price</th>
+          <th>% Change (24h)</th>
         </tr>
       </thead>
       <tbody>
@@ -22,7 +20,10 @@
                 {{> dapp_identicon identity=address class="dapp-small"}}
               </a>
             </td>
-            <td><a href="http://testnet.etherscan.io/address/{{managerAddress}}" target="_blank">{{managerName}}</a></td>
+            <td>
+              <a href="http://testnet.etherscan.io/address/{{managerAddress}}" target="_blank">{{managerName}}
+              </a>
+            </td>
             <td>
               <a href="/portfolio/{{address}}" class="waves-effect waves-light btn blue lighten-2"><strong>{{name}}</strong></a>
             </td>
@@ -37,8 +38,6 @@
               </a>
             </td>
             <td>{{intraday}}</td>
-            <td>{{mtd}}</td>
-            <td>{{ytd}}</td>
           </tr>
         {{/each}}
       </tbody>

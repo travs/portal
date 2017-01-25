@@ -24,8 +24,6 @@ Meteor.methods({
     check(mtd, Number);
     check(ytd, Number);
 
-    console.log(`Share Price: ${sharePrice}`)
-
     CoreContracts.insert({
       address,
       name,
@@ -34,7 +32,7 @@ Meteor.methods({
       registrarAddress,
       sharePrice,
       notional,
-      intraday,
+      intraday: 'N/A',
       mtd,
       ytd,
       isNew: true,

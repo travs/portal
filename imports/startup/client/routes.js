@@ -7,7 +7,6 @@ import '/imports/ui/layouts/header.js';
 import '/imports/ui/layouts/footer.js';
 import '/imports/ui/pages/portal.js';
 import '/imports/ui/pages/portfolio.js';
-import '/imports/ui/pages/blotter.js';
 import '/imports/ui/pages/wallet.js';
 
 
@@ -23,19 +22,8 @@ FlowRouter.route('/', {
   },
 });
 
-// FlowRouter.route('/portfolio', {
-//   name: 'portfolio',
-//   action() {
-//     BlazeLayout.render('layout_main', {
-//       nav: 'layout_header',
-//       main: 'portfolio',
-//       footer: 'layout_footer',
-//     });
-//   },
-// });
-
 FlowRouter.route('/portfolio/:address', {
-  name: 'blotter',
+  name: 'portfolio',
   action() {
     BlazeLayout.render('layout_main', {
       nav: 'layout_header',
