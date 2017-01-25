@@ -11,10 +11,10 @@ import Core from '/imports/lib/assets/contracts/Core.sol.js';
 import constants from '/imports/lib/assets/utils/constants.js';
 
 
-import './portfolio_manage.html';
+import './manage_participation.html';
 
 
-Template.portfolio_manage.onCreated(() => {
+Template.manage_participation.onCreated(() => {
   Meteor.subscribe('coreContracts');
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ investingSelected: true });
@@ -23,7 +23,7 @@ Template.portfolio_manage.onCreated(() => {
 });
 
 
-Template.portfolio_manage.helpers({
+Template.manage_participation.helpers({
   isInvestingSelected() {
     if (Template.instance().state.get('investingSelected')) {
       return 'invest';
@@ -32,12 +32,12 @@ Template.portfolio_manage.helpers({
   },
 });
 
-Template.portfolio_manage.onRendered(() => {
+Template.manage_participation.onRendered(() => {
   this.$('select').material_select();
 });
 
 
-Template.portfolio_manage.events({
+Template.manage_participation.events({
   'change #investOrRedeemSelect'(event) {
     const selectedOption = $(event.target).val();
     if (selectedOption === '0') {

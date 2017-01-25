@@ -6,7 +6,7 @@ import { CoreContracts } from '/imports/api/coreContracts';
 // Components
 import '/imports/ui/components/blotter/blotter_chart.js';
 import '/imports/ui/components/blotter/blotter_transaction_list.js';
-import '/imports/ui/components/portfolio/portfolio_manage.js';
+import '/imports/ui/components/portfolio/manage_participation.js';
 // Corresponding html file
 import './blotter.html';
 

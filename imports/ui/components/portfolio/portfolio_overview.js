@@ -7,16 +7,16 @@ import { CoreContracts } from '/imports/api/coreContracts';
 // Smart contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
 // Corresponding html file
-import './portfolio_list.html';
+import './portfolio_overview.html';
 
 
-Template.portfolio_list.onCreated(() => {
+Template.portfolio_overview.onCreated(() => {
   Meteor.subscribe('coreContracts');
   //TODO send command to server to update current coreContract
 });
 
 
-Template.portfolio_list.helpers({
+Template.portfolio_overview.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = CoreContracts.findOne({ address });
@@ -25,10 +25,10 @@ Template.portfolio_list.helpers({
 });
 
 
-Template.portfolio_list.onRendered(() => {});
+Template.portfolio_overview.onRendered(() => {});
 
 
-Template.portfolio_list.events({
+Template.portfolio_overview.events({
   'click .delete'() {
     const address = FlowRouter.getParam('address');
     const doc = CoreContracts.findOne({ address });
