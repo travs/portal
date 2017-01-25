@@ -41,7 +41,7 @@ Template.registerHelper('getRegistrarOfThisPortfolioManager', () => {
 // Contracts
 Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));
 Template.registerHelper('bitcoinTokenContractAddress', () => Session.get('bitcoinTokenContractAddress'));
-Template.registerHelper('dollarTokenContractAddress', () => Session.get('dollarTokenContractAddress'));
+Template.registerHelper('repTokenContractAddress', () => Session.get('repTokenContractAddress'));
 Template.registerHelper('euroTokenContractAddress', () => Session.get('euroTokenContractAddress'));
 Template.registerHelper('priceFeedContractAddress', () => Session.get('priceFeedContractAddress'));
 Template.registerHelper('exchangeContractAddress', () => Session.get('exchangeContractAddress'));

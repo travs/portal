@@ -8,7 +8,7 @@ import { BigNumber } from 'meteor/ethereum:web3';
 import { CoreContracts } from '/imports/api/coreContracts';
 // Contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
-const SolKeywords = require('/imports/lib/assets/lib/SolKeywords.js');
+import constants from '/imports/lib/assets/utils/constants.js';
 
 
 import './portfolio_manage.html';
@@ -113,7 +113,7 @@ Template.portfolio_manage.events({
       coreContract.calcSharePrice()
       .then((result) => {
         console.log(`sharePrice: ${result.toString()}`)
-        console.log(weiShareAmount * result.toString() / SolKeywords.ether * (1.0 - roundingError))
+        console.log(weiShareAmount * result.toString() / constants.ether * (1.0 - roundingError))
         return coreContract.annihilateShares(weiShareAmount, weiShareAmount * result.toString() / SolKeywords.ether * (1.0 - roundingError), {from: managerAddress });
       })
       .then((result) => {
