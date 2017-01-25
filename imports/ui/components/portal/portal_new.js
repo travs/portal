@@ -57,7 +57,10 @@ Template.portal_new.events({
       Materialize.toast('This option is currently not supported', 4000, 'red');
       return
     }
-    const sharePrice = 1.0;
+
+    //TODO clean up database entries
+    //TODO fix sharePrice
+    const sharePrice = web3.toWei(1.0, 'ether');
     const notional = 0;
     const intraday = 1.0;
     const mtd = 1.0;

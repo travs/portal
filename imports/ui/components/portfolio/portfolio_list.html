@@ -1,54 +1,37 @@
 <template name="portfolio_list">
 
-  {{#if hasManagerCreatedCore}}
-    <div class="card">
-      <div class="card-content">
-        <table class="highlight centered responsive-table">
-          <thead>
-            <tr>
-              <th>{{i18n 'dapp.app.headers.name'}}</th>
-              <th>{{i18n 'dapp.app.headers.portfolioPx'}}</th>
-              <th>{{i18n 'dapp.app.headers.investment'}}</th>
-              <th>{{i18n 'dapp.app.headers.intraday'}}</th>
-              <th>{{i18n 'dapp.app.headers.intramonth'}}</th>
-              <th>{{i18n 'dapp.app.headers.intrayear'}}</th>
-              <th>{{i18n 'dapp.app.headers.delete'}}</th>
-              <th>Refresh</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#each getCoreContracts}}
-              {{#if isCoreManagerThisManager managerAddress}}
-                <tr>
-                  <td>
-                    <a href="/portfolio/{{address}}" class="waves-effect waves-light btn blue lighten-2">{{name}}</a>
-                  </td>
-                  <td>
-                    <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">
-                      {{dapp_formatBalance sharePrice "0,0.0[00] unit" "finney"}}/share
-                    </a>
-                  </td>
-                  <td>
-                    <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">
-                      {{dapp_formatBalance notional "0,0.0[00] UNIT" 'eur'}}
-                    </a>
-                  </td>
-                  <td>{{intraday}}</td>
-                  <td>{{mtd}}</td>
-                  <td>{{ytd}}</td>
-                  <td>
-                    <a class="delete waves-effect waves-light btn black lighten-2"><i class="material-icons">delete</i></a>
-                  </td>
-                  <td>
-                    <a class="refresh-wallets waves-effect waves-light btn blue lighten-2"><i class="material-icons">replay</i></a>
-                  </td>
-                </tr>
-              {{/if}}
-            {{/each}}
-          </tbody>
-        </table>
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            Portfolio Overview
+          </span>
+          <ul>
+            <!-- Wallet Balance -->
+            <li> Name:
+              <a href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+                {{getPortfolioDoc.name}}
+              </a>
+            </li>
+            <li> Share Price:
+              <a href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+                {{dapp_formatBalance (getPortfolioDoc.sharePrice) "0,0.0[00] unit" "finney"}}/share
+                <hr/>
+                {{getPortfolioDoc.sharePrice}}
+              </a>
+            </li>
+            <li> Investment:
+              <a href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+                {{dapp_formatBalance (getPortfolioDoc.notional) "0,0.0[00] UNIT" 'eur'}}
+              </a>
+            </li>
+            <li> Personal Stake: N/A</li>
+            <li> Value Stake: N/A</li>
+            <li> PnL: N/A</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a class="delete waves-effect waves-light btn blue lighten-2"><i class="material-icons">delete</i></a>
+        </div>
       </div>
-    </div>
-  {{/if}}
 
 </template>

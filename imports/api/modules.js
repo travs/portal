@@ -67,7 +67,7 @@ Meteor.methods({
         })
         .then((result) => {
           exchangeAddress = result;
-          let resMongo = Registrars.update(
+          const resRegistrarUpsert = Registrars.update(
             { address: registrarAddress },
             { $set: {
               address: registrarAddress,
@@ -86,13 +86,12 @@ Meteor.methods({
                 address: exchangeAddress,
               },
               createdAt: new Date(),
+            },
+            }, {
+              upsert: true,
             }
-          }, {
-            upsert: true
-          });
-          console.log(`Update Registrar result: ${resMongo}`);
-
-          resMongo = Assets.update(
+          );
+          const resAssetsUpsert = Assets.update(
             { address: assetAddress },
             { $set: {
               address: assetAddress,
@@ -104,11 +103,17 @@ Meteor.methods({
                 precision: priceFeedPrecision,
               },
               createdAt: new Date(),
+            },
+            }, {
+              upsert: true,
             }
-          }, {
-            upsert: true
-          });
-          console.log(`Update Assets result: ${resMongo}`);
+          );
+          if (resRegistrarUpsert === false) {
+            console.log(`Error in Registrar upsert: ${resRegistrarUpsert}`);
+          }
+          if (resAssetsUpsert === false) {
+            console.log(`Error in Registrar upsert: ${resAssetsUpsert}`);
+          }
         });
       }
     });

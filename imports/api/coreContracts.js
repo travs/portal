@@ -18,11 +18,13 @@ Meteor.methods({
     check(managerAddress, String);
     check(managerName, String);
     check(registrarAddress, String);
-    check(sharePrice, Number);
+    check(sharePrice, String);
     check(notional, Number);
     check(intraday, Number);
     check(mtd, Number);
     check(ytd, Number);
+
+    console.log(`Share Price: ${sharePrice}`)
 
     CoreContracts.insert({
       address,
@@ -67,7 +69,6 @@ Meteor.methods({
   },
   'coreContracts.setToUsed'(portfolioId) {
     check(portfolioId, String);
-
     CoreContracts.update(portfolioId, { $set: { isNew: false } });
   },
 });
