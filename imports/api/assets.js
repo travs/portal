@@ -7,12 +7,10 @@ import Registrar from '/imports/lib/assets/contracts/Registrar.sol.js';
 import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.sol.js';
 import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.sol.js';
 
-// TODO: Init assets
 Registrar.setProvider(web3.currentProvider);
-const registrarContract = Registrar.at(Registrar.all_networks['3'].address);
 PreminedAsset.setProvider(web3.currentProvider);
 PriceFeed.setProvider(web3.currentProvider);
-
+const registrarContract = Registrar.at(Registrar.all_networks['3'].address);
 
 if (Meteor.isServer) {
   // This code only runs on the server
