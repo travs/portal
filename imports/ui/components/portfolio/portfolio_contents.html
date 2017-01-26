@@ -28,7 +28,7 @@
               <td>N/A</td>
               <td>
                 <a href="http://testnet.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
-                  {{this.priceFeed.price}}
+                  {{formatPrice this.priceFeed.price}}
                 </a>
               </td>
               <td>N/A</td>
@@ -36,6 +36,9 @@
           {{/each}}
           </tbody>
         </table>
+      </div>
+      <div class="card-action">
+        <a href="/manage/{{address}}" class="delete waves-effect waves-light btn blue lighten-2">Manage</a>
       </div>
     </div>
 

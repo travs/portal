@@ -23,6 +23,9 @@ Template.portfolio_contents.helpers({
     }
     return docs;
   },
+  address() {
+    return FlowRouter.getParam('address');
+  },
   formatPrice() {
     if (Object.keys(this).length === 0) return '';
     const precision = this.precision;

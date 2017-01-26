@@ -9,11 +9,12 @@
           {{#if isClientConnected}}
             {{#if clientMangerAccount}}
               {{#if isRopstenNetwork}}
+                <li><a href="/wallet">Wallet</a></li>
                 <li><a class="portfolio">
                   {{#unless hasManagerCreatedCore}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
                   {{getManagerNameOfCore}} {{#if getIsNewOfCore}}<span class="new badge"></span>{{/if}}</a>
                 </li>
-                <li><a href="/wallet">Wallet</a></li>
+                <li><a class="manage">Manage</a></li>
               {{/if}}
             {{/if}}
           {{/if}}
