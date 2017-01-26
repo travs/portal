@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-
+import { FlowRouter } from 'meteor/kadira:flow-router';
+// Collections
 import { Assets } from '/imports/api/assets.js';
 
 import Specs from '/imports/lib/assets/utils/specs.js';
@@ -31,6 +32,10 @@ Template.portfolio_contents.helpers({
   },
 });
 
-Template.portfolio_contents.onRendered(() => {});
+Template.portfolio_contents.onRendered(() => {
+  // Upsert Asset Collection
+  const address = FlowRouter.getParam('address');
+  Meteor.call('assets.sync', address);
+});
 
 Template.portfolio_contents.events({});
