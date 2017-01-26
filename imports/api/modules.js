@@ -7,11 +7,9 @@ import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.sol.js';
 import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.sol.js';
 
 const Registrars = new Mongo.Collection('registrars');
-const Assets = new Mongo.Collection('assets');
 
 if (Meteor.isServer) {
   Meteor.publish('registrars', () => Registrars.find({}, { sort: { createdAt: -1 } }));
-  Meteor.publish('assets', () => Assets.find({}, { sort: { createdAt: -1 } }));
 }
 
 
@@ -91,33 +89,35 @@ Meteor.methods({
               upsert: true,
             }
           );
-          const resAssetsUpsert = Assets.update(
-            { address: assetAddress },
-            { $set: {
-              address: assetAddress,
-              name: assetName,
-              symbol: assetSymbol,
-              precision: assetPrecision,
-              priceFeed: {
-                address: priceFeedAddress,
-                precision: priceFeedPrecision,
-              },
-              createdAt: new Date(),
-            },
-            }, {
-              upsert: true,
-            }
-          );
           if (resRegistrarUpsert === false) {
             console.log(`Error in Registrar upsert: ${resRegistrarUpsert}`);
           }
-          if (resAssetsUpsert === false) {
-            console.log(`Error in Registrar upsert: ${resAssetsUpsert}`);
-          }
+          // TODO           
+          // const resAssetsUpsert = Assets.update(
+          //   { address: assetAddress },
+          //   { $set: {
+          //     address: assetAddress,
+          //     name: assetName,
+          //     symbol: assetSymbol,
+          //     precision: assetPrecision,
+          //     priceFeed: {
+          //       address: priceFeedAddress,
+          //       precision: priceFeedPrecision,
+          //     },
+          //     createdAt: new Date(),
+          //   },
+          //   }, {
+          //     upsert: true,
+          //   }
+          // );
+          // if (resAssetsUpsert === false) {
+          //   console.log(`Error in Registrar upsert: ${resAssetsUpsert}`);
+          // }
         });
       }
     });
   },
 });
 
-export { Registrars, Assets };
+// export { Registrars, Assets };
+export { Registrars };

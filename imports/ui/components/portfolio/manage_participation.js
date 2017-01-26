@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Materialize } from 'meteor/poetic:materialize-scss';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
@@ -24,6 +25,11 @@ Template.manage_participation.onCreated(() => {
 
 
 Template.manage_participation.helpers({
+  getPortfolioDoc() {
+    const address = FlowRouter.getParam('address');
+    const doc = CoreContracts.findOne({ address });
+    return (doc === undefined || address === undefined) ? '' : doc;
+  },
   isInvestingSelected() {
     if (Template.instance().state.get('investingSelected')) {
       return 'invest';
