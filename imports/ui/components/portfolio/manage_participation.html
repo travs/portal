@@ -10,29 +10,29 @@
           {{/if}}
         </span>
         <br/>
-        <br/>        
+        <br/>
         <div class="row">
           <form class="col s12 investOrRedeem">
             <div class="row">
+
               <div class="input-field col s12">
-                <select id="investOrRedeemSelect">
+                <select id="select_type">
                   <option value="0" selected>Invest</option>
                   <option value="1">Redeem</option>
                 </select>
-                <label>Manage your investments in {{getManagerNameOfCore}}</label>
               </div>
               <!-- TODO Text filed -->
               <div class="input-field col s12">
-                <input id="input_sharePrice" name="sharePrice" type="text" class="validate">
-                <label for="input_sharePrice">Share price</label>
+                <input id="input_price" type="text" class="validate">
+                <label for="input_price">Price (ETH/Share)</label>
               </div>
               <div class="input-field col s12">
-                <input id="input_amount" name="amount" type="text" class="validate">
-                <label for="input_amount">Amount to {{isInvestingSelected}} (eth)</label>
+                <input id="input_amount" type="text" class="validate">
+                <label for="input_amount">Volume (Shares)</label>
               </div>
               <div class="input-field col s12">
-                <input id="input_total" name="total" type="text" class="validate">
-                <label for="input_total">Total</label>
+                <input id="input_total" type="text" class="validate">
+                <label for="input_total">Total (ETH)</label>
               </div>
             </div>
           </form>

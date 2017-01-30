@@ -4,7 +4,6 @@ import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
-import { BigNumber } from 'meteor/ethereum:web3';
 // Collections
 import { CoreContracts } from '/imports/api/coreContracts';
 // Contracts
@@ -14,7 +13,8 @@ import constants from '/imports/lib/assets/utils/constants.js';
 
 import './manage_participation.html';
 
-
+// TODO rem eslint
+/* eslint meteor/template-names: [2, "snake-case"]*/
 Template.manage_participation.onCreated(() => {
   Meteor.subscribe('coreContracts');
   Template.instance().state = new ReactiveDict();
@@ -44,35 +44,27 @@ Template.manage_participation.onRendered(() => {
 
 
 Template.manage_participation.events({
-  'change #investOrRedeemSelect'(event) {
-    const selectedOption = $(event.target).val();
-    if (selectedOption === '0') {
-      Template.instance().state.set({ investingSelected: true });
-    } else if (selectedOption === '1') {
-      Template.instance().state.set({ investingSelected: false });
-    } else {
-      console.log('Error invstingSelected value');
-    }
+  'change #select_type': (event, templateInstance) => {
+    const type = templateInstance.find('#select_type').value;
+    if (type === '0') Template.instance().state.set({ investingSelected: true });
+    Template.instance().state.set({ investingSelected: false });
   },
-  'change #input_amount'(event, instance) {
-    const selectedAmount = $(event.target).val();
+  'change #input_amount': (event, templateInstance) => {
+    const selectedAmount = templateInstance.find('#input_amount').value;
     if (selectedAmount !== undefined) {
-      //TODO take real share price as input
-      document.getElementById('input_sharePrice').value = '1.0';
+      // TODO take real share price as input
+      document.getElementById('input_price').value = '1.0';
     }
   },
-  'click .manage'(event) {
+  'click .manage': (event, templateInstance) => {
     // Prevent default browser form submit
     event.preventDefault();
 
-    // Init Reactive Dict
-    const reactiveState = Template.instance().state;
-
     // Get value from form element
-    const target = event.target;
-    const amount = target.amount.value;
-    const sharePrice = target.sharePrice.value;
-    if (!amount || !sharePrice) {
+    const type = templateInstance.find('#select_type').value;
+    const price = templateInstance.find('#input_price').value;
+    const amount = templateInstance.find('#input_amount').value;
+    if (!amount || !price) {
       Materialize.toast('Please fill out the form', 4000, 'blue');
     }
 
@@ -80,17 +72,18 @@ Template.manage_participation.events({
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
     // Init
+    // TODO better handling of collection
     const doc = CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') });
     const coreContract = Core.at(doc.address);
     const managerAddress = Session.get('clientMangerAccount');
     const weiAmount = web3.toWei(amount, 'ether');
 
-    // From sharePrice to amount of shares
-    const weiShareAmount = web3.toWei(amount * sharePrice, 'ether');
+    // From price to amount of shares
+    const weiShareAmount = web3.toWei(amount * price, 'ether');
 
     // Invest or Redeem
-    const selectedOption = target.investOrRedeemSelect.value;
-    if (selectedOption === '0') {
+
+    if (type === '0') {
       coreContract.createShares(weiShareAmount, { from: managerAddress, value: weiAmount })
       .then((result) => {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
@@ -113,13 +106,13 @@ Template.manage_participation.events({
           result.toNumber()
         );
       });
-    } else if (selectedOption === '1') {
+    } else if (type === '1') {
       console.log(weiShareAmount)
       const roundingError = 0.01;
 
       coreContract.calcSharePrice()
       .then((result) => {
-        console.log(`sharePrice: ${result.toString()}`)
+        console.log(`price: ${result.toString()}`)
         console.log(weiShareAmount * result.toString() / constants.ether * (1.0 - roundingError))
         return coreContract.annihilateShares(weiShareAmount, weiShareAmount * result.toString() / SolKeywords.ether * (1.0 - roundingError), {from: managerAddress });
       })
