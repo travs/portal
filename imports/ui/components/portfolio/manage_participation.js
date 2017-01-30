@@ -61,7 +61,7 @@ Template.manage_participation.events({
       document.getElementById('input_sharePrice').value = '1.0';
     }
   },
-  'submit .investOrRedeem'(event) {
+  'click .manage'(event) {
     // Prevent default browser form submit
     event.preventDefault();
 
