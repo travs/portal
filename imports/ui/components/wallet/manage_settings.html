@@ -3,41 +3,18 @@
     <div class="card">
       <div class="card-content">
         <span class="card-title">
-          {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
-            Manage Participation in your Portfolio
-          {{else}}
-            Manage Participation in {{getPortfolioDoc.name}}
-          {{/if}}
+          Manage Settings
         </span>
-          <div class="row">
-            <div class="col s12">
-              <form class="col s12 investOrRedeem">
-                <div class="row">
-                  <div class="input-field col s12">
-                    <select id="investOrRedeemSelect">
-                      <option value="0" selected>Invest</option>
-                      <option value="1">Redeem</option>
-                    </select>
-                    <label>Manage your investments in {{getManagerNameOfCore}}</label>
-                  </div>
-                  <!-- TODO Text filed -->
-                  <div class="input-field col s12">
-                    <input id="input_sharePrice" name="sharePrice" type="text" class="validate">
-                    <label for="input_sharePrice">Share price</label>
-                  </div>
-                  <div class="input-field col s12">
-                    <input id="input_amount" name="amount" type="text" class="validate">
-                    <label for="input_amount">Amount to {{isInvestingSelected}} (eth)</label>
-                  </div>
-                  <div class="input-field col s12">
-                    <input id="input_total" name="total" type="text" class="validate">
-                    <label for="input_total">Total</label>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-default">{{isInvestingSelected}}</button>
-              </form>
-            </div>
-          </div>
+        <ul>
+          <li> Reference: <b> EUR </b> Currency </li>
+          <br/>
+          <hr/>
+          <br/>
+          <li> Manage: <b> <a href="/portfolio/{{getManagerAddressOfCore}}">{{getManagerNameOfCore}}</a> </b> Participation </li>
+        </ul>
+      </div>
+      <div class="card-action">
+        <a href="/portfolio/{{getManagerAddressOfCore}}" class="delete waves-effect waves-light btn blue lighten-2">Manage</a>
       </div>
     </div>
 
