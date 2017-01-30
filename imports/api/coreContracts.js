@@ -12,29 +12,25 @@ if (Meteor.isServer) {
 
 
 Meteor.methods({
-  'coreContracts.insert'(address, name, managerAddress, managerName, registrarAddress, sharePrice, notional, intraday, mtd, ytd) {
+  'coreContracts.insert'(address, name, managerAddress, managerEmail, registrarAddress, sharePrice, notional, intraday) {
     check(address, String);
     check(name, String);
     check(managerAddress, String);
-    check(managerName, String);
+    check(managerEmail, String);
     check(registrarAddress, String);
     check(sharePrice, String);
     check(notional, Number);
     check(intraday, Number);
-    check(mtd, Number);
-    check(ytd, Number);
 
     CoreContracts.insert({
       address,
       name,
       managerAddress,
-      managerName,
+      managerEmail,
       registrarAddress,
       sharePrice,
       notional,
       intraday: 'N/A',
-      mtd,
-      ytd,
       isNew: true,
       delta: "±0.0",
       username: 'N/A',
@@ -56,13 +52,11 @@ Meteor.methods({
   'coreContracts.setSharePrice'(portfolioId, setToSharePrice) {
     check(portfolioId, String);
     check(setToSharePrice, Number);
-
     CoreContracts.update(portfolioId, { $set: { sharePrice: setToSharePrice } });
   },
   'coreContracts.setNotional'(portfolioId, setToNotional) {
     check(portfolioId, String);
     check(setToNotional, Number);
-
     CoreContracts.update(portfolioId, { $set: { notional: setToNotional } });
   },
   'coreContracts.setToUsed'(portfolioId) {

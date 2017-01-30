@@ -49,7 +49,7 @@ Template.portal_new.events({
     let portfolioAddress;
     const portfolioName = target.portfolio_name.value;
     const managerAddress = Session.get('clientMangerAccount');
-    const managerName = target.manager_name.value;
+    const managerEmail = target.manager_email.value;
     let registrarAddress;
     if (target.registrar_select.value === 'melon') {
       registrarAddress = Session.get('registrarContractAddress');
@@ -59,12 +59,9 @@ Template.portal_new.events({
     }
 
     //TODO clean up database entries
-    //TODO fix sharePrice
     const sharePrice = web3.toWei(1.0, 'ether');
     const notional = 0;
     const intraday = 1.0;
-    const mtd = 1.0;
-    const ytd = 1.0;
 
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
@@ -98,13 +95,11 @@ Template.portal_new.events({
           portfolioAddress,
           portfolioName,
           managerAddress,
-          managerName,
+          managerEmail,
           registrarAddress,
           sharePrice,
           notional,
-          intraday,
-          mtd,
-          ytd
+          intraday
         );
         Meteor.call('registrars.insert',
           registrarAddress,

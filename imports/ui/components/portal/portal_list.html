@@ -4,24 +4,19 @@
     <table class="highlight centered responsive-table">
       <thead>
         <tr>
-          <th>Identicon</th>
           <th>Manager</th>
           <th>Portfolio</th>
           <th>AUM</th>
           <th>Share Price</th>
-          <th>% Change (24h)</th>
+          <th>24h change</th>
         </tr>
       </thead>
       <tbody>
         {{#each getCoreContracts}}
           <tr>
             <td>
-              <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">
+              <a href="http://testnet.etherscan.io/address/{{managerAddress}}" target="_blank">
                 {{> dapp_identicon identity=address class="dapp-small"}}
-              </a>
-            </td>
-            <td>
-              <a href="http://testnet.etherscan.io/address/{{managerAddress}}" target="_blank">{{managerName}}
               </a>
             </td>
             <td>
