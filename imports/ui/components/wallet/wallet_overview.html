@@ -3,31 +3,29 @@
       <div class="card">
         <div class="card-content">
           <span class="card-title">
-            Portfolio Overview
+            Wallet Overview
           </span>
           <ul>
-            <li> Name:
-              <a href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
-                {{getPortfolioDoc.name}}
+            <li> Identicon:
+              <a href="http://testnet.etherscan.io/address/{{clientMangerAccount}}" target="_blank">
+                {{> dapp_identicon identity=clientMangerAccount class="dapp-small"}}
               </a>
             </li>
-            <li> Share Price:
-              <a href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
-                {{dapp_formatBalance (getPortfolioDoc.sharePrice) "0,0.0[00] unit" "finney"}}/share
+            <li> Address:
+              <a href="http://testnet.etherscan.io/address/{{clientMangerAccount}}" target="_blank">
+                {{clientMangerAccount}}
               </a>
             </li>
-            <li> Investment:
+            <li> Wallet Balance:
               <a href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
-                {{dapp_formatBalance (getPortfolioDoc.notional) "0,0.0[00] UNIT" 'eur'}}
+                {{dapp_formatBalance clientMangerAccountBalance "0,0.0[00] UNIT" 'eur'}}
               </a>
             </li>
-            <li> Personal Stake: N/A</li>
-            <li> Value Stake: N/A</li>
-            <li> PnL: N/A</li>
           </ul>
         </div>
         <div class="card-action">
-          <a class="delete waves-effect waves-light btn blue lighten-2"><i class="material-icons">delete</i></a>
+          <a class="fund_wallet waves-effect waves-light btn green lighten-2"><i class="material-icons">thumb_up</i></a>
+          <a class="refresh-wallets waves-effect waves-light btn blue lighten-2"><i class="material-icons">replay</i></a>
         </div>
       </div>
 

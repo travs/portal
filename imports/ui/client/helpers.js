@@ -18,7 +18,6 @@ Template.registerHelper('clientMangerAccount', () => Session.get('clientMangerAc
 Template.registerHelper('clientMangerAccountBalance', () => Session.get('clientMangerAccountBalance'));
 Template.registerHelper('clientAccountList', () => Session.get('clientAccountList'));
 Template.registerHelper('getAccountCount', () => Session.get('getAccountCount'));
-Template.registerHelper('clientMangerAccount', () => Session.get('clientMangerAccount'));
 // CoreContracts
 Template.registerHelper('getCoreContracts', () => CoreContracts.find({}, { sort: { createdAt: -1 } }));
 Template.registerHelper('getCoreCount', () => CoreContracts.find().count());
