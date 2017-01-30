@@ -15,7 +15,7 @@ import constants from '/imports/lib/assets/utils/constants.js';
 import './manage_participation.html';
 
 
-Template.manage_participation.onCreated(() => {
+Template.manageParticipation.onCreated(() => {
   Meteor.subscribe('coreContracts');
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ investingSelected: true });
@@ -24,7 +24,7 @@ Template.manage_participation.onCreated(() => {
 });
 
 
-Template.manage_participation.helpers({
+Template.manageParticipation.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = CoreContracts.findOne({ address });
@@ -38,12 +38,12 @@ Template.manage_participation.helpers({
   },
 });
 
-Template.manage_participation.onRendered(() => {
+Template.manageParticipation.onRendered(() => {
   this.$('select').material_select();
 });
 
 
-Template.manage_participation.events({
+Template.manageParticipation.events({
   'change #investOrRedeemSelect'(event) {
     const selectedOption = $(event.target).val();
     if (selectedOption === '0') {
@@ -107,6 +107,7 @@ Template.manage_participation.events({
       })
       .then((result) => {
         // Update Portfolio collection
+        console.log(`Shareprice as from contract: ${result.toNumber()}`)
         Meteor.call('coreContracts.setSharePrice',
           doc._id,
           result.toNumber()

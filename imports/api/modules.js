@@ -33,9 +33,7 @@ Meteor.methods({
         let assetName;
         let assetSymbol;
         let assetPrecision;
-        let priceFeedContract;
         let priceFeedAddress;
-        let priceFeedPrecision;
         let exchangeAddress;
         registrarContract.assetAt(index).then((result) => {
           assetAddress = result;
@@ -56,11 +54,6 @@ Meteor.methods({
         })
         .then((result) => {
           priceFeedAddress = result;
-          priceFeedContract = PriceFeed.at(priceFeedAddress);
-          return priceFeedContract.getPrecision();
-        })
-        .then((result) => {
-          priceFeedPrecision = result.toNumber();
           return registrarContract.exchangesAt(index);
         })
         .then((result) => {
@@ -78,7 +71,6 @@ Meteor.methods({
               },
               priceFeeds: {
                 address: priceFeedAddress,
-                precision: priceFeedPrecision,
               },
               exchanges: {
                 address: exchangeAddress,
@@ -92,7 +84,7 @@ Meteor.methods({
           if (resRegistrarUpsert === false) {
             console.log(`Error in Registrar upsert: ${resRegistrarUpsert}`);
           }
-          // TODO           
+          // TODO
           // const resAssetsUpsert = Assets.update(
           //   { address: assetAddress },
           //   { $set: {

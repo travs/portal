@@ -33,7 +33,6 @@ Meteor.methods({
         let assetHoldings;
         let priceFeedContract;
         let priceFeedAddress;
-        let priceFeedPrecision;
         let currentPrice;
         let lastUpdate;
         registrarContract.assetAt(index).then((result) => {
@@ -60,10 +59,6 @@ Meteor.methods({
         .then((result) => {
           priceFeedAddress = result;
           priceFeedContract = PriceFeed.at(priceFeedAddress);
-          return priceFeedContract.getPrecision();
-        })
-        .then((result) => {
-          priceFeedPrecision = result.toNumber();
           return priceFeedContract.getPrice(assetAddress);
         })
         .then((result) => {
@@ -83,7 +78,6 @@ Meteor.methods({
               holdings: assetHoldings,
               priceFeed: {
                 address: priceFeedAddress,
-                precision: priceFeedPrecision,
                 price: currentPrice,
                 timestamp: lastUpdate,
               },

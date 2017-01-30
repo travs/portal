@@ -350,6 +350,28 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   "3": {
     "abi": [
       {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_spender",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
         "constant": true,
         "inputs": [],
         "name": "getSymbol",
@@ -378,6 +400,63 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       {
         "constant": true,
         "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "name": "totalSupply",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "name": "balance",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
         "name": "getPrecision",
         "outputs": [
           {
@@ -387,16 +466,171 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         ],
         "payable": false,
         "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "name": "_spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "name": "remaining",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
       }
     ],
-    "unlinked_binary": "0x606060405234610000575b6101cb806100196000396000f300606060405263ffffffff60e060020a60003504166315070401811461003a57806317d7de7c1461003a5780639670c0bc14610154575b610000565b3461000057610047610173565b60408051602080825283518183015283519192839290830191850190808383821561008d575b80518252602083111561008d57601f19909201916020918201910161006d565b505050905090810190601f1680156100b95780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3461000057610047610173565b60408051602080825283518183015283519192839290830191850190808383821561008d575b80518252602083111561008d57601f19909201916020918201910161006d565b505050905090810190601f1680156100b95780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3461000057610161610199565b60408051918252519081900360200190f35b6040805160208101909152600081525b90565b6040805160208101909152600081525b90565b60005b905600a165627a7a723058208ef81192918fc27b775a95458ade319f1bd7a67e04a08b57841bfde20b0f26560029",
-    "events": {},
-    "updated_at": 1485010333246,
+    "unlinked_binary": "0x606060405234610000575b610357806100196000396000f3006060604052361561007d5763ffffffff60e060020a600035041663095ea7b3811461008257806315070401146100b257806317d7de7c146100b257806318160ddd146101cc57806323b872dd146101eb57806370a08231146102215780639670c0bc146101cc578063a9059cbb14610082578063dd62ed3e1461029b575b610000565b346100005761009e600160a060020a03600435166024356102cc565b604080519115158252519081900360200190f35b34610000576100bf6102d5565b604080516020808252835181830152835191928392908301918501908083838215610105575b80518252602083111561010557601f1990920191602091820191016100e5565b505050905090810190601f1680156101315780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b34610000576100bf6102d5565b604080516020808252835181830152835191928392908301918501908083838215610105575b80518252602083111561010557601f1990920191602091820191016100e5565b505050905090810190601f1680156101315780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b34610000576101d96102fb565b60408051918252519081900360200190f35b346100005761009e600160a060020a0360043581169060243516604435610301565b604080519115158252519081900360200190f35b34610000576101d9600160a060020a036004351661030b565b60408051918252519081900360200190f35b34610000576101d96102fb565b60408051918252519081900360200190f35b346100005761009e600160a060020a03600435166024356102cc565b604080519115158252519081900360200190f35b34610000576101d9600160a060020a03600435811690602435166102cc565b60408051918252519081900360200190f35b60005b92915050565b6040805160208101909152600081525b90565b6040805160208101909152600081525b90565b60005b90565b60005b9392505050565b60005b919050565b60005b90565b60005b92915050565b60005b929150505600a165627a7a72305820c5d65b2f5e56afb773b5d5a6a4d67f32350e169d6d138e391dd09635310723fb0029",
+    "events": {
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
+      }
+    },
+    "updated_at": 1485739921684,
     "links": {}
   },
   "default": {
     "abi": [
       {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_spender",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
         "constant": true,
         "inputs": [],
         "name": "getSymbol",
@@ -425,6 +659,63 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       {
         "constant": true,
         "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "name": "totalSupply",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "name": "balance",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
         "name": "getPrecision",
         "outputs": [
           {
@@ -434,11 +725,144 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         ],
         "payable": false,
         "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "name": "_spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "name": "remaining",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
       }
     ],
-    "unlinked_binary": "0x606060405234610000575b6101cb806100196000396000f300606060405263ffffffff60e060020a60003504166315070401811461003a57806317d7de7c1461003a5780639670c0bc14610154575b610000565b3461000057610047610173565b60408051602080825283518183015283519192839290830191850190808383821561008d575b80518252602083111561008d57601f19909201916020918201910161006d565b505050905090810190601f1680156100b95780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3461000057610047610173565b60408051602080825283518183015283519192839290830191850190808383821561008d575b80518252602083111561008d57601f19909201916020918201910161006d565b505050905090810190601f1680156100b95780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3461000057610161610199565b60408051918252519081900360200190f35b6040805160208101909152600081525b90565b6040805160208101909152600081525b90565b60005b905600a165627a7a723058208ef81192918fc27b775a95458ade319f1bd7a67e04a08b57841bfde20b0f26560029",
-    "events": {},
-    "updated_at": 1485010036362
+    "unlinked_binary": "0x606060405234610000575b610357806100196000396000f3006060604052361561007d5763ffffffff60e060020a600035041663095ea7b3811461008257806315070401146100b257806317d7de7c146100b257806318160ddd146101cc57806323b872dd146101eb57806370a08231146102215780639670c0bc146101cc578063a9059cbb14610082578063dd62ed3e1461029b575b610000565b346100005761009e600160a060020a03600435166024356102cc565b604080519115158252519081900360200190f35b34610000576100bf6102d5565b604080516020808252835181830152835191928392908301918501908083838215610105575b80518252602083111561010557601f1990920191602091820191016100e5565b505050905090810190601f1680156101315780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b34610000576100bf6102d5565b604080516020808252835181830152835191928392908301918501908083838215610105575b80518252602083111561010557601f1990920191602091820191016100e5565b505050905090810190601f1680156101315780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b34610000576101d96102fb565b60408051918252519081900360200190f35b346100005761009e600160a060020a0360043581169060243516604435610301565b604080519115158252519081900360200190f35b34610000576101d9600160a060020a036004351661030b565b60408051918252519081900360200190f35b34610000576101d96102fb565b60408051918252519081900360200190f35b346100005761009e600160a060020a03600435166024356102cc565b604080519115158252519081900360200190f35b34610000576101d9600160a060020a03600435811690602435166102cc565b60408051918252519081900360200190f35b60005b92915050565b6040805160208101909152600081525b90565b6040805160208101909152600081525b90565b60005b90565b60005b9392505050565b60005b919050565b60005b90565b60005b92915050565b60005b929150505600a165627a7a72305820c5d65b2f5e56afb773b5d5a6a4d67f32350e169d6d138e391dd09635310723fb0029",
+    "events": {
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "_spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
+      }
+    },
+    "updated_at": 1485739475859
   }
 };
 

@@ -1,35 +1,38 @@
-import { _ } from 'meteor/underscore';
-
 import EtherToken from '/imports/lib/assets/contracts/EtherToken.sol.js';
 import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.sol.js';
 import RepToken from '/imports/lib/assets/contracts/RepToken.sol.js';
 import EuroToken from '/imports/lib/assets/contracts/EuroToken.sol.js';
 
-const tokens = {
-  ropsten: {
-    'ETH-T': EtherToken.all_networks['3'].address,
-    'BTC-T': BitcoinToken.all_networks['3'].address,
-    REP: RepToken.all_networks['3'].address,
-    'EUR-T': EuroToken.all_networks['3'].address,
-  },
+const constants = require('./constants.js');
+
+// Tokens
+
+exports.getTokenPrecisionByAddress = (address) => {
+  if (address === EtherToken.all_networks['3'].address) return constants.ETHERTOKEN_PRECISION;
+  if (address === BitcoinToken.all_networks['3'].address) return constants.BITCOINTOKEN_PRECISION;
+  if (address === RepToken.all_networks['3'].address) return constants.REPTOKEN_PRECISION;
+  if (address === EuroToken.all_networks['3'].address) return constants.EUROTOKEN_PRECISION;
+  return false;
 };
 
-// http://numeraljs.com/ for formats
-const tokenSpecs = {
-  'ETH-T': { precision: 18, format: '0,0.00[0000000000000000]' },
-  'BTC-T': { precision: 8, format: '0,0.00[000000]' },
-  REP: { precision: 8, format: '0,0.00[000000]' },
-  'EUR-T': { precision: 8, format: '0,0.00[000000]' },
+exports.getTokenSymbolByAddress = (address) => {
+  if (address === EtherToken.all_networks['3'].address) return 'ETH-T';
+  if (address === BitcoinToken.all_networks['3'].address) return 'BTC-T';
+  if (address === RepToken.all_networks['3'].address) return 'REP';
+  if (address === EuroToken.all_networks['3'].address) return 'EUR-T';
+  return false;
 };
 
-export { tokens, tokenSpecs };
+exports.getTokenAddress = (symbol) => {
+  if (symbol === 'ETH-T') return EtherToken.all_networks['3'].address;
+  if (symbol === 'BTC-T') return BitcoinToken.all_networks['3'].address;
+  if (symbol === 'REP') return RepToken.all_networks['3'].address;
+  if (symbol === 'EUR-T') return EuroToken.all_networks['3'].address;
+  return false;
+};
 
 exports.getQuoteTokens = () => ['ETH-T'];
 
 exports.getBaseTokens = () => ['BTC-T', 'REP', 'EUR-T'];
 
 exports.getTokens = () => ['ETH-T', 'BTC-T', 'REP', 'EUR-T'];
-
-exports.getTokenAddress = symbol => tokens.ropsten[symbol];
-
-exports.getTokenByAddress = address => _.invert(tokens.ropsten)[address];
