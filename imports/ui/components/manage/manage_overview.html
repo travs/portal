@@ -1,0 +1,34 @@
+<template name="manage_overview">
+
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            Manage Overview
+          </span>
+          <ul>
+            <li> Name:
+              <a href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+                {{getPortfolioDoc.name}}
+              </a>
+            </li>
+            <li> Share Price:
+              <a href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+                {{dapp_formatBalance (getPortfolioDoc.sharePrice) "0,0.0[00] unit" "finney"}}/share
+              </a>
+            </li>
+            <li> Investment:
+              <a href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+                {{dapp_formatBalance (getPortfolioDoc.notional) "0,0.0[00] UNIT" 'eur'}}
+              </a>
+            </li>
+            <li> Personal Stake: N/A</li>
+            <li> Value Stake: N/A</li>
+            <li> PnL: N/A</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a class="delete waves-effect waves-light btn blue lighten-2"><i class="material-icons">delete</i></a>
+        </div>
+      </div>
+
+</template>
