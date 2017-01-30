@@ -12,10 +12,10 @@ import Core from '/imports/lib/assets/contracts/Core.sol.js';
 import constants from '/imports/lib/assets/utils/constants.js';
 
 
-import './manage_participation.html';
+import './manage_settings.html';
 
 
-Template.manage_participation.onCreated(() => {
+Template.manage_settings.onCreated(() => {
   Meteor.subscribe('coreContracts');
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ investingSelected: true });
@@ -24,7 +24,7 @@ Template.manage_participation.onCreated(() => {
 });
 
 
-Template.manage_participation.helpers({
+Template.manage_settings.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = CoreContracts.findOne({ address });
@@ -38,12 +38,12 @@ Template.manage_participation.helpers({
   },
 });
 
-Template.manage_participation.onRendered(() => {
+Template.manage_settings.onRendered(() => {
   this.$('select').material_select();
 });
 
 
-Template.manage_participation.events({
+Template.manage_settings.events({
   'change #investOrRedeemSelect'(event) {
     const selectedOption = $(event.target).val();
     if (selectedOption === '0') {

@@ -9,7 +9,7 @@
           {{#if isClientConnected}}
             {{#if clientMangerAccount}}
               {{#if isRopstenNetwork}}
-                <li><a href="/wallet">Wallet</a></li>
+                <li><a href="/wallet/{{clientMangerAccount}}">Wallet</a></li>
                 <li><a class="portfolio">
                   {{#unless hasManagerCreatedCore}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
                   {{getManagerNameOfCore}} {{#if getIsNewOfCore}}<span class="new badge"></span>{{/if}}</a>
@@ -36,7 +36,7 @@
                   </li>
                   <li><a href="">sass <span class="new badge">4</span></a></li>
                 {{/if}}
-                <li><a class="waves-effect waves-indigo white-text" href="/wallet">Wallet</a></li>
+                <li><a class="waves-effect waves-indigo white-text" href="/wallet/{{clientMangerAccount}}">Wallet</a></li>
               {{/if}}
             {{/if}}
           {{/if}}

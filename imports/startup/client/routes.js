@@ -47,7 +47,7 @@ FlowRouter.route('/manage/:address', {
 
 
 // Route for wallet
-FlowRouter.route('/wallet', {
+FlowRouter.route('/wallet/:address', {
   name: 'wallet',
   action() {
     BlazeLayout.render('layout_main', {
