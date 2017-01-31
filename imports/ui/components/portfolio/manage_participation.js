@@ -3,22 +3,19 @@ import { Template } from 'meteor/templating';
 import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
-import { ReactiveDict } from 'meteor/reactive-dict';
+import { ReactiveVar } from 'meteor/reactive-var';
 // Collections
 import { CoreContracts } from '/imports/api/coreContracts';
 // Contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
 import constants from '/imports/lib/assets/utils/constants.js';
 
-
 import './manage_participation.html';
 
-// TODO rem eslint
-/* eslint meteor/template-names: [2, "snake-case"]*/
+
 Template.manage_participation.onCreated(() => {
   Meteor.subscribe('coreContracts');
-  Template.instance().state = new ReactiveDict();
-  Template.instance().state.set({ investingSelected: true });
+  Template.instance().typeValue = new ReactiveVar(0);
   // Creation of contract object
   Core.setProvider(web3.currentProvider);
 });
@@ -31,40 +28,50 @@ Template.manage_participation.helpers({
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   isInvestingSelected() {
-    if (Template.instance().state.get('investingSelected')) {
-      return 'invest';
+    switch (Template.instance().typeValue.get()) {
+      case 0: return 'Invest';
+      case 1: return 'Redeem';
+      default: return 'Error';
     }
-    return 'redeem';
   },
 });
 
 Template.manage_participation.onRendered(() => {
-  this.$('select').material_select();
+  Template.instance().$('select').material_select();
+  Template.instance().$('label').addClass('active');
 });
 
 
 Template.manage_participation.events({
-  'change #select_type': (event, templateInstance) => {
-    const type = templateInstance.find('#select_type').value;
-    if (type === '0') Template.instance().state.set({ investingSelected: true });
-    Template.instance().state.set({ investingSelected: false });
+  'change select#type': (event, templateInstance) => {
+    const currentlySelectedTypeValue = parseInt(templateInstance.find('select#type').value, 10);
+    Template.instance().typeValue.set(currentlySelectedTypeValue);
   },
-  'change #input_amount': (event, templateInstance) => {
-    const selectedAmount = templateInstance.find('#input_amount').value;
-    if (selectedAmount !== undefined) {
-      // TODO take real share price as input
-      document.getElementById('input_price').value = '1.0';
-    }
+  'input input#price': (event, templateInstance) => {
+    const price = parseInt(templateInstance.find('input#price').value, 10);
+    // TODO
+  },
+  'input input#volume': (event, templateInstance) => {
+    const price = parseInt(templateInstance.find('input#price').value, 10);
+    const volume = parseInt(templateInstance.find('input#volume').value, 10);
+    /* eslint no-param-reassign: ["error", { "props": false }]*/
+    templateInstance.find('input#total').value = price * volume;
+  },
+  'input input#total': (event, templateInstance) => {
+    const price = parseInt(templateInstance.find('input#price').value, 10);
+    const total = parseInt(templateInstance.find('input#total').value, 10);
+    /* eslint no-param-reassign: ["error", { "props": false }]*/
+    templateInstance.find('input#volume').value = total / price;
   },
   'click .manage': (event, templateInstance) => {
     // Prevent default browser form submit
     event.preventDefault();
 
-    // Get value from form element
-    const type = templateInstance.find('#select_type').value;
-    const price = templateInstance.find('#input_price').value;
-    const amount = templateInstance.find('#input_amount').value;
-    if (!amount || !price) {
+    // Get value from template instance
+    const type = templateInstance.find('select#type').value;
+    const price = templateInstance.find('input#price').value;
+    const volume = templateInstance.find('input#volume').value;
+    if (!volume || !price) {
       Materialize.toast('Please fill out the form', 4000, 'blue');
     }
 
@@ -72,14 +79,20 @@ Template.manage_participation.events({
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
     // Init
-    // TODO better handling of collection
-    const doc = CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') });
-    const coreContract = Core.at(doc.address);
-    const managerAddress = Session.get('clientMangerAccount');
-    const weiAmount = web3.toWei(amount, 'ether');
 
-    // From price to amount of shares
-    const weiShareAmount = web3.toWei(amount * price, 'ether');
+    // const doc = CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') });
+    // const coreContract = (doc === undefined || Session.get('clientMangerAccount') === undefined) ? undefined : Core.at(doc.address);
+    //
+    // // coreContract.sharePrice().then((result) => {
+    // //   console.log(result.toNumber())
+    // // })
+    //
+    // console.log(Template.instance().find('input#volume'));
+    const managerAddress = Session.get('clientMangerAccount');
+    const weiAmount = web3.toWei(volume, 'ether');
+
+    // From price to volume of shares
+    const weiShareAmount = web3.toWei(volume * price, 'ether');
 
     // Invest or Redeem
 

@@ -16,23 +16,23 @@
             <div class="row">
 
               <div class="input-field col s12">
-                <select id="select_type">
+                  <select id="type">
                   <option value="0" selected>Invest</option>
                   <option value="1">Redeem</option>
                 </select>
               </div>
               <!-- TODO Text filed -->
               <div class="input-field col s12">
-                <input id="input_price" type="text" class="validate">
-                <label for="input_price">Price (ETH/Share)</label>
+                <input id="price" type="text" class="validate" value="{{dapp_formatBalance (getPortfolioDoc.sharePrice) "0,0.0[00]" "finney"}}">
+                <label for="price" active>Price (Finney/Share)</label>
               </div>
               <div class="input-field col s12">
-                <input id="input_amount" type="text" class="validate">
-                <label for="input_amount">Volume (Shares)</label>
+                <input id="volume" type="text" class="validate">
+                <label for="volume">Volume (Shares)</label>
               </div>
               <div class="input-field col s12">
-                <input id="input_total" type="text" class="validate">
-                <label for="input_total">Total (ETH)</label>
+                <input id="total" type="text" class="validate">
+                <label for="total">Total (Finney)</label>
               </div>
             </div>
           </form>
@@ -42,5 +42,8 @@
         </div>
       </div>
     </div>
+    $(function() {
+    Materialize.updateTextFields();
+    });
 
 </template>
