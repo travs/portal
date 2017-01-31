@@ -1,7 +1,6 @@
 <template name="manage">
 
   <!-- Index-banner -->
-  <!-- TODO: insert graph -->
   {{> ux_index_banner header='Manage' description='Manage your asset holdings'}}
 
   <!-- Server is connected -->
@@ -16,6 +15,12 @@
         </div>
         <div class="col s12">
           {{> orderbook_contents}}
+        </div>
+        <div class="col s12">
+          {{> open_orders}}
+        </div>
+        <div class="col s12">
+          {{> recent_trades}}
         </div>
       </div>
     </div>
