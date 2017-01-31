@@ -3,42 +3,66 @@
     <div class="card">
       <div class="card-content">
         <span class="card-title">
-          Portfolio Holdings
+          <a href="https://testnet.etherscan.io/address/{{exchangeContractAddress}}" target="_blank">Order Book</a> of ETH/BTC
         </span>
-
-        <table class="highlight centered responsive-table">
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Asset Amount</th>
-              <th>% Portfolio</th>
-              <th>Asset Price</th>
-              <th>24h change</th>
-            </tr>
-          </thead>
-          <tbody>
-          {{#each assets}}
-            <tr>
-              <td>
-                <a href="http://testnet.etherscan.io/address/{{this.address}}" target="_blank">
-                  {{this.name}}
-                </a>
-              </td>
-              <td>{{this.holdings}}</td>
-              <td>N/A</td>
-              <td>
-                <a href="http://testnet.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
-                  {{formatPrice this.priceFeed.price}}
-                </a>
-              </td>
-              <td>N/A</td>
-            </tr>
-          {{/each}}
-          </tbody>
-        </table>
+        <div class="row">
+          <div class="col s12">
+            <div class="row">
+              <div class="col s12 m6">
+                <table class="highlight centered responsive-table">
+                  <thead>
+                    <tr>
+                      <th>Cum. Vol.</th>
+                      <th>Vol.</th>
+                      <th>Buy Price <br/> (ETH/BTC)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {{#each offers}}
+                    <tr>
+                      <td>
+                        <a href="http://testnet.etherscan.io/address/{{this.address}}" target="_blank">
+                          {{this.name}}
+                          ({{this.symbol}})
+                        </a>
+                      </td>
+                      <td>{{this.priceFeed.price}}</td>
+                      <td>{{this.priceFeed.price}}</td>
+                    </tr>
+                  {{/each}}
+                  </tbody>
+                </table>
+              </div>
+              <div class="col s12 m6">
+                <table class="highlight centered responsive-table">
+                  <thead>
+                    <tr>
+                      <th>Sell Price <br/> (ETH/BTC)</th>
+                      <th>Vol.</th>
+                      <th>Cum. Vol.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {{#each assets}}
+                    <tr>
+                      <td>
+                        <a href="http://testnet.etherscan.io/address/{{this.address}}" target="_blank">
+                          {{this.name}}
+                          ({{this.symbol}})
+                        </a>
+                      </td>
+                      <td>{{this.priceFeed.price}}</td>
+                      <td>{{this.priceFeed.price}}</td>
+                    </tr>
+                  {{/each}}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card-action">
-        <a href="/manage/{{address}}" class="delete waves-effect waves-light btn blue lighten-2">Manage</a>
       </div>
     </div>
 

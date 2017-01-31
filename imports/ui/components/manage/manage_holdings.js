@@ -18,7 +18,7 @@ import './manage_holdings.html';
 Template.manage_holdings.onCreated(() => {
   Meteor.subscribe('coreContracts');
   Template.instance().state = new ReactiveDict();
-  Template.instance().state.set({ investingSelected: true });
+  Template.instance().state.set({ buyingSelected: true });
   // Creation of contract object
   Core.setProvider(web3.currentProvider);
 });
@@ -30,11 +30,11 @@ Template.manage_holdings.helpers({
     const doc = CoreContracts.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
-  isInvestingSelected() {
-    if (Template.instance().state.get('investingSelected')) {
-      return 'invest';
+  isBuyingSelected() {
+    if (Template.instance().state.get('buyingSelected')) {
+      return 'Buy';
     }
-    return 'redeem';
+    return 'Sell';
   },
 });
 
