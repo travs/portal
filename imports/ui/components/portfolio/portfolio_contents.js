@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { Session } from 'meteor/session';
+
 // Collections
 import { Assets } from '/imports/api/assets.js';
 
@@ -45,7 +47,16 @@ Template.portfolio_contents.helpers({
   },
   portfolioPercentrage() {
 
-  }
+  },
+  change24h() {
+    switch (this.name) {
+      case 'Ether Token': return Session.get('ethChange24h');
+      case 'Bitcoin Token': return Session.get('btcChange24h');
+      case 'Rep Token': return Session.get('repChange24h');
+      case 'Euro Token': return Session.get('eurChange24h');
+      default: return '';
+    }
+  },
 });
 
 Template.portfolio_contents.onRendered(() => {

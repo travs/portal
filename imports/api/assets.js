@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+import { check } from 'meteor/check';
 // Collections
 export const Assets = new Mongo.Collection('assets');
 // Smart contracts
@@ -17,13 +18,13 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'assets.sync'(assetHolderAddress) {
+  'assets.sync': (assetHolderAddress) => {
     check(assetHolderAddress, String);
     // TODO build function
     registrarContract.numAssignedAssets().then((assignedAssets) => {
       const numAssignedAssets = assignedAssets.toNumber();
       for (let index = 0; index < numAssignedAssets; index += 1) {
-        //TODO rem unnecessairy elements
+        // TODO rem unnecessairy elements
         let assetContract;
         let assetAddress;
         let assetName;
@@ -67,7 +68,7 @@ Meteor.methods({
         .then((result) => {
           lastUpdate = result.toNumber();
           // console.log(`\n Current Price: ${currentPrice} @ ${lastUpdate}`)
-          let res = Assets.update(
+          Assets.update(
             { address: assetAddress, assetHolderAddress },
             { $set: {
               address: assetAddress,

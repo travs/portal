@@ -7,6 +7,6 @@ Meteor.methods({
     return web3.isConnected();
   },
   'sendTestnetEther'(address) {
-    HTTP.call('GET', 'http://faucet.ropsten.be:3001/donate/' + address);
+    HTTP.get('http://faucet.ropsten.be:3001/donate/' + address);
   }
 });
