@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
+import { Session } from 'meteor/session';
+import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
 import { CoreContracts } from '/imports/api/coreContracts';
@@ -12,7 +13,7 @@ import './portfolio_overview.html';
 
 Template.portfolio_overview.onCreated(() => {
   Meteor.subscribe('coreContracts');
-  //TODO send command to server to update current coreContract
+  // TODO send command to server to update current coreContract
 });
 
 
@@ -29,14 +30,14 @@ Template.portfolio_overview.onRendered(() => {});
 
 
 Template.portfolio_overview.events({
-  'click .delete'() {
+  'click .delete': () => {
     const address = FlowRouter.getParam('address');
     const doc = CoreContracts.findOne({ address });
     if ((doc === undefined || address === undefined)) {
       return false;
-    } else {
-      Meteor.call('coreContracts.remove', doc._id);
-      Materialize.toast('Portfolio deleted!', 4000, 'blue');
     }
+    Meteor.call('coreContracts.remove', doc._id);
+    Materialize.toast('Portfolio deleted!', 4000, 'blue');
+    return true;
   },
 });
