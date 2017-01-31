@@ -6,9 +6,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 // Collections
 import { Assets } from '/imports/api/assets.js';
-
 import Specs from '/imports/lib/assets/utils/specs.js';
-
 
 // Corresponding html file
 import './portfolio_contents.html';

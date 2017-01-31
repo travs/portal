@@ -9,7 +9,7 @@ Exchange.setProvider(web3.currentProvider);
 
 // Pre:
 // Post:
-exports.syncOffer = (id, callback) => {
+export function syncOffer(id, callback) {
   Exchange.at(Exchange.all_networks['3'].address).offers(id)
   .then((res) => {
     const [sellHowMuch, sellWhichTokenAddress, buyHowMuch, buyWhichTokenAddress, owner, active] = res;
@@ -41,13 +41,13 @@ exports.syncOffer = (id, callback) => {
 
 // Pre:
 // Post:
-exports.sync = (callback) => {
+export function sync(callback) {
   Exchange.at(Exchange.all_networks['3'].address).lastOfferId()
   .then((result) => {
     const numOffers = result.toNumber();
     console.log(`numOffers: ${numOffers}`)
     async.times(numOffers, (id, callbackMap) => {
-      this.syncOffer(id + 1, (err, offer) => {
+      syncOffer(id + 1, (err, offer) => {
         if (!err) {
           callbackMap(null, offer);
         } else if (err == 'Not active') {

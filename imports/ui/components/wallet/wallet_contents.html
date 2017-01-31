@@ -5,15 +5,15 @@
         <span class="card-title">
           Wallet Holdings
         </span>
-
         <table class="highlight centered responsive-table">
           <thead>
             <tr>
-              <th>Asset</th>
-              <th>Asset Amount</th>
-              <th>% Portfolio</th>
-              <th>Asset Price</th>
-              <th>24h change</th>
+              <th>Asset<br/>(Name)</th>
+              <th>Asset Amount<br/>(Token)</th>
+              <th>Wallet<br/>(%)</th>
+              <!-- TODO Eur is changable -->
+              <th>Asset Price<br/>(EUR)</th>
+              <th>24h change<br/>(%)</th>
             </tr>
           </thead>
           <tbody>
@@ -24,14 +24,14 @@
                   {{this.name}}
                 </a>
               </td>
-              <td>{{this.holdings}}</td>
-              <td>N/A</td>
+              <td>{{convertFromTokenPrecision this.holdings}}</td>
+              <td>{{portfolioPercentrage}}</td>
               <td>
                 <a href="http://testnet.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
-                  {{formatPrice this.priceFeed.price}}
+                  {{dapp_formatBalance (invertValue (convertFromTokenPrecision this.priceFeed.price)) "0,0.0[00]" 'eur'}}
                 </a>
               </td>
-              <td>N/A</td>
+              <td>{{change24h}}</td>
             </tr>
           {{/each}}
           </tbody>

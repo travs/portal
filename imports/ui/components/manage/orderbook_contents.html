@@ -12,22 +12,18 @@
                 <table class="highlight centered responsive-table">
                   <thead>
                     <tr>
-                      <th>Cum. Vol.</th>
-                      <th>Vol.</th>
+                      <th>Cum. Vol.<br/>(BTC)</th>
+                      <th>Vol.<br/>(BTC)</th>
                       <th>Buy Price <br/> (ETH/BTC)</th>
                     </tr>
                   </thead>
                   <tbody>
                   {{#each offers}}
                     <tr>
-                      <td>
-                        <a href="http://testnet.etherscan.io/address/{{this.address}}" target="_blank">
-                          {{this.name}}
-                          ({{this.symbol}})
-                        </a>
-                      </td>
-                      <td>{{this.priceFeed.price}}</td>
-                      <td>{{this.priceFeed.price}}</td>
+                      <!-- TODO sum -->
+                      <td>{{this.offer.buyHowMuch}}</td>
+                      <td>{{this.offer.buyHowMuch}}</td>
+                      <td>{{this.offer.ask_price}}</td>
                     </tr>
                   {{/each}}
                   </tbody>
@@ -38,21 +34,17 @@
                   <thead>
                     <tr>
                       <th>Sell Price <br/> (ETH/BTC)</th>
-                      <th>Vol.</th>
-                      <th>Cum. Vol.</th>
+                      <th>Vol.<br/>(BTC)</th>
+                      <th>Cum. Vol.<br/>(BTC)</th>
                     </tr>
                   </thead>
                   <tbody>
-                  {{#each assets}}
+                  {{#each offers}}
                     <tr>
-                      <td>
-                        <a href="http://testnet.etherscan.io/address/{{this.address}}" target="_blank">
-                          {{this.name}}
-                          ({{this.symbol}})
-                        </a>
-                      </td>
-                      <td>{{this.priceFeed.price}}</td>
-                      <td>{{this.priceFeed.price}}</td>
+                      <td>{{this.offer.bid_price}}</td>
+                      <td>{{this.offer.sellHowMuch}}</td>
+                      <!-- TODO sum -->
+                      <td>{{this.offer.sellHowMuch}}</td>
                     </tr>
                   {{/each}}
                   </tbody>

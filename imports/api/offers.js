@@ -22,12 +22,28 @@ let offers = [];  // Offers collections
 if (Meteor.isServer) {
   // This code only runs on the server
   Meteor.publish('offers', () => Offers.find({}, { sort: { id: -1 } }));
+
+  // TODO differently
   collections.sync(
     (err, result) => {
       if (!err) {
         offers = result;
-        console.log(offers);
-        done();
+        for (let index = 0; index < offers.length; index += 1) {
+          console.log(`Index: ${index}`);
+          console.log(`Ask Price: ${offers[index].ask_price}`);
+          const offer = offers[index];
+          // TODO offer is Offers.offer
+          const res = Offers.update(
+            { id: index },
+            { $set: {
+              offer,
+              createdAt: new Date(),
+            },
+            }, {
+              upsert: true,
+            });
+          console.log(`Offers update res: ${res}`);
+        }
       } else {
         console.log(err);
       }
@@ -37,13 +53,24 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'offers.sync': () => {
+    // TODO clean up
     collections.sync(
       (err, result) => {
         if (!err) {
           // TODO store in Offers collection
           offers = result;
-          console.log(offers);
-          done();
+          for (let index = 0; index < offers.length; index += 1) {
+            console.log(`Ask Price: ${offers[index].ask_price}`);
+            Offers.update(
+              { id: index },
+              { $set: {
+                ask_price: offers[index].ask_price,
+                createdAt: new Date(),
+              },
+              }, {
+                upsert: true,
+              });
+            }
         } else {
           console.log(err);
         }

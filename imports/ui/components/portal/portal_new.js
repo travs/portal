@@ -54,8 +54,10 @@ Template.portal_new.events({
     if (target.registrar_select.value === 'melon') {
       registrarAddress = Session.get('registrarContractAddress');
     } else {
-      Materialize.toast('This option is currently not supported', 4000, 'red');
-      return
+      // Materialize.toast('This option is currently not supported', 4000, 'red');
+      // return
+      // TODO implement actual option
+      registrarAddress = Session.get('registrarContractAddress');
     }
 
     //TODO clean up database entries
