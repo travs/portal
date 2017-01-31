@@ -5,18 +5,16 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 // Collections
-import { CoreContracts } from '/imports/api/coreContracts';
+import { Cores } from '/imports/api/cores';
 // Contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
-import constants from '/imports/lib/assets/utils/constants.js';
 
 import './manage_participation.html';
 
 
 Template.manage_participation.onCreated(() => {
-  // TODO update coreContracts param
-  Meteor.subscribe('coreContracts');
-
+  // TODO update cores param
+  Meteor.subscribe('cores');
   Template.instance().typeValue = new ReactiveVar(0);
   // Creation of contract object
   Core.setProvider(web3.currentProvider);
@@ -26,12 +24,12 @@ Template.manage_participation.onCreated(() => {
 Template.manage_participation.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
-    const doc = CoreContracts.findOne({ address });
+    const doc = Cores.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   formattedSharePrice() {
     const address = FlowRouter.getParam('address');
-    const doc = CoreContracts.findOne({ address });
+    const doc = Cores.findOne({ address });
     if (doc !== undefined) {
       return web3.fromWei(doc.sharePrice, 'ether');
     }
@@ -49,6 +47,10 @@ Template.manage_participation.helpers({
 Template.manage_participation.onRendered(() => {
   Template.instance().$('select').material_select();
   Template.instance().$('label').addClass('active');
+  // Sync core and
+  const address = FlowRouter.getParam('address');
+  Meteor.call('cores.sync', address); // Upsert cores Collection
+  Meteor.call('assets.sync', address); // Upsert Assets Collection
 });
 
 
@@ -92,7 +94,7 @@ Template.manage_participation.events({
 
     // Init
     const managerAddress = Session.get('clientMangerAccount');
-    const doc = CoreContracts.findOne({ managerAddress });
+    const doc = Cores.findOne({ managerAddress });
     if (doc === undefined) { Materialize.toast('Undefined document', 4000, 'red'); return; }
     const coreAddress = doc.address;
     const coreContract = Core.at(coreAddress);
@@ -112,52 +114,18 @@ Template.manage_participation.events({
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         // TODO insert txHash into appropriate collection
         console.log(`Tx Hash: ${result}`);
-        // TODO update coreContracts collection
-        Meteor.call('assets.sync', coreAddress); // Upsert Asset Collection
+        Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
+        Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
         return coreContract.totalSupply();
-      })
-      .then((result) => {
-        // Update Portfolio collection
-        Meteor.call('coreContracts.setNotional',
-          doc._id,
-          result.toNumber()
-        );
-        return coreContract.calcSharePrice();
-      })
-      // TODO clean up
-      .then((result) => {
-        // Update Portfolio collection
-        console.log(`Shareprice as from contract: ${result.toNumber()}`)
-        Meteor.call('coreContracts.setSharePrice',
-          doc._id,
-          result.toNumber()
-        );
       });
     } else if (type === 1) {
-      coreContract.annihilateShares(weiTotal, weiVolume, { from: managerAddress }).then((result) => {
+      coreContract.annihilateShares(weiVolume, weiTotal, { from: managerAddress }).then((result) => {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         // TODO insert txHash into appropriate collection
         console.log(`Tx Hash: ${result}`);
-        // TODO update coreContracts collection
-        Meteor.call('assets.sync', coreAddress); // Upsert Asset Collection
+        Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
+        Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
         return coreContract.totalSupply();
-      })
-      // TODO clean up
-      .then((result) => {
-        // Update Portfolio collection
-        Meteor.call('coreContracts.setNotional',
-          doc._id,
-          result.toNumber()
-        );
-        return coreContract.calcSharePrice();
-      })
-      .then((result) => {
-        // Update Portfolio collection
-        console.log(`Shareprice as from contract: ${result.toNumber()}`)
-        Meteor.call('coreContracts.setSharePrice',
-          doc._id,
-          result.toNumber()
-        );
       });
     } else {
       console.log('Error invstingSelected value');

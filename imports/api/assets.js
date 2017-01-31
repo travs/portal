@@ -6,7 +6,6 @@ export const Assets = new Mongo.Collection('assets');
 import Registrar from '/imports/lib/assets/contracts/Registrar.sol.js';
 import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.sol.js';
 import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.sol.js';
-
 Registrar.setProvider(web3.currentProvider);
 PreminedAsset.setProvider(web3.currentProvider);
 PriceFeed.setProvider(web3.currentProvider);

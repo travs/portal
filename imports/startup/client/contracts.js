@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 
 // Collections
-import { CoreContracts } from '/imports/api/coreContracts';
+import { Cores } from '/imports/api/cores';
 import { Registrars } from '/imports/api/modules';
 
 import EtherToken from '/imports/lib/assets/contracts/EtherToken.sol.js';
@@ -26,6 +26,6 @@ Meteor.startup(() => {
   Session.set('versionContractAddress', Version.all_networks['3'].address);
   Session.set('metaContractAddress', Meta.all_networks['3'].address);
 
-  Meteor.subscribe('coreContracts');
+  Meteor.subscribe('cores');
   Meteor.subscribe('registrars');
 });

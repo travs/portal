@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 // Collections
-import { CoreContracts } from '/imports/api/coreContracts';
+import { Cores } from '/imports/api/cores';
 import { Registrars } from '/imports/api/modules';
 
 // Server network
@@ -18,20 +18,20 @@ Template.registerHelper('clientMangerAccount', () => Session.get('clientMangerAc
 Template.registerHelper('clientMangerAccountBalance', () => Session.get('clientMangerAccountBalance'));
 Template.registerHelper('clientAccountList', () => Session.get('clientAccountList'));
 Template.registerHelper('getAccountCount', () => Session.get('getAccountCount'));
-// CoreContracts
-Template.registerHelper('getCoreContracts', () => CoreContracts.find({}, { sort: { createdAt: -1 } }));
-Template.registerHelper('getCoreCount', () => CoreContracts.find().count());
-Template.registerHelper('hasManagerCreatedCore', () => CoreContracts.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0);
-Template.registerHelper('getManagerAddressOfCore', () => (CoreContracts.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') }).address : false));
-Template.registerHelper('getManagerNameOfCore', () => (CoreContracts.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') }).name : false));
-Template.registerHelper('getManagerDeltaOfCore', () => (CoreContracts.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') }).delta : false));
-Template.registerHelper('getIsNewOfCore', () => (CoreContracts.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? CoreContracts.findOne({ managerAddress: Session.get('clientMangerAccount') }).isNew : false));
+// Cores
+Template.registerHelper('getCores', () => Cores.find({}, { sort: { createdAt: -1 } }));
+Template.registerHelper('getCoreCount', () => Cores.find().count());
+Template.registerHelper('hasManagerCreatedCore', () => Cores.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0);
+Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientMangerAccount') }).address : false));
+Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientMangerAccount') }).name : false));
+Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientMangerAccount') }).delta : false));
+Template.registerHelper('getIsNewOfCore', () => (Cores.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientMangerAccount') }).isNew : false));
 Template.registerHelper('isCoreManagerThisManager', coreManagerAccount => coreManagerAccount === Session.get('clientMangerAccount'));
 // Modules
 Template.registerHelper('getRegistrars', () => Registrars.find({}, { sort: { index: 1 } }));
 Template.registerHelper('getRegistrarOfThisPortfolioManager', () => {
   //TODO case for when portfolio manager has more than one core
-  const registrarAddress = CoreContracts.findOne({
+  const registrarAddress = Cores.findOne({
     managerAddress: Session.get('clientMangerAccount')
   }).registrarAddress
 

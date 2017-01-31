@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 // Collections
-import { CoreContracts } from '/imports/api/coreContracts';
+import { Cores } from '/imports/api/cores';
 import { Registrars } from '/imports/api/modules';
 // Contracts
 import Version from '/imports/lib/assets/contracts/Version.sol.js';
@@ -14,7 +14,7 @@ import './portal_new.html';
 const ADDRESS_PLACEHOLDER = '0x0';
 
 Template.portal_new.onCreated(() => {
-  Meteor.subscribe('coreContracts');
+  Meteor.subscribe('cores');
   Meteor.subscribe('registrars');
   // Creation of contract object
   Version.setProvider(web3.currentProvider);
@@ -91,7 +91,7 @@ Template.portal_new.events({
       } else {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         // Insert into Portfolio collection
-        Meteor.call('coreContracts.insert',
+        Meteor.call('cores.insert',
           portfolioAddress,
           portfolioName,
           managerAddress,
