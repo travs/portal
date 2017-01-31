@@ -14,36 +14,31 @@
         <div class="row">
           <form class="col s12 investOrRedeem">
             <div class="row">
-
               <div class="input-field col s12">
                   <select id="type">
                   <option value="0" selected>Invest</option>
                   <option value="1">Redeem</option>
                 </select>
               </div>
-              <!-- TODO Text filed -->
               <div class="input-field col s12">
-                <input id="price" type="text" class="validate" value="{{dapp_formatBalance (getPortfolioDoc.sharePrice) "0,0.0[00]" "finney"}}">
-                <label for="price" active>Price (Finney/Share)</label>
+                <input id="price" type="number" step="any" class="validate" value="{{formattedSharePrice}}">
+                <label for="price" active>Price (Ether/Share)</label>
               </div>
               <div class="input-field col s12">
-                <input id="volume" type="text" class="validate">
+                <input id="volume" type="number" step="any" class="validate">
                 <label for="volume">Volume (Shares)</label>
               </div>
               <div class="input-field col s12">
-                <input id="total" type="text" class="validate">
-                <label for="total">Total (Finney)</label>
+                <input id="total" type="number" step="any" class="validate">
+                <label for="total">Total (Ether)</label>
               </div>
             </div>
           </form>
         </div>
         <div class="card-action">
-          <a class="manage waves-effect waves-light btn blue lighten-2">{{isInvestingSelected}}</a>
+          <a class="manage waves-effect waves-light btn blue lighten-2">{{selectedTypeName}}</a>
         </div>
       </div>
     </div>
-    $(function() {
-    Materialize.updateTextFields();
-    });
 
 </template>
