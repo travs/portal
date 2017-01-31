@@ -94,9 +94,10 @@ Template.manage_participation.events({
 
     // Init
     const managerAddress = Session.get('clientMangerAccount');
-    const doc = Cores.findOne({ managerAddress });
-    if (doc === undefined) { Materialize.toast('Undefined document', 4000, 'red'); return; }
-    const coreAddress = doc.address;
+    const coreAddress = FlowRouter.getParam('address');
+    const doc = Cores.findOne({ address: coreAddress });
+    // Check if core is stored in database
+    if (doc === undefined) { Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red'); return; }
     const coreContract = Core.at(coreAddress);
 
     // Is mining
