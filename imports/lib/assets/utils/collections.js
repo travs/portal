@@ -2,12 +2,15 @@ const constants = require('./constants.js');
 const specs = require('./specs.js');
 const async = require('async');
 
+import Exchange from '/imports/lib/assets/contracts/Exchange.sol.js';
+Exchange.setProvider(web3.currentProvider);
+
 // Offers
 
 // Pre:
 // Post:
 exports.syncOffer = (id, callback) => {
-  Exchange.deployed().offers(id)
+  Exchange.at(Exchange.all_networks['3'].address).offers(id)
   .then((res) => {
     const [sellHowMuch, sellWhichTokenAddress, buyHowMuch, buyWhichTokenAddress, owner, active] = res;
     if (active) {
@@ -15,8 +18,8 @@ exports.syncOffer = (id, callback) => {
       const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichTokenAddress);
       const sellSymbol = specs.getTokenSymbolByAddress(sellWhichTokenAddress);
       const buySymbol = specs.getTokenSymbolByAddress(buyWhichTokenAddress);
-      const buyHowMuchValue = buyHowMuch / (10 ** buyPrecision);
-      const sellHowMuchValue = sellHowMuch / (10 ** sellPrecision);
+      const buyHowMuchValue = buyHowMuch / (Math.pow(10, buyPrecision));
+      const sellHowMuchValue = sellHowMuch / (Math.pow(10, sellPrecision));
       const offer = {
         id,
         owner,
@@ -39,9 +42,10 @@ exports.syncOffer = (id, callback) => {
 // Pre:
 // Post:
 exports.sync = (callback) => {
-  Exchange.deployed().lastOfferId()
+  Exchange.at(Exchange.all_networks['3'].address).lastOfferId()
   .then((result) => {
     const numOffers = result.toNumber();
+    console.log(`numOffers: ${numOffers}`)
     async.times(numOffers, (id, callbackMap) => {
       this.syncOffer(id + 1, (err, offer) => {
         if (!err) {

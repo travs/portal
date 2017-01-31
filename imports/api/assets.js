@@ -1,16 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-// Collections
-export const Assets = new Mongo.Collection('assets');
 // Smart contracts
 import Registrar from '/imports/lib/assets/contracts/Registrar.sol.js';
 import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.sol.js';
 import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.sol.js';
+
 Registrar.setProvider(web3.currentProvider);
 PreminedAsset.setProvider(web3.currentProvider);
 PriceFeed.setProvider(web3.currentProvider);
 const registrarContract = Registrar.at(Registrar.all_networks['3'].address);
+
+// Collections
+export const Assets = new Mongo.Collection('assets');
 
 if (Meteor.isServer) {
   // This code only runs on the server
