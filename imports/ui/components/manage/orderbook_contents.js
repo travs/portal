@@ -15,24 +15,6 @@ Template.orderbook_contents.onCreated(() => {
 });
 
 Template.orderbook_contents.helpers({
-  assets() {
-    const docs = [];
-    for (let i = 0; i < Specs.getTokens().length; i += 1) {
-      const address = Specs.getTokenAddress(Specs.getTokens()[i]);
-      docs.push(Assets.findOne({ address }, { sort: { createdAt: -1 } }));
-    }
-    return docs;
-  },
-  address() {
-    return FlowRouter.getParam('address');
-  },
-  formatPrice() {
-    if (Object.keys(this).length === 0) return '';
-    const precision = this.precision;
-    const divisor = Math.pow(10, precision);
-    const price = this.priceFeed.price / divisor;
-    return price;
-  },
 });
 
 Template.orderbook_contents.onRendered(() => {

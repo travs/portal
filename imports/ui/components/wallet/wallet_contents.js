@@ -18,8 +18,9 @@ Template.wallet_contents.helpers({
   assets() {
     const docs = [];
     for (let i = 0; i < Specs.getTokens().length; i += 1) {
-      const address = Specs.getTokenAddress(Specs.getTokens()[i]);
-      docs.push(Assets.findOne({ address }, { sort: { createdAt: -1 } }));
+      const assetAddress = Specs.getTokenAddress(Specs.getTokens()[i]);
+      const assetHolderAddress = FlowRouter.getParam('address');
+      docs.push(Assets.findOne({ address: assetAddress, holder: assetHolderAddress }, { sort: { createdAt: -1 } }));
     }
     return docs;
   },

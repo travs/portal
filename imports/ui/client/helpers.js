@@ -19,7 +19,7 @@ Template.registerHelper('clientMangerAccountBalance', () => Session.get('clientM
 Template.registerHelper('clientAccountList', () => Session.get('clientAccountList'));
 Template.registerHelper('getAccountCount', () => Session.get('getAccountCount'));
 // Cores
-Template.registerHelper('getCores', () => Cores.find({}, { sort: { createdAt: -1 } }));
+Template.registerHelper('getCores', () => Cores.find({}, { sort: { notional: -1, sharePrice: -1 } }));
 Template.registerHelper('getCoreCount', () => Cores.find().count());
 Template.registerHelper('hasManagerCreatedCore', () => Cores.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0);
 Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ managerAddress: Session.get('clientMangerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientMangerAccount') }).address : false));

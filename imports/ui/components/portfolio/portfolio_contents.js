@@ -18,21 +18,34 @@ Template.portfolio_contents.helpers({
   assets() {
     const docs = [];
     for (let i = 0; i < Specs.getTokens().length; i += 1) {
-      const address = Specs.getTokenAddress(Specs.getTokens()[i]);
-      docs.push(Assets.findOne({ address }, { sort: { createdAt: -1 } }));
+      const assetAddress = Specs.getTokenAddress(Specs.getTokens()[i]);
+      const assetHolderAddress = FlowRouter.getParam('address');
+      docs.push(Assets.findOne({ address: assetAddress, holder: assetHolderAddress }, { sort: { createdAt: -1 } }));
     }
     return docs;
   },
   address() {
     return FlowRouter.getParam('address');
   },
-  formatPrice() {
+  convertFromTokenPrecision(value) {
     if (Object.keys(this).length === 0) return '';
     const precision = this.precision;
     const divisor = Math.pow(10, precision);
-    const price = this.priceFeed.price / divisor;
-    return price;
+    return value / divisor;
   },
+  convertTo18Precision(value) {
+    if (Object.keys(this).length === 0) return '';
+    const precision = this.precision;
+    const multiplier = Math.pow(10, 18 - precision);
+    return parseFloat(value, 10) * multiplier;
+  },
+  invertValue(value) {
+    // TODO fix function naming
+    return web3.toWei(1.0 / parseFloat(value, 10), 'ether');
+  },
+  portfolioPercentrage() {
+
+  }
 });
 
 Template.portfolio_contents.onRendered(() => {

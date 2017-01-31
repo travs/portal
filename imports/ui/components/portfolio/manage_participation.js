@@ -127,8 +127,6 @@ Template.manage_participation.events({
         Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
         return coreContract.totalSupply();
       });
-    } else {
-      console.log('Error invstingSelected value');
     }
   },
 });

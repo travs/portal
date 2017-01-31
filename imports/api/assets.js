@@ -17,8 +17,8 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'assets.sync'(address) {
-    check(address, String);
+  'assets.sync'(assetHolderAddress) {
+    check(assetHolderAddress, String);
     // TODO build function
     registrarContract.numAssignedAssets().then((assignedAssets) => {
       const numAssignedAssets = assignedAssets.toNumber();
@@ -49,7 +49,7 @@ Meteor.methods({
         })
         .then((result) => {
           assetPrecision = result.toNumber();
-          return assetContract.balanceOf(address);
+          return assetContract.balanceOf(assetHolderAddress);
         })
         .then((result) => {
           assetHoldings = result.toNumber();
@@ -68,12 +68,13 @@ Meteor.methods({
           lastUpdate = result.toNumber();
           // console.log(`\n Current Price: ${currentPrice} @ ${lastUpdate}`)
           let res = Assets.update(
-            { address: assetAddress },
+            { address: assetAddress, assetHolderAddress },
             { $set: {
               address: assetAddress,
               name: assetName,
               symbol: assetSymbol,
               precision: assetPrecision,
+              holder: assetHolderAddress,
               holdings: assetHoldings,
               priceFeed: {
                 address: priceFeedAddress,
@@ -81,10 +82,10 @@ Meteor.methods({
                 timestamp: lastUpdate,
               },
               createdAt: new Date(),
-            }
-          }, {
-            upsert: true
-          });
+            },
+            }, {
+              upsert: true,
+            });
         });
       }
     });
