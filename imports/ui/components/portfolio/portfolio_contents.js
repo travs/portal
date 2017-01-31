@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
+import { ReactiveVar } from 'meteor/reactive-var';
 
 // Collections
 import { Assets } from '/imports/api/assets.js';
@@ -14,16 +15,27 @@ import './portfolio_contents.html';
 
 Template.portfolio_contents.onCreated(() => {
   Meteor.subscribe('assets');
+  // Portfolio Value in Wei
+  Template.instance().totalPortfolioValue = new ReactiveVar();
 });
 
 Template.portfolio_contents.helpers({
   assets() {
     const docs = [];
+    let value = 0;
     for (let i = 0; i < Specs.getTokens().length; i += 1) {
       const assetAddress = Specs.getTokenAddress(Specs.getTokens()[i]);
       const assetHolderAddress = FlowRouter.getParam('address');
-      docs.push(Assets.findOne({ address: assetAddress, holder: assetHolderAddress }, { sort: { createdAt: -1 } }));
+      const doc = Assets.findOne({ address: assetAddress, holder: assetHolderAddress }, { sort: { createdAt: -1 } });
+      if (doc === undefined) return '';
+      const holdings = parseInt(doc.holdings, 10);
+      const price = parseInt(doc.priceFeed.price, 10);
+      const precision = parseInt(doc.precision, 10);
+      const divisor = Math.pow(10, precision);
+      value += holdings * (price / divisor);
+      docs.push(doc);
     }
+    Template.instance().totalPortfolioValue.set(value);
     return docs;
   },
   address() {
@@ -46,7 +58,12 @@ Template.portfolio_contents.helpers({
     return web3.toWei(1.0 / parseFloat(value, 10), 'ether');
   },
   portfolioPercentrage() {
-
+    const holdings = parseInt(this.holdings, 10);
+    const price = parseInt(this.priceFeed.price, 10);
+    const precision = parseInt(this.precision, 10);
+    const divisor = Math.pow(10, precision);
+    const value = holdings * (price / divisor);
+    return (value * 100) / Template.instance().totalPortfolioValue.get();
   },
   change24h() {
     switch (this.name) {
