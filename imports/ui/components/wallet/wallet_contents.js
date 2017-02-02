@@ -61,6 +61,7 @@ Template.wallet_contents.helpers({
     const precision = parseInt(this.precision, 10);
     const divisor = Math.pow(10, precision);
     const value = holdings * (price / divisor);
+    if (Template.instance().totalPortfolioValue.get() === 0) return 0;
     return (value * 100) / Template.instance().totalPortfolioValue.get();
   },
   change24h() {
