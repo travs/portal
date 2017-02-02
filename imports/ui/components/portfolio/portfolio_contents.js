@@ -5,6 +5,7 @@ import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 // Collections
+import { Cores } from '/imports/api/cores';
 import { Assets } from '/imports/api/assets.js';
 import Specs from '/imports/lib/assets/utils/specs.js';
 
@@ -12,12 +13,18 @@ import Specs from '/imports/lib/assets/utils/specs.js';
 import './portfolio_contents.html';
 
 Template.portfolio_contents.onCreated(() => {
+  Meteor.subscribe('cores');
   Meteor.subscribe('assets');
   // Portfolio Value in Wei
   Template.instance().totalPortfolioValue = new ReactiveVar();
 });
 
 Template.portfolio_contents.helpers({
+  getPortfolioDoc() {
+    const address = FlowRouter.getParam('address');
+    const doc = Cores.findOne({ address });
+    return (doc === undefined || address === undefined) ? '' : doc;
+  },
   assets() {
     const docs = [];
     let value = 0;
