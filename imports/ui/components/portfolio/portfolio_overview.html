@@ -21,9 +21,12 @@
                 {{dapp_formatBalance (getPortfolioDoc.notional) "0,0.0[00] UNIT" 'eur'}}
               </a>
             </li>
-            <li> Personal Stake: N/A</li>
-            <li> Value Stake: N/A</li>
-            <li> PnL: N/A</li>
+            <br/>
+            <hr/>
+            <br/>
+            <li> Personal Stake: {{getPersonalStake}} Shares</li>
+            <li> Value Stake: {{dapp_formatBalance (getShareAmount) "0,0.0[00] UNIT" 'eur'}}</li>
+            <li> PnL: ±0.0</li>
           </ul>
         </div>
         {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
