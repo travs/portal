@@ -26,48 +26,60 @@ Template.wallet_overview.onRendered(() => {});
 
 
 Template.wallet_overview.events({
-  'click .fund_wallet'() {
+  'click .fund_wallet': () => {
     const address = Session.get('clientMangerAccount');
-    Meteor.call('sendTestnetEther', address, (err) => {
-      if(!err) {
-        Materialize.toast('We\'ve sent you some funds', 30000, 'green');
+
+    Meteor.call('sendTestnetEther', address, (err, res) => {
+      if (!err) {
+        const amount = parseInt(web3.fromWei(parseInt(res.data, 10), 'ether'), 10);
+        const msg = res.message;
+        if (amount === 0) {
+          Materialize.toast(`Ethereum Faucet says: "${msg}"`, 30000, 'red');
+          Materialize.toast(`Go to: https://faucet.metamask.io/ for an alternative faucet`, 30000, 'blue');
+        } else {
+          Materialize.toast(`Sent ${amount} ETH to your account.  Wait a few seconds and let it rain!`, 30000, 'green');        }
       } else {
         console.log(err);
       }
     });
-
-    // Wallet listen
-    const balance = Session.get('clientMangerAccountBalance');
-    var filter = web3.eth.filter('latest').watch(() => {
-      let currBalance;
-      web3.eth.getBalance(address, (error, result) => {
-        if(!error) {
-          currBalance = result.toNumber();
-        } else {
-          Session.set('clientMangerAccountBalance', undefined);
-        }
-      });
-      // Check if Balance has changed
-      if (currBalance !== balance) {
-        if (currBalance === 0) {
-          Materialize.toast('Congratulations! Your Account has been funded', 6000, 'green');
-          Materialize.toast('Go ahead and create a portfolio now', 4000, 'blue');
-        } else {
-          Materialize.toast('Balance has changed', 4000, 'orange');
-        }
-        // Uninstall Filter
-        filter.stopWatching();
-      }
-    });
+    // TODO implement cleaner
+    // // Wallet refresh
+    // web3.eth.getBalance(web3.eth.defaultAccount, (err, res) => {
+    //   if (!err) {
+    //     const balance = res;
+    //     // Wallet listen
+    //     const filter = web3.eth.filter('latest').watch(() => {
+    //       let currBalance;
+    //       web3.eth.getBalance(address, (err, res) => {
+    //         if (!err) {
+    //           currBalance = res.toNumber();
+    //         } else {
+    //           Session.set('clientMangerAccountBalance', undefined);
+    //         }
+    //       });
+    //       // Check if Balance has changed
+    //       if (currBalance !== balance) {
+    //         if (currBalance === 0) {
+    //           Materialize.toast('Congratulations! Your Account has been funded', 6000, 'green');
+    //           Materialize.toast('Go ahead and create a portfolio now', 4000, 'blue');
+    //         } else {
+    //           Materialize.toast('Balance has changed', 4000, 'orange');
+    //         }
+    //         // Uninstall Filter
+    //         filter.stopWatching();
+    //       }
+    //     });
+    //   }
+    // });
   },
-  'click .refresh-wallets'(event) {
+  'click .refresh-wallets': (event) => {
     // Prevent default browser form submit
     event.preventDefault();
 
     // Refresh all wallets
-    web3.eth.getBalance(web3.eth.defaultAccount, (error, result) => {
-      if (!error) {
-        Session.set('clientMangerAccountBalance', result.toNumber());
+    web3.eth.getBalance(web3.eth.defaultAccount, (err, res) => {
+      if (!err) {
+        Session.set('clientMangerAccountBalance', res.toNumber());
       } else {
         Session.set('clientMangerAccountBalance', undefined);
       }

@@ -12,7 +12,7 @@ import './manage_overview.html';
 
 Template.manage_overview.onCreated(() => {
   Meteor.subscribe('cores');
-  //TODO send command to server to update current coreContract
+  // TODO send command to server to update current coreContract
 });
 
 
@@ -28,15 +28,4 @@ Template.manage_overview.helpers({
 Template.manage_overview.onRendered(() => {});
 
 
-Template.manage_overview.events({
-  'click .delete'() {
-    const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
-    if ((doc === undefined || address === undefined)) {
-      return false;
-    } else {
-      Meteor.call('cores.remove', doc._id);
-      Materialize.toast('Portfolio deleted!', 4000, 'blue');
-    }
-  },
-});
+Template.manage_overview.events({});

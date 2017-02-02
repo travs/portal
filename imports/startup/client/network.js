@@ -146,9 +146,18 @@ function checkIfServerIsConncected() {
 function getTestnetEther() {
   if (Session.get('network') === 'Ropsten' && Session.get('clientMangerAccountBalance') <= web3.toWei('1', 'ether')) {
     const address = Session.get('clientMangerAccount');
-    Meteor.call('sendTestnetEther', address, (err) => {
-      if(!err) {
-        Materialize.toast('We\'ve seen you\'re low on cash so we\'ve sent you some. Wait a few seconds and let it rain!', 30000, 'green');
+    // TODO outsource in library
+    Meteor.call('sendTestnetEther', address, (err, res) => {
+      if (!err) {
+        Materialize.toast('We\'ve seen you\'re low on cash so requested some for you.', 30000, 'green');
+        const amount = parseInt(web3.fromWei(parseInt(res.data, 10), 'ether'), 10);
+        const msg = res.message;
+        if (amount === 0) {
+          Materialize.toast(`Ethereum Faucet says: "${msg}"`, 30000, 'red');
+          Materialize.toast(`Go to: https://faucet.metamask.io/ for an alternative faucet`, 30000, 'blue');
+        } else {
+          Materialize.toast(`Sent ${amount} ETH to your account.  Wait a few seconds and let it rain!`, 30000, 'green');
+        }
       } else {
         console.log(err);
       }

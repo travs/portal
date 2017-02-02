@@ -31,15 +31,15 @@ Template.portal_new.onRendered(() => {
 
 
 Template.portal_new.events({
-  'change form#new_portfolio #registrar_select'(event) {
+  'change form#new_portfolio #registrar_select': (event) => {
     // Get value from form element
     const target = event.target;
     if (target.value === 'melon') {
       // Materialize.toast('Good choice. Now verifiy the accuracy of this registar', 4000, 'blue');
-      Session.set('selectedRegistarIsMelon', true)
+      Session.set('selectedRegistarIsMelon', true);
     }
   },
-  'submit form#new_portfolio'(event) {
+  'submit form#new_portfolio': (event) => {
     // Prevent default browser form submit
     event.preventDefault();
     // Get value from form element

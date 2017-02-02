@@ -38,9 +38,11 @@
           </tbody>
         </table>
       </div>
-      <div class="card-action">
-        <a href="/manage/{{address}}" class="delete waves-effect waves-light btn blue lighten-2">Manage</a>
-      </div>
+      {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
+        <div class="card-action">
+          <a href="/manage/{{address}}" class="delete waves-effect waves-light btn blue lighten-2">Manage</a>
+        </div>
+      {{/if}}
     </div>
 
 </template>
