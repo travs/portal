@@ -94,10 +94,17 @@ Template.manage_participation.events({
 
     // Init
     const managerAddress = Session.get('clientMangerAccount');
+    if (managerAddress === undefined) {
+      Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
+      return;
+    }
     const coreAddress = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address: coreAddress });
     // Check if core is stored in database
-    if (doc === undefined) { Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red'); return; }
+    if (doc === undefined) {
+      Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
+      return;
+    }
     const coreContract = Core.at(coreAddress);
 
     // Is mining
