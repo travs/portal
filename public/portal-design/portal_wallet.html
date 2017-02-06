@@ -44,7 +44,7 @@
 				</div>
 				<div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
 					<div class="row">
-						<div class="hero-network-summary col-md-6">
+						<div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
 							<span>Melon Summary</span>
 							<ul>
 								<li>
@@ -61,7 +61,7 @@
 								</li>
 							</ul>
 						</div>
-						<div class="hero-network-summary col-md-6">
+						<div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
 							<span>Executive Summary</span>
 							<ul>
 								<li>
@@ -97,14 +97,14 @@
 						<div class="exchange-overview-block">
 							<div class="form-horizontal mp-form">
 								<div class="form-group">
-									<label class="col-md-4 control-label" for="name">Address</label>
-									<div class="col-md-8">
+									<label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Address</label>
+									<div class="col-md-8 col-sm-8 col-xs-12">
 										<p>0xaaaaaaaaaaaaaaaaaaaa....aaaa</p>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-4 control-label" for="name">Wallet Balance:</label>
-									<div class="col-md-8">
+									<label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Wallet Balance:</label>
+									<div class="col-md-8 col-sm-8 col-xs-12">
 										<p>35.896 EUR</p>
 									</div>
 								</div>
@@ -120,25 +120,25 @@
 						<div class="exchange-overview-block">
 							<div class="form-horizontal mp-form">
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="type_buy">Reference</label>
-									<div class="col-md-6">
-										<select class="form-control select-form">
+									<label class="col-md-3 col-sm-3 col-xs-12 control-label" for="type_buy">Reference</label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<select class="selectpicker select-form">
 											<option>EUR</option>
 											<option>GBR</option>
 										</select>
 									</div>
-									<span class="col-md-3">Currency</span>
+									<span class="col-md-3 col-sm-3 col-xs-12">Currency</span>
 								</div>
 								<div class="line-divider"></div>
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="type_buy">Manage</label>
-									<div class="col-md-6">
-										<select class="form-control select-form">
+									<label class="col-md-3 col-sm-3 col-xs-12 control-label" for="type_buy">Manage</label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<select class="selectpicker select-form">
 											<option>Melon Capital</option>
 											<option>GBR</option>
 										</select>
 									</div>
-									<span class="col-md-3">Participation</span>
+									<span class="col-md-3 col-sm-3 col-xs-12">Participation</span>
 								</div>
 								<div class="form-group">
 									<a href="#" class="fl-right btn btn-light-blue mt-20">Manage</a>
@@ -218,7 +218,7 @@
 	</section>
 
 	<!-- footer section -->
-	<footer class="mp-footer">
+	<footer class="mp-footer mp-footer-portal">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3 col-sm-3 col-xs-12 footer-logo">
@@ -248,14 +248,14 @@
 				"bInfo": false,
 				"bAutoWidth": false
 			});
-			d3.json('data/fake_users1.json', function(data) {
+			d3.json('../data/fake_users1.json', function(data) {
 				data = MG.convert.date(data, 'date');
 				MG.data_graphic({
 					title: "",
 					description: "For single line charts, there are two simple ways to change a line color. The first is to change the css (described on the wiki). The other is to specify a color value using color: string or colors: string.",
 					data: data,
-					width: 600,
-					height: 200,
+					full_width: true,
+					height: 250,
 					right: 40,
 					color: '#1189c6',
 					target: '#charts',

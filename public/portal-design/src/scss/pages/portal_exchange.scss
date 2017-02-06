@@ -1,8 +1,16 @@
 .select-form{
-	border-radius: 0 !important;
-	height: 50px;
-	box-shadow: none;
-	-webkit-appearance: none;
+	width: 100% !important;
+	.selectpicker{
+		border-radius: 0 !important;
+		height: 50px;
+		box-shadow: none;
+		span{
+			padding-top: 0 !important;
+		}
+		&:focus{
+			outline: none !important;
+		}
+	}
 }
 .custom-switch{
 	.bootstrap-switch{
@@ -33,6 +41,10 @@ text {
 }
 li {
 	color: #cfcfcf;
+}
+.mg-active-datapoint {
+    fill: #fff;
+    font-size: 11.5px;
 }
 // title
 .exchange-title{
@@ -79,6 +91,7 @@ li {
 						p{
 							&.green, &.red, &.blue{
 								font-weight: $font-weight-medium;
+								font-size: $font-size-normal - 1;
 							}
 						}
 					}
@@ -156,6 +169,267 @@ li {
 					.table-load-more{
 						border-top: 0;
 					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: $screen-xs-max){ 
+	.table-responsive{
+		border: 0;
+		margin-bottom: 0;
+	}
+	.mp-portal{
+		&.portal-exchange{
+			.mp-exchange-table{
+				margin-top: 0 !important;
+				thead{
+					tr{
+						th{
+							padding: 15px 20px;
+							&::after{
+								right: 5px;
+							}
+						}
+					}
+				}
+				tbody{
+					tr{
+						td{
+							padding: 15px 20px;
+						}
+					}
+				}
+			}
+			.exchange-overview{
+				margin-bottom: $spacing-lg;
+				&.wallet{
+					.asset-overview-wrapper{
+						min-height: 410px !important;
+					}
+				}
+				.asset-overview-wrapper{
+					min-height: 555px;
+					padding: $spacing-md;
+					.exchange-overview-block{
+						.form-group{
+							.col-xs-12{
+								p{
+									text-align: left;
+									padding-top: 0;
+								}
+							}
+							span.col-xs-12{
+								padding-top: 5px;
+							}
+						}
+					}
+				}
+			}
+			.exchange-order{
+				.exchange-order-wrapper{
+					.order-book-more{
+						.table-load-more{
+							padding: 30px;							
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: $screen-xs-max)
+and (orientation: portrait){ 
+	.mp-portal{
+		&.portal-exchange{
+			.exchange-overview{
+				.asset-overview-wrapper{
+					min-height: 555px;
+					padding: $spacing-md;
+					.exchange-overview-header{
+						.badge{
+							display: block;
+							margin-top: 10px;
+							float: left;
+						}
+						.line-divider{
+							margin-top: 60px !important;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: $screen-xs-max)
+and (orientation: landscape){ 
+
+}
+@media (min-width: $screen-sm-min) 
+and (max-width: $screen-ipad){ 
+	.mp-portal{
+		&.portal-exchange{
+			.exchange-overview{
+				.asset-overview-wrapper{
+					.exchange-overview-block{
+						.mp-form{
+							.line-divider{
+								margin: 30px 0;
+							}
+							.form-group{
+								width: 100%;
+								margin-bottom: $spacing-md;
+								.col-xs-12{
+									padding-right: 0;
+								}
+								.custom-switch{
+									text-align: right;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (min-width: $screen-sm-min) 
+and (max-width: $screen-ipad)
+and (orientation: portrait){ 
+	.mp-portal-hero{
+		.hero-text{
+			padding: $spacing-lg * 2 0;
+		}
+	}
+	.mp-portal{
+		&.portal-exchange{
+			.mp-exchange-table{
+				margin-bottom: 0 !important;
+				&.order-book{
+					thead{
+						tr{
+							th{
+								width: 33%;
+							}
+						}
+					}
+				}
+				thead{
+					tr{
+						background: #f6f6f6;
+						th{
+							text-align: left;
+							padding: 15px 15px 15px 50px;
+							&::after{
+								vertical-align: middle;
+								top: 30px;
+								right: 30px;
+							}
+						}
+					}
+				}
+				tbody{
+					tr{
+						td{
+							padding: 15px 15px 15px 50px;
+							text-align: left;
+							p{
+								&.green, &.red, &.blue{
+									font-weight: $font-weight-medium;
+									font-size: $font-size-normal - 1;
+								}
+							}
+						}
+					}
+				}
+			}
+			.exchange-overview{
+				margin-bottom: $spacing-lg;
+				&.wallet{
+					.asset-overview-wrapper{
+						min-height: 410px !important;
+					}
+				}
+				.asset-overview-wrapper{
+					min-height: 555px;
+					border: 1px solid #dddddd;
+					.exchange-overview-header{
+						margin-bottom: $spacing-lg;
+						&.asset{
+							margin-bottom: $spacing-md;
+							.line-divider{
+								margin: 30px 0 10px;
+							}
+						}
+						.badge{
+							float: right;
+							border-radius: 2px;
+						}
+					}
+					.exchange-overview-block{
+						.mp-form{
+							.line-divider{
+								margin: 30px 0;
+							}
+							.form-group{
+								input{
+								}
+								label, span, p{
+									padding-top: 15px;
+								}
+								label{
+									font-size: $font-size-normal;
+									font-weight: $font-weight-medium;
+									text-align: left;
+								}
+								span, p{
+									font-size: $font-size-normal;
+									font-weight: $font-weight-regular;
+									color: $par-grey;
+								}
+								p{
+									text-align: right;
+									margin-bottom: 0;
+								}
+							}
+						}
+					}
+				}
+			}
+			.exchange-order{
+				margin-bottom: $spacing-lg;
+				.exchange-order-wrapper{
+					border: 1px solid #dddddd;
+					border-bottom: 0;
+					.order-book-head{
+						padding: 30px;
+					}
+					.order-book-table{
+
+					}
+					.order-book-more{
+						.table-load-more{
+							border-top: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (min-width: $screen-sm-min) 
+and (max-width: $screen-ipad)
+and (orientation: landscape){ 
+	.mp-portal-hero{
+		.hero-text{
+			padding: $spacing-lg + $spacing-md 0;
+		}
+	}
+	.mp-portal{
+		&.portal-exchange{
+			.exchange-overview{
+				.asset-overview-wrapper{
+					padding: 30px;
 				}
 			}
 		}
