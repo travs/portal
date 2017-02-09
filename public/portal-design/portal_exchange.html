@@ -7,7 +7,7 @@
 	<title>Landing Page</title>
 
 	<link href="dist/css/style.min.css" rel="stylesheet">
-	<link href="../dist/css/custom.min.css" rel="stylesheet">
+	<link href="dist/css/custom.min.css" rel="stylesheet">
 </head>
 <body>
 	<nav class="navbar navbar-default nav-header nav-portal">
@@ -258,46 +258,46 @@
 									<table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%">
 										<thead>
 											<tr>
-												<th>Cum. Vol. <p>(BTC)</p></th>
-												<th>Vol <p>(BTC)</p></th>
 												<th>Sell Price <p>(ETC/BTC)</p></th>
+												<th>Vol <p>(BTC)</p></th>
+												<th>Cum. Vol. <p>(BTC)</p></th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
+												<td>0.323244</td>
 												<td>100</td>
 												<td>100</td>
-												<td>0.523244</td>
 											</tr>
 											<tr>
+												<td>0.423244</td>
 												<td>100</td>
 												<td>100</td>
-												<td>0.523244</td>
 											</tr>
 											<tr>
+												<td>0.323244</td>
 												<td>100</td>
 												<td>100</td>
-												<td>0.523244</td>
 											</tr>
 											<tr>
+												<td>0.423244</td>
 												<td>100</td>
 												<td>100</td>
-												<td>0.523244</td>
 											</tr>
 											<tr>
+												<td>0.323244</td>
 												<td>100</td>
 												<td>100</td>
-												<td>0.523244</td>
 											</tr>
 											<tr>
+												<td>0.423244</td>
 												<td>100</td>
 												<td>100</td>
-												<td>0.523244</td>
 											</tr>				
 											<tr>
+												<td>0.323244</td>
 												<td>100</td>
 												<td>100</td>
-												<td>0.523244</td>
 											</tr>
 										</tbody>
 									</table>
@@ -482,7 +482,7 @@
 				"bInfo": false,
 				"bAutoWidth": false
 			});
-			d3.json('../data/fake_users1.json', function(data) {
+			d3.json('data/fake_users1.json', function(data) {
 				data = MG.convert.date(data, 'date');
 				MG.data_graphic({
 					title: "",
