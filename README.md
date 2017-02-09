@@ -22,7 +22,7 @@ Application of the melon protocol portal.
 
 ## Getting started
 
-After installation is complete,:
+After installation is complete
 
 1. Launch a ethereum client. For example something similar to this:
     ```
