@@ -22,8 +22,14 @@ Application of the melon protocol portal.
 
 ## Getting started
 
-After installation is complete, go to the above `portal` directory, open a terminal and launch meteor:
+After installation is complete,:
 
-  ```
-  meteor
-  ```
+1. Launch a ethereum client. For example something similar to this:
+    ```
+    parity --chain ropsten
+    ```
+
+2. Go to the above `portal` directory, open a terminal and launch meteor:
+    ```
+    meteor
+    ```
