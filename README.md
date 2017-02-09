@@ -24,7 +24,7 @@ Application of the melon protocol portal.
 
 After installation is complete
 
-1. Launch a ethereum client. For example something similar to this:
+1. Launch an ethereum client. For example something similar to this:
     ```
     parity --chain ropsten
     ```
