@@ -26,7 +26,7 @@ After installation is complete
 
 1. Launch an ethereum client. For example something similar to this:
     ```
-    parity --chain ropsten
+    parity --chain ropsten -lrpc=trace --rpcport 8546
     ```
 
 2. Go to the above `portal` directory, open a terminal and launch meteor:
