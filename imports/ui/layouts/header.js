@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
-import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
 import { Cores } from '/imports/api/cores';
@@ -28,7 +27,8 @@ Template.layout_header.events({
       const doc = Cores.findOne({ managerAddress: Session.get('clientMangerAccount') });
       if (doc.isNew === true) {
         Meteor.call('cores.setToUsed', doc._id);
-        Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
+        //TODO replace toast
+        // Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
       }
       FlowRouter.go(`/portfolio/${doc.address}`);
     }
@@ -45,7 +45,8 @@ Template.layout_header.events({
       const doc = Cores.findOne({ managerAddress: Session.get('clientMangerAccount') });
       if (doc.isNew === true) {
         Meteor.call('cores.setToUsed', doc._id);
-        Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
+        //TODO replace toast
+        // Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
       }
       FlowRouter.go(`/manage/${doc.address}`);
     }
