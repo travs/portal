@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { Materialize } from 'meteor/poetic:materialize-scss';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 // Collections
@@ -88,9 +89,23 @@ Template.wallet_contents.events({
     // Prevent default browser form submit
     event.preventDefault();
 
-    // Refresh all wallets
-
-    // Notification
-    Materialize.toast('Wallets refreshed', 4000, 'blue');
+    // Convert Eth Token
+    const assetAddress = Specs.getTokenAddress('ETH-T');
+    const assetHolderAddress = FlowRouter.getParam('address');
+    const doc = Assets.findOne({ address: assetAddress, holder: assetHolderAddress }, { sort: { createdAt: -1 } });
+    if (doc === undefined) return '';
+    const holdings = parseInt(doc.holdings, 10);
+    if (holdings === 0) Materialize.toast('All ETH Token already converted', 4000, 'blue');
+    else {
+      console.log(`Holdings: ${holdings}`)
+      EtherToken.at(assetAddress).withdraw(holdings, { from: assetHolderAddress }).then((result) => {
+        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+        // TODO insert txHash into appropriate collection
+        console.log(`Tx Hash: ${result}`);
+        Meteor.call('assets.sync', assetHolderAddress); // Upsert Assets Collection
+        // Notification
+        Materialize.toast('All ETH Token converted', 4000, 'green');
+      });
+    }
   },
 });
