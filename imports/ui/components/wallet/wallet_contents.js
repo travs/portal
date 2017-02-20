@@ -3,10 +3,11 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
-
 // Collections
 import { Assets } from '/imports/api/assets.js';
 import Specs from '/imports/lib/assets/utils/specs.js';
+// Contracts
+import EtherToken from '/imports/lib/assets/contracts/EtherToken.sol.js';
 
 // Corresponding html file
 import './wallet_contents.html';
@@ -15,6 +16,7 @@ Template.wallet_contents.onCreated(() => {
   Meteor.subscribe('assets');
   // Portfolio Value in Wei
   Template.instance().totalPortfolioValue = new ReactiveVar();
+  EtherToken.setProvider(web3.currentProvider);
 });
 
 Template.wallet_contents.helpers({
@@ -81,4 +83,14 @@ Template.wallet_contents.onRendered(() => {
   Meteor.call('assets.sync', address);
 });
 
-Template.wallet_contents.events({});
+Template.wallet_contents.events({
+  'click .convert_to_eth': (event) => {
+    // Prevent default browser form submit
+    event.preventDefault();
+
+    // Refresh all wallets
+
+    // Notification
+    Materialize.toast('Wallets refreshed', 4000, 'blue');
+  },
+});

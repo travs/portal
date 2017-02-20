@@ -72,7 +72,7 @@ Template.wallet_overview.events({
     //   }
     // });
   },
-  'click .refresh-wallets': (event) => {
+  'click .refresh_wallet': (event) => {
     // Prevent default browser form submit
     event.preventDefault();
 
