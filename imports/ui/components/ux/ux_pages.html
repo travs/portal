@@ -7,8 +7,15 @@
             {{#if clientManagerAccount}}
               {{#if isRopstenNetwork}}
                 {{#if hasManagerCreatedCore}}
-					           <h1>{{header}}</h1>
-					           <p>{{description}}</p>
+					           <h1>The future of finance with Melon</h1>
+                     <form>
+           						<div class="input-group input-newsletter">
+           							<input type="text" value="" class="form-control" placeholder="Search for Managers and Portfolios" required>
+           							<span class="input-group-link">
+           								<button type="submit" value="Subscribe" name="subscribe" class="button"><i class="ion-ios-search-strong"></i></button>
+           							</span>
+           						</div>
+           					</form>
                 {{else}}
                     <h1>You are good to go!</h1>
                     <p>Explore the future of finance with Melon</p>

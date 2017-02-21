@@ -1,79 +1,173 @@
 <template name="portal_new">
 
   {{#if isInactiveNetworkStatus}}
-    <div class="card">
-      <div class="card-content">
-        <div class="card-title">{{i18n 'dapp.components.create.header'}}</div>
-        <p>{{i18n 'dapp.components.create.description'}}</p>
-        <br/>
+  <section class="mp-portal setup-portfolio">
+    <!-- term&condition -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 setup-portfolio-wrapper">
           <div class="row">
-            <br/>
-            <hr/>
-            <br/>
-            <form class="col s12 new-portfolio" id="new_portfolio">
-              <div class="row">
-                <div class="input-field col s12">
-                  <input id="portfolio_name" type="text" class="validate" minlength="3" required>
-                  <label for="portfolio_name">Portfolio Name (Visible to others)</label>
-                </div>
+            <div class="col-md-12">
+              <div class="setup-header">
+                <h4>{{i18n 'dapp.components.create.header'}}</h4>
+                <p>{{i18n 'dapp.components.create.description'}}</p>
               </div>
-              <div class="row">
-                <div class="input-field col s12">
-                  <input id="manager_email" type="email" class="validate" minlength="3">
-                  <label for="manager_email">Your Email address (Optional)</label>
-                </div>
-              </div>
-              <br/>
-              <hr/>
-              <br/>
-              <div class="row">
-                <div class="input-field col s12">
-                  <select id="assetSelect" multiple>
-                    <option value="" disabled selected>Trading of your portfolio is restricted to the following assets.</option>
-                    <option value="1">Ether Token (ETH-T) - <a href="http://testnet.etherscan.io/address/{{etherTokenContractAddress}}" target="_blank">explore</a></option>
-                    <option value="2">Bitcoin Token (BTC-T) - <a href="http://testnet.etherscan.io/address/{{bitcoinTokenContractAddress}}" target="_blank">explore</a></option>
-                    <option value="3">Rep Token (Rep) - <a href="http://testnet.etherscan.io/address/{{repTokenContractAddress}}" target="_blank">explore</a></option>
-                    <option value="4">Euro Token (EUR-T) - <a href="http://testnet.etherscan.io/address/{{euroTokenContractAddress}}" target="_blank">explore</a></option>
-                  </select>
-                  <label>Asset Class Module</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="input-field col s12">
-                  <select id="exchangeSelect">
-                    <option value="" disabled selected>Exchange used to trade assets of your portfolio.</option>
-                    <option value="1">Melon Exchange - <a href="https://daemon.melonport.com/liquidityprovider" target="_blank">explore</a></option>
-                  </select>
-                  <label>Exchange Module</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="input-field col s12">
-                  <select id="pricefeedSelect">
-                    <option value="" disabled selected>Price Feed used to evaluate your portfolio performance.</option>
-                    <option value="1">Melon Price Feed - <a href="https://daemon.melonport.com/oracle" target="_blank">explore</a></option>
-                  </select>
-                  <label>Price Feed Module</label>
-                </div>
-              </div>
-              <br/>
-              <hr/>
-              <br/>
-              <div class="row">
-                <div class="input-field col s12">
-                  <select id="registrar_select">
-                    <option value="" disabled selected>Specify the registar contract of your portfolio</option>
-                    <option value="melon">Melon Registrar - <a href="http://testnet.etherscan.io/address/{{registrarContractAddress}}" target="_blank">explore</a></option>
-                  </select>
-                  <label>Registrar Module</label>
-                </div>
-              </div>
-              <button type="submit" class="btn btn-default">{{i18n 'dapp.components.create.deploy'}}</button>
-            </form>
+            </div>
           </div>
+          <div class="line-divider"></div>
+          <form class="col s12 new-portfolio" id="new_portfolio">
+          <div class="row">
+						<div class="col-md-12">
+							<div class="setup-form">
+								<form class="mp-form">
+									<div class="form-group">
+										<input id="portfolio_name" type="text" class="form-control validate" minlength="3" required placeholder="Your Name (Visible to others)">
+									</div>
+									<div class="form-group">
+										<input id="manager_email" type="email" class="validate form-control" minlength="3" placeholder="Portfolio Name (Visible to others)">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+          <div class="line-divider"></div>
+          <div class="row">
+						<div class="col-md-12">
+							<div class="setup-module">
+								<p>Asset Class Module:</p>
+								<ul class="setup-module-list">
+									<li>
+                    <a href="http://testnet.etherscan.io/address/{{etherTokenContractAddress}}" target="_blank" class="">Ether Token (ETH-T)</a>
+                  </li>
+									<li>
+                    <a href="http://testnet.etherscan.io/address/{{bitcoinTokenContractAddress}}" target="_blank" class="">Bitcoin Token (BTC-T)</a>
+                  </li>
+									<li>
+                    <a href="http://testnet.etherscan.io/address/{{repTokenContractAddress}}" target="_blank" class="">Rep Token (Rep)</a>
+                  </li>
+									<li>
+                    <a href="http://testnet.etherscan.io/address/{{euroTokenContractAddress}}" target="_blank" class="">Euro Token (EUR-T)</a>
+                  </li>
+								</ul>
+							</div>
+						</div>
+					</div>
+          <div class="row">
+						<div class="col-md-12">
+							<div class="setup-module">
+								<p>Exchange Module:</p>
+								<ul class="setup-module-list">
+									<li><a href="https://daemon.melonport.com/liquidityprovider" target="_blank" class="">Melon Exchange</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+          <div class="row">
+						<div class="col-md-12">
+							<div class="setup-module">
+								<p>Price Feed Module:</p>
+								<ul class="setup-module-list">
+									<li><a href="https://daemon.melonport.com/oracle" target="_blank" class="">Melon Price Feed</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+          <div class="line-divider"></div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="setup-module">
+								<p>Registrar Module:</p>
+								<ul class="setup-module-list">
+									<li><a href="http://testnet.etherscan.io/address/{{registrarContractAddress}}" target="_blank" class="">Melon Registrar</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+          <div class="row">
+						<div class="col-md-12 btn-portfolio">
+              <button type="submit" class="btn btn-light-blue">{{i18n 'dapp.components.create.deploy'}}</button>
+						</div>
+					</div>
+        </form>
+        </div>
       </div>
     </div>
+  </section>
   {{else}}
 
   {{/if}}
 </template>
+
+
+      <!-- <div class="card">
+        <div class="card-content"> -->
+          <!-- <div class="card-title">{{i18n 'dapp.components.create.header'}}</div>
+          <p>{{i18n 'dapp.components.create.description'}}</p>
+          <br/> -->
+            <!-- <div class="row">
+              <br/>
+              <hr/>
+              <br/>
+              <form class="col s12 new-portfolio" id="new_portfolio"> -->
+                <!-- <div class="row">
+                  <div class="input-field col s12">
+                    <input id="portfolio_name" type="text" class="validate" minlength="3" required>
+                    <label for="portfolio_name">Portfolio Name (Visible to others)</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input id="manager_email" type="email" class="validate" minlength="3">
+                    <label for="manager_email">Your Email address (Optional)</label>
+                  </div>
+                </div>
+                <br/>
+                <hr/>
+                <br/> -->
+                <!-- <div class="row">
+                  <div class="input-field col s12">
+                    <select id="assetSelect" multiple>
+                      <option value="" disabled selected>Trading of your portfolio is restricted to the following assets.</option>
+                      <option value="1">Ether Token (ETH-T) - <a href="http://testnet.etherscan.io/address/{{etherTokenContractAddress}}" target="_blank">explore</a></option>
+                      <option value="2">Bitcoin Token (BTC-T) - <a href="http://testnet.etherscan.io/address/{{bitcoinTokenContractAddress}}" target="_blank">explore</a></option>
+                      <option value="3">Rep Token (Rep) - <a href="http://testnet.etherscan.io/address/{{repTokenContractAddress}}" target="_blank">explore</a></option>
+                      <option value="4">Euro Token (EUR-T) - <a href="http://testnet.etherscan.io/address/{{euroTokenContractAddress}}" target="_blank">explore</a></option>
+                    </select>
+                    <label>Asset Class Module</label>
+                  </div>
+                </div> -->
+                <!-- <div class="row">
+                  <div class="input-field col s12">
+                    <select id="exchangeSelect">
+                      <option value="" disabled selected>Exchange used to trade assets of your portfolio.</option>
+                      <option value="1">Melon Exchange - <a href="https://daemon.melonport.com/liquidityprovider" target="_blank">explore</a></option>
+                    </select>
+                    <label>Exchange Module</label>
+                  </div>
+                </div> -->
+                <!-- <div class="row">
+                  <div class="input-field col s12">
+                    <select id="pricefeedSelect">
+                      <option value="" disabled selected>Price Feed used to evaluate your portfolio performance.</option>
+                      <option value="1">Melon Price Feed - <a href="https://daemon.melonport.com/oracle" target="_blank">explore</a></option>
+                    </select>
+                    <label>Price Feed Module</label>
+                  </div>
+                </div>
+                <br/>
+                <hr/>
+                <br/> -->
+                <!-- <div class="row">
+                  <div class="input-field col s12">
+                    <select id="registrar_select">
+                      <option value="" disabled selected>Specify the registar contract of your portfolio</option>
+                      <option value="melon">Melon Registrar - <a href="http://testnet.etherscan.io/address/{{registrarContractAddress}}" target="_blank">explore</a></option>
+                    </select>
+                    <label>Registrar Module</label>
+                  </div>
+                </div> -->
+                <!-- <button type="submit" class="btn btn-default">{{i18n 'dapp.components.create.deploy'}}</button>
+              </form>
+            </div>
+        </div>
+      </div> -->
