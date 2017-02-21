@@ -20,11 +20,11 @@ Template.layout_header.events({
     event.preventDefault();
 
     // Update Portfolio collection
-    const numberOfCores = Cores.find({ managerAddress: Session.get('clientMangerAccount') }).count();
+    const numberOfCores = Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count();
     if (numberOfCores === 0) {
       FlowRouter.go('/');
     } else {
-      const doc = Cores.findOne({ managerAddress: Session.get('clientMangerAccount') });
+      const doc = Cores.findOne({ managerAddress: Session.get('clientManagerAccount') });
       if (doc.isNew === true) {
         Meteor.call('cores.setToUsed', doc._id);
         //TODO replace toast
@@ -38,11 +38,11 @@ Template.layout_header.events({
     event.preventDefault();
 
     // Update Portfolio collection
-    const numberOfCores = Cores.find({ managerAddress: Session.get('clientMangerAccount') }).count();
+    const numberOfCores = Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count();
     if (numberOfCores === 0) {
       FlowRouter.go('/');
     } else {
-      const doc = Cores.findOne({ managerAddress: Session.get('clientMangerAccount') });
+      const doc = Cores.findOne({ managerAddress: Session.get('clientManagerAccount') });
       if (doc.isNew === true) {
         Meteor.call('cores.setToUsed', doc._id);
         //TODO replace toast

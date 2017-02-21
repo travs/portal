@@ -48,7 +48,7 @@ Template.portal_new.events({
     // Collection parameters
     let portfolioAddress;
     const portfolioName = target.portfolio_name.value;
-    const managerAddress = Session.get('clientMangerAccount');
+    const managerAddress = Session.get('clientManagerAccount');
     const managerEmail = target.manager_email.value;
     let registrarAddress;
     if (target.registrar_select.value === 'melon') {

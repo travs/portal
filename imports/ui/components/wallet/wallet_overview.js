@@ -27,7 +27,7 @@ Template.wallet_overview.onRendered(() => {});
 
 Template.wallet_overview.events({
   'click .fund_wallet': () => {
-    const address = Session.get('clientMangerAccount');
+    const address = Session.get('clientManagerAccount');
 
     Meteor.call('sendTestnetEther', address, (err, res) => {
       if (!err) {
@@ -54,7 +54,7 @@ Template.wallet_overview.events({
     //         if (!err) {
     //           currBalance = res.toNumber();
     //         } else {
-    //           Session.set('clientMangerAccountBalance', undefined);
+    //           Session.set('clientManagerAccountBalance', undefined);
     //         }
     //       });
     //       // Check if Balance has changed
@@ -79,9 +79,9 @@ Template.wallet_overview.events({
     // Refresh all wallets
     web3.eth.getBalance(web3.eth.defaultAccount, (err, res) => {
       if (!err) {
-        Session.set('clientMangerAccountBalance', res.toNumber());
+        Session.set('clientManagerAccountBalance', res.toNumber());
       } else {
-        Session.set('clientMangerAccountBalance', undefined);
+        Session.set('clientManagerAccountBalance', undefined);
       }
     });
 

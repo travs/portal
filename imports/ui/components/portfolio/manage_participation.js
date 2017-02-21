@@ -93,7 +93,7 @@ Template.manage_participation.events({
     }
 
     // Init
-    const managerAddress = Session.get('clientMangerAccount');
+    const managerAddress = Session.get('clientManagerAccount');
     if (managerAddress === undefined) {
       Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
       return;

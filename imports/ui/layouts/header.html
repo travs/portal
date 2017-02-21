@@ -8,9 +8,9 @@
 
         <ul class="right hide-on-med-and-down">
           {{#if isClientConnected}}
-            {{#if clientMangerAccount}}
+            {{#if clientManagerAccount}}
               {{#if isRopstenNetwork}}
-                <li><a href="/wallet/{{clientMangerAccount}}">Wallet</a></li>
+                <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
                 <li><a class="portfolio">
                   {{#unless hasManagerCreatedCore}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
                   {{getManagerNameOfCore}} {{#if getIsNewOfCore}}<span class="new badge"></span>{{/if}}</a>
@@ -28,7 +28,7 @@
           <li><a class="waves-effect waves-indigo white-text" href="/"></a></li>
           <li><a class="waves-effect waves-indigo white-text" href="http://chat.melonport.com" target="_blank">Chat</a></li>
           {{#if isClientConnected}}
-            {{#if clientMangerAccount}}
+            {{#if clientManagerAccount}}
               {{#if isRopstenNetwork}}
                 {{#if hasManagerCreatedCore}}
                   <li><a class="portfolio waves-effect waves-indigo white-text">
@@ -37,7 +37,7 @@
                   </li>
                   <li><a href="">sass <span class="new badge">4</span></a></li>
                 {{/if}}
-                <li><a class="waves-effect waves-indigo white-text" href="/wallet/{{clientMangerAccount}}">Wallet</a></li>
+                <li><a class="waves-effect waves-indigo white-text" href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
               {{/if}}
             {{/if}}
           {{/if}}

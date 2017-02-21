@@ -11,25 +11,25 @@ function checkAccounts() {
   web3.eth.getAccounts((error, accounts) => {
     if (!error) {
       if (!_.contains(accounts, web3.eth.defaultAccount)) {
-        if (_.contains(accounts, localStorage.getItem('clientMangerAccount'))) {
-          web3.eth.defaultAccount = localStorage.getItem('clientMangerAccount');
-        } else if (_.contains(accounts, Session.get('clientMangerAccount'))) {
-          web3.eth.defaultAccount = Session.get('clientMangerAccount');
+        if (_.contains(accounts, localStorage.getItem('clientManagerAccount'))) {
+          web3.eth.defaultAccount = localStorage.getItem('clientManagerAccount');
+        } else if (_.contains(accounts, Session.get('clientManagerAccount'))) {
+          web3.eth.defaultAccount = Session.get('clientManagerAccount');
         } else if (accounts.length > 0) {
           web3.eth.defaultAccount = accounts[0];
         } else {
           web3.eth.defaultAccount = undefined;
         }
       }
-      localStorage.setItem('clientMangerAccount', web3.eth.defaultAccount);
+      localStorage.setItem('clientManagerAccount', web3.eth.defaultAccount);
       web3.eth.getBalance(web3.eth.defaultAccount, (error, result) => {
         if(!error) {
-          Session.set('clientMangerAccountBalance', result.toNumber());
+          Session.set('clientManagerAccountBalance', result.toNumber());
         } else {
-          Session.set('clientMangerAccountBalance', undefined);
+          Session.set('clientManagerAccountBalance', undefined);
         }
       });
-      Session.set('clientMangerAccount', web3.eth.defaultAccount);
+      Session.set('clientManagerAccount', web3.eth.defaultAccount);
       Session.set('getAccountCount', accounts.length);
       Session.set('clientAccountList', accounts);
     }
@@ -144,8 +144,8 @@ function checkIfServerIsConncected() {
 }
 
 function getTestnetEther() {
-  if (Session.get('network') === 'Ropsten' && Session.get('clientMangerAccountBalance') <= web3.toWei('1', 'ether')) {
-    const address = Session.get('clientMangerAccount');
+  if (Session.get('network') === 'Ropsten' && Session.get('clientManagerAccountBalance') <= web3.toWei('1', 'ether')) {
+    const address = Session.get('clientManagerAccount');
     // TODO outsource in library
     Meteor.call('sendTestnetEther', address, (err, res) => {
       if (!err) {
