@@ -50,7 +50,7 @@ table.dataTable thead th {
     position: relative;
     background-image: none !important;
 }
- 
+
 table.dataTable thead th.sorting:after,
 table.dataTable thead th.sorting_asc:after,
 table.dataTable thead th.sorting_desc:after {
@@ -121,7 +121,7 @@ table.dataTable thead th.sorting_desc:after {
 			height: 50px;
 			border-radius: 0;
 			padding: 8px 20px;
-		}	
+		}
 	}
 }
 // ==== Index Section ====
@@ -206,7 +206,7 @@ table.dataTable thead th.sorting_desc:after {
 			}
 			&.in{
 				ul.navbar-right{
-					
+
 				}
 			}
 		}
@@ -429,7 +429,7 @@ table.dataTable thead th.sorting_desc:after {
 				color: $par-grey;
 				padding-top: 10px;
 			}
-		}	
+		}
 		.mp-partner-list{
 			text-align: right;
 			ul{
@@ -467,7 +467,7 @@ table.dataTable thead th.sorting_desc:after {
 	a{
 		cursor: pointer;
 		i{
-			color: $light-blue;	
+			color: $light-blue;
 			font-size: $font-size-venti;
 		}
 		&:hover{
@@ -620,7 +620,7 @@ table.dataTable thead th.sorting_desc:after {
 					padding-left: 0;
 					input{
 						padding: 8px 230px 8px 20px;
-					}	
+					}
 					span{
 						width: 230px;
 						height: 100%;
@@ -737,7 +737,7 @@ table.dataTable thead th.sorting_desc:after {
 								border-radius: 0;
 								border-bottom: 3px solid $main;
 								color: $grey-title;
-							}						
+							}
 						}
 					}
 				}
@@ -1163,7 +1163,7 @@ table.dataTable thead th.sorting_desc:after {
 }
 
 // responsive content
-@media (max-width: $screen-xs-max){ 
+@media (max-width: $screen-xs-max){
 	.nav-header{
 		height: 64px;
 		border: 0;
@@ -1191,7 +1191,7 @@ table.dataTable thead th.sorting_desc:after {
 			.navbar-collapse{
 				ul.navbar-right{
 					margin-top: 0;
-					background: $main;	
+					background: $main;
 					li{
 						a{
 							padding: 22px 25px;
@@ -1287,7 +1287,7 @@ table.dataTable thead th.sorting_desc:after {
 						color: $white;
 						&:hover{
 							i{
-								color: $light-grey; 
+								color: $light-grey;
 								&:before{
 									font-weight: 700;
 								}
@@ -1357,7 +1357,7 @@ table.dataTable thead th.sorting_desc:after {
 			padding: $spacing-md 0;
 			.mp-partner-title{
 				text-align: center;
-			}	
+			}
 			.mp-partner-list{
 				text-align: center;
 				display: block;
@@ -1604,7 +1604,7 @@ table.dataTable thead th.sorting_desc:after {
 	}
 }
 @media (max-width: $screen-xs-max)
-and (orientation: portrait){ 
+and (orientation: portrait){
 	.mp-contrib-hero{
 		height: 480px;
 		.hero-text{
@@ -1702,7 +1702,7 @@ and (orientation: portrait){
 	}
 }
 @media (max-width: $screen-xs-max)
-and (orientation: landscape){ 
+and (orientation: landscape){
 	.mp-about{
 		.mp-about-content{
 			.mp-about-box{
@@ -1776,9 +1776,9 @@ and (orientation: landscape){
 		}
 	}
 }
-@media (min-width: $screen-sm-min) 
+@media (min-width: $screen-sm-min)
 and (max-width: $screen-ipad)
-and (orientation: portrait){ 
+and (orientation: portrait){
 	.mp-contrib-hero{
 		.hero-text{
 			h1{
@@ -1932,9 +1932,9 @@ and (orientation: portrait){
 	}
 }
 
-@media (min-width: $screen-sm-min) 
+@media (min-width: $screen-sm-min)
 and (max-width: $screen-ipad)
-and (orientation: landscape){ 
+and (orientation: landscape){
 	.mp-contrib-hero{
 		.hero-summary{
 			padding-top: 140px;
@@ -1987,3 +1987,18 @@ and (orientation: landscape){
 @import "pages/daemon";
 @import "pages/portal_overview";
 @import "pages/portal_exchange";
+
+p.value a{color: #337ab7 !important;}
+.badge-hero{
+		display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-align: center;
+    border: 1px solid #337ab7;
+    border-radius: 10px;
+}

@@ -1,27 +1,43 @@
 <template name="layout_header">
   <!-- TODO gradually uncomment again -->
-  <!-- <nav>
-    <div class="nav-wrapper">
+    <nav class="navbar navbar-default nav-header nav-portal">
       <div class="container">
-        <a href="/" class="brand-logo hide-on-med-and-down"><img height="64" id="logo" src="melonwebsite.svg"/></a>
-        <a href="/" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <div class="navbar-header">
+  				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-header" aria-expanded="false">
+  					<span class="sr-only">Toggle navigation</span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  				</button>
+  				<a class="navbar-brand" href="#"><img src="dist/img/logo.png"></a>
+  			</div>
 
-        <ul class="right hide-on-med-and-down">
-          {{#if isClientConnected}}
-            {{#if clientManagerAccount}}
-              {{#if isRopstenNetwork}}
-                <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
-                <li><a class="portfolio">
-                  {{#unless hasManagerCreatedCore}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}
-                  {{getManagerNameOfCore}} {{#if getIsNewOfCore}}<span class="new badge"></span>{{/if}}</a>
-                </li>
-                <li><a class="manage">Manage</a></li>
-              {{/if}}
-            {{/if}}
-          {{/if}}
-        </ul>
+        <!-- <a href="/" class="brand-logo hide-on-med-and-down"><img height="64" id="logo" src="melonwebsite.svg"/></a>
+        <a href="/" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a> -->
 
-        <ul class="right hide-on-med-and-down">
+        <div class="collapse navbar-collapse" id="default-header">
+  				<ul class="nav navbar-nav navbar-right">
+              {{#if isClientConnected}}
+                  {{#if clientManagerAccount}}
+                    {{#if isRopstenNetwork}}
+  					          <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
+            					<li class="has-badge">
+                        <a class="portfolio">{{#unless hasManagerCreatedCore}}Portfolio
+              						<span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>{{/unless}}
+                          {{getManagerNameOfCore}} {{#if getIsNewOfCore}}
+                          <span class="badge btn-outline-green" data-badge-caption="New">New</span>
+              						<span class="badge btn-trans-blue">Create</span>
+                          {{/if}}
+                        </a>
+            					</li>
+  					          <li class="btn-request"><a href="#" class="btn outline-white">Manage</a></li>
+                    {{/if}}
+                  {{/if}}
+                {{/if}}
+  				</ul>
+  			</div>
+
+        <!-- <ul class="right hide-on-med-and-down">
         </ul>
         <ul class="side-nav blue-grey darken-2" id="nav-mobile">
           <li><a class="brand-logo center"><img height="64" id="logo" src="melonwebsite.svg"/></a></li>
@@ -41,34 +57,7 @@
               {{/if}}
             {{/if}}
           {{/if}}
-        </ul>
+        </ul> -->
       </div>
-    </div>
-  </nav> -->
-
-  <nav class="navbar navbar-default nav-header nav-portal">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-header" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#"><img src="../dist/img/logo.png"></a>
-      </div>
-
-      <div class="collapse navbar-collapse" id="default-header">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Wallet</a></li>
-          <li class="has-badge">
-            <a href="#">Peter</a>
-            <span class="badge btn-outline-green">New</span>
-          </li>
-          <li class="btn-request"><a href="#" class="btn outline-white">Manage</a></li>
-        </ul>
-      </div>
-    </div>
   </nav>
-
 </template>

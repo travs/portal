@@ -1,10 +1,56 @@
 <template name="summary_melon">
 
-  <div class="buysellads-header center-on-small-only">
+  <span>Melon Summary</span>
+  <ul>
+    <li>
+      <p class="status">Status:</p>
+      {{#if isErrorNetworkStatus}}
+          <p class="value">TX Error</p>
+      {{/if}}
+
+      {{#if isMiningNetworkStatus}}
+          <p class="value">Sending</p>
+      {{/if}}
+
+      {{#if isMinedNetworkStatus}}
+          <p class="value">Sent</p>
+      {{/if}}
+
+      {{#if isInactiveNetworkStatus}}
+        {{#if isMainNetwork}}
+          <p class="value">{{getNetwork}} != Ropsten</p>
+        {{/if}}
+        {{#if isMordenNetwork}}
+          <p class="value">{{getNetwork}} != Ropsten</p>
+        {{/if}}
+        {{#if isRopstenNetwork}}
+          <p class="value">Connected</p>
+          {{/if}}
+        {{/if}}
+    </li>
+    {{#if isMiningNetworkStatus}}
+    {> ux_spinner}}
+    {{else}}
+    <li>
+      <p class="status">Current Block:</p>
+      {{#if isSynced}}
+      <p class="value">{{latestBlock}}</p>
+      {{else}}
+      <p class="value">Syncing</p>
+      {{/if}}
+    </li>
+    <li>
+      <p class="status">Transaction:</p>
+      <p class="value">none</p>
+    </li>
+    {{/if}}
+  </ul>
+
+  <!-- <div class="buysellads-header center-on-small-only">
     <ul>
-      <li class="truncate text-light">Melon Summary</li>
+      <li class="truncate text-light">Melon Summary</li> -->
       <!-- Status -->
-      <li> Status
+      <!-- <li> Status
         {{#if isErrorNetworkStatus}}
           <a class="truncate red-text text-lighten-2">TX Error</a>
         {{/if}}
@@ -28,26 +74,26 @@
             <a class="truncate green-text text-lighten-2">Connected</a>
           {{/if}}
         {{/if}}
-      </li>
+      </li> -->
       <!-- Spinner -->
-      {{#if isMiningNetworkStatus}}
+      <!-- {{#if isMiningNetworkStatus}}
         <br/>
-        {{> ux_spinner}}
+        {{> ux_spinner}} -->
       <!-- Current Block and Transactions -->
-      {{else}}
+      <!-- {{else}}
         <li> Current Block
           {{#if isSynced}}
             <a class="truncate green-text text-lighten-2">{{latestBlock}}</a>
           {{else}}
             <a class="truncate blue-text text-lighten-2">Syncing</a>
           {{/if}}
-        </li>
+        </li> -->
         <!-- Transactions -->
-        <li> Transactions
+        <!-- <li> Transactions
           <a class="truncate green-text text-lighten-2">None</a>
         </li>
       {{/if}}
     </ul>
-  </div>
+  </div> -->
 
 </template>

@@ -2,7 +2,7 @@
 
   <!-- TODO gradually uncomment again -->
   <!-- Index-banner -->
-  <!-- {{> ux_index_banner header=(i18n 'dapp.portal.header') description=(i18n 'dapp.portal.description')}} -->
+{{> ux_index_banner header=(i18n 'dapp.portal.header') description=(i18n 'dapp.portal.description')}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
@@ -37,62 +37,6 @@
     {{> ux_server_connection}}
   {{/if}}
 
-  <!-- hero section -->
-  <section class="mp-hero mp-portal-hero">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
-          <h1>The future of finance with Melon</h1>
-          <form>
-            <div class="input-group input-newsletter">
-              <input type="text" value="" class="form-control" placeholder="Search for Managers and Portfolios" required>
-              <span class="input-group-link">
-                <button type="submit" value="Subscribe" name="subscribe" class="button"><i class="ion-ios-search-strong"></i></button>
-              </span>
-            </div>
-          </form>
-        </div>
-        <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
-          <div class="row">
-            <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
-              <span>Melon Summary</span>
-              <ul>
-                <li>
-                  <p class="status">Status:</p>
-                  <p class="value">Connected</p>
-                </li>
-                <li>
-                  <p class="status">Current Block:</p>
-                  <p class="value">177624</p>
-                </li>
-                <li>
-                  <p class="status">Transaction:</p>
-                  <p class="value">none</p>
-                </li>
-              </ul>
-            </div>
-            <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
-              <span>Executive Summary</span>
-              <ul>
-                <li>
-                  <p class="status">Wallet Balance:</p>
-                  <p class="value">35.896 EUR</p>
-                </li>
-                <li>
-                  <p class="status">Portfolio:</p>
-                  <p class="value">Peter</p>
-                </li>
-                <li>
-                  <p class="status">Delta:</p>
-                  <p class="value">±0.0</p>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <section class="mp-portal">
     <!-- term&condition -->
