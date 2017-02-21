@@ -2,8 +2,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
-import { Materialize } from 'meteor/poetic:materialize-scss';
-
 
 // Check which accounts are available and if defaultAccount is still available,
 // Otherwise set it to localStorage, Session, or first element in accounts
@@ -136,6 +134,7 @@ function checkIfSynching() {
 function checkIfServerIsConncected() {
   Meteor.call('isServerConnected', (err, result) => {
     if(!err) {
+      console.log(result)
       Session.set('isServerConnected', result);
     } else {
       console.log(err);
@@ -149,14 +148,18 @@ function getTestnetEther() {
     // TODO outsource in library
     Meteor.call('sendTestnetEther', address, (err, res) => {
       if (!err) {
-        Materialize.toast('We\'ve seen you\'re low on cash so requested some for you.', 30000, 'green');
+        //TODO replace toast
+        // Materialize.toast('We\'ve seen you\'re low on cash so requested some for you.', 30000, 'green');
         const amount = parseInt(web3.fromWei(parseInt(res.data, 10), 'ether'), 10);
         const msg = res.message;
         if (amount === 0) {
-          Materialize.toast(`Ethereum Faucet says: "${msg}"`, 30000, 'red');
-          Materialize.toast(`Go to: https://faucet.metamask.io/ for an alternative faucet`, 30000, 'blue');
+          //TODO replace toast
+          // Materialize.toast(`Ethereum Faucet says: "${msg}"`, 30000, 'red');
+          //TODO replace toast
+          // Materialize.toast(`Go to: https://faucet.metamask.io/ for an alternative faucet`, 30000, 'blue');
         } else {
-          Materialize.toast(`Sent ${amount} ETH to your account.  Wait a few seconds and let it rain!`, 30000, 'green');
+          //TODO replace toast
+          // Materialize.toast(`Sent ${amount} ETH to your account.  Wait a few seconds and let it rain!`, 30000, 'green');
         }
       } else {
         console.log(err);
