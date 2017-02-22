@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { Materialize } from 'meteor/poetic:materialize-scss';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 // Collections
@@ -95,8 +94,10 @@ Template.wallet_contents.events({
     const doc = Assets.findOne({ address: assetAddress, holder: assetHolderAddress }, { sort: { createdAt: -1 } });
     if (doc === undefined) return '';
     const holdings = parseInt(doc.holdings, 10);
-    if (holdings === 0) Materialize.toast('All ETH Token already converted', 4000, 'blue');
-    else {
+    if (holdings === 0) {
+      //TODO replace toast
+      // Materialize.toast('All ETH Token already converted', 4000, 'blue');
+    } else {
       console.log(`Holdings: ${holdings}`)
       EtherToken.at(assetAddress).withdraw(holdings, { from: assetHolderAddress }).then((result) => {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
@@ -104,7 +105,8 @@ Template.wallet_contents.events({
         console.log(`Tx Hash: ${result}`);
         Meteor.call('assets.sync', assetHolderAddress); // Upsert Assets Collection
         // Notification
-        Materialize.toast('All ETH Token converted', 4000, 'green');
+        //TODO replace toast
+        // Materialize.toast('All ETH Token converted', 4000, 'green');
       });
     }
   },

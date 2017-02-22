@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
-import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { EthTools } from 'meteor/ethereum:tools';
 
@@ -34,10 +33,12 @@ Template.wallet_overview.events({
         const amount = parseInt(web3.fromWei(parseInt(res.data, 10), 'ether'), 10);
         const msg = res.message;
         if (amount === 0) {
-          Materialize.toast(`Ethereum Faucet says: "${msg}"`, 30000, 'red');
-          Materialize.toast(`Go to: https://faucet.metamask.io/ for an alternative faucet`, 30000, 'blue');
+          //TODO replace toast
+          // Materialize.toast(`Ethereum Faucet says: "${msg}"`, 30000, 'red');
+          // Materialize.toast(`Go to: https://faucet.metamask.io/ for an alternative faucet`, 30000, 'blue');
         } else {
-          Materialize.toast(`Sent ${amount} ETH to your account.  Wait a few seconds and let it rain!`, 30000, 'green');        }
+          //TODO replace toast
+          // Materialize.toast(`Sent ${amount} ETH to your account.  Wait a few seconds and let it rain!`, 30000, 'green');        }
       } else {
         console.log(err);
       }
@@ -86,6 +87,7 @@ Template.wallet_overview.events({
     });
 
     // Notification
-    Materialize.toast('Wallets refreshed', 4000, 'blue');
+    //TODO replace toast
+    // Materialize.toast('Wallets refreshed', 4000, 'blue');
   },
 });
