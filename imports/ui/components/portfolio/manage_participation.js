@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -88,21 +87,24 @@ Template.manage_participation.events({
     const volume = parseFloat(templateInstance.find('input#volume').value, 10);
     const total = parseFloat(templateInstance.find('input#total').value, 10);
     if (isNaN(type) || isNaN(price) || isNaN(volume) || isNaN(total)) {
-      Materialize.toast('Please fill out the form', 4000, 'blue');
+      //TODO replace toast
+      // Materialize.toast('Please fill out the form', 4000, 'blue');
       return;
     }
 
     // Init
     const managerAddress = Session.get('clientManagerAccount');
     if (managerAddress === undefined) {
-      Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
+      //TODO replace toast
+      // Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
       return;
     }
     const coreAddress = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address: coreAddress });
     // Check if core is stored in database
     if (doc === undefined) {
-      Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
+      //TODO replace toast
+      // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
       return;
     }
     const coreContract = Core.at(coreAddress);

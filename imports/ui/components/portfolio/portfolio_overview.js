@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
-import { Materialize } from 'meteor/poetic:materialize-scss';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { ReactiveVar } from 'meteor/reactive-var';
 
@@ -63,7 +62,8 @@ Template.portfolio_overview.events({
       return false;
     }
     Meteor.call('cores.remove', doc._id);
-    Materialize.toast('Portfolio deleted!', 4000, 'blue');
+    //TODO replace toast
+    // Materialize.toast('Portfolio deleted!', 4000, 'blue');
     return true;
   },
 });
