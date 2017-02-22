@@ -38,7 +38,8 @@ Template.wallet_overview.events({
           // Materialize.toast(`Go to: https://faucet.metamask.io/ for an alternative faucet`, 30000, 'blue');
         } else {
           //TODO replace toast
-          // Materialize.toast(`Sent ${amount} ETH to your account.  Wait a few seconds and let it rain!`, 30000, 'green');        }
+          // Materialize.toast(`Sent ${amount} ETH to your account.  Wait a few seconds and let it rain!`, 30000, 'green');
+        }
       } else {
         console.log(err);
       }
