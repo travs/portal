@@ -9,6 +9,7 @@
     "async": "^2.1.4",
     "highcharts": "^5.0.2",
     "meteor-node-stubs": "~0.2.0",
+    "select2": "^4.0.3",
     "web3": "^0.17.0-beta"
   },
   "devDependencies": {
