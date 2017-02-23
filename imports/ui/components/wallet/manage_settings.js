@@ -8,6 +8,7 @@ import './manage_settings.html';
 
 
 Template.manage_settings.onCreated(() => {
+
 });
 
 
@@ -15,7 +16,7 @@ Template.manage_settings.helpers({
 });
 
 Template.manage_settings.onRendered(() => {
-  $('.selectpicker').select2();
+  $('select').select2();
 });
 
 
