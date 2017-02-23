@@ -25,9 +25,7 @@ Template.portal_new.onCreated(() => {
 Template.portal_new.helpers({});
 
 
-Template.portal_new.onRendered(() => {
-  this.$('select').material_select();
-});
+Template.portal_new.onRendered(() => {});
 
 
 Template.portal_new.events({
@@ -39,26 +37,16 @@ Template.portal_new.events({
       Session.set('selectedRegistarIsMelon', true);
     }
   },
-  'submit form#new_portfolio': (event) => {
+  'submit form#new_portfolio': (event, templateInstance) => {
     // Prevent default browser form submit
     event.preventDefault();
-    // Get value from form element
-    const target = event.target;
 
     // Collection parameters
     let portfolioAddress;
-    const portfolioName = target.portfolio_name.value;
+    const portfolioName = templateInstance.find('input#portfolio_name').value;
     const managerAddress = Session.get('clientManagerAccount');
-    const managerEmail = target.manager_email.value;
-    let registrarAddress;
-    if (target.registrar_select.value === 'melon') {
-      registrarAddress = Session.get('registrarContractAddress');
-    } else {
-      // Materialize.toast('This option is currently not supported', 4000, 'red');
-      // return
-      // TODO implement actual option
-      registrarAddress = Session.get('registrarContractAddress');
-    }
+    const managerEmail = templateInstance.find('input#manager_email').value;
+    let registrarAddress = Session.get('registrarContractAddress');
 
     //TODO clean up database entries
     const sharePrice = web3.toWei(1.0, 'ether');
@@ -110,6 +98,5 @@ Template.portal_new.events({
         );
       }
     });
-
   },
 });
