@@ -2002,10 +2002,10 @@ p.value a{color: #337ab7 !important;}
     border: 1px solid #337ab7;
     border-radius: 10px;
 }
-.mp-portal{
-	padding:0px !important;
-	padding-top: 50px !important;
-}
+// .mp-portal{
+// 	padding:0px !important;
+// 	padding-top: 50px !important;
+// }
 p.wallet-link a:link{
 	color: #1189c6 !important;
 }
@@ -2025,4 +2025,7 @@ a.table-link{
 }
 .text-left{
 	text-align: left !important;
+}
+.setup-portfolio{
+	padding:50px !important;
 }
