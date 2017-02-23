@@ -14,7 +14,7 @@ Template.manage_settings.helpers({
 });
 
 Template.manage_settings.onRendered(() => {
-  this.$('select').material_select();
+  this.$('.selectpicker').select2();
 });
 
 

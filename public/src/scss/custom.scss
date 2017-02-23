@@ -7,7 +7,7 @@
 $fullwidth : 100%;
 .line-divider{
 	border-bottom: 1px solid #e6e6e6;
-	margin: 10px 0;
+	margin: 27px 0 !important;
 }
 .fl-right{
 	float: right;
@@ -2001,4 +2001,28 @@ p.value a{color: #337ab7 !important;}
     text-align: center;
     border: 1px solid #337ab7;
     border-radius: 10px;
+}
+.mp-portal{
+	padding:0px !important;
+	padding-top: 50px !important;
+}
+p.wallet-link a:link{
+	color: #4e4e4e !important;
+}
+.select2-selection, .select2-container, span.selection, span.select2-selection__rendered{
+	padding-top: 5px !important;
+}
+.select2-container .select2-selection--single{
+	height:50px;
+	border-radius:0px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+	top:15px !important;
+	right: 15px !important;
+}
+a.table-link{
+	color: #444 !important;
+}
+.text-left{
+	text-align: left !important;
 }

@@ -1,26 +1,26 @@
 <template name="portal_list">
 
   {{#if getCoreCount}}
-    <table class="highlight centered responsive-table">
+    <table id="table-portal-overview" class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-portal-table" cellspacing="0" width="100%">
       <thead>
         <tr>
-          <th>Manager<br/>(Identicon)</th>
-          <th>Portfolio<br/>(Name)</th>
-          <th>AUM<br/>(EUR)</th>
-          <th>Share Price<br/>(Finney)</th>
-          <th>24h change<br/>(%)</th>
+          <th>Manager <p>(Identicon)</p></th>
+          <th>Portfolio <p>(Name)</p></th>
+          <th>AUM <p>(EUR)</p></th>
+          <th>Share Price <p>(Finney)</p></th>
+          <th>Change 24h <p>(%)</p></th>
         </tr>
       </thead>
       <tbody>
         {{#each getCores}}
           <tr>
-            <td>
+            <td class="identicon">
               <a href="http://testnet.etherscan.io/address/{{managerAddress}}" target="_blank">
                 {{> dapp_identicon identity=managerAddress class="dapp-small"}}
               </a>
             </td>
-            <td>
-              <a href="/portfolio/{{address}}" class="waves-effect waves-light btn blue lighten-2"><strong>{{name}}</strong></a>
+            <td class="portfolio">
+              <a href="/portfolio/{{address}}" class="btn btn-small btn-outline-blue">{{name}}</a>
             </td>
             <td>
               <a href="http://testnet.etherscan.io/address/{{address}}" target="_blank">
@@ -32,7 +32,7 @@
                 {{dapp_formatBalance sharePrice "0,0.0[00]" "finney"}}
               </a>
             </td>
-            <td>{{intraday}}</td>
+            <td class="green">{{intraday}}</td>
           </tr>
         {{/each}}
       </tbody>
