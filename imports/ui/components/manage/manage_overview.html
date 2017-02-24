@@ -1,6 +1,62 @@
 <template name="manage_overview">
+  <div class="exchange-overview-header asset">
+    <h2 class="exchange-title">Asset Overview</h2>
+    <span class="badge btn-sm-outline-green">+ 2.09%</span>
+    <div class="line-divider"></div>
+  </div>
+  <div class="exchange-overview-block">
+    <div class="form-horizontal mp-form">
+      <div class="form-group">
+        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="from_portofolio">From Portofolio</label>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <div class="make-switch custom-switch">
+            <input type="checkbox" name="my-checkbox" checked>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="name">Name</label>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <p>
+            <a class="table-link" href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+              {{getPortfolioDoc.name}}
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="line-divider"></div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="volume">Asset Pair</label>
+        <div class="col-md-8 col-sm-6 col-xs-12"> <!-- Static -->
+          <select class="selectpicker select-form">
+            <option>ETH/BTC</option>
+            <option>ETH</option>
+            <option>BTC</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="name">Asset Holdings:</label>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <p>24.8 EUR</p> <!-- Static -->
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="name">% Portfolio:</label>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <p>49.8%</p> <!-- Static -->
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="name">Asset Price:</label>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <p>84.35 ETH/BTC</p> <!-- Static -->
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <div class="card">
+      <!-- <div class="card">
         <div class="card-content">
           <span class="card-title">
             Manage Overview
@@ -28,6 +84,6 @@
         </div>
         <div class="card-action">
         </div>
-      </div>
+      </div> -->
 
 </template>

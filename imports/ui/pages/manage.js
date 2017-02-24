@@ -8,6 +8,7 @@ import '/imports/ui/components/manage/open_orders.js';
 import '/imports/ui/components/manage/recent_trades.js';
 // Corresponding html file
 import './manage.html';
+import select2 from 'select2';
 
 
 Template.manage.onCreated(() => {});
@@ -16,4 +17,6 @@ Template.manage.onCreated(() => {});
 Template.manage.helpers({});
 
 
-Template.manage.onRendered(() => {});
+Template.manage.onRendered(() => {
+  $('select').select2();
+});

@@ -1,6 +1,69 @@
 <template name="orderbook_contents">
+    <div class="row order-book-head">
+      <div class="col-md-12">
+        <h2 class="exchange-title">
+          <a class="table-link" href="https://testnet.etherscan.io/address/{{exchangeContractAddress}}" target="_blank">Order Book</a> of ETH/BTC</h2>
+      </div>
+    </div>
 
-    <div class="card">
+    <div class="row order-book-table">
+      <div class="col-md-6">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%">
+            <thead>
+              <tr>
+                <th>Cum. Vol. <p>(BTC)</p></th>
+                <th>Vol <p>(BTC)</p></th>
+                <th>Buy Price <p>(ETH/BTC)</p></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each offers}}
+              <tr>
+                <td>{{this.offer.buyHowMuch}}</td>
+                <td>{{this.offer.buyHowMuch}}</td>
+                <td>{{this.offer.ask_price}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%">
+            <thead>
+              <tr>
+                <th>Sell Price <p>(ETC/BTC)</p></th>
+                <th>Vol <p>(BTC)</p></th>
+                <th>Cum. Vol. <p>(BTC)</p></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each offers}}
+              <tr>
+                <td>{{this.offer.bid_price}}</td>
+                <td>{{this.offer.sellHowMuch}}</td>
+                <td>{{this.offer.sellHowMuch}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+      <div class="row order-book-more">
+        <div class="col-md-12">
+          <div class="table-load-more">
+            <a href="" class="btn btn-normal btn-outline-blue">Load More</a>
+          </div>
+        </div>
+      </div>
+
+
+
+    <!-- <div class="card">
       <div class="card-content">
         <span class="card-title">
           <a href="https://testnet.etherscan.io/address/{{exchangeContractAddress}}" target="_blank">Order Book</a> of ETH/BTC
@@ -20,7 +83,7 @@
                   <tbody>
                   {{#each offers}}
                     <tr>
-                      <!-- TODO sum -->
+
                       <td>{{this.offer.buyHowMuch}}</td>
                       <td>{{this.offer.buyHowMuch}}</td>
                       <td>{{this.offer.ask_price}}</td>
@@ -43,7 +106,7 @@
                     <tr>
                       <td>{{this.offer.bid_price}}</td>
                       <td>{{this.offer.sellHowMuch}}</td>
-                      <!-- TODO sum -->
+
                       <td>{{this.offer.sellHowMuch}}</td>
                     </tr>
                   {{/each}}
@@ -56,6 +119,6 @@
       </div>
       <div class="card-action">
       </div>
-    </div>
+    </div> -->
 
 </template>
