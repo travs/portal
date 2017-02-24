@@ -7,8 +7,8 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Cores } from '/imports/api/cores';
 // Contracts
 import Core from '/imports/lib/assets/contracts/Core.sol.js';
-
 import './manage_participation.html';
+import select2 from 'select2';
 
 
 Template.manage_participation.onCreated(() => {
@@ -44,12 +44,14 @@ Template.manage_participation.helpers({
 });
 
 Template.manage_participation.onRendered(() => {
+  $('select').select2();
   Template.instance().$('select').material_select();
   Template.instance().$('label').addClass('active');
   // Sync core and
   const address = FlowRouter.getParam('address');
   Meteor.call('cores.sync', address); // Upsert cores Collection
   Meteor.call('assets.sync', address); // Upsert Assets Collection
+
 });
 
 

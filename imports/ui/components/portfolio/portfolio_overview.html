@@ -1,6 +1,71 @@
 <template name="portfolio_overview">
+  <div class="exchange-overview-header asset">
+    <h2 class="exchange-title">Portfolio Overview</h2>
+    <span class="badge btn-sm-outline-green">+ 2.09%</span>
+    <div class="line-divider"></div>
+  </div>
+  <div class="exchange-overview-block">
+    <div class="form-horizontal mp-form">
+      <div class="form-group">
+        <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Name</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <p>
+            <a class="table-link" href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+            {{getPortfolioDoc.name}}
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Share Price:</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <p>
+            <a class="table-link" href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+              {{dapp_formatBalance (getPortfolioDoc.sharePrice) "0,0.0[00] unit" "finney"}}/share
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Investment</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <p>
+            <a class="table-link" href="http://testnet.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+              {{dapp_formatBalance (getPortfolioDoc.notional) "0,0.0[00] UNIT" 'eur'}}
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="line-divider"></div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Personal Stake:</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <p>{{getPersonalStake}} shares</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Value Stake:</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <p>{{dapp_formatBalance (getShareAmount) "0,0.0[00] UNIT" 'eur'}}</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">PnL:</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <p class="green">+1.29 EUR</p>
+        </div>
+      </div>
+      <!-- <div class="form-group">
+        {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
+          <div class="card-action">
+            <a class="delete waves-effect waves-light btn blue lighten-2"><i class="material-icons">delete</i></a>
+          </div>
+        {{/if}}
+      </div> -->
+    </div>
+  </div>
 
-      <div class="card">
+      <!-- <div class="card">
         <div class="card-content">
           <span class="card-title">
             Portfolio Overview
@@ -29,11 +94,6 @@
             <li> PnL: ±0.0</li>
           </ul>
         </div>
-        {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
-          <div class="card-action">
-            <a class="delete waves-effect waves-light btn blue lighten-2"><i class="material-icons">delete</i></a>
-          </div>
-        {{/if}}
-      </div>
+      </div> -->
 
 </template>
