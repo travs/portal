@@ -1,6 +1,56 @@
 <template name="manage_participation">
+  <div class="exchange-overview-header">
+    <h2 class="exchange-title">
+      {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
+        Manage Participation in your Portfolio
+      {{else}}
+        Manage Participation in {{getPortfolioDoc.name}}
+      {{/if}}
+    </h2>
+    <!-- <span class="badge btn-sm-outline-blue">20%</span> -->
+  </div>
+  <div class="exchange-overview-block">
+    <div class="form-horizontal mp-form">
+      <div class="form-group">
+        <label class="col-md-2 col-sm-2 col-xs-12 control-label" for="type_buy">Type</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+            <select class="selectpicker select-form">
+              <option value="0">Invest</option>
+              <option value="1">Redeem</option>
+            </select>
+        </div>
+        <span class="col-md-2 col-sm-2 col-xs-12">Order</span>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 col-sm-2 col-xs-12 control-label" for="price">Price</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <input id="price" type="number" step="any" value="{{formattedSharePrice}}" class="validate form-control" placeholder="">
+        </div>
+        <span class="col-md-2 col-sm-2 col-xs-12">ETH/Share</span>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 col-sm-2 col-xs-12 control-label" for="volume">Volume</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <input id="volume" type="number" step="any" class="form-control validate" placeholder="">
+        </div>
+        <span class="col-md-2 col-sm-2 col-xs-12">Shares</span>
+      </div>
+      <div class="line-divider"></div>
+      <div class="form-group">
+        <label class="col-md-2 col-sm-2 col-xs-12 control-label" for="total">Total</label>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+          <input id="total" type="number" step="any" class="validate form-control" placeholder="">
+        </div>
+        <span class="col-md-2 col-sm-2 col-xs-12">ETH</span>
+      </div>
+      <div class="form-group">
+        <a href="{{selectedTypeName}}" class="btn btn-def btn-light-blue mt-20">Invest</a>
+      </div>
+    </div>
+  </div>
 
-    <div class="card">
+
+    <!-- <div class="card">
       <div class="card-content">
         <span class="card-title">
           {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
@@ -34,11 +84,11 @@
               </div>
             </div>
           </form>
-        </div>        
+        </div>
         <div class="card-action">
           <a class="manage waves-effect waves-light btn blue lighten-2">{{selectedTypeName}}</a>
         </div>
       </div>
-    </div>
+    </div> -->
 
 </template>
