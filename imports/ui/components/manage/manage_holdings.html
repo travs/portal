@@ -1,6 +1,52 @@
 <template name="manage_holdings">
+  <div class="exchange-overview-header">
+    <h2 class="exchange-title">Manage Holdings</h2>
+    <span class="badge btn-sm-outline-blue">48%</span>
+  </div>
+  <div class="exchange-overview-block">
+    <div class="form-horizontal mp-form">
+      <div class="form-group">
+        <label class="col-md-2 col-sm-3 col-xs-12 control-label" for="type_buy">Type</label>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <select id="select_type" class="selectpicker select-form">
+            <option value="0" selected>Buy</option>
+            <option value="1">Sell</option>
+          </select>
+        </div>
+        <span class="col-md-2 col-sm-3 col-xs-12">Order</span>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 col-sm-3 col-xs-12 control-label" for="price">Price</label>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <input type="text" id="price" class="form-control" placeholder="">
+        </div>
+        <span class="col-md-2 col-sm-3 col-xs-12">ETH/BTC</span>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 col-sm-3 col-xs-12 control-label" for="volume">Volume</label>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <input type="text" id="volume" class="form-control" placeholder="">
+        </div>
+        <span class="col-md-2 col-sm-3 col-xs-12">BTC</span>
+      </div>
+      <div class="line-divider"></div>
+      <div class="form-group">
+        <label class="col-md-2 col-sm-3 col-xs-12 control-label" for="total">Total</label>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <input type="text" id="total" class="form-control" placeholder="">
+        </div>
+        <span class="col-md-2 col-sm-3 col-xs-12">ETH</span>
+      </div>
+      <div class="form-group">
+        <a href="#" class="btn btn-def btn-light-blue mt-20">Buy</a>
+      </div>
 
-    <div class="card">
+    </div>
+  </div>
+
+
+
+    <!-- <div class="card">
       <div class="card-content">
         <span class="card-title">
           Manage Holdings
@@ -17,7 +63,6 @@
                   <option value="1">Sell</option>
                 </select>
               </div>
-              <!-- TODO Text filed -->
               <div class="input-field col s12">
                 <input id="input_price" type="text" class="validate">
                 <label for="input_price">Price (ETH/Share)</label>
@@ -37,6 +82,6 @@
           <a class="manage waves-effect waves-light btn blue lighten-2">{{isBuyingSelected}}</a>
         </div>
       </div>
-    </div>
+    </div> -->
 
 </template>

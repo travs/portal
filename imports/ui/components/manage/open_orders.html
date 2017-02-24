@@ -1,13 +1,58 @@
 <template name="open_orders">
 
-    <div class="card">
-      <div class="card-content">
-        <span class="card-title">
-          Open Orders
-        </span>
-      </div>
-      <div class="card-action">
+  <div class="row order-book-head">
+    <div class="col-md-12">
+      <h2 class="exchange-title">Open Order</h2>
+    </div>
+  </div>
+  <div class="row order-book-table">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table id="table-open-orders" class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>Time <p>(BTC)</p></th>
+              <th>Type <p>(BTC)</p></th>
+              <th>Buy Price <p>(ETH/BTC)</p></th>
+              <th>Vol<p>(BTC)</p></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>21.01-20:49:26</td>
+              <td>Sell</td>
+              <td>872.19 EUR</td>
+              <td>100</td>
+            </tr>
+            <tr>
+              <td>21.01-20:49:26</td>
+              <td>Buy</td>
+              <td>872.19 EUR</td>
+              <td>100</td>
+            </tr>
+            <tr>
+              <td>21.01-20:49:26</td>
+              <td>Buy</td>
+              <td>872.19 EUR</td>
+              <td>100</td>
+            </tr>
+            <tr>
+              <td>21.01-20:49:26</td>
+              <td>Sell</td>
+              <td>872.19 EUR</td>
+              <td>100</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
+  <div class="row order-book-more">
+    <div class="col-md-12">
+      <div class="table-load-more">
+        <a href="" class="btn btn-normal btn-outline-blue">Load More</a>
+      </div>
+    </div>
+  </div>
 
 </template>
