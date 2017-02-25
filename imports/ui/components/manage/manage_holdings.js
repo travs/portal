@@ -37,9 +37,7 @@ Template.manage_holdings.helpers({
   },
 });
 
-Template.manage_holdings.onRendered(() => {
-  this.$('select').material_select();
-});
+Template.manage_holdings.onRendered(() => {});
 
 
 Template.manage_holdings.events({
