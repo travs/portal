@@ -29,6 +29,7 @@ Template.layout_header.events({
         Meteor.call('cores.setToUsed', doc._id);
         //TODO replace toast
         // Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
+        toastr.success("Well done! Now show us your managing skills!");
       }
       FlowRouter.go(`/portfolio/${doc.address}`);
     }
@@ -47,6 +48,7 @@ Template.layout_header.events({
         Meteor.call('cores.setToUsed', doc._id);
         //TODO replace toast
         // Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
+        toastr.success("Well done! Now show us your managing skills!");
       }
       FlowRouter.go(`/manage/${doc.address}`);
     }
