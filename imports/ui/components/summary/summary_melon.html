@@ -1,5 +1,4 @@
 <template name="summary_melon">
-
   <span>Melon Summary</span>
   <ul>
     <li>
@@ -28,9 +27,13 @@
           {{/if}}
         {{/if}}
     </li>
+
     {{#if isMiningNetworkStatus}}
-    {> ux_spinner}}
+      <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+         <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+      </svg>
     {{else}}
+
     <li>
       <p class="status">Current Block:</p>
       {{#if isSynced}}
@@ -45,55 +48,4 @@
     </li>
     {{/if}}
   </ul>
-
-  <!-- <div class="buysellads-header center-on-small-only">
-    <ul>
-      <li class="truncate text-light">Melon Summary</li> -->
-      <!-- Status -->
-      <!-- <li> Status
-        {{#if isErrorNetworkStatus}}
-          <a class="truncate red-text text-lighten-2">TX Error</a>
-        {{/if}}
-
-        {{#if isMiningNetworkStatus}}
-          <a class="truncate blue-text text-lighten-2">Sending</a>
-        {{/if}}
-
-        {{#if isMinedNetworkStatus}}
-          <a class="truncate green-text text-lighten-2">Sent</a>
-        {{/if}}
-
-        {{#if isInactiveNetworkStatus}}
-          {{#if isMainNetwork}}
-            <a class="truncate blue-text text-lighten-2">{{getNetwork}} != Ropsten</a>
-          {{/if}}
-          {{#if isMordenNetwork}}
-            <a class="truncate blue-text text-lighten-2">{{getNetwork}} != Ropsten</a>
-          {{/if}}
-          {{#if isRopstenNetwork}}
-            <a class="truncate green-text text-lighten-2">Connected</a>
-          {{/if}}
-        {{/if}}
-      </li> -->
-      <!-- Spinner -->
-      <!-- {{#if isMiningNetworkStatus}}
-        <br/>
-        {{> ux_spinner}} -->
-      <!-- Current Block and Transactions -->
-      <!-- {{else}}
-        <li> Current Block
-          {{#if isSynced}}
-            <a class="truncate green-text text-lighten-2">{{latestBlock}}</a>
-          {{else}}
-            <a class="truncate blue-text text-lighten-2">Syncing</a>
-          {{/if}}
-        </li> -->
-        <!-- Transactions -->
-        <!-- <li> Transactions
-          <a class="truncate green-text text-lighten-2">None</a>
-        </li>
-      {{/if}}
-    </ul>
-  </div> -->
-
 </template>

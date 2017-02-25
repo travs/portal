@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { bootstrapSwitch } from 'bootstrap-switch';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Smart contracts
@@ -25,7 +26,9 @@ Template.manage_overview.helpers({
 });
 
 
-Template.manage_overview.onRendered(() => {});
+Template.manage_overview.onRendered(() => {
+  $("[name='my-checkbox']").bootstrapSwitch();
+});
 
 
 Template.manage_overview.events({});
