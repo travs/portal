@@ -1110,6 +1110,9 @@ table.dataTable thead th.sorting_desc:after {
 .mp-footer{
 	background: $main;
 	padding: $spacing-lg - 10 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 	.footer-logo{
 		img{
 			height: 50px;
@@ -2071,4 +2074,13 @@ $duration: 1.4s;
 }
 .al-right{
   text-align: right;
+}
+.spinner{
+  margin-left: 15%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.site-content{
+  min-height: 100%;
+  height: auto;
 }
