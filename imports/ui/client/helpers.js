@@ -44,7 +44,7 @@ Template.registerHelper('repTokenContractAddress', () => Session.get('repTokenCo
 Template.registerHelper('euroTokenContractAddress', () => Session.get('euroTokenContractAddress'));
 Template.registerHelper('priceFeedContractAddress', () => Session.get('priceFeedContractAddress'));
 Template.registerHelper('exchangeContractAddress', () => Session.get('exchangeContractAddress'));
-Template.registerHelper('registrarContractAddress', () => Session.get('registrarContractAddress'));
+Template.registerHelper('registrarContractAddrefunctionss', () => Session.get('registrarContractAddress'));
 Template.registerHelper('versionContractAddress', () => Session.get('versionContractAddress'));
 Template.registerHelper('metaContractAddress', () => Session.get('metaContractAddress'));
 // UX

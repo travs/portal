@@ -4,13 +4,13 @@ import { Template } from 'meteor/templating';
 import './ux_pages.html';
 
 
-Template.ux_index_banner.onCreated(() => {});
+Template.ux_index_graph.onCreated(() => {});
 
-Template.ux_index_banner.helpers({});
+Template.ux_index_graph.helpers({});
 
-Template.ux_index_banner.onRendered(() => {});
+Template.ux_index_graph.onRendered(() => {});
 
-Template.ux_index_banner.events({});
+Template.ux_index_graph.events({});
 
 
 Template.ux_server_connection.onCreated(() => {});

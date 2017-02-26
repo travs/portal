@@ -1,4 +1,25 @@
-<template name="ux_index_banner">
+<template name="ux_index_portal">
+  <section class="mp-hero mp-portal-hero">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
+          <h1>The future of finance with Melon</h1>
+          <form>
+            <div class="input-group input-newsletter">
+              <input type="text" value="" class="form-control" placeholder="Search for Managers and Portfolios" required>
+              <span class="input-group-link">
+                <button type="submit" value="Subscribe" name="subscribe" class="button"><i class="ion-ios-search-strong"></i></button>
+              </span>
+            </div>
+          </form>
+        </div>
+        {{> ux_index_summaries}}
+			</div>
+		</div>
+	</section>
+</template>
+
+<template name="ux_index_graph">
   <section class="mp-hero mp-portal-hero">
 		<div class="container">
 			<div class="row">
@@ -7,60 +28,55 @@
             {{#if clientManagerAccount}}
               {{#if isRopstenNetwork}}
                 {{#if hasManagerCreatedCore}}
-					           <h1>The future of finance with Melon</h1>
-                     <form>
-           						<div class="input-group input-newsletter">
-           							<input type="text" value="" class="form-control" placeholder="Search for Managers and Portfolios" required>
-           							<span class="input-group-link">
-           								<button type="submit" value="Subscribe" name="subscribe" class="button"><i class="ion-ios-search-strong"></i></button>
-           							</span>
-           						</div>
-           					</form>
-                {{else}}
-                    <h1>You are good to go!</h1>
-                    <p>Explore the future of finance with Melon</p>
+                  <div class="hero-charts">
+                    <div id="charts"></div>
+                  </div>
+                {{else}} <!-- hasManagerCreatedCore -->
+                  <h1>You are good to go!</h1>
+                  <p>Explore the future of finance with Melon</p>
                 {{/if}}
-                {{else}}
-                    <h1>Great you're connected!</h1>
-                    <p>Now switch to the <a class="blue-text text-lighten-2">Ethereum testnet</a> to use this application</p>
-                {{/if}}
-    	          {{else}}
-                    <h1>Great you're connected!</h1>
-                    <p>Now select an <a class="blue-text text-lighten-2">Ethereum account</a> to use this application</p>
-                 {{/if}}
-      	         {{else}}
-                 <p>Start by installing <a class="white-text" href="https://metamask.io/" target="_blank"><b>MetaMask</b></a> or <a class="white-text" href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank"><b>Mist</b></a></p>
-                 {{/if}}
+              {{else}} <!-- isRopstenNetwork -->
+                <h1>Great you're connected!</h1>
+                <p>Now switch to the <a class="blue-text text-lighten-2">Ethereum testnet</a> to use this application</p>
+              {{/if}}
+	          {{else}} <!-- clientManagerAccount -->
+              <h1>Great you're connected!</h1>
+              <p>Now select an <a class="blue-text text-lighten-2">Ethereum account</a> to use this application</p>
+             {{/if}}
+          {{else}} <!-- isClientConnected -->
+            <p>Start by installing <a class="white-text" href="https://metamask.io/" target="_blank"><b>MetaMask</b></a> or <a class="white-text" href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank"><b>Mist</b></a></p>
+          {{/if}}
         </div>
-
-        {{#if isClientConnected}}
-				<div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
-					<div class="row">
-						<div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
-              {{> summary_melon}}
-						</div>
-						<div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
-							{{> summary_executive}}
-						</div>
-					</div>
-				</div>
-
-        {{else}}
-        <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
-					<div class="row">
-						<div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
-              <span class="text-light">Try to use me with</span>
-	            <li><a class="white-text" href="https://metamask.io/" target="_blank"><b>MetaMask</b></a></li>
-	            <li><a class="white-text" href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank"><b>Mist</b></a></li>
-						</div>
-					</div>
-				</div>
-        {{/if}}
+        {{> ux_index_summaries}}
 			</div>
 		</div>
 	</section>
 </template>
 
+<template name="ux_index_summaries">
+  {{#if isClientConnected}}
+    <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
+      <div class="row">
+        <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
+          {{> summary_melon}}
+        </div>
+        <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
+          {{> summary_executive}}
+        </div>
+      </div>
+    </div>
+  {{else}} <!-- isClientConnected -->
+    <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
+      <div class="row">
+        <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
+          <span class="text-light">Try to use me with</span>
+          <li><a class="white-text" href="https://metamask.io/" target="_blank"><b>MetaMask</b></a></li>
+          <li><a class="white-text" href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank"><b>Mist</b></a></li>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+</template>
 
 <template name="ux_server_connection">
   <!-- Not connected to the node -->
