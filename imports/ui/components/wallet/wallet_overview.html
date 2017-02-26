@@ -1,32 +1,32 @@
 <template name="wallet_overview">
-          <div class="asset-overview-wrapper">
-            <div class="exchange-overview-header asset">
-              <h2 class="exchange-title">Wallet Overview</h2>
-              <div class="line-divider"></div>
+  <div class="asset-overview-wrapper">
+    <div class="exchange-overview-header asset">
+      <h2 class="exchange-title">Wallet Overview</h2>
+      <div class="line-divider"></div>
+    </div>
+    <div class="exchange-overview-block">
+      <div class="form-horizontal mp-form">
+        <div class="form-group">
+          <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Address</label>
+            <div class="col-md-8 col-sm-8 col-xs-12">
+              <p class="wallet-link">
+                <a class="table-link" href="http://testnet.etherscan.io/address/{{clientManagerAccount}}" target="_blank">
+                  {{clientManagerAccount}}
+                </a>
+              </p>
             </div>
-            <div class="exchange-overview-block">
-              <div class="form-horizontal mp-form">
-                <div class="form-group">
-                  <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Address</label>
-                  <div class="col-md-8 col-sm-8 col-xs-12">
-                    <p class="wallet-link">
-                      <a href="http://testnet.etherscan.io/address/{{clientManagerAccount}}" target="_blank">
-                        {{clientManagerAccount}}
-                      </a>
-                    </p>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Wallet Balance:</label>
-                  <div class="col-md-8 col-sm-8 col-xs-12">
-                    <p class="wallet-link">
-                      <a href="http://testnet.etherscan.io/address/{{clientManagerAccount}}" target="_blank">
-                        {{dapp_formatBalance clientManagerAccountBalance "0,0.0[00] UNIT" 'eur'}}
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Wallet Balance:</label>
+            <div class="col-md-8 col-sm-8 col-xs-12">
+              <p class="wallet-link">
+                <a class="table-link" href="http://testnet.etherscan.io/address/{{clientManagerAccount}}" target="_blank">
+                  {{dapp_formatBalance clientManagerAccountBalance "0,0.0[00] UNIT" 'eur'}}
+                </a>
+              </p>
             </div>
-          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
