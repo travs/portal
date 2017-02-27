@@ -17,23 +17,23 @@
 
         <div class="collapse navbar-collapse" id="default-header">
   				<ul class="nav navbar-nav navbar-right">
-              {{#if isClientConnected}}
-                  {{#if clientManagerAccount}}
-                    {{#if isRopstenNetwork}}
-  					          <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
-            					<li class="has-badge">
-                        <a class="portfolio">{{#unless hasManagerCreatedCore}}Portfolio
-              						<span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>{{/unless}}
-                          {{getManagerNameOfCore}} {{#if getIsNewOfCore}}
-                          <span class="badge btn-outline-green" data-badge-caption="New">New</span>
-              						<span class="badge btn-trans-blue">Create</span>
-                          {{/if}}
-                        </a>
-            					</li>
-  					          <li class="manage btn-request"><a href="#" class="btn outline-white">Manage</a></li>
-                    {{/if}}
-                  {{/if}}
+            {{#if isClientConnected}}
+              {{#if clientManagerAccount}}
+                {{#if isRopstenNetwork}}
+				          <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
+        					<li class="has-badge">
+                    <a class="portfolio">{{#unless hasManagerCreatedCore}}Portfolio
+          						<span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>{{/unless}}
+                      {{getManagerNameOfCore}} {{#if getIsNewOfCore}}
+                      <span class="badge btn-outline-green" data-badge-caption="New">New</span>
+          						<span class="badge btn-trans-blue">Create</span>
+                      {{/if}}
+                    </a>
+        					</li>
+				          <li class="manage btn-request"><a href="#" class="btn outline-white">Manage</a></li>
                 {{/if}}
+              {{/if}}
+            {{/if}}
   				</ul>
   			</div>
 
