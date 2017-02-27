@@ -1,0 +1,107 @@
+{
+  "dapp": {
+    "app": {
+      "title": "melonport"
+      , "buttons": {
+        "home": "Home"
+        , "signin": "Entrar"
+        , "signup": "Registrar"
+        , "signout": "Salir"
+        , "overview": "Detalles"
+        , "settings": "Configuración"
+        , "wallet": "Wallet"
+        , "accounts": "Cuentas"
+        , "platform": "Plataforma"
+        , "explore": "Analizar"
+        , "trading": "Trading"
+        , "orders": "Ordenes"
+        , "charts": "Estadísticas"
+        , "trade": "Trade"
+        , "blotter": "Blotter"
+        , "exchange": "Exchange"
+        , "create": "Nueva cartera"
+        , "portfolio": "Cartera"
+        , "strategy": "Estrategia"
+      }
+      , "headers": {
+        "identicon": "Identicon"
+        , "address": "Dirección"
+        , "status": "Estado"
+        , "open": "Abierto"
+        , "export": "Exportar"
+        , "invest": "Invertir"
+        , "redeem": "Canjear"
+        , "delete": "Borrar"
+        , "managerAddress": "Dueño"
+        , "portfolioManager": "Manager"
+        , "address": "Cartera"
+        , "name": "Nombre"
+        , "portfolioPx": "Precio acciones"
+        , "notional": "Notional Investment"
+        , "investment": "Inversión"
+        , "intraday": "DTD"
+        , "intramonth": "MTD"
+        , "intrayear": "YTD"
+        , "balance": "Balance"
+        , "nav": "NAV"
+        , "holdingamount": "Holdings"
+        , "holdingpercentile": "%ile"
+        , "performanceamount": "Rendimiento"
+        , "performancpercentile": "%ile"
+        , "shareprice": "Precio acciones"
+        , "performance": "Rendimiento"
+        , "account": "Cuenta"
+        , "setup": "Configuración"
+        , "buying": "Compra"
+        , "selling": "Venta"
+        , "price": "Precio"
+        , "volume": "Volumen"
+      }
+      , "copyright": "Copyright © Melonport AG 2017. All Rights Reserved."
+    }
+    , "portal": {
+      "header": "Portal"
+      , "description": "Explore el futuro de las finanzas con Melon"
+    }
+    , "wallet": {
+      "header": "Wallet"
+      , "description": "Detalles sobre el monedero/wallet seleccionado de Ethereum"
+    }
+    , "blotter": {
+      "header": "Cartera Blotter"
+      , "description": "Detalle de la cartera de Melon seleccionada"
+    }
+    , "portfolio": {
+      "header": "Carteras"
+      , "description": "Detalle sobre las carteras seleccionadas en Melon"
+    }
+    , "exchange": {
+      "header": "Exchange/Intercambio"
+      , "description": "Trade your assets on a decentralized exchange"
+    }
+    , "explore": {
+      "header": "Explora"
+      , "description": "Explore the melon protocol in its depths"
+    }
+    , "components": {
+      "portfolio": {
+        "header": "Carteras"
+        , "description": "Click on one of your portfolios to place a trade, define a strategy and/or see the trade blotter."
+        , "create": "Crear"
+        , "deployed": "El contrato fue desplegado en esta dirección"
+      }
+      , "create": {
+        "header": "Configura una nueva cartera"
+        , "description": "Crea una nueva cartera y despliega en la Blockchain de Ethereum."
+        , "create": "Crear"
+        , "deploy": "Crea Nueva Cartera"
+        , "deployed": "El contrato fue desplegado en esta dirección"
+        , "placeholder": "Number To Multiply"
+      }
+      , "listfunds": {
+        "header": "Discoveries made"
+        , "description": "Esto es una lista de carteras en Melon."
+      }
+    }
+  }
+}
