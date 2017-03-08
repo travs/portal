@@ -19,7 +19,7 @@
   				<ul class="nav navbar-nav navbar-right">
             {{#if isClientConnected}}
               {{#if clientManagerAccount}}
-                {{#if isRopstenNetwork}}
+                {{#if isKovanNetwork}}
 				          <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
         					<li class="has-badge">
                     <a class="portfolio">{{#unless hasManagerCreatedCore}}Portfolio
@@ -45,7 +45,7 @@
           <li><a class="waves-effect waves-indigo white-text" href="http://chat.melonport.com" target="_blank">Chat</a></li>
           {{#if isClientConnected}}
             {{#if clientManagerAccount}}
-              {{#if isRopstenNetwork}}
+              {{#if isKovanNetwork}}
                 {{#if hasManagerCreatedCore}}
                   <li><a class="portfolio waves-effect waves-indigo white-text">
                     {{#unless hasManagerCreatedCore}}Portfolio <span class="new badge blue" data-badge-caption="create"></span>{{/unless}}

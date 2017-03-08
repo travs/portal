@@ -10,6 +10,7 @@ Template.registerHelper('isServerConnected', () => Session.get('isServerConnecte
 Template.registerHelper('isClientConnected', () => Session.get('isClientConnected'));
 Template.registerHelper('isMainNetwork', () => Session.get('network') === 'Main');
 Template.registerHelper('isRopstenNetwork', () => Session.get('network') === 'Ropsten');
+Template.registerHelper('isKovanNetwork', () => Session.get('network') === 'Kovan');
 Template.registerHelper('getNetwork', () => Session.get('network'));
 Template.registerHelper('isSynced', () => Session.get('syncing') === false);
 Template.registerHelper('latestBlock', () => Session.get('latestBlock'));

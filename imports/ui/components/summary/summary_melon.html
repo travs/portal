@@ -17,12 +17,15 @@
 
       {{#if isInactiveNetworkStatus}}
         {{#if isMainNetwork}}
-          <p class="value">{{getNetwork}} != Ropsten</p>
+          <p class="value">{{getNetwork}} != Kovan</p>
         {{/if}}
         {{#if isMordenNetwork}}
-          <p class="value">{{getNetwork}} != Ropsten</p>
+          <p class="value">{{getNetwork}} != Kovan</p>
         {{/if}}
         {{#if isRopstenNetwork}}
+          <p class="value">{{getNetwork}} != Kovan</p>
+        {{/if}}
+        {{#if isKovanNetwork}}
           <p class="value">Connected</p>
           {{/if}}
         {{/if}}
