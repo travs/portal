@@ -27,29 +27,30 @@
           </div>
           <div class="form-group">
             <a class="manage btn btn-def btn-light-blue mt-20">Manage</a>
-            <a class="remove btn btn-def btn-light-red mt-20">Remove</a>
+            <!-- Button trigger modal -->
+            <a class="remove btn btn-def btn-outline-blue mt-20" data-toggle="modal" data-target="#myModal">Remove</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Remove?</h4>
+            </div>
+            <div class="modal-body">
+              Are you sure?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Remove</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- JUST IN CASE -->
-    <!-- <div class="card">
-      <div class="card-content">
-        <span class="card-title">
-          Manage Settings
-        </span>
-        <ul>
-          <li> Reference: <b> EUR </b> Currency </li>
-          <br/>
-          <hr/>
-          <br/>
-          <li> Manage: <b> <a href="/portfolio/{{getManagerAddressOfCore}}">{{getManagerNameOfCore}}</a> </b> Participation </li>
-        </ul>
-      </div>
-      <div class="card-action">
-        <a href="/portfolio/{{getManagerAddressOfCore}}" class="delete waves-effect waves-light btn blue lighten-2">Manage</a>
-      </div>
-    </div> -->
-
 </template>
