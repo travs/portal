@@ -33,15 +33,11 @@ Template.manage_settings.events({
     event.preventDefault();
   },
   'click button#delete': () => {
-    //TODO flowrouter address is wallet instead of portfolio
-    const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
+    const doc = Cores.findOne({ managerAddress: Session.get('clientManagerAccount') });
     if ((doc === undefined || address === undefined)) {
       return false;
     }
     Meteor.call('cores.remove', doc._id);
-    //TODO replace toast
-    // Materialize.toast('Portfolio deleted!', 4000, 'blue');
     return true;
   },
 });
