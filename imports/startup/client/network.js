@@ -71,8 +71,6 @@ function checkNetwork() {
       if (isClientConnected === true) {
         web3.eth.getBlock(0, (e, res) => {
           let network = false;
-          console.log('res.hash')
-          console.log(res.hash)
           if (!e) {
             switch (res.hash) {
               case '0x0cd786a2425d16f152c658316c423e6ce1181e15c3295826d7c9904cba9ce303':
