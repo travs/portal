@@ -6,7 +6,7 @@ import { bootstrapSwitch } from 'bootstrap-switch';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Smart contracts
-import Core from '/imports/lib/assets/contracts/Core.sol.js';
+import Core from '/imports/lib/assets/contracts/Core.json';
 // Corresponding html file
 import './manage_overview.html';
 

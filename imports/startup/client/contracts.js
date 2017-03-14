@@ -3,17 +3,17 @@ import { Session } from 'meteor/session';
 
 // Collections
 import { Cores } from '/imports/api/cores';
-import { Registrars } from '/imports/api/modules';
+import { Universes } from '/imports/api/modules';
 
-import EtherToken from '/imports/lib/assets/contracts/EtherToken.sol.js';
-import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.sol.js';
-import RepToken from '/imports/lib/assets/contracts/RepToken.sol.js';
-import EuroToken from '/imports/lib/assets/contracts/EuroToken.sol.js';
-import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.sol.js';
-import Exchange from '/imports/lib/assets/contracts/Exchange.sol.js';
-import Registrar from '/imports/lib/assets/contracts/Registrar.sol.js';
-import Version from '/imports/lib/assets/contracts/Version.sol.js';
-import Meta from '/imports/lib/assets/contracts/Meta.sol.js';
+import EtherToken from '/imports/lib/assets/contracts/EtherToken.json';
+import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.json';
+import RepToken from '/imports/lib/assets/contracts/RepToken.json';
+import EuroToken from '/imports/lib/assets/contracts/EuroToken.json';
+import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.json';
+import Exchange from '/imports/lib/assets/contracts/Exchange.json';
+import Universe from '/imports/lib/assets/contracts/Universe.json';
+import Version from '/imports/lib/assets/contracts/Version.json';
+import Governance from '/imports/lib/assets/contracts/Governance.json';
 
 Meteor.startup(() => {
   Session.set('etherTokenContractAddress', EtherToken.all_networks['3'].address);
@@ -22,10 +22,10 @@ Meteor.startup(() => {
   Session.set('euroTokenContractAddress', EuroToken.all_networks['3'].address);
   Session.set('priceFeedContractAddress', PriceFeed.all_networks['3'].address);
   Session.set('exchangeContractAddress', Exchange.all_networks['3'].address);
-  Session.set('registrarContractAddress', Registrar.all_networks['3'].address);
+  Session.set('universeContractAddress', Universe.all_networks['3'].address);
   Session.set('versionContractAddress', Version.all_networks['3'].address);
-  Session.set('metaContractAddress', Meta.all_networks['3'].address);
+  Session.set('governanceContractAddress', Governance.all_networks['3'].address);
 
   Meteor.subscribe('cores');
-  Meteor.subscribe('registrars');
+  Meteor.subscribe('universes');
 });

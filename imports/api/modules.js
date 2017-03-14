@@ -2,29 +2,29 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 // Smart contracts
-import Registrar from '/imports/lib/assets/contracts/Registrar.sol.js';
-import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.sol.js';
-import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.sol.js';
+import Universe from '/imports/lib/assets/contracts/Universe.json';
+import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.json';
+import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.json';
 
-const Registrars = new Mongo.Collection('registrars');
+const Universes = new Mongo.Collection('universes');
 
 if (Meteor.isServer) {
-  Meteor.publish('registrars', () => Registrars.find({}, { sort: { createdAt: -1 } }));
+  Meteor.publish('universes', () => Universes.find({}, { sort: { createdAt: -1 } }));
 }
 
 
 Meteor.methods({
-  'registrars.insert'(registrarAddress, portfolioAddress, managerAddress) {
-    check(registrarAddress, String);
+  'universes.insert'(universeAddress, portfolioAddress, managerAddress) {
+    check(universeAddress, String);
     check(portfolioAddress, String);
     check(managerAddress, String);
 
-    Registrar.setProvider(web3.currentProvider);
-    const registrarContract = Registrar.at(registrarAddress);
+    Universe.setProvider(web3.currentProvider);
+    const universeContract = Universe.at(universeAddress);
     PreminedAsset.setProvider(web3.currentProvider);
     PriceFeed.setProvider(web3.currentProvider);
 
-    registrarContract.numAssignedAssets()
+    universeContract.numAssignedAssets()
     .then((res) => {
       const numAssignedAssets = res.toNumber();
       for (let index = 0; index < numAssignedAssets; index += 1) {
@@ -35,7 +35,7 @@ Meteor.methods({
         let assetPrecision;
         let priceFeedAddress;
         let exchangeAddress;
-        registrarContract.assetAt(index).then((result) => {
+        universeContract.assetAt(index).then((result) => {
           assetAddress = result;
           assetContract = PreminedAsset.at(assetAddress);
           return assetContract.name();
@@ -50,18 +50,18 @@ Meteor.methods({
         })
         .then((result) => {
           assetPrecision = result.toNumber();
-          return registrarContract.priceFeedsAt(index);
+          return universeContract.priceFeedsAt(index);
         })
         .then((result) => {
           priceFeedAddress = result;
-          return registrarContract.exchangesAt(index);
+          return universeContract.exchangesAt(index);
         })
         .then((result) => {
           exchangeAddress = result;
-          const resRegistrarUpsert = Registrars.update(
-            { address: registrarAddress },
+          const resUniverseUpsert = Universes.update(
+            { address: universeAddress },
             { $set: {
-              address: registrarAddress,
+              address: universeAddress,
               index,
               assets: {
                 address: assetAddress,
@@ -81,8 +81,8 @@ Meteor.methods({
               upsert: true,
             }
           );
-          if (resRegistrarUpsert === false) {
-            console.log(`Error in Registrar upsert: ${resRegistrarUpsert}`);
+          if (resUniverseUpsert === false) {
+            console.log(`Error in Universe upsert: ${resUniverseUpsert}`);
           }
           // TODO
           // const resAssetsUpsert = Assets.update(
@@ -103,7 +103,7 @@ Meteor.methods({
           //   }
           // );
           // if (resAssetsUpsert === false) {
-          //   console.log(`Error in Registrar upsert: ${resAssetsUpsert}`);
+          //   console.log(`Error in Universe upsert: ${resAssetsUpsert}`);
           // }
         });
       }
@@ -111,5 +111,5 @@ Meteor.methods({
   },
 });
 
-// export { Registrars, Assets };
-export { Registrars };
+// export { Universes, Assets };
+export { Universes };

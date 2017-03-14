@@ -1,0 +1,53 @@
+{
+  "contract_name": "PerformanceFee",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "fee",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "calculateFee",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    }
+  ],
+  "unlinked_binary": "0x6060604052600060015534610000575b5b60008054600160a060020a03191633600160a060020a03161790555b5b5b60f88061003c6000396000f300606060405263ffffffff60e060020a6000350416638da5cb5b81146036578063ddca3f4314605c578063e6af35f0146078575b6000565b3460005760406094565b60408051600160a060020a039092168252519081900360200190f35b34600057606660a3565b60408051918252519081900360200190f35b34600057606660a9565b60408051918252519081900360200190f35b600054600160a060020a031681565b60015481565b6000805433600160a060020a0390811691161460c3576000565b506001545b5b905600a165627a7a723058200ed4633bd5b4688ff3b78a37a290cc2ce7fbbbd325ed600e043060dcdd7b39bd0029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1489159746720
+}

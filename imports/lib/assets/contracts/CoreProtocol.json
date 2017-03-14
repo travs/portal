@@ -1,0 +1,22 @@
+{
+  "contract_name": "CoreProtocol",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getUniverseAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    }
+  ],
+  "unlinked_binary": "0x6060604052346000575b6087806100176000396000f300606060405263ffffffff60e060020a600035041663704ae84381146022575b6000565b34600057602c6055565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005b905600a165627a7a7230582000fa3bf12a5b952d557d3a611d91c3aec1b11085d81f149694aeb58cbb2cc17b0029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1489159746719
+}

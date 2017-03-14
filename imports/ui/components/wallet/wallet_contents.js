@@ -7,7 +7,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Assets } from '/imports/api/assets.js';
 import Specs from '/imports/lib/assets/utils/specs.js';
 // Contracts
-import EtherToken from '/imports/lib/assets/contracts/EtherToken.sol.js';
+import EtherToken from '/imports/lib/assets/contracts/EtherToken.json';
 
 // Corresponding html file
 import './wallet_contents.html';

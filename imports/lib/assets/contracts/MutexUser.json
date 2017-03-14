@@ -1,0 +1,8 @@
+{
+  "contract_name": "MutexUser",
+  "abi": [],
+  "unlinked_binary": "0x6060604052346000575b60358060166000396000f30060606040525b60005600a165627a7a7230582034af28a4b4a73a1eed4751fa26dc08b7fb6279253558ff6536a4bf3b5c7957850029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1489442960570
+}

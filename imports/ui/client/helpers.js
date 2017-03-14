@@ -2,7 +2,7 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 // Collections
 import { Cores } from '/imports/api/cores';
-import { Registrars } from '/imports/api/modules';
+import { Universes } from '/imports/api/modules';
 
 // Server network
 Template.registerHelper('isServerConnected', () => Session.get('isServerConnected'));
@@ -29,14 +29,14 @@ Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ managerAddr
 Template.registerHelper('getIsNewOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).isNew : false));
 Template.registerHelper('isCoreManagerThisManager', coreManagerAccount => coreManagerAccount === Session.get('clientManagerAccount'));
 // Modules
-Template.registerHelper('getRegistrars', () => Registrars.find({}, { sort: { index: 1 } }));
-Template.registerHelper('getRegistrarOfThisPortfolioManager', () => {
+Template.registerHelper('getUniverses', () => Universes.find({}, { sort: { index: 1 } }));
+Template.registerHelper('getUniverseOfThisPortfolioManager', () => {
   //TODO case for when portfolio manager has more than one core
-  const registrarAddress = Cores.findOne({
+  const universeAddress = Cores.findOne({
     managerAddress: Session.get('clientManagerAccount')
-  }).registrarAddress
+  }).universeAddress
 
-  return Registrars.find({ address: registrarAddress }, { sort: { createdAt: -1 } });
+  return Universes.find({ address: universeAddress }, { sort: { createdAt: -1 } });
 });
 // Contracts
 Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));
@@ -45,9 +45,9 @@ Template.registerHelper('repTokenContractAddress', () => Session.get('repTokenCo
 Template.registerHelper('euroTokenContractAddress', () => Session.get('euroTokenContractAddress'));
 Template.registerHelper('priceFeedContractAddress', () => Session.get('priceFeedContractAddress'));
 Template.registerHelper('exchangeContractAddress', () => Session.get('exchangeContractAddress'));
-Template.registerHelper('registrarContractAddrefunctionss', () => Session.get('registrarContractAddress'));
+Template.registerHelper('universeContractAddrefunctionss', () => Session.get('universeContractAddress'));
 Template.registerHelper('versionContractAddress', () => Session.get('versionContractAddress'));
-Template.registerHelper('metaContractAddress', () => Session.get('metaContractAddress'));
+Template.registerHelper('governanceContractAddress', () => Session.get('governanceContractAddress'));
 // UX
 Template.registerHelper('isInactiveNetworkStatus', () => Session.get('NetworkStatus').isInactive);
 Template.registerHelper('isMiningNetworkStatus', () => Session.get('NetworkStatus').isMining);

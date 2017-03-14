@@ -1,7 +1,7 @@
-import EtherToken from '/imports/lib/assets/contracts/EtherToken.sol.js';
-import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.sol.js';
-import RepToken from '/imports/lib/assets/contracts/RepToken.sol.js';
-import EuroToken from '/imports/lib/assets/contracts/EuroToken.sol.js';
+import EtherToken from '/imports/lib/assets/contracts/EtherToken.json';
+import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.json';
+import RepToken from '/imports/lib/assets/contracts/RepToken.json';
+import EuroToken from '/imports/lib/assets/contracts/EuroToken.json';
 
 const constants = require('./constants.js');
 

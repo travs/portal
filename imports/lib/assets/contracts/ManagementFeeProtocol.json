@@ -1,0 +1,22 @@
+{
+  "contract_name": "ManagementFeeProtocol",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "calculateFee",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    }
+  ],
+  "unlinked_binary": "0x6060604052346000575b6070806100176000396000f300606060405263ffffffff60e060020a600035041663e6af35f081146022575b6000565b34600057602c603e565b60408051918252519081900360200190f35b60005b905600a165627a7a723058202bdaa682756424d2951e4ab5759faf6951b9ce41b778857dd4fea7fa3d9eab870029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1489159746720
+}

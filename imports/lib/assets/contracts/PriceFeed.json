@@ -1,0 +1,266 @@
+{
+  "contract_name": "PriceFeed",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getFrequency",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "ofAsset",
+          "type": "address"
+        }
+      ],
+      "name": "getData",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "backupOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getValidity",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "ofAsset",
+          "type": "address"
+        }
+      ],
+      "name": "getPrice",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "ofAssets",
+          "type": "address[]"
+        },
+        {
+          "name": "newPrices",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "updatePrice",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "ofAsset",
+          "type": "address"
+        }
+      ],
+      "name": "getTimestamp",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getUpdateCounter",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "ofNewBackupOwner",
+          "type": "address"
+        }
+      ],
+      "name": "useBackup",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "ofNewBackupOwner",
+          "type": "address"
+        }
+      ],
+      "name": "setNewBackup",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "ofBackupOwner",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "ofAsset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "atTimestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "ofPrice",
+          "type": "uint256"
+        }
+      ],
+      "name": "PriceUpdated",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052346100005760405160208061069983398101604052515b805b60008054600160a060020a03338116600160a060020a03199283161790925560018054928416929091169190911790555b505b505b610638806100616000396000f300606060405236156100935763ffffffff60e060020a6000350416630a42f86f811461009857806338266b22146100b75780633af8e4ab146100e95780633b7f7cfa1461011257806341976e091461013157806368ae09441461015c5780638bf57f4e146101e65780638da5cb5b14610211578063944feb8b1461023a5780639649dccd14610259578063a07b762e14610274575b610000565b34610000576100a561028f565b60408051918252519081900360200190f35b34610000576100d0600160a060020a0360043516610295565b6040805192835260208301919091528051918290030190f35b34610000576100f661031a565b60408051600160a060020a039092168252519081900360200190f35b34610000576100a5610329565b60408051918252519081900360200190f35b34610000576100a5600160a060020a036004351661032f565b60408051918252519081900360200190f35b34610000576101e4600480803590602001908201803590602001908080602002602001604051908101604052809392919081815260200183836020028082843750506040805187358901803560208181028481018201909552818452989a9989019892975090820195509350839250850190849080828437509496506103ab95505050505050565b005b34610000576100a5600160a060020a036004351661050c565b60408051918252519081900360200190f35b34610000576100f6610514565b60408051600160a060020a039092168252519081900360200190f35b34610000576100a5610523565b60408051918252519081900360200190f35b34610000576101e4600160a060020a0360043516610529565b005b34610000576101e4600160a060020a036004351661059d565b005b60785b90565b600160a060020a038116600090815260026020526040812054819083906102be908390116105fc565b600160a060020a03841660009081526002602052604090205484906102eb90603c429190910311156105fc565b600160a060020a0385166000908152600260205260409020805460019091015490945092505b5b505b50915091565b600154600160a060020a031681565b603c5b90565b600160a060020a0381166000908152600260205260408120548290610356908390116105fc565b600160a060020a038316600090815260026020526040902054839061038390603c429190910311156105fc565b600160a060020a03841660009081526002602052604090206001015492505b5b505b50919050565b600080546103c79033600160a060020a039081169116146105fc565b82826103d681518351146105fc565b600092505b845183101561050257610421426002600088878151811015610000576020908102909101810151600160a060020a031682528101919091526040016000205414156105fc565b6040604051908101604052804281526020018585815181101561000057906020019060200201518152506002600087868151811015610000576020908102909101810151600160a060020a0316825281810192909252604001600020825181559101516001909101558451859084908110156100005790602001906020020151600160a060020a03167fb556fac599c3c70efb9ab1fa725ecace6c81cc48d1455f886607def065f3e0c0428686815181101561000057602090810290910181015160408051938452918301528051918290030190a25b8260010192506103db565b5b5b50505b505050565b60005b919050565b600054600160a060020a031681565b60005b90565b6000546105449033600160a060020a039081169116146105fc565b80610559600160a060020a03821615156105fc565b60008054600160a060020a0333811673ffffffffffffffffffffffffffffffffffffffff199283161790925560018054928516929091169190911790555b5b505b50565b6000546105b89033600160a060020a039081169116146105fc565b806105cd600160a060020a03821615156105fc565b6001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0384161790555b5b505b50565b80151561059a57610000565b5b505600a165627a7a72305820eff6896f522a7119d77c3ecd22deedbcd195efbfda23d774d8acd8f725c101e70029",
+  "networks": {
+    "42": {
+      "events": {
+        "0xb556fac599c3c70efb9ab1fa725ecace6c81cc48d1455f886607def065f3e0c0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "ofAsset",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "atTimestamp",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "ofPrice",
+              "type": "uint256"
+            }
+          ],
+          "name": "PriceUpdated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x0962bf52e72ef28a544cdcccc02484f4d511c8ce",
+      "updated_at": 1489443120844
+    },
+    "1489154607204": {
+      "events": {
+        "0xb556fac599c3c70efb9ab1fa725ecace6c81cc48d1455f886607def065f3e0c0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "ofAsset",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "atTimestamp",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "ofPrice",
+              "type": "uint256"
+            }
+          ],
+          "name": "PriceUpdated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x165145e722b70d2be4012a26e138f48a0c40c41d",
+      "updated_at": 1489159747180
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1489443120844
+}

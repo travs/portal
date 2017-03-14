@@ -3,10 +3,10 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 // Collections
 import { Cores } from '/imports/api/cores';
-import { Registrars } from '/imports/api/modules';
+import { Universes } from '/imports/api/modules';
 // Contracts
-import Version from '/imports/lib/assets/contracts/Version.sol.js';
-import Core from '/imports/lib/assets/contracts/Core.sol.js';
+import Version from '/imports/lib/assets/contracts/Version.json';
+import Core from '/imports/lib/assets/contracts/Core.json';
 
 import './portal_new.html';
 
@@ -15,7 +15,7 @@ const ADDRESS_PLACEHOLDER = '0x0';
 
 Template.portal_new.onCreated(() => {
   Meteor.subscribe('cores');
-  Meteor.subscribe('registrars');
+  Meteor.subscribe('universes');
   // Creation of contract object
   Version.setProvider(web3.currentProvider);
   Core.setProvider(web3.currentProvider);
@@ -29,7 +29,7 @@ Template.portal_new.onRendered(() => {});
 
 
 Template.portal_new.events({
-  'change form#new_portfolio #registrar_select': (event) => {
+  'change form#new_portfolio #universe_select': (event) => {
     // Get value from form element
     const target = event.target;
     if (target.value === 'melon') {
@@ -46,7 +46,7 @@ Template.portal_new.events({
     const portfolioName = templateInstance.find('input#portfolio_name').value;
     const managerAddress = Session.get('clientManagerAccount');
     const managerEmail = templateInstance.find('input#manager_email').value;
-    let registrarAddress = Session.get('registrarContractAddress');
+    let universeAddress = Session.get('universeContractAddress');
 
     //TODO clean up database entries
     const sharePrice = web3.toWei(1.0, 'ether');
@@ -59,7 +59,7 @@ Template.portal_new.events({
     // Init contract instance
     const versionContract = Version.at(Session.get('versionContractAddress'));
     versionContract.createCore(
-      Session.get('registrarContractAddress'),
+      Session.get('universeContractAddress'),
       ADDRESS_PLACEHOLDER,
       ADDRESS_PLACEHOLDER,
       ADDRESS_PLACEHOLDER,
@@ -71,6 +71,7 @@ Template.portal_new.events({
     })
     .then((result) => {
       portfolioAddress = result;
+      console.log(result);
       const coreContract = Core.at(portfolioAddress);
       return coreContract.owner();
     })
@@ -86,13 +87,13 @@ Template.portal_new.events({
           portfolioName,
           managerAddress,
           managerEmail,
-          registrarAddress,
+          universeAddress,
           sharePrice,
           notional,
           intraday
         );
-        Meteor.call('registrars.insert',
-          registrarAddress,
+        Meteor.call('universes.insert',
+          universeAddress,
           portfolioAddress,
           managerAddress
         );

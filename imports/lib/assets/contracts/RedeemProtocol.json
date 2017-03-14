@@ -1,0 +1,8 @@
+{
+  "contract_name": "RedeemProtocol",
+  "abi": [],
+  "unlinked_binary": "0x6060604052346000575b60358060166000396000f30060606040525b60005600a165627a7a72305820dc8fe166f2519e64de7263e59456d25c8e1fc18d57f7db33249f293b88c4cd810029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1489159746720
+}

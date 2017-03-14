@@ -5,7 +5,7 @@
       , "buttons": {
         "home": "Home"
         , "signin": "Entrar"
-        , "signup": "Registrar"
+        , "signup": "Universe"
         , "signout": "Salir"
         , "overview": "Detalles"
         , "settings": "Configuración"

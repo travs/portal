@@ -7,7 +7,7 @@ import { BigNumber } from 'meteor/ethereum:web3';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Contracts
-import Core from '/imports/lib/assets/contracts/Core.sol.js';
+import Core from '/imports/lib/assets/contracts/Core.json';
 import constants from '/imports/lib/assets/utils/constants.js';
 
 

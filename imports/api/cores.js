@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 // Contracts
-import Core from '/imports/lib/assets/contracts/Core.sol.js';
+import Core from '/imports/lib/assets/contracts/Core.json';
 
 Core.setProvider(web3.currentProvider);
 export const Cores = new Mongo.Collection('cores');
@@ -14,12 +14,12 @@ if (Meteor.isServer) {
 
 
 Meteor.methods({
-  'cores.insert': (address, name, managerAddress, managerEmail, registrarAddress, sharePrice, notional, intraday) => {
+  'cores.insert': (address, name, managerAddress, managerEmail, universeAddress, sharePrice, notional, intraday) => {
     check(address, String);
     check(name, String);
     check(managerAddress, String);
     check(managerEmail, String);
-    check(registrarAddress, String);
+    check(universeAddress, String);
     check(sharePrice, String);
     check(notional, Number);
     check(intraday, Number);
@@ -29,7 +29,7 @@ Meteor.methods({
       name,
       managerAddress,
       managerEmail,
-      registrarAddress,
+      universeAddress,
       sharePrice,
       notional,
       intraday: '±0.0',

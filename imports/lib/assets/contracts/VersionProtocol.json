@@ -1,0 +1,70 @@
+{
+  "contract_name": "VersionProtocol",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "numCreatedCores",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "ofUniverse",
+          "type": "address"
+        },
+        {
+          "name": "ofRiskMgmt",
+          "type": "address"
+        },
+        {
+          "name": "ofManagmentFee",
+          "type": "address"
+        },
+        {
+          "name": "ofPerformanceFee",
+          "type": "address"
+        }
+      ],
+      "name": "createCore",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "coreAt",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    }
+  ],
+  "unlinked_binary": "0x606060405234610000575b610104806100196000396000f300606060405263ffffffff60e060020a6000350416635c182342811460365780637e4670b3146052578063850588d0146096575b6000565b34600057604060bf565b60408051918252519081900360200190f35b34600057607a600160a060020a036004358116906024358116906044358116906064351660c5565b60408051600160a060020a039092168252519081900360200190f35b34600057607a60043560d0565b60408051600160a060020a039092168252519081900360200190f35b60005b90565b60005b949350505050565b60005b9190505600a165627a7a72305820253ae54fd64799384d77761961a3aad75be6dbdce9ea10595b278ba10f397d480029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1489159746721
+}

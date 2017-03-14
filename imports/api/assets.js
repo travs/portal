@@ -2,14 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 // Smart contracts
-import Registrar from '/imports/lib/assets/contracts/Registrar.sol.js';
-import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.sol.js';
-import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.sol.js';
+import Universe from '/imports/lib/assets/contracts/Universe.json';
+import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.json';
+import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.json';
 
-Registrar.setProvider(web3.currentProvider);
+Universe.setProvider(web3.currentProvider);
 PreminedAsset.setProvider(web3.currentProvider);
 PriceFeed.setProvider(web3.currentProvider);
-const registrarContract = Registrar.at(Registrar.all_networks['3'].address);
+const universeContract = Universe.at(Universe.all_networks['3'].address);
 
 // Collections
 export const Assets = new Mongo.Collection('assets');
@@ -23,7 +23,7 @@ Meteor.methods({
   'assets.sync': (assetHolderAddress) => {
     check(assetHolderAddress, String);
     // TODO build function
-    registrarContract.numAssignedAssets().then((assignedAssets) => {
+    universeContract.numAssignedAssets().then((assignedAssets) => {
       const numAssignedAssets = assignedAssets.toNumber();
       for (let index = 0; index < numAssignedAssets; index += 1) {
         // TODO rem unnecessairy elements
@@ -37,7 +37,7 @@ Meteor.methods({
         let priceFeedAddress;
         let currentPrice;
         let lastUpdate;
-        registrarContract.assetAt(index).then((result) => {
+        universeContract.assetAt(index).then((result) => {
           assetAddress = result;
           assetContract = PreminedAsset.at(assetAddress);
           return assetContract.name();
@@ -56,7 +56,7 @@ Meteor.methods({
         })
         .then((result) => {
           assetHoldings = result.toNumber();
-          return registrarContract.priceFeedsAt(index);
+          return universeContract.priceFeedsAt(index);
         })
         .then((result) => {
           priceFeedAddress = result;

@@ -7,7 +7,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Smart contracts
-import Core from '/imports/lib/assets/contracts/Core.sol.js';
+import Core from '/imports/lib/assets/contracts/Core.json';
 // Corresponding html file
 import './portfolio_overview.html';
 

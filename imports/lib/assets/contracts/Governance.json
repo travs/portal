@@ -1,0 +1,178 @@
+{
+  "contract_name": "Governance",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "ofVersion",
+          "type": "address"
+        }
+      ],
+      "name": "assetAvailability",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "numVersions",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "versionAt",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "versions",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "nextVersion",
+          "type": "address"
+        }
+      ],
+      "name": "updateVersion",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "nextVersion",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "VersionUpdated",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x606060405234610000575b5b60008054600160a060020a03191633600160a060020a03161790555b5b5b610307806100386000396000f3006060604052361561005c5763ffffffff60e060020a6000350416634d9348ef8114610061578063596ef79c1461008e57806379d84b32146100ad57806387aee00e146100d95780638da5cb5b14610105578063ec3b7b781461012e575b610000565b346100005761007a600160a060020a036004351661015b565b604080519115158252519081900360200190f35b346100005761009b61017d565b60408051918252519081900360200190f35b34610000576100bd600435610184565b60408051600160a060020a039092168252519081900360200190f35b34610000576100bd6004356101ba565b60408051600160a060020a039092168252519081900360200190f35b34610000576100bd6101ea565b60408051600160a060020a039092168252519081900360200190f35b346100005761007a600160a060020a03600435166101f9565b604080519115158252519081900360200190f35b600160a060020a03811660009081526002602052604090205460ff165b919050565b6001545b90565b6000600182815481101561000057906000526020600020900160005b9054906101000a9004600160a060020a031690505b919050565b600181815481101561000057906000526020600020900160005b915054906101000a9004600160a060020a031681565b600054600160a060020a031681565b6000805433600160a060020a0390811691161461021557610000565b60018054806001018281815481835581811511610257576000838152602090206102579181019083015b80821115610253576000815560010161023f565b5090565b5b505050916000526020600020900160005b8154600160a060020a038087166101009390930a83810291021990911617909155600081815260026020526040808220805460ff191660019081179091555490519093507f659fd78dea2eba445e706470320620352e110f35900ef88b9d7364fcb7c7c2e79190a35060015b5b9190505600a165627a7a72305820dd84dcb86cf4c7b0777b281ddce23fa55822973f3141dfbdcd1861a1204f20090029",
+  "networks": {
+    "42": {
+      "events": {
+        "0x659fd78dea2eba445e706470320620352e110f35900ef88b9d7364fcb7c7c2e7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "nextVersion",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "VersionUpdated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x3f5f08656ff2b170acda83ed642770fc590f8ddf",
+      "updated_at": 1489443132945
+    },
+    "1489154607204": {
+      "events": {
+        "0x659fd78dea2eba445e706470320620352e110f35900ef88b9d7364fcb7c7c2e7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "nextVersion",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "VersionUpdated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x76dbcd9095c4e924d0aafd1b6312fc86ff4ffacf",
+      "updated_at": 1489159747290
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1489443132945
+}

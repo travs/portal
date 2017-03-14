@@ -33,11 +33,13 @@ Template.manage_settings.events({
     event.preventDefault();
   },
   'click button#delete': () => {
-    const doc = Cores.findOne({ managerAddress: Session.get('clientManagerAccount') });
-    if ((doc === undefined || address === undefined)) {
+    const managerAddress = Session.get('clientManagerAccount');
+    const doc = Cores.findOne({ managerAddress });
+    if ((doc === undefined || managerAddress === undefined)) {
       return false;
     }
     Meteor.call('cores.remove', doc._id);
+    //TODO close modal
     return true;
   },
 });

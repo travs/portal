@@ -7,7 +7,7 @@ import select2 from 'select2';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Contracts
-import Core from '/imports/lib/assets/contracts/Core.sol.js';
+import Core from '/imports/lib/assets/contracts/Core.json';
 import './manage_participation.html';
 
 

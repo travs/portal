@@ -1,0 +1,71 @@
+{
+  "contract_name": "BackupOwned",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "backupOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "ofNewBackupOwner",
+          "type": "address"
+        }
+      ],
+      "name": "useBackup",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "ofNewBackupOwner",
+          "type": "address"
+        }
+      ],
+      "name": "setNewBackup",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "ofBackupOwner",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "constructor"
+    }
+  ],
+  "unlinked_binary": "0x6060604052346100005760405160208061025783398101604052515b60008054600160a060020a03338116600160a060020a03199283161790925560018054928416929091169190911790555b505b6101fa8061005d6000396000f300606060405263ffffffff60e060020a6000350416633af8e4ab81146100455780638da5cb5b1461006e5780639649dccd14610097578063a07b762e146100b2575b610000565b34610000576100526100cd565b60408051600160a060020a039092168252519081900360200190f35b34610000576100526100dc565b60408051600160a060020a039092168252519081900360200190f35b34610000576100b0600160a060020a03600435166100eb565b005b34610000576100b0600160a060020a036004351661015f565b005b600154600160a060020a031681565b600054600160a060020a031681565b6000546101069033600160a060020a039081169116146101be565b8061011b600160a060020a03821615156101be565b60008054600160a060020a0333811673ffffffffffffffffffffffffffffffffffffffff199283161790925560018054928516929091169190911790555b5b505b50565b60005461017a9033600160a060020a039081169116146101be565b8061018f600160a060020a03821615156101be565b6001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0384161790555b5b505b50565b80151561015c57610000565b5b505600a165627a7a723058200e6a787748db65ce81fae3579f951989c56deb152e5f7e49201113ba77b1ae310029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1489159746719
+}

@@ -2,7 +2,7 @@ const constants = require('./constants.js');
 const specs = require('./specs.js');
 const async = require('async');
 
-import Exchange from '/imports/lib/assets/contracts/Exchange.sol.js';
+import Exchange from '/imports/lib/assets/contracts/Exchange.json';
 Exchange.setProvider(web3.currentProvider);
 
 // Offers
