@@ -18,7 +18,6 @@ Template.portfolio_overview.onCreated(() => {
   Meteor.subscribe('cores');
   Template.instance().totalShareAmount = new ReactiveVar();
   Template.instance().personalShareAmount = new ReactiveVar();
-
   // TODO send command to server to update current coreContract
 });
 
