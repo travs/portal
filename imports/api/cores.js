@@ -1,9 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-// Contracts
-import Core from '/imports/lib/assets/contracts/Core.json';
 
+// import contract from 'truffle-contract';
+var contract = require("truffle-contract");
+// Contracts
+import CoreJson from '/imports/lib/assets/contracts/Core.json';
+const Core = contract(CoreJson);
 Core.setProvider(web3.currentProvider);
 export const Cores = new Mongo.Collection('cores');
 
