@@ -1,19 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-// Import contract from 'truffle-contract';
-var contract = require("truffle-contract");
-// Smart contracts
-import CoreJson from '/imports/lib/assets/contracts/Core.json';
-const Core = contract(CoreJson);
+
+// SMART-CONTRACT IMPORT
+
+import contract from 'truffle-contract';
+import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
+const Core = contract(CoreJson); // Set Provider
 Core.setProvider(web3.currentProvider);
+
+
+// COLLECTIONS
+
 export const Cores = new Mongo.Collection('cores');
+if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish Collection
 
-
-if (Meteor.isServer) {
-  Meteor.publish('cores', () => Cores.find());
-}
-
+// METHODS
 
 Meteor.methods({
   'cores.insert': (address, name, managerAddress, managerEmail, universeAddress, sharePrice, notional, intraday) => {

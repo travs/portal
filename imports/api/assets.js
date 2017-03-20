@@ -1,33 +1,28 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-// Import contract from 'truffle-contract';
+
+// SMART-CONTRACT IMPORT
+
 import contract from 'truffle-contract';
-// Get Smart Contract JSON
-import UniverseJson from '/imports/lib/assets/contracts/Universe.json';
+import UniverseJson from '/imports/lib/assets/contracts/Universe.json'; // Get Smart Contract JSON
 import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json';
 import PriceFeedJson from '/imports/lib/assets/contracts/PriceFeed.json';
-
-// Set Provider
-const Universe = contract(UniverseJson);
+const Universe = contract(UniverseJson); // Set Provider
 Universe.setProvider(web3.currentProvider);
 const PreminedAsset = contract(PreminedAssetJson);
 PreminedAsset.setProvider(web3.currentProvider);
 const PriceFeed = contract(PriceFeedJson);
 PriceFeed.setProvider(web3.currentProvider);
-// Initialize contract instance
-// Global Vars
-//TODO persistent network id
-const KOVAN_NETWORK_ID = 42;
-const universeContract = Universe.at(Universe.networks[KOVAN_NETWORK_ID].address);
+const KOVAN_NETWORK_ID = 42; //TODO persistent network id
+const universeContract = Universe.at(Universe.networks[KOVAN_NETWORK_ID].address); // Initialize contract instance
 
-// Collections
+// COLLECTIONS
+
 export const Assets = new Mongo.Collection('assets');
+if (Meteor.isServer) { Meteor.publish('assets', () => Assets.find({}, { sort: { price: -1 } })); } // Publish Collection
 
-if (Meteor.isServer) {
-  // This code only runs on the server
-  Meteor.publish('assets', () => Assets.find({}, { sort: { price: -1 } }));
-}
+// METHODS
 
 Meteor.methods({
   'assets.sync': (assetHolderAddress) => {
