@@ -24,12 +24,8 @@ Application of the melon protocol portal.
 
 After installation is complete
 
-1. Launch an ethereum client. For example something similar to this:
-    ```
-    parity --chain ropsten -lrpc=trace --rpcport 8547
-    ```
+Go to the above `portal` directory, open a terminal and launch meteor:
 
-2. Go to the above `portal` directory, open a terminal and launch meteor:
-    ```
-    meteor
-    ```
+```
+meteor
+```
