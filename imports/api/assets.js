@@ -1,15 +1,25 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-// Smart contracts
-import Universe from '/imports/lib/assets/contracts/Universe.json';
-import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.json';
-import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.json';
+// Import contract from 'truffle-contract';
+import contract from 'truffle-contract';
+// Get Smart Contract JSON
+import UniverseJson from '/imports/lib/assets/contracts/Universe.json';
+import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json';
+import PriceFeedJson from '/imports/lib/assets/contracts/PriceFeed.json';
 
+// Set Provider
+const Universe = contract(UniverseJson);
 Universe.setProvider(web3.currentProvider);
+const PreminedAsset = contract(PreminedAssetJson);
 PreminedAsset.setProvider(web3.currentProvider);
+const PriceFeed = contract(PriceFeedJson);
 PriceFeed.setProvider(web3.currentProvider);
-const universeContract = Universe.at(Universe.all_networks['3'].address);
+// Initialize contract instance
+// Global Vars
+//TODO persistent network id
+const KOVAN_NETWORK_ID = 42;
+const universeContract = Universe.at(Universe.networks[KOVAN_NETWORK_ID].address);
 
 // Collections
 export const Assets = new Mongo.Collection('assets');
