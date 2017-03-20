@@ -1,20 +1,25 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-// Smart contracts
-import EtherToken from '/imports/lib/assets/contracts/EtherToken.json';
-import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.json';
-import RepToken from '/imports/lib/assets/contracts/RepToken.json';
-import EuroToken from '/imports/lib/assets/contracts/EuroToken.json';
-import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.json';
-import Exchange from '/imports/lib/assets/contracts/Exchange.json';
+
+// SMART-CONTRACT IMPORT
+
 import constants from '/imports/lib/assets/utils/constants.js';
 import functions from '/imports/lib/assets/utils/functions.js';
 import collections from '/imports/lib/assets/utils/collections.js';
-
+import contract from 'truffle-contract';
+import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json'; // Get Smart Contract JSON
+import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json';
+const PreminedAsset = contract(PreminedAssetJson); // Set Provider
+PreminedAsset.setProvider(web3.currentProvider);
+const Exchange = contract(ExchangeJson);
 Exchange.setProvider(web3.currentProvider);
-const exchangeContract = Exchange.at(Exchange.all_networks['3'].address);
+const KOVAN_NETWORK_ID = 42; // TODO persistent network id
+const exchangeContract = Exchange.at(Exchange.networks[KOVAN_NETWORK_ID].address); // Initialize contract instance
+
+// COLLECTIONS
 
 export const Offers = new Mongo.Collection('offers');
+if (Meteor.isServer) { Meteor.publish('offers', () => Offers.find({}, { sort: { id: -1 } })); } // Publish Collection
 
 let offers = [];  // Offers collections
 

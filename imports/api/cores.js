@@ -9,7 +9,6 @@ import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Con
 const Core = contract(CoreJson); // Set Provider
 Core.setProvider(web3.currentProvider);
 
-
 // COLLECTIONS
 
 export const Cores = new Mongo.Collection('cores');

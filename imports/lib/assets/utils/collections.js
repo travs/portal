@@ -2,15 +2,21 @@ const constants = require('./constants.js');
 const specs = require('./specs.js');
 const async = require('async');
 
-import Exchange from '/imports/lib/assets/contracts/Exchange.json';
-Exchange.setProvider(web3.currentProvider);
+// SMART-CONTRACT IMPORT
 
-// Offers
+import contract from 'truffle-contract';
+import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json'; // Get Smart Contract JSON
+const Exchange = contract(ExchangeJson); // Set Provider
+Exchange.setProvider(web3.currentProvider);
+const KOVAN_NETWORK_ID = 42; // TODO persistent network id
+const EXCHANGE_ADDR = Exchange.networks[KOVAN_NETWORK_ID].address;
+
+// OFFERS
 
 // Pre:
 // Post:
 export function syncOffer(id, callback) {
-  Exchange.at(Exchange.all_networks['3'].address).offers(id)
+  Exchange.at(EXCHANGE_ADDR).offers(id)
   .then((res) => {
     const [sellHowMuch, sellWhichTokenAddress, buyHowMuch, buyWhichTokenAddress, owner, active] = res;
     if (active) {
@@ -42,7 +48,7 @@ export function syncOffer(id, callback) {
 // Pre:
 // Post:
 export function sync(callback) {
-  Exchange.at(Exchange.all_networks['3'].address).lastOfferId()
+  Exchange.at(EXCHANGE_ADDR).lastOfferId()
   .then((result) => {
     const numOffers = result.toNumber();
     console.log(`numOffers: ${numOffers}`)

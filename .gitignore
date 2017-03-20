@@ -5,3 +5,4 @@ settings.json
 .eslintignore
 fullchain.pem
 privkey.pem
+**.json
