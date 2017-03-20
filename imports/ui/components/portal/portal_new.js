@@ -4,15 +4,17 @@ import { Session } from 'meteor/session';
 // Collections
 import { Cores } from '/imports/api/cores';
 import { Universes } from '/imports/api/modules';
-// Contracts
-import Version from '/imports/lib/assets/contracts/Version.json';
-import Core from '/imports/lib/assets/contracts/Core.json';
+// Smart Contracts
+import contract from 'truffle-contract';
+import VersionJson from '/imports/lib/assets/contracts/Version.json';
+import CoreJson from '/imports/lib/assets/contracts/Core.json';
+
 
 import './portal_new.html';
 
-
 const ADDRESS_PLACEHOLDER = '0x0';
-
+const Version = contract(VersionJson);
+const Core = contract(CoreJson);
 Template.portal_new.onCreated(() => {
   Meteor.subscribe('cores');
   Meteor.subscribe('universes');

@@ -3,17 +3,18 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { ReactiveVar } from 'meteor/reactive-var';
-
 // Collections
 import { Cores } from '/imports/api/cores';
 // Smart contracts
-import Core from '/imports/lib/assets/contracts/Core.json';
+import contract from 'truffle-contract';
+import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
+
+
 // Corresponding html file
 import './portfolio_overview.html';
 
+const Core = contract(CoreJson); // Set Provider
 Core.setProvider(web3.currentProvider);
-
-
 Template.portfolio_overview.onCreated(() => {
   Meteor.subscribe('cores');
   Template.instance().totalShareAmount = new ReactiveVar();

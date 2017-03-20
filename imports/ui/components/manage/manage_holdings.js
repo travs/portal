@@ -4,16 +4,14 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
-// Collections
-import { Cores } from '/imports/api/cores';
-// Contracts
-import Core from '/imports/lib/assets/contracts/Core.json';
+import contract from 'truffle-contract';
 import constants from '/imports/lib/assets/utils/constants.js';
-
+import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
 
 import './manage_holdings.html';
 
 
+const Core = contract(CoreJson);
 Template.manage_holdings.onCreated(() => {
   Meteor.subscribe('cores');
   Template.instance().state = new ReactiveDict();

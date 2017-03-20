@@ -7,10 +7,13 @@ import select2 from 'select2';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Contracts
-import Core from '/imports/lib/assets/contracts/Core.json';
+import contract from 'truffle-contract';
+import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
+
+
 import './manage_participation.html';
 
-
+const Core = contract(CoreJson); // Set Provider
 Template.manage_participation.onCreated(() => {
   // TODO update cores param
   Meteor.subscribe('cores');
