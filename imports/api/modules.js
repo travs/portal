@@ -1,17 +1,26 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-// Smart contracts
-import Universe from '/imports/lib/assets/contracts/Universe.json';
-import PreminedAsset from '/imports/lib/assets/contracts/PreminedAsset.json';
-import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.json';
 
-const Universes = new Mongo.Collection('universes');
+// SMART-CONTRACT IMPORT
 
-if (Meteor.isServer) {
-  Meteor.publish('universes', () => Universes.find({}, { sort: { createdAt: -1 } }));
-}
+import contract from 'truffle-contract';
+import UniverseJson from '/imports/lib/assets/contracts/Universe.json'; // Get Smart Contract JSON
+const Universe = contract(UniverseJson); // Set Provider
+Universe.setProvider(web3.currentProvider);
+import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json'; // Get Smart Contract JSON
+const PreminedAsset = contract(PreminedAssetJson); // Set Provider
+PreminedAsset.setProvider(web3.currentProvider);
+import PriceFeedJson from '/imports/lib/assets/contracts/PriceFeed.json'; // Get Smart Contract JSON
+const PriceFeed = contract(PriceFeedJson); // Set Provider
+PriceFeed.setProvider(web3.currentProvider);
 
+// COLLECTIONS
+
+export const Universes = new Mongo.Collection('universes');
+if (Meteor.isServer) { Meteor.publish('universes', () => Universes.find({}, { sort: { createdAt: -1 } })); }
+
+// METHODS
 
 Meteor.methods({
   'universes.insert'(universeAddress, portfolioAddress, managerAddress) {
@@ -46,7 +55,7 @@ Meteor.methods({
         })
         .then((result) => {
           assetSymbol = result;
-          return assetContract.precision();
+          return assetContract.getDecimals();
         })
         .then((result) => {
           assetPrecision = result.toNumber();
@@ -110,6 +119,3 @@ Meteor.methods({
     });
   },
 });
-
-// export { Universes, Assets };
-export { Universes };

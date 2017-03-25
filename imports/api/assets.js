@@ -53,7 +53,7 @@ Meteor.methods({
         })
         .then((result) => {
           assetSymbol = result;
-          return assetContract.precision();
+          return assetContract.getDecimals();
         })
         .then((result) => {
           assetPrecision = result.toNumber();
