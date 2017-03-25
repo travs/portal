@@ -21,12 +21,11 @@ Meteor.startup(() => {
   Session.set('bitcoinTokenContractAddress', '0x23bb1f93c168a290f0626ec9b9fd8ba8c8591752');
   Session.set('repTokenContractAddress', '0x02a2656ad55e07c3bc7b5d388e80d5a675b28a20');
   Session.set('euroTokenContractAddress', '0x605832d1f474cafc26951287ec47d5c09334f1ce');
-  // TODO oraclize address
-  Session.set('priceFeedContractAddress', '0x0');
+  Session.set('priceFeedContractAddress', '0x81926CfbF418F7C5a9F024142818F6b7f75887F8 ');
   Session.set('exchangeContractAddress', '0x50396a51a81b938ccb2d1466de9eebc49d5564f5');
-  Session.set('universeContractAddress', '0x0');
-  Session.set('versionContractAddress', '0x0');
-  Session.set('governanceContractAddress', '0x0');
+  Session.set('universeContractAddress', '0xa96e3e84603b0ed678fb612bcc686fb95a1228fb');
+  Session.set('versionContractAddress', '0x9d80c05f00a0d02d43c1fe8e64b5d2640430536b');
+  Session.set('governanceContractAddress', '0xdc181457ba55c5d7126155d5cdcd845d9ee0f6c3');
 
   Meteor.subscribe('cores');
   Meteor.subscribe('universes');

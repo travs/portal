@@ -9,18 +9,18 @@ import contract from 'truffle-contract';
 import VersionJson from '/imports/lib/assets/contracts/Version.json';
 import CoreJson from '/imports/lib/assets/contracts/Core.json';
 
-
 import './portal_new.html';
 
 const ADDRESS_PLACEHOLDER = '0x0';
 const Version = contract(VersionJson);
 const Core = contract(CoreJson);
+// Creation of contract object
+Version.setProvider(web3.currentProvider);
+Core.setProvider(web3.currentProvider);
+
 Template.portal_new.onCreated(() => {
   Meteor.subscribe('cores');
   Meteor.subscribe('universes');
-  // Creation of contract object
-  Version.setProvider(web3.currentProvider);
-  Core.setProvider(web3.currentProvider);
 });
 
 
@@ -67,7 +67,9 @@ Template.portal_new.events({
       ADDRESS_PLACEHOLDER,
       { from: managerAddress }
     )
-    .then(() => versionContract.numCreatedCores())
+    .then(() => {
+      return versionContract.numCreatedCores();
+    })
     .then((result) => {
       return versionContract.coreAt(result.toNumber() - 1);
     })
