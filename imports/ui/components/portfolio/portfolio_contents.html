@@ -25,14 +25,14 @@
             {{#each assets}}
             <tr>
               <td>
-                <a class="table-link" href="http://testnet.etherscan.io/address/{{this.address}}" target="_blank">
+                <a class="table-link" href="https://kovan.etherscan.io/address/{{this.address}}" target="_blank">
                 {{this.name}}
                 </a>
               </td>
               <td>{{convertFromTokenPrecision this.holdings}}</td>
               <td>{{portfolioPercentrage}}</td>
               <td>
-                <a class="table-link" href="http://testnet.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
+                <a class="table-link" href="https://kovan.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
                 {{dapp_formatBalance (invertValue (convertFromTokenPrecision this.priceFeed.price)) "0,0.0[00]" 'eur'}}
                 </a>
               </td>
@@ -75,14 +75,14 @@
           {{#each assets}}
             <tr>
               <td>
-                <a href="http://testnet.etherscan.io/address/{{this.address}}" target="_blank">
+                <a href="https://kovan.etherscan.io/address/{{this.address}}" target="_blank">
                   {{this.name}}
                 </a>
               </td>
               <td>{{convertFromTokenPrecision this.holdings}}</td>
               <td>{{portfolioPercentrage}}</td>
               <td>
-                <a href="http://testnet.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
+                <a href="https://kovan.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
                   {{dapp_formatBalance (invertValue (convertFromTokenPrecision this.priceFeed.price)) "0,0.0[00]" 'eur'}}
                 </a>
               </td>
