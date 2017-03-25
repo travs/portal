@@ -145,8 +145,8 @@
         }
       },
       "links": {},
-      "address": "0x3f5f08656ff2b170acda83ed642770fc590f8ddf",
-      "updated_at": 1489443132945
+      "address": "0xdc181457ba55c5d7126155d5cdcd845d9ee0f6c3",
+      "updated_at": 1490190852402
     },
     "1489154607204": {
       "events": {
@@ -171,8 +171,56 @@
       "links": {},
       "address": "0x76dbcd9095c4e924d0aafd1b6312fc86ff4ffacf",
       "updated_at": 1489159747290
+    },
+    "1490274862963": {
+      "events": {
+        "0x659fd78dea2eba445e706470320620352e110f35900ef88b9d7364fcb7c7c2e7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "nextVersion",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "VersionUpdated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xebf360d156dbb552cbdefdd7844a7e4ecff6f306",
+      "updated_at": 1490278478338
+    },
+    "1490356087030": {
+      "events": {
+        "0x659fd78dea2eba445e706470320620352e110f35900ef88b9d7364fcb7c7c2e7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "nextVersion",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "VersionUpdated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xe8afa9117e1ad560796690c2541ace65426f01b8",
+      "updated_at": 1490357255101
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1489443132945
+  "updated_at": 1490357255101
 }
