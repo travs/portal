@@ -137,6 +137,7 @@ function checkIfSynching() {
 function checkIfServerIsConncected() {
   Meteor.call('isServerConnected', (err, result) => {
     if(!err) {
+      console.log(result)
       Session.set('isServerConnected', result);
     } else {
       console.log(err);

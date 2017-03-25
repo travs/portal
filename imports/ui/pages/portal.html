@@ -1,42 +1,29 @@
 <template name="portal">
 
-  <!-- TODO gradually uncomment again -->
   <!-- Index-banner -->
-{{> ux_index_portal}}
+  {{> ux_index_portal}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
-    <!-- <div class="container">
-      <div class="row">
-        <div class="col s12"> -->
-          {{#if isClientConnected}}
-            {{#if clientManagerAccount}}
-              {{#if isKovanNetwork}}
-                {{#if hasManagerCreatedCore}}
-                  <!-- <div class="col s12"> -->
-                  <section class="mp-portal">
-                    {{> portal_list}}
-                  </section>
-                  <!-- </div> -->
-                {{else}}
-                  <!-- <div class="col s12"> -->
-                  <section class="mp-portal setup-portfolio">
-                    {{> portal_new}}
-                  </section>
-                  <!-- </div> -->
-                {{/if}}
-              {{else}}
+      {{#if isClientConnected}}
+        {{#if clientManagerAccount}}
+          {{#if isKovanNetwork}}
+            {{#if hasManagerCreatedCore}}
+              <section class="mp-portal">
                 {{> portal_list}}
-              {{/if}}
+              </secion>
             {{else}}
-              {{> portal_list}}
+              {{> portal_new}}
             {{/if}}
           {{else}}
             {{> portal_list}}
           {{/if}}
-        <!-- </div>
-      </div>
-    </div> -->
+        {{else}}
+          {{> portal_list}}
+        {{/if}}
+      {{else}}
+        {{> portal_list}}
+      {{/if}}
   {{else}}
     {{> ux_server_connection}}
   {{/if}}
