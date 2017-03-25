@@ -6,17 +6,21 @@ import { ReactiveVar } from 'meteor/reactive-var';
 // Collections
 import { Assets } from '/imports/api/assets.js';
 import Specs from '/imports/lib/assets/utils/specs.js';
-// Contracts
-import EtherToken from '/imports/lib/assets/contracts/EtherToken.json';
+// Smart Contracts
+import contract from 'truffle-contract';
+import EtherTokenJson from '/imports/lib/assets/contracts/EtherToken.json';
 
 // Corresponding html file
 import './wallet_contents.html';
+
+const EtherToken = contract(EtherTokenJson);
+// Creation of contract object
+EtherToken.setProvider(web3.currentProvider);
 
 Template.wallet_contents.onCreated(() => {
   Meteor.subscribe('assets');
   // Portfolio Value in Wei
   Template.instance().totalPortfolioValue = new ReactiveVar();
-  EtherToken.setProvider(web3.currentProvider);
 });
 
 Template.wallet_contents.helpers({
