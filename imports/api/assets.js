@@ -41,7 +41,6 @@ Meteor.methods({
         let priceFeedContract;
         let priceFeedAddress;
         let currentPrice;
-        let lastUpdate;
         universeContract.assetAt(index).then((result) => {
           assetAddress = result;
           assetContract = PreminedAsset.at(assetAddress);
@@ -61,7 +60,7 @@ Meteor.methods({
         })
         .then((result) => {
           assetHoldings = result.toNumber();
-          return universeContract.priceFeedsAt(index);
+          return universeContract.priceFeedAt(index);
         })
         .then((result) => {
           priceFeedAddress = result;
@@ -70,11 +69,11 @@ Meteor.methods({
         })
         .then((result) => {
           currentPrice = result.toNumber();
-          return priceFeedContract.lastUpdate();
+          return priceFeedContract.getTimestamp();
         })
         .then((result) => {
-          lastUpdate = result.toNumber();
-          // console.log(`\n Current Price: ${currentPrice} @ ${lastUpdate}`)
+          const timestampOfLastUpdate = result.toNumber();
+          console.log(`\n Current Price: ${currentPrice} @ ${timestampOfLastUpdate}`)
           Assets.update(
             { address: assetAddress, assetHolderAddress },
             { $set: {
@@ -87,7 +86,7 @@ Meteor.methods({
               priceFeed: {
                 address: priceFeedAddress,
                 price: currentPrice,
-                timestamp: lastUpdate,
+                timestamp: timestampOfLastUpdate,
               },
               createdAt: new Date(),
             },

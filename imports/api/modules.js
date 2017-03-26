@@ -59,7 +59,7 @@ Meteor.methods({
         })
         .then((result) => {
           assetPrecision = result.toNumber();
-          return universeContract.priceFeedsAt(index);
+          return universeContract.priceFeedAt(index);
         })
         .then((result) => {
           priceFeedAddress = result;
