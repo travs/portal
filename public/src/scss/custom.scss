@@ -4,6 +4,11 @@
 @import "partials/detail";
 @import "partials/base";
 
+body{
+  position: relative;
+  height: auto !important;
+  padding-bottom: $spacing-lg*4;
+}
 $fullwidth : 100%;
 .line-divider{
 	border-bottom: 1px solid #e6e6e6;
@@ -1107,12 +1112,14 @@ table.dataTable thead th.sorting_desc:after {
 }
 
 // footer section
-.mp-footer{
+
+  .mp-footer{
 	background: $main;
 	padding: $spacing-lg - 10 0;
   bottom: 0;
   left: 0;
   right: 0;
+  position: absolute;
 	.footer-logo{
 		img{
 			height: 50px;
@@ -1165,8 +1172,14 @@ table.dataTable thead th.sorting_desc:after {
 	}
 }
 
+
 // responsive content
 @media (max-width: $screen-xs-max){
+  body{
+    position: relative;
+    height: auto !important;
+    padding-bottom: $spacing-lg*6;
+  }
 	.nav-header{
 		height: 64px;
 		border: 0;
@@ -1373,6 +1386,10 @@ table.dataTable thead th.sorting_desc:after {
 		}
 	}
 	.mp-footer{
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
 		text-align: center;
 		.footer-icon{
 			padding-top: $spacing-md;
@@ -2118,4 +2135,7 @@ img.oraclize{
   float: right;
   color: #868686;
   font-size: 13px;
+}
+.clear{
+  clear: both;
 }
