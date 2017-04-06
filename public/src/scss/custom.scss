@@ -1180,6 +1180,24 @@ table.dataTable thead th.sorting_desc:after {
     height: auto !important;
     padding-bottom: $spacing-lg*6;
   }
+  .error-message{
+    padding:$spacing-lg*2 $spacing-lg $spacing-lg*2 !important;
+    p{
+      font-size: 18px;
+      font-weight: $font-weight-light;
+      color: #252525;
+      padding: 0px !important;
+      a:link{
+        color: #1189c6;
+        font-weight: $font-weight-medium;
+        cursor: grab;
+      }
+    }
+    img{
+      padding: 0px !important;
+      padding-bottom: 20px !important;
+    }
+  }
 	.nav-header{
 		height: 64px;
 		border: 0;
@@ -2138,4 +2156,23 @@ img.oraclize{
 }
 .clear{
   clear: both;
+}
+
+//Error Messages
+.error-message{
+  padding:$spacing-lg*3 $spacing-lg $spacing-lg*2;
+  p{
+    font-size: 18px;
+    font-weight: $font-weight-light;
+    color: #252525;
+    padding: 0px $spacing-lg*4;
+    a:link{
+      color: #1189c6;
+      font-weight: $font-weight-medium;
+      cursor: grab;
+    }
+  }
+  img{
+    padding: $spacing-md*2;
+  }
 }
