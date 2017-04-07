@@ -2176,3 +2176,21 @@ img.oraclize{
     padding: $spacing-md*2;
   }
 }
+
+//Toastr Custom
+.toast-message{
+  font-size: 15px;
+  font-family: "Ubuntu",sans-serif;
+}
+.toast-success{
+  background-color:#73b854 !important;
+}
+.toast-error{
+  background-color:#b62626 !important;
+}
+.toast-info{
+  background-color:#1189c6 !important;
+}
+.toast-warning{
+  background-color:#F5AB35 !important;
+}
