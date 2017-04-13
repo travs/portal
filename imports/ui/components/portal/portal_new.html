@@ -19,84 +19,70 @@
               <div class="line-divider"></div>
               <form class="col s12 new-portfolio" id="new_portfolio">
                 <div class="row">
-					<div class="col-md-12">
-						<div class="setup-form">
-							<form class="mp-form">
-								<div class="form-group">
-									<input id="portfolio_name" type="text" class="form-control validate" minlength="3" required placeholder="Your Portfolio Name (Visible to others)">
-								</div>
-								<div class="form-group">
-									<input id="manager_email" type="email" class="validate form-control" minlength="3" placeholder="Your Email Address (Optional)">
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
+        					<div class="col-md-12">
+        						<div class="setup-form">
+        							<form class="mp-form">
+        								<div class="form-group">
+        									<input id="portfolio_name" type="text" class="form-control validate" minlength="3" required placeholder="Your Portfolio Name (Visible to others)">
+        								</div>
+        								<div class="form-group">
+        									<input id="manager_email" type="email" class="validate form-control" minlength="3" placeholder="Your Email Address (Optional)">
+        								</div>
+        							</form>
+        						</div>
+        					</div>
+        				</div>
                 <div class="line-divider"></div>
                 <div class="row">
-					<div class="col-md-12">
-						<div class="setup-module">
-							<p>Asset Class Module:</p>
-							<ul class="setup-module-list">
-								<li>
-						          <a href="https://kovan.etherscan.io/address/{{etherTokenContractAddress}}" target="_blank" class="">Ether Token (ETH-T)</a>
-						        </li>
-								<li>
-						          <a href="https://kovan.etherscan.io/address/{{melonTokenContractAddress}}" target="_blank" class="">Melon Token (MLN-T)</a>
-						        </li>
-								<li>
-						          <a href="https://kovan.etherscan.io/address/{{bitcoinTokenContractAddress}}" target="_blank" class="">Bitcoin Token (BTC-T)</a>
-						        </li>
-						        <li>
-						          <a href="https://kovan.etherscan.io/address/{{euroTokenContractAddress}}" target="_blank" class="">Euro Token (EUR-T)</a>
-						        </li>
-								<li>
-						          <a href="https://kovan.etherscan.io/address/{{repTokenContractAddress}}" target="_blank" class="">Rep Token (Rep)</a>
-						        </li>
-							</ul>
-						</div>
-					</div>
-      			</div>
+        					<div class="col-md-12">
+        						<div class="setup-module">
+        							<p>Asset Class Module:</p>
+        							<ul class="setup-module-list">
+        								<li><a href="https://kovan.etherscan.io/address/{{etherTokenContractAddress}}" target="_blank" class="">Ether Token (ETH-T)</a></li>
+        								<li><a href="https://kovan.etherscan.io/address/{{melonTokenContractAddress}}" target="_blank" class="">Melon Token (MLN-T)</a></li>
+        								<li><a href="https://kovan.etherscan.io/address/{{bitcoinTokenContractAddress}}" target="_blank" class="">Bitcoin Token (BTC-T)</a></li>
+        						    <li><a href="https://kovan.etherscan.io/address/{{euroTokenContractAddress}}" target="_blank" class="">Euro Token (EUR-T)</a></li>
+        								<li><a href="https://kovan.etherscan.io/address/{{repTokenContractAddress}}" target="_blank" class="">Rep Token (Rep)</a></li>
+        							</ul>
+        						</div>
+        					</div>
+              	</div>
                 <div class="row">
-					<div class="col-md-12">
-						<div class="setup-module">
-							<p>Exchange Module:</p>
-							<ul class="setup-module-list">
-								<li><a href="https://daemon.melonport.com/liquidityprovider" target="_blank" class="">Melon Exchange</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
+        					<div class="col-md-12">
+        						<div class="setup-module">
+        							<p>Exchange Module:</p>
+        							<ul class="setup-module-list">
+        								<li><a href="https://daemon.melonport.com/liquidityprovider" target="_blank" class="">Melon Exchange</a></li>
+        							</ul>
+        						</div>
+        					</div>
+        				</div>
                 <div class="row">
-					<div class="col-md-12">
-						<div class="setup-module">
-							<p>Price Feed Module:</p>
-							<ul class="setup-module-list">
-								<li>
-					              	<a href="https://daemon.melonport.com/oracle" target="_blank" class="">
-					                Price Feed (By Oraclize <img src="dist/img/oraclize.png" class="oraclize">)
-					              	</a>
-					            </li>
-							</ul>
-						</div>
-					</div>
-      			</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="setup-module">
-							<p>Universe Module:</p>
-							<ul class="setup-module-list">
-								<li><a href="https://kovan.etherscan.io/address/{{universeContractAddress}}" target="_blank" class="">Melon Universe</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
+        					<div class="col-md-12">
+        						<div class="setup-module">
+        							<p>Price Feed Module:</p>
+        							<ul class="setup-module-list">
+        								<li><a href="https://daemon.melonport.com/oracle" target="_blank" class="">Price Feed (By Oraclize <img src="dist/img/oraclize.png" class="oraclize">)</a></li>
+        							</ul>
+        						</div>
+        					</div>
+              	</div>
+        				<div class="row">
+        					<div class="col-md-12">
+        						<div class="setup-module">
+        							<p>Universe Module:</p>
+        							<ul class="setup-module-list">
+        								<li><a href="https://kovan.etherscan.io/address/{{universeContractAddress}}" target="_blank" class="">Melon Universe</a></li>
+        							</ul>
+        						</div>
+        					</div>
+        				</div>
                 <div class="line-divider"></div>
                 <div class="row">
-					<div class="col-md-12 btn-portfolio text-left">
-        				<button type="submit" class="btn btn-light-blue">{{i18n 'dapp.components.create.deploy'}}</button>
-					</div>
-				</div>
+        					<div class="col-md-12 btn-portfolio text-left">
+                		<button type="submit" class="btn btn-light-blue">{{i18n 'dapp.components.create.deploy'}}</button>
+        					</div>
+        				</div>
                 <div class="clear"></div>
               </form>
             </div>
