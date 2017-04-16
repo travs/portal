@@ -5,35 +5,9 @@
       "constant": false,
       "inputs": [
         {
-          "name": "id",
-          "type": "uint256"
-        }
-      ],
-      "name": "cancel",
-      "outputs": [],
-      "payable": false,
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "id",
-          "type": "uint256"
+          "name": "onExchange",
+          "type": "address"
         },
-        {
-          "name": "quantity",
-          "type": "uint256"
-        }
-      ],
-      "name": "buy",
-      "outputs": [],
-      "payable": false,
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
         {
           "name": "sell_how_much",
           "type": "uint256"
@@ -51,14 +25,53 @@
           "type": "address"
         }
       ],
-      "name": "offer",
-      "outputs": [],
+      "name": "isExchangeTakePermitted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "onExchange",
+          "type": "address"
+        },
+        {
+          "name": "sell_how_much",
+          "type": "uint256"
+        },
+        {
+          "name": "sell_which_token",
+          "type": "address"
+        },
+        {
+          "name": "buy_how_much",
+          "type": "uint256"
+        },
+        {
+          "name": "buy_which_token",
+          "type": "address"
+        }
+      ],
+      "name": "isExchangeMakePermitted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "payable": false,
       "type": "function"
     }
   ],
-  "unlinked_binary": "0x606060405234610000575b60c5806100186000396000f300606060405263ffffffff60e060020a60003504166340e58ee581146036578063d6febde8146045578063f09ea2a6146057575b6000565b3460005760436004356089565b005b346000576043600435602435608d565b005b34600057604360043573ffffffffffffffffffffffffffffffffffffffff60243581169060443590606435166092565b005b5b50565b5b5050565b5b505050505600a165627a7a723058206bdd067adcec0c7f02291660865e5be82a4b6ca1a68878c8dd5884da30a7c1a70029",
+  "unlinked_binary": "0x606060405234610000575b610106806100196000396000f300606060405263ffffffff60e060020a600035041663350d7c5d8114602c578063baaeaf2a14602c575b6000565b34600057606373ffffffffffffffffffffffffffffffffffffffff60043581169060243590604435811690606435906084351660c2565b604080519115158252519081900360200190f35b34600057606373ffffffffffffffffffffffffffffffffffffffff60043581169060243590604435811690606435906084351660c2565b604080519115158252519081900360200190f35b60005b95945050505050565b60005b959450505050505600a165627a7a723058209bca6d9824ed281aa707a486e0b56a8719b58be7a95fc60b60baecab8c2141960029",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1490357215356
+  "updated_at": 1492375397756
 }
