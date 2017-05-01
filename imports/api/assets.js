@@ -15,7 +15,8 @@ PreminedAsset.setProvider(web3.currentProvider);
 const PriceFeed = contract(PriceFeedJson);
 PriceFeed.setProvider(web3.currentProvider);
 const KOVAN_NETWORK_ID = 42; //TODO persistent network id
-const universeContract = Universe.at(Universe.networks[KOVAN_NETWORK_ID].address); // Initialize contract instance
+// const universeContract = Universe.at(Universe.networks[KOVAN_NETWORK_ID].address); // Initialize contract instance
+const universeContract = Universe.at('0x442Fd95C32162F914364C5fEFf27A0Dc05214706'); // Initialize contract instance
 
 // COLLECTIONS
 

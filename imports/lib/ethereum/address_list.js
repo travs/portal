@@ -15,7 +15,7 @@ exports.RepToken = 0x0;
 
 // Price Feeds
 
-exports.Oraclize
+exports.Oraclize = 0x0;
 // exports.CryptoCompare = 0x442Fd95C32162F914364C5fEFf27A0Dc05214706;
 exports.CryptoCompare = 0x0;
 
