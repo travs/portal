@@ -60,11 +60,6 @@ Template.portal_new.events({
 
     // Init contract instance
     const versionContract = Version.at(Session.get('versionContractAddress'));
-    //TODO remove below - for testing purposes only
-    versionContract.addrGovernance().then((result) => {
-      console.log(result);
-    });
-
     versionContract.createCore(
       portfolioName,
       Session.get('universeContractAddress'),
@@ -76,7 +71,6 @@ Template.portal_new.events({
       { from: managerAddress }
     )
     .then((result) => {
-      console.log(result);
       return versionContract.numCreatedCores();
     })
     .then((result) => {
