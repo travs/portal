@@ -7,7 +7,6 @@
         Manage Participation in {{getPortfolioDoc.name}}
       {{/if}}
     </h2>
-    <!-- <span class="badge btn-sm-outline-blue">20%</span> -->
   </div>
   <div class="exchange-overview-block">
     <div class="form-horizontal mp-form">
@@ -48,47 +47,4 @@
       </div>
     </div>
   </div>
-
-
-    <!-- <div class="card">
-      <div class="card-content">
-        <span class="card-title">
-          {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
-            Manage Participation in your Portfolio
-          {{else}}
-            Manage Participation in {{getPortfolioDoc.name}}
-          {{/if}}
-        </span>
-        <br/>
-        <br/>
-        <div class="row">
-          <form class="col s12 investOrRedeem">
-            <div class="row">
-              <div class="input-field col s12">
-                  <select id="type">
-                  <option value="0" selected>Invest</option>
-                  <option value="1">Redeem</option>
-                </select>
-              </div>
-              <div class="input-field col s12">
-                <input id="price" type="number" step="any" class="validate" value="{{formattedSharePrice}}">
-                <label for="price" active>Price (Ether/Share)</label>
-              </div>
-              <div class="input-field col s12">
-                <input id="volume" type="number" step="any" class="validate">
-                <label for="volume">Volume (Shares)</label>
-              </div>
-              <div class="input-field col s12">
-                <input id="total" type="number" step="any" class="validate">
-                <label for="total">Total (Ether)</label>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="card-action">
-          <a class="manage waves-effect waves-light btn blue lighten-2">{{selectedTypeName}}</a>
-        </div>
-      </div>
-    </div> -->
-
 </template>

@@ -1180,6 +1180,13 @@ table.dataTable thead th.sorting_desc:after {
     height: auto !important;
     padding-bottom: $spacing-lg*6;
   }
+  .asset-overview{
+    margin-bottom: $spacing-md;
+  }
+  .price-desc {
+    float: left !important;
+    margin-top: 8px;
+  }
   .error-message{
     padding:$spacing-lg*2 $spacing-lg $spacing-lg*2 !important;
     p{
