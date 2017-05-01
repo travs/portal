@@ -2,16 +2,42 @@
   "contract_name": "Subscribe",
   "abi": [
     {
-      "constant": false,
-      "inputs": [
+      "constant": true,
+      "inputs": [],
+      "name": "decimals",
+      "outputs": [
         {
-          "name": "wantedShares",
+          "name": "",
           "type": "uint256"
         }
       ],
-      "name": "createSharesWithEther",
-      "outputs": [],
-      "payable": true,
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "PRICE_OF_ETHER_RELATIVE_TO_REFERENCE_ASSET",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "BASE_UNIT_OF_SHARES",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
       "type": "function"
     },
     {
@@ -36,6 +62,23 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "wantedShares",
+          "type": "uint256"
+        },
+        {
+          "name": "ofCore",
+          "type": "address"
+        }
+      ],
+      "name": "createSharesWithEther",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [],
       "name": "owner",
@@ -49,13 +92,227 @@
       "type": "function"
     },
     {
+      "constant": true,
       "inputs": [],
+      "name": "INITIAL_SHARE_PRICE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "setEtherToken",
+          "type": "address"
+        }
+      ],
       "payable": false,
       "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "byParticipant",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "atTimestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "numShares",
+          "type": "uint256"
+        }
+      ],
+      "name": "SharesCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "byParticipant",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "atTimestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "numShares",
+          "type": "uint256"
+        }
+      ],
+      "name": "SharesAnnihilated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Refund",
+      "type": "event"
     }
   ],
-  "unlinked_binary": "0x606060405234610000575b5b60008054600160a060020a03191633600160a060020a03161790555b5b5b60e3806100376000396000f300606060405263ffffffff60e060020a6000350416630934de68811460365780638451aa1b1460415780638da5cb5b14605f575b6000565b603f6004356085565b005b34600057603f600160a060020a03600435166024356044356094565b005b346000576069609a565b60408051600160a060020a039092168252519081900360200190f35b608f6000341160a9565b5b5b50565b5b505050565b600054600160a060020a031681565b801515608f576000565b5b505600a165627a7a72305820ea10fe142ac9224aa7d5c1843c3e1bb09a3eefcd88a4194b031395450ecbaac90029",
-  "networks": {},
+  "unlinked_binary": "0x6060604052346100005760405160208061048783398101604052515b5b60008054600160a060020a03191633600160a060020a03161790555b60018054600160a060020a031916600160a060020a0383161790555b505b610422806100656000396000f300606060405236156100675763ffffffff60e060020a600035041663313ce567811461006c57806335b6eeda1461008b57806381025dfe1461008b5780638451aa1b146100c957806388af6c15146100ea5780638da5cb5b14610103578063e7ab12471461012c575b610000565b346100005761007961014b565b60408051918252519081900360200190f35b3461000057610079610150565b60408051918252519081900360200190f35b3461000057610079610150565b60408051918252519081900360200190f35b34610000576100e8600160a060020a036004351660243560443561015a565b005b6100e8600435600160a060020a0360243516610160565b005b34610000576101106101f6565b60408051600160a060020a039092168252519081900360200190f35b3461000057610079610205565b60408051918252519081900360200190f35b601281565b600181565b600181565b5b505050565b600060006000600061017460003411610211565b84935083600160a060020a0316635b1dac606000604051602001526040518163ffffffff1660e060020a028152600401809050602060405180830381600087803b156100005760325a03f11561000057505060405151935034925050508482026101e081831015610211565b6101ec81838888610221565b5b5b505050505050565b600054600160a060020a031681565b670de0b6b3a764000081565b80151561021d57610000565b5b50565b60006000858561023381831115610211565b8561023f811515610211565b60015460408051600060209182015281517fd0e30db000000000000000000000000000000000000000000000000000000000815291516102b993600160a060020a03169263d0e30db0928e9260048084019382900301818588803b156100005761235a5a03f1156100005750506040515191506102119050565b85945084600160a060020a0316639e43e06f33896040518363ffffffff1660e060020a0281526004018083600160a060020a0316600160a060020a0316815260200182815260200192505050600060405180830381600087803b156100005760325a03f11561000057505050878910156103a557604051898903945061036090600160a060020a0333169086156108fc029087906000818181858888f19350505050610211565b60408051600160a060020a03331681526020810186905281517fbb28353e4598c3b9199101a66e0989549b659a59a54d2c27fbb183f1932c8e6d929181900390910190a15b60408051428152602081018990528151600160a060020a033316927ff8495c533745eb3efa4d74ccdbbd0938e9d1e88add51cdc7db168a9f15a73736928290030190a25b5b505b50505050505050505600a165627a7a72305820296475eca4655909f9377bc5c8ec3e5aec9d667cd897de432e36a979fa7a4aa10029",
+  "networks": {
+    "42": {
+      "links": {},
+      "events": {
+        "0xf8495c533745eb3efa4d74ccdbbd0938e9d1e88add51cdc7db168a9f15a73736": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "byParticipant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "atTimestamp",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "numShares",
+              "type": "uint256"
+            }
+          ],
+          "name": "SharesCreated",
+          "type": "event"
+        },
+        "0x6d1ea56dcd6dcf937743a4f926190b72632e8d241b3939423c443d3ad1d309d4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "byParticipant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "atTimestamp",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "numShares",
+              "type": "uint256"
+            }
+          ],
+          "name": "SharesAnnihilated",
+          "type": "event"
+        },
+        "0xbb28353e4598c3b9199101a66e0989549b659a59a54d2c27fbb183f1932c8e6d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Refund",
+          "type": "event"
+        }
+      },
+      "updated_at": 1493649852752
+    },
+    "1493649494942": {
+      "links": {},
+      "events": {
+        "0xf8495c533745eb3efa4d74ccdbbd0938e9d1e88add51cdc7db168a9f15a73736": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "byParticipant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "atTimestamp",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "numShares",
+              "type": "uint256"
+            }
+          ],
+          "name": "SharesCreated",
+          "type": "event"
+        },
+        "0x6d1ea56dcd6dcf937743a4f926190b72632e8d241b3939423c443d3ad1d309d4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "byParticipant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "atTimestamp",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "numShares",
+              "type": "uint256"
+            }
+          ],
+          "name": "SharesAnnihilated",
+          "type": "event"
+        },
+        "0xbb28353e4598c3b9199101a66e0989549b659a59a54d2c27fbb183f1932c8e6d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Refund",
+          "type": "event"
+        }
+      },
+      "updated_at": 1493649500944
+    }
+  },
   "schema_version": "0.0.5",
-  "updated_at": 1492375397756
+  "updated_at": 1493649852752
 }

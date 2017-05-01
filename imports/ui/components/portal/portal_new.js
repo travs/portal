@@ -61,13 +61,16 @@ Template.portal_new.events({
     // Init contract instance
     const versionContract = Version.at(Session.get('versionContractAddress'));
     versionContract.createCore(
+      portfolioName,
       Session.get('universeContractAddress'),
-      ADDRESS_PLACEHOLDER,
-      ADDRESS_PLACEHOLDER,
-      ADDRESS_PLACEHOLDER,
+      Session.get('subscribeContractAddress'),
+      Session.get('redeemContractAddress'),
+      Session.get('riskMgmtContractAddress'),
+      Session.get('managmentFeeContractAddress'),
+      Session.get('performanceFeeContractAddress'),
       { from: managerAddress }
     )
-    .then(() => {
+    .then((result) => {
       return versionContract.numCreatedCores();
     })
     .then((result) => {
