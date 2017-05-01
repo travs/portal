@@ -18,11 +18,14 @@
               {{#if isKovanNetwork}}
 			          <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
       					<li class="has-badge">
-                  <a class="portfolio">{{#unless hasManagerCreatedCore}}Portfolio
-        						<span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>{{/unless}}
-                    {{getManagerNameOfCore}} {{#if getIsNewOfCore}}
-                    <span class="badge btn-outline-green" data-badge-caption="New">New</span>
-        						<span class="badge btn-trans-blue">Create</span>
+                  <a class="portfolio">
+                    {{#if hasManagerCreatedCore}}
+                      {{getManagerNameOfCore}}
+                      {{#if getIsNewOfCore}}
+                        <span class="badge btn-outline-green" data-badge-caption="New">New</span>
+                      {{/if}}
+                    {{else}}
+                      Portfolio <span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>
                     {{/if}}
                   </a>
       					</li>
