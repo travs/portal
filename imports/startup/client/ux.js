@@ -14,6 +14,9 @@ Meteor.startup(() => {
   // Set 24h Change
   // TODO change is relative to Dollar!
   // TODO check and handle statusCode
+
+  // TODO: Reenable this: https://github.com/melonproject/portal/issues/38
+  /*
   HTTP.get('https://api.coinmarketcap.com/v1/ticker/ethereum/', (error, result) => {
     if (!error) Session.set('ethChange24h', result.data[0].percent_change_24h);
   });
@@ -23,5 +26,6 @@ Meteor.startup(() => {
   HTTP.get('https://api.coinmarketcap.com/v1/ticker/augur/', (error, result) => {
     if (!error) Session.set('repChange24h', result.data[0].percent_change_24h);
   });
+  */
   Session.set('eurChange24h', '0');
 });
