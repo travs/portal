@@ -35,5 +35,5 @@ exports.PerformanceFee = '0x0';
 
 // Governance
 
-exports.Version = '0x0bc659fD55E099e8A2Ed04f2382D994BE011746A';
+exports.Version = '0x928b49fB4BC2bA378e32821eefe39f6Cf20f3a92';
 exports.Governance = '0x4516acbcf84804af1bf629eced55c894efb2cce3';
