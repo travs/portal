@@ -4,6 +4,41 @@
     {
       "constant": true,
       "inputs": [],
+      "name": "DIVISOR_FEE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "timeDifference",
+          "type": "uint256"
+        },
+        {
+          "name": "gav",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculateFee",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
       "name": "owner",
       "outputs": [
         {
@@ -28,26 +63,13 @@
       "type": "function"
     },
     {
-      "constant": true,
-      "inputs": [],
-      "name": "calculateFee",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "type": "function"
-    },
-    {
       "inputs": [],
       "payable": false,
       "type": "constructor"
     }
   ],
-  "unlinked_binary": "0x6060604052600060015534610000575b5b60008054600160a060020a03191633600160a060020a03161790555b5b5b60f88061003c6000396000f300606060405263ffffffff60e060020a6000350416638da5cb5b81146036578063ddca3f4314605c578063e6af35f0146078575b6000565b3460005760406094565b60408051600160a060020a039092168252519081900360200190f35b34600057606660a3565b60408051918252519081900360200190f35b34600057606660a9565b60408051918252519081900360200190f35b600054600160a060020a031681565b60015481565b6000805433600160a060020a0390811691161460c3576000565b506001545b5b905600a165627a7a72305820a794c0c0b08aceebca292627ddeca3fd8d8f3379924aac937a8e60e3a7c24f920029",
+  "unlinked_binary": "0x6060604052600060015534610000575b5b60008054600160a060020a03191633600160a060020a03161790555b5b5b6101528061003d6000396000f300606060405263ffffffff60e060020a6000350416632c3482e9811461004557806334e73122146100645780638da5cb5b14610089578063ddca3f43146100bf575b610000565b34610000576100526100de565b60408051918252519081900360200190f35b34610000576100526004356024356100e9565b60408051918252519081900360200190f35b3461000057610096610104565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3461000057610052610120565b60408051918252519081900360200190f35b66038d7ea4c6800081565b60015466038d7ea4c6800082840291820204905b5092915050565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b600154815600a165627a7a7230582095c6b0ff3166c00d6e74adbbb809f9b9bbbfe1eda9f84f720007a28a375d18350029",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1489159746720
+  "updated_at": 1492375397755
 }

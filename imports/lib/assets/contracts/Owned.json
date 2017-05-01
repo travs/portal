@@ -2,6 +2,19 @@
   "contract_name": "Owned",
   "abi": [
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_new",
+          "type": "address"
+        }
+      ],
+      "name": "setOwner",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [],
       "name": "owner",
@@ -15,13 +28,25 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "payable": false,
-      "type": "constructor"
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "old",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "current",
+          "type": "address"
+        }
+      ],
+      "name": "NewOwner",
+      "type": "event"
     }
   ],
-  "unlinked_binary": "0x6060604052346000575b60008054600160a060020a03191633600160a060020a03161790555b5b609d806100346000396000f300606060405263ffffffff60e060020a6000350416638da5cb5b81146022575b6000565b34600057602c6055565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058202cc9fe2af540225e73d685a8e5314d19e1f1d8e5e56632966df7a949d862299a0029",
+  "unlinked_binary": "0x6060604052346000575b60008054600160a060020a03191633600160a060020a03161790555b5b609d806100346000396000f300606060405263ffffffff60e060020a6000350416638da5cb5b81146022575b6000565b34600057602c6055565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058209e57b6f4a4d2defc56123ac7db19c08720bf07d9c29e0273f0815698c1d65d6a0029",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1490357215356
+  "updated_at": 1492375397755
 }

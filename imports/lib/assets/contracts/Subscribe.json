@@ -2,6 +2,40 @@
   "contract_name": "Subscribe",
   "abi": [
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "wantedShares",
+          "type": "uint256"
+        }
+      ],
+      "name": "createSharesWithEther",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "name": "shareAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "wantedValue",
+          "type": "uint256"
+        }
+      ],
+      "name": "createSharesOnBehalf",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [],
       "name": "owner",
@@ -20,8 +54,8 @@
       "type": "constructor"
     }
   ],
-  "unlinked_binary": "0x6060604052346000575b5b60008054600160a060020a03191633600160a060020a03161790555b5b5b609d806100366000396000f300606060405263ffffffff60e060020a6000350416638da5cb5b81146022575b6000565b34600057602c6055565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058206f8b8a5e673ba2838cc2b2719ba287186c1017f87793044803321759fdf8ca6b0029",
+  "unlinked_binary": "0x606060405234610000575b5b60008054600160a060020a03191633600160a060020a03161790555b5b5b60e3806100376000396000f300606060405263ffffffff60e060020a6000350416630934de68811460365780638451aa1b1460415780638da5cb5b14605f575b6000565b603f6004356085565b005b34600057603f600160a060020a03600435166024356044356094565b005b346000576069609a565b60408051600160a060020a039092168252519081900360200190f35b608f6000341160a9565b5b5b50565b5b505050565b600054600160a060020a031681565b801515608f576000565b5b505600a165627a7a72305820ea10fe142ac9224aa7d5c1843c3e1bb09a3eefcd88a4194b031395450ecbaac90029",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1489159746720
+  "updated_at": 1492375397756
 }

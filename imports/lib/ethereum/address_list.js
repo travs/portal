@@ -17,11 +17,9 @@ exports.RepToken = 0x0;
 
 exports.Oraclize
 // exports.CryptoCompare = 0x442Fd95C32162F914364C5fEFf27A0Dc05214706;
-
 exports.CryptoCompare = 0x0;
 
 // Exchanges
 
 // exports.Exchange = 0x7c7B4904e37C71845FDC1c75D20FF6ee3c80eCB4;
-
 exports.Exchange = 0x0;
