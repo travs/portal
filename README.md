@@ -46,6 +46,6 @@ If you have your own Ethereum client running locally on http://localhost:8545,
 I strongly suggest that you pause it as long as the tests run.
 
 ### TODO:
-See #43
+See [#43](https://github.com/melonproject/portal/issues/43)
 - [ ] One command to run meteor, testrpc and the full chimp tests
 - [ ] Run that command on the CI server
