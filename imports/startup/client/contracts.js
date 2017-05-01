@@ -25,6 +25,11 @@ Meteor.startup(() => {
   Session.set('priceFeedContractAddress', AddressList.CryptoCompare);
   Session.set('exchangeContractAddress', AddressList.Exchange);
   Session.set('universeContractAddress', AddressList.Universe);
+  Session.set('subscribeContractAddress', AddressList.Subscribe);
+  Session.set('redeemContractAddress', AddressList.Redeem);
+  Session.set('riskMgmtContractAddress', AddressList.RiskMgmt);
+  Session.set('managmentFeeContractAddress', AddressList.ManagementFee);
+  Session.set('performanceFeeContractAddress', AddressList.PerformanceFee);
   Session.set('versionContractAddress', AddressList.Version);
   Session.set('governanceContractAddress', AddressList.Governance);
 

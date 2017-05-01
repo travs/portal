@@ -26,7 +26,7 @@ exports.Redeem = '0x0';
 
 // Risk Mgmt
 
-exports.RiskMgmt = '0x39ed14bf94f23a808f31208bef9c0fdcaa37b740';
+exports.RiskMgmt = '0x0';
 
 // Fees
 
