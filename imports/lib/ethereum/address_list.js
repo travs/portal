@@ -18,3 +18,22 @@ exports.Exchange = 0x1b468875d2b8f2d2c56981db446fbb911b1b16e3;
 // Universe
 
 exports.Universe = 0x39ed14bf94f23a808f31208bef9c0fdcaa37b740;
+
+// Participation
+
+exports.Subscribe = 0x0;
+exports.Redeem = 0x0;
+
+// Risk Mgmt
+
+exports.RiskMgmt = 0x39ed14bf94f23a808f31208bef9c0fdcaa37b740;
+
+// Fees
+
+exports.ManagementFee = 0x0;
+exports.PerformanceFee = 0x0;
+
+// Governance
+
+exports.Version = 0x0bc659fD55E099e8A2Ed04f2382D994BE011746A;
+exports.Governance = 0x4516acbcf84804af1bf629eced55c894efb2cce3;
