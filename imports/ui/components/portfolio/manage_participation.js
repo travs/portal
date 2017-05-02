@@ -4,11 +4,13 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import select2 from 'select2';
+import AddressList from '/imports/lib/ethereum/address_list.js';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Contracts
 import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
+import EtherTokenJson from '/imports/lib/assets/contracts/EtherToken.json';
 
 
 import './manage_participation.html';
@@ -122,24 +124,48 @@ Template.manage_participation.events({
 
     // Invest or Redeem
     // TODO use switch as above
-    if (type === 0) {
-      coreContract.createShares(weiTotal, { value: weiVolume, from: managerAddress }).then((result) => {
-        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-        // TODO insert txHash into appropriate collection
-        console.log(`Tx Hash: ${result}`);
-        Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
-        Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
-        return coreContract.totalSupply();
-      });
-    } else if (type === 1) {
-      coreContract.annihilateShares(weiVolume, weiTotal, { from: managerAddress }).then((result) => {
-        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-        // TODO insert txHash into appropriate collection
-        console.log(`Tx Hash: ${result}`);
-        Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
-        Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
-        return coreContract.totalSupply();
-      });
-    }
+    // if (type === 0) {
+    //   coreContract.createShares(weiTotal, { value: weiVolume, from: managerAddress }).then((result) => {
+    //     Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+    //     // TODO insert txHash into appropriate collection
+    //     console.log(`Tx Hash: ${result}`);
+    //     Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
+    //     Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+    //     return coreContract.totalSupply();
+    //   });
+    // } else if (type === 1) {
+    //   coreContract.annihilateShares(weiVolume, weiTotal, { from: managerAddress }).then((result) => {
+    //     Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+    //     // TODO insert txHash into appropriate collection
+    //     console.log(`Tx Hash: ${result}`);
+    //     Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
+    //     Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+    //     return coreContract.totalSupply();
+    //   });
+    // }
+
+    const EtherToken = contract(EtherTokenJson);
+    EtherToken.setProvider(web3.currentProvider);
+    const EtherTokenContract = EtherToken.at(AddressList.EtherToken);
+
+
+    // switch (type) {
+    //   case 0:
+    //   //Invest case
+    //   EtherTokenContract.deposit(weiTotal).then((result) => {
+    //     EtherTokenContract.approve(coreAddress, weiTotal);
+    //   }).then((result) => {
+    //     coreContract.createShares(weiVolume);
+    //   }).then((result) => {
+    //     console.log('Shares successfully created.');
+    //   }).catch((error) => {
+    //     console.log(error);
+    //   })
+    //   case 1:
+    //   //Redeem case
+    //   return;
+    //   default: return 'Error';
+    // }
+
   },
 });
