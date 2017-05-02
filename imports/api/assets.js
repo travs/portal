@@ -74,15 +74,13 @@ Meteor.methods({
         })
         .then((result) => {
           const timestampOfLastUpdate = result[0].toNumber();
-          const currentPrice = result[1].toNumber();
+          const currentPrice = (assetSymbol === 'ETH-T') ? Math.pow(10, assetPrecision) : result[1].toNumber();
           Assets.update(
             { address: assetAddress, holder: assetHolderAddress },
             { $set: {
-              address: assetAddress,
               name: assetName,
               symbol: assetSymbol,
               precision: assetPrecision,
-              holder: assetHolderAddress,
               holdings: assetHoldings,
               priceFeed: {
                 address: priceFeedAddress,

@@ -33,7 +33,7 @@
                 <td>{{portfolioPercentrage}}</td>
                 <td>
                   <a class="table-link" href="https://kovan.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
-                  {{dapp_formatBalance (invertValue (convertFromTokenPrecision this.priceFeed.price)) "0,0.0[00]" 'eur'}}
+                  {{dapp_formatBalance this.priceFeed.price "0,0.0[00]" 'eur'}}
                   </a>
                 </td>
                 <td>{{change24h}}</td>
