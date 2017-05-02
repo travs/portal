@@ -31,7 +31,7 @@
         <div class="col-md-8 col-sm-8 col-xs-12">
           <p>
             <a class="table-link" href="https://kovan.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
-              {{dapp_formatBalance (getPortfolioDoc.notional) "0,0.0[00] UNIT" 'eur'}}
+              {{dapp_formatBalance (getPortfolioDoc.notional) "0,0.0[00] UNIT"}}
             </a>
           </p>
         </div>
@@ -46,7 +46,7 @@
       <div class="form-group">
         <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Value Stake:</label>
         <div class="col-md-8 col-sm-8 col-xs-12">
-          <p>{{dapp_formatBalance (getShareAmount) "0,0.0[00] UNIT" 'eur'}}</p>
+          <p>{{dapp_formatBalance (getShareAmount) "0,0.0[00] UNIT"}}</p>
         </div>
       </div>
       <div class="form-group">

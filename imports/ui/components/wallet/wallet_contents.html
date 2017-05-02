@@ -17,7 +17,7 @@
               <tr>
                 <th>Asset <p>(Name)</p></th>
                 <th>Asset Amount <p>(#)</p></th>
-                <th>Asset Price<p>(EUR)</p></th>
+                <th>Asset Price<p>({{refCurrency}})</p></th>
                 <th>Portfolio <p>(%)</p></th>
                 <th>Change 24h<p>(%)</p></th>
               </tr>
@@ -32,7 +32,7 @@
                 <td>{{convertFromTokenPrecision this.holdings}}</td>
                 <td>
                   <a class="table-link" href="https://kovan.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
-                  {{dapp_formatBalance this.priceFeed.price "0,0.0[00]" 'eur'}}
+                  {{dapp_formatBalance this.priceFeed.price "0,0.0[00]"}}
                   </a>
                 </td>
                 <td>{{portfolioPercentrage}}</td>

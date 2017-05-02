@@ -53,3 +53,5 @@ Template.registerHelper('isInactiveNetworkStatus', () => Session.get('NetworkSta
 Template.registerHelper('isMiningNetworkStatus', () => Session.get('NetworkStatus').isMining);
 Template.registerHelper('isErrorNetworkStatus', () => Session.get('NetworkStatus').isError);
 Template.registerHelper('isMinedNetworkStatus', () => Session.get('NetworkStatus').isMined);
+//Reference currency
+Template.registerHelper('refCurrency', () => Session.get('referenceCurrency'));

@@ -15,7 +15,11 @@ Template.manage_settings.onCreated(() => {
 });
 
 
-Template.manage_settings.helpers({});
+Template.manage_settings.helpers({
+   'currencies' : () => {
+    return ["BTC", "EUR", "USD", "ETH"];
+  }
+});
 
 
 Template.manage_settings.onRendered(() => {
@@ -31,6 +35,31 @@ Template.manage_settings.events({
   'click .manage': (event, templateInstance) => {
     // Prevent default browser form submit
     event.preventDefault();
+    // const referenceCurrency = templateInstance.find('select#referencecurrency').value;
+    Session.set('referenceCurrency', templateInstance.find('select#referencecurrency').value)
+    console.log(Session.get('referenceCurrency'));
+
+    switch(Session.get('referenceCurrency')) {
+      case "BTC": {
+        EthTools.setUnit('btc');
+        break;
+      }
+      case "EUR": {
+        EthTools.setUnit('eur');
+        break;
+      }
+      case "USD": {
+        EthTools.setUnit('usd');
+        break;
+      }
+      case "ETH": {
+        EthTools.setUnit('ether');
+        break;
+      }
+      default: return 'Error';
+    }
+
+
   },
   'click button#delete': () => {
     const managerAddress = Session.get('clientManagerAccount');

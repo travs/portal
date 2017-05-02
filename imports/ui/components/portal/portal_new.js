@@ -41,7 +41,10 @@ Template.portal_new.events({
   'submit form#new_portfolio': (event, templateInstance) => {
     // Prevent default browser form submit
     event.preventDefault();
-
+    if(!templateInstance.find('input#portfolio_name').value) {
+      alert('Please enter a portfolio name.');
+      return;
+    }
     // Collection parameters
     let portfolioAddress;
     const portfolioName = templateInstance.find('input#portfolio_name').value;
