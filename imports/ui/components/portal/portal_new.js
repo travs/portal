@@ -46,7 +46,6 @@ Template.portal_new.events({
     let portfolioAddress;
     const portfolioName = templateInstance.find('input#portfolio_name').value;
     const managerAddress = Session.get('clientManagerAccount');
-    const managerEmail = templateInstance.find('input#manager_email').value;
     let universeAddress = Session.get('universeContractAddress');
 
     //TODO clean up database entries
@@ -87,11 +86,10 @@ Template.portal_new.events({
       } else {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         // Insert into Portfolio collection
-        Meteor.call('cores.insert',
+        Meteor.call('cores.upsert',
           portfolioAddress,
           portfolioName,
           managerAddress,
-          managerEmail,
           universeAddress,
           sharePrice,
           notional,
