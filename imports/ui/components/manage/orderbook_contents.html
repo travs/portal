@@ -20,8 +20,8 @@
             <tbody>
               {{#each orders}}
               <tr>
-                <td>{{this.buyHowMuch}}</td>
-                <td>{{this.buyHowMuch}}</td>
+                <td>{{convertFromTokenPrecision this.buyHowMuch}}</td>
+                <td>{{convertFromTokenPrecision this.buyHowMuch}}</td>
                 <td>{{this.buyPrice}}</td>
               </tr>
               {{/each}}
@@ -43,8 +43,8 @@
               {{#each orders}}
               <tr>
                 <td>{{this.sellPrice}}</td>
-                <td>{{this.sellHowMuch}}</td>
-                <td>{{this.sellHowMuch}}</td>
+                <td>{{convertFromTokenPrecision this.sellHowMuch}}</td>
+                <td>{{convertFromTokenPrecision this.sellHowMuch}}</td>
               </tr>
               {{/each}}
             </tbody>

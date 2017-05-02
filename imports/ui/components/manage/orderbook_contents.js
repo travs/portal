@@ -21,6 +21,15 @@ Template.orderbook_contents.helpers({
     const address = FlowRouter.getParam('address');
     return Orders.find({ owner: address }, { sort: { id: -1 } });
   },
+  convertFromTokenPrecision(value) {
+    //TODO get precision from database
+    // if (Object.keys(this).length === 0) return '';
+    // const precision = this.precision;
+    const precision = 18;
+    const divisor = Math.pow(10, precision);
+    return value / divisor;
+  },
+
 });
 
 Template.orderbook_contents.onRendered(() => {
