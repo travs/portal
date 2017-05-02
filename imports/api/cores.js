@@ -63,6 +63,7 @@ Cores.sync = () => {
           { address },
           { $set: {
             address,
+            index,
             name,
             managerAddress,
             universeAddress,

@@ -19,36 +19,36 @@ const exchangeContract = Exchange.at('0x442Fd95C32162F914364C5fEFf27A0Dc05214706
 
 // COLLECTIONS
 
-export const Offers = new Mongo.Collection('offers');
-if (Meteor.isServer) { Meteor.publish('offers', () => Offers.find({}, { sort: { id: -1 } })); } // Publish Collection
+export const Orders = new Mongo.Collection('orders');
+if (Meteor.isServer) { Meteor.publish('orders', () => Orders.find({}, { sort: { id: -1 } })); } // Publish Collection
 
-let offers = [];  // Offers collections
+let orders = [];  // Orders collections
 
 
 if (Meteor.isServer) {
   // This code only runs on the server
-  Meteor.publish('offers', () => Offers.find({}, { sort: { id: -1 } }));
+  Meteor.publish('orders', () => Orders.find({}, { sort: { id: -1 } }));
 
   // // TODO differently
   // collections.sync(
   //   (err, result) => {
   //     if (!err) {
-  //       offers = result;
-  //       for (let index = 0; index < offers.length; index += 1) {
+  //       orders = result;
+  //       for (let index = 0; index < orders.length; index += 1) {
   //         console.log(`Index: ${index}`);
-  //         console.log(`Ask Price: ${offers[index].ask_price}`);
-  //         const offer = offers[index];
-  //         // TODO offer is Offers.offer
-  //         const res = Offers.update(
+  //         console.log(`Ask Price: ${orders[index].ask_price}`);
+  //         const order = orders[index];
+  //         // TODO order is Orders.order
+  //         const res = Orders.update(
   //           { id: index },
   //           { $set: {
-  //             offer,
+  //             order,
   //             createdAt: new Date(),
   //           },
   //           }, {
   //             upsert: true,
   //           });
-  //         console.log(`Offers update res: ${res}`);
+  //         console.log(`Orders update res: ${res}`);
   //       }
   //     } else {
   //       console.log(err);
@@ -58,19 +58,19 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'offers.sync': () => {
+  'orders.sync': () => {
     // // TODO clean up
     // collections.sync(
     //   (err, result) => {
     //     if (!err) {
-    //       // TODO store in Offers collection
-    //       offers = result;
-    //       for (let index = 0; index < offers.length; index += 1) {
-    //         console.log(`Ask Price: ${offers[index].ask_price}`);
-    //         Offers.update(
+    //       // TODO store in Orders collection
+    //       orders = result;
+    //       for (let index = 0; index < orders.length; index += 1) {
+    //         console.log(`Ask Price: ${orders[index].ask_price}`);
+    //         Orders.update(
     //           { id: index },
     //           { $set: {
-    //             ask_price: offers[index].ask_price,
+    //             ask_price: orders[index].ask_price,
     //             createdAt: new Date(),
     //           },
     //           }, {

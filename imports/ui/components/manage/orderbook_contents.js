@@ -2,28 +2,28 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
-import { Offers } from '/imports/api/offers.js';
+import { Orders } from '/imports/api/orders.js';
 // Corresponding html file
 import './orderbook_contents.html';
 
 Template.orderbook_contents.onCreated(() => {
-  Meteor.subscribe('offers');
+  Meteor.subscribe('orders');
 });
 
 Template.orderbook_contents.helpers({
-  offers() {
+  orders() {
     // TODO clean up
-    const docs = Offers.findOne({}, { sort: { id: -1 } })
+    const docs = Orders.findOne({}, { sort: { id: -1 } })
     console.log(docs);
-    return Offers.find({}, { sort: { id: -1 } });
+    return Orders.find({}, { sort: { id: -1 } });
   }
 });
 
 Template.orderbook_contents.onRendered(() => {
   // TODO clean up
-  // Upsert Offers Collection
+  // Upsert Orders Collection
   const address = FlowRouter.getParam('address');
-  Meteor.call('offers.sync', address);
+  Meteor.call('orders.sync', address);
 });
 
 Template.orderbook_contents.events({});
