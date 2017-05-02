@@ -1,38 +1,37 @@
-import EtherToken from '/imports/lib/assets/contracts/EtherToken.json';
-import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.json';
-import RepToken from '/imports/lib/assets/contracts/RepToken.json';
-import EuroToken from '/imports/lib/assets/contracts/EuroToken.json';
-
 const constants = require('./constants.js');
+import AddressList from '/imports/lib/ethereum/address_list.js'
 
 // Tokens
 
 exports.getTokenPrecisionByAddress = (address) => {
-  if (address === EtherToken.all_networks['3'].address) return constants.ETHERTOKEN_PRECISION;
-  if (address === BitcoinToken.all_networks['3'].address) return constants.BITCOINTOKEN_PRECISION;
-  if (address === RepToken.all_networks['3'].address) return constants.REPTOKEN_PRECISION;
-  if (address === EuroToken.all_networks['3'].address) return constants.EUROTOKEN_PRECISION;
+  if (address === AddressList.EtherToken) return constants.ETHERTOKEN_PRECISION;
+  if (address === AddressList.MelonToken) return constants.MELONTOKEN_PRECISION;
+  if (address === AddressList.BitcoinToken) return constants.BITCOINTOKEN_PRECISION;
+  if (address === AddressList.EuroToken) return constants.EUROTOKEN_PRECISION;
+  if (address === AddressList.RepToken) return constants.REPTOKEN_PRECISION;
   return false;
 };
 
 exports.getTokenSymbolByAddress = (address) => {
-  if (address === EtherToken.all_networks['3'].address) return 'ETH-T';
-  if (address === BitcoinToken.all_networks['3'].address) return 'BTC-T';
-  if (address === RepToken.all_networks['3'].address) return 'REP';
-  if (address === EuroToken.all_networks['3'].address) return 'EUR-T';
+  if (address === AddressList.EtherToken) return 'ETH-T';
+  if (address === AddressList.MelonToken) return 'MLN-T';
+  if (address === AddressList.BitcoinToken) return 'BTC-T';
+  if (address === AddressList.EuroToken) return 'EUR-T';
+  if (address === AddressList.RepToken) return 'REP';
   return false;
 };
 
 exports.getTokenAddress = (symbol) => {
-  if (symbol === 'ETH-T') return EtherToken.all_networks['3'].address;
-  if (symbol === 'BTC-T') return BitcoinToken.all_networks['3'].address;
-  if (symbol === 'REP') return RepToken.all_networks['3'].address;
-  if (symbol === 'EUR-T') return EuroToken.all_networks['3'].address;
+  if (symbol === 'ETH-T') return AddressList.EtherToken;
+  if (symbol === 'MLN-T') return AddressList.MelonToken;
+  if (symbol === 'BTC-T') return AddressList.BitcoinToken;
+  if (symbol === 'EUR-T') return AddressList.EuroToken;
+  if (symbol === 'REP') return AddressList.RepToken;
   return false;
 };
 
 exports.getQuoteTokens = () => ['ETH-T'];
 
-exports.getBaseTokens = () => ['BTC-T', 'REP', 'EUR-T'];
+exports.getBaseTokens = () => ['MLN-T', 'BTC-T', 'EUR-T', 'REP'];
 
-exports.getTokens = () => ['ETH-T', 'BTC-T', 'REP', 'EUR-T'];
+exports.getTokens = () => ['ETH-T', 'MLN-T', 'BTC-T', 'EUR-T', 'REP'];
