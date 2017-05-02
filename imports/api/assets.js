@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
+import AddressList from '/imports/lib/ethereum/address_list.js'
+
 // SMART-CONTRACT IMPORT
 
 import contract from 'truffle-contract';
@@ -14,9 +16,7 @@ const PreminedAsset = contract(PreminedAssetJson);
 PreminedAsset.setProvider(web3.currentProvider);
 const PriceFeed = contract(PriceFeedJson);
 PriceFeed.setProvider(web3.currentProvider);
-const KOVAN_NETWORK_ID = 42; //TODO persistent network id
-// const universeContract = Universe.at(Universe.networks[KOVAN_NETWORK_ID].address); // Initialize contract instance
-const universeContract = Universe.at('0x442Fd95C32162F914364C5fEFf27A0Dc05214706'); // Initialize contract instance
+
 
 // COLLECTIONS
 
@@ -28,6 +28,10 @@ if (Meteor.isServer) { Meteor.publish('assets', () => Assets.find({}, { sort: { 
 Meteor.methods({
   'assets.sync': (assetHolderAddress) => {
     check(assetHolderAddress, String);
+
+    //TODO get Universe address via Core.getUniverseAddress
+    const universeContract = Universe.at(AddressList.Universe); // Initialize contract instance
+
     // TODO build function
     universeContract.numAssignedAssets().then((assignedAssets) => {
       const numAssignedAssets = assignedAssets.toNumber();
@@ -41,7 +45,7 @@ Meteor.methods({
         let assetHoldings;
         let priceFeedContract;
         let priceFeedAddress;
-        let currentPrice;
+
         universeContract.assetAt(index).then((result) => {
           assetAddress = result;
           assetContract = PreminedAsset.at(assetAddress);
@@ -53,7 +57,7 @@ Meteor.methods({
         })
         .then((result) => {
           assetSymbol = result;
-          return assetContract.getDecimals();
+          return assetContract.decimals();
         })
         .then((result) => {
           assetPrecision = result.toNumber();
@@ -66,23 +70,17 @@ Meteor.methods({
         .then((result) => {
           priceFeedAddress = result;
           priceFeedContract = PriceFeed.at(priceFeedAddress);
-          return priceFeedContract.getPrice(assetAddress);
+          return priceFeedContract.getData(assetAddress); // Result [Timestamp, Price]
         })
         .then((result) => {
-          currentPrice = result.toNumber();
-          return priceFeedContract.getTimestamp();
-        })
-        .then((result) => {
-          const timestampOfLastUpdate = result.toNumber();
-          console.log(`\n Current Price: ${currentPrice} @ ${timestampOfLastUpdate}`)
+          const timestampOfLastUpdate = result[0].toNumber();
+          const currentPrice = (assetSymbol === 'ETH-T') ? Math.pow(10, assetPrecision) : result[1].toNumber();
           Assets.update(
-            { address: assetAddress, assetHolderAddress },
+            { address: assetAddress, holder: assetHolderAddress },
             { $set: {
-              address: assetAddress,
               name: assetName,
               symbol: assetSymbol,
               precision: assetPrecision,
-              holder: assetHolderAddress,
               holdings: assetHoldings,
               priceFeed: {
                 address: priceFeedAddress,

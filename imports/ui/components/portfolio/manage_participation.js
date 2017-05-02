@@ -52,10 +52,8 @@ Template.manage_participation.onRendered(() => {
   $('select').select2();
   // Sync core and
   const address = FlowRouter.getParam('address');
-  console.log(`Address is: ${address}`)
-  //TODO fix and uncomment
   Meteor.call('cores.sync', address); // Upsert cores Collection
-  // Meteor.call('assets.sync', address); // Upsert Assets Collection
+  Meteor.call('assets.sync', address); // Upsert Assets Collection
 });
 
 
