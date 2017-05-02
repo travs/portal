@@ -20,9 +20,9 @@
             <tbody>
               {{#each orders}}
               <tr>
-                <td>{{this.order.buyHowMuch}}</td>
-                <td>{{this.order.buyHowMuch}}</td>
-                <td>{{this.order.ask_price}}</td>
+                <td>{{this.buyHowMuch}}</td>
+                <td>{{this.buyHowMuch}}</td>
+                <td>{{this.buyPrice}}</td>
               </tr>
               {{/each}}
             </tbody>
@@ -42,9 +42,9 @@
             <tbody>
               {{#each orders}}
               <tr>
-                <td>{{this.order.bid_price}}</td>
-                <td>{{this.order.sellHowMuch}}</td>
-                <td>{{this.order.sellHowMuch}}</td>
+                <td>{{this.sellPrice}}</td>
+                <td>{{this.sellHowMuch}}</td>
+                <td>{{this.sellHowMuch}}</td>
               </tr>
               {{/each}}
             </tbody>

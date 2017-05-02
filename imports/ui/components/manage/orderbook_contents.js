@@ -16,14 +16,15 @@ Template.orderbook_contents.helpers({
     const docs = Orders.findOne({}, { sort: { id: -1 } })
     console.log(docs);
     return Orders.find({}, { sort: { id: -1 } });
-  }
+  },
+  openOrders() {
+    const address = FlowRouter.getParam('address');
+    return Orders.find({ owner: address }, { sort: { id: -1 } });
+  },
 });
 
 Template.orderbook_contents.onRendered(() => {
-  // TODO clean up
-  // Upsert Orders Collection
-  const address = FlowRouter.getParam('address');
-  Meteor.call('orders.sync', address);
+  Meteor.call('orders.sync');
 });
 
 Template.orderbook_contents.events({});
