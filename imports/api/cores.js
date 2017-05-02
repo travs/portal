@@ -48,13 +48,15 @@ Meteor.methods({
   },
   'cores.sync': (address) => {
     check(address, String);
+
     // Sync these parameters
     let notional;
     let sharePrice;
     const coreContract = Core.at(address);
     coreContract.totalSupply().then((result) => {
       notional = result.toNumber();
-      return coreContract.calcSharePrice();
+      //TODO getSharePrice is potentially outdated information; better to exectue calcSharePrice
+      return coreContract.getSharePrice();
     })
     .then((result) => {
       sharePrice = result.toNumber();

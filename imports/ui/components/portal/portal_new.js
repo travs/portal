@@ -11,7 +11,6 @@ import CoreJson from '/imports/lib/assets/contracts/Core.json';
 
 import './portal_new.html';
 
-const ADDRESS_PLACEHOLDER = '0x0';
 const Version = contract(VersionJson);
 const Core = contract(CoreJson);
 // Creation of contract object
@@ -78,7 +77,6 @@ Template.portal_new.events({
     })
     .then((result) => {
       portfolioAddress = result;
-      console.log(result);
       const coreContract = Core.at(portfolioAddress);
       return coreContract.owner();
     })
