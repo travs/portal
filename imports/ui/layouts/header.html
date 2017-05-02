@@ -2,36 +2,39 @@
   <nav class="navbar navbar-default nav-header nav-portal">
     <div class="container">
       <div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-header" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#"><img src="dist/img/logo.png"></a>
-			</div>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-header" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#"><img src="dist/img/logo.png"></a>
+      </div>
 
       <div class="collapse navbar-collapse" id="default-header">
-				<ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right">
           {{#if isClientConnected}}
             {{#if clientManagerAccount}}
               {{#if isKovanNetwork}}
-			          <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
-      					<li class="has-badge">
-                  <a class="portfolio">{{#unless hasManagerCreatedCore}}Portfolio
-        						<span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>{{/unless}}
-                    {{getManagerNameOfCore}} {{#if getIsNewOfCore}}
-                    <span class="badge btn-outline-green" data-badge-caption="New">New</span>
-        						<span class="badge btn-trans-blue">Create</span>
+                <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
+                <li class="has-badge">
+                  <a class="portfolio">
+                    {{#if hasManagerCreatedCore}}
+                      {{getManagerNameOfCore}}
+                      {{#if getIsNewOfCore}}
+                        <span class="badge btn-outline-green" data-badge-caption="New">New</span>
+                      {{/if}}
+                    {{else}}
+                      Portfolio <span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>
                     {{/if}}
                   </a>
-      					</li>
-			          <li class="manage btn-request"><a href="#" class="btn outline-white">Manage</a></li>
+                </li>
+                <li class="manage btn-request"><a href="#" class="btn outline-white">Manage</a></li>
               {{/if}}
             {{/if}}
           {{/if}}
-				</ul>
-			</div>
+        </ul>
+      </div>
     </div>
   </nav>
 </template>

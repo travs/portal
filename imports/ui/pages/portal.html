@@ -5,16 +5,13 @@
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
-      {{#if isClientConnected}}
-        {{#if clientManagerAccount}}
-          {{#if isKovanNetwork}}
-            {{#if hasManagerCreatedCore}}
-                {{> portal_list}}
-            {{else}}
-              {{> portal_new}}
-            {{/if}}
+    {{#if isClientConnected}}
+      {{#if clientManagerAccount}}
+        {{#if isKovanNetwork}}
+          {{#if hasManagerCreatedCore}}
+              {{> portal_list}}
           {{else}}
-            {{> portal_list}}
+            {{> portal_new}}
           {{/if}}
         {{else}}
           {{> portal_list}}
@@ -22,6 +19,9 @@
       {{else}}
         {{> portal_list}}
       {{/if}}
+    {{else}}
+      {{> portal_list}}
+    {{/if}}
   {{else}}
     {{> ux_server_connection}}
   {{/if}}

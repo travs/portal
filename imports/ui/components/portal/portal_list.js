@@ -16,12 +16,15 @@ Version.setProvider(web3.currentProvider);
 Core.setProvider(web3.currentProvider);
 
 
+
 Template.portal_list.onCreated(() => {
   Meteor.subscribe('cores');
 });
 
 
-Template.portal_list.helpers({});
+Template.portal_list.helpers({
+	searchedCores: () => Cores.find({ name: {'$regex' : '.*' + Session.get('searchCores') + '.*'} })
+});
 
 
 Template.portal_list.onRendered(() => {
@@ -49,3 +52,4 @@ Template.portal_list.onRendered(() => {
 
 
 Template.portal_list.events({});
+
