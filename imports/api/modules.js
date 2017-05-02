@@ -63,7 +63,7 @@ Meteor.methods({
         })
         .then((result) => {
           priceFeedAddress = result;
-          return universeContract.exchangesAt(index);
+          return universeContract.assignedExchange(index);
         })
         .then((result) => {
           exchangeAddress = result;
@@ -93,27 +93,6 @@ Meteor.methods({
           if (resUniverseUpsert === false) {
             console.log(`Error in Universe upsert: ${resUniverseUpsert}`);
           }
-          // TODO
-          // const resAssetsUpsert = Assets.update(
-          //   { address: assetAddress },
-          //   { $set: {
-          //     address: assetAddress,
-          //     name: assetName,
-          //     symbol: assetSymbol,
-          //     precision: assetPrecision,
-          //     priceFeed: {
-          //       address: priceFeedAddress,
-          //       precision: priceFeedPrecision,
-          //     },
-          //     createdAt: new Date(),
-          //   },
-          //   }, {
-          //     upsert: true,
-          //   }
-          // );
-          // if (resAssetsUpsert === false) {
-          //   console.log(`Error in Universe upsert: ${resAssetsUpsert}`);
-          // }
         });
       }
     });
