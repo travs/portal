@@ -17,6 +17,21 @@ Template.portfolio_contents.onCreated(() => {
   Meteor.subscribe('assets');
   // Portfolio Value in Wei
   Template.instance().totalPortfolioValue = new ReactiveVar();
+  const assetHolderAddress = FlowRouter.getParam('address');
+  const docs = Assets.findOne({ holder: assetHolderAddress });
+  let value = 0;
+  for (doc in docs) {
+    if (doc === undefined) continue;
+    if (doc.holdings === undefined) continue;
+    if (doc.priceFeed.price === undefined) continue;
+    if (doc.precision === undefined) continue;
+    const holdings = parseInt(doc.holdings, 10);
+    const price = parseInt(doc.priceFeed.price, 10);
+    const precision = parseInt(doc.precision, 10);
+    const divisor = Math.pow(10, precision);
+    value += holdings * (price / divisor);
+  }
+  Template.instance().totalPortfolioValue.set(value);
 });
 
 Template.portfolio_contents.helpers({
@@ -26,22 +41,8 @@ Template.portfolio_contents.helpers({
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   assets() {
-    const docs = [];
-    let value = 0;
-    for (let i = 0; i < Specs.getTokens().length; i += 1) {
-      const assetAddress = Specs.getTokenAddress(Specs.getTokens()[i]);
-      const assetHolderAddress = FlowRouter.getParam('address');
-      const doc = Assets.findOne({ address: assetAddress, holder: assetHolderAddress }, { sort: { createdAt: -1 } });
-      if (doc === undefined) return '';
-      const holdings = parseInt(doc.holdings, 10);
-      const price = parseInt(doc.priceFeed.price, 10);
-      const precision = parseInt(doc.precision, 10);
-      const divisor = Math.pow(10, precision);
-      value += holdings * (price / divisor);
-      docs.push(doc);
-    }
-    Template.instance().totalPortfolioValue.set(value);
-    return docs;
+    const assetHolderAddress = FlowRouter.getParam('address');
+    return Assets.find({ holder: assetHolderAddress }, { sort: { name: 1 } });
   },
   address() {
     return FlowRouter.getParam('address');
