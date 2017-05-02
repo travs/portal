@@ -74,9 +74,10 @@ Template.portfolio_contents.helpers({
   change24h() {
     switch (this.name) {
       case 'Ether Token': return Session.get('ethChange24h');
+      case 'Melon Token': return Session.get('mlnChange24h');
       case 'Bitcoin Token': return Session.get('btcChange24h');
-      case 'Rep Token': return Session.get('repChange24h');
       case 'Euro Token': return Session.get('eurChange24h');
+      case 'Rep Token': return Session.get('repChange24h');
       default: return '';
     }
   },

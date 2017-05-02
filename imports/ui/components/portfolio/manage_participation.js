@@ -12,16 +12,16 @@ import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
 import EtherTokenJson from '/imports/lib/assets/contracts/EtherToken.json';
 
-
 import './manage_participation.html';
 
 const Core = contract(CoreJson); // Set Provider
+// Creation of contract object
+Core.setProvider(web3.currentProvider);
+
 Template.manage_participation.onCreated(() => {
   // TODO update cores param
   Meteor.subscribe('cores');
   Template.instance().typeValue = new ReactiveVar(0);
-  // Creation of contract object
-  Core.setProvider(web3.currentProvider);
 });
 
 
@@ -52,9 +52,10 @@ Template.manage_participation.onRendered(() => {
   $('select').select2();
   // Sync core and
   const address = FlowRouter.getParam('address');
+  console.log(`Address is: ${address}`)
+  //TODO fix and uncomment
   Meteor.call('cores.sync', address); // Upsert cores Collection
-  Meteor.call('assets.sync', address); // Upsert Assets Collection
-
+  // Meteor.call('assets.sync', address); // Upsert Assets Collection
 });
 
 
