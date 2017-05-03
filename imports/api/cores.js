@@ -24,23 +24,15 @@ if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish
 
 Cores.sync = () => {
   let numberOfCoresCreated;
-  versionContract.numCreatedCores()
-  .then((result) => {
-    numberOfCoresCreated = result.toNumber();
+  versionContract.numCreatedCores().then((res) => {
+    numberOfCoresCreated = res.toNumber();
     for (let index = 0; index < numberOfCoresCreated; index += 1) {
       let coreContract;
-
       // List of inputs for core collection
       let address;
       let name;
       let managerAddress;
       let universeAddress;
-      //TODO clean up database entries
-      const sharePrice = web3.toWei(1.0, 'ether');
-      const notional = 0;
-      const intraday = 1.0;
-
-
       versionContract.coreAt(index).then((result) => {
         address = result;
         coreContract = Core.at(address);
@@ -65,10 +57,9 @@ Cores.sync = () => {
             name,
             managerAddress,
             universeAddress,
-            sharePrice,
-            notional,
+            sharePrice: web3.toWei(1.0, 'ether'),
+            notional: 0,
             intraday: '±0.0',
-            isNew: true,
             delta: '±0.0',
             username: 'N/A',
             createdAt: new Date(),
@@ -80,6 +71,9 @@ Cores.sync = () => {
     }
   });
 };
+
+// TODO implement consistent w Orders
+Cores.syncOne = () => {}
 
 // METEOR METHODS
 
@@ -103,7 +97,6 @@ Meteor.methods({
         sharePrice,
         notional,
         intraday: '±0.0',
-        isNew: true,
         delta: '±0.0',
         username: 'N/A',
         createdAt: new Date(),
@@ -114,7 +107,7 @@ Meteor.methods({
   },
   'cores.setToUsed': (portfolioId) => {
     check(portfolioId, String);
-    Cores.update(portfolioId, { $set: { isNew: false } });
+    Cores.update(portfolioId, { $set: { isUsed: true } });
   },
   'cores.sync': (address) => {
     check(address, String);
