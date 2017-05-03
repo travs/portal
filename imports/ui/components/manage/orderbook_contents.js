@@ -3,8 +3,6 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
 import { Orders } from '/imports/api/orders.js';
-// Specs
-import specs from '/imports/lib/assets/utils/specs.js';
 // Corresponding html file
 import './orderbook_contents.html';
 
