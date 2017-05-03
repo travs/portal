@@ -16,7 +16,6 @@ Template.manage_overview.onCreated(() => {
   // TODO send command to server to update current coreContract
 });
 
-
 Template.manage_overview.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
@@ -25,10 +24,12 @@ Template.manage_overview.helpers({
   },
 });
 
-
 Template.manage_overview.onRendered(() => {
   $("[name='my-checkbox']").bootstrapSwitch();
 });
 
-
-Template.manage_overview.events({});
+Template.manage_overview.events({
+  'change .js-asset-pair-picker': (event, templateInstance) => {
+    console.log(event, templateInstance);
+  },
+});
