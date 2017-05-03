@@ -1,11 +1,11 @@
-// TODO replace with actual address
 // Assets
 
-exports.EtherToken = '0x7506c7BfED179254265d443856eF9bda19221cD7';
+// TODO Addresses are curr case sensitive!
+exports.EtherToken = '0x7506c7bfed179254265d443856ef9bda19221cd7';
 exports.MelonToken = '0x4dffea52b0b4b48c71385ae25de41ce6ad0dd5a7';
-exports.BitcoinToken = '0x9E4C56a633DD64a2662bdfA69dE4FDE33Ce01bdd';
-exports.EuroToken = '0xC151b622fDeD233111155Ec273BFAf2882f13703';
-exports.RepToken = '0xF61b8003637E5D5dbB9ca8d799AB54E5082CbdBc';
+exports.BitcoinToken = '0x9e4c56a633dd64a2662bdfa69de4fde33ce01bdd';
+exports.EuroToken = '0xc151b622fded233111155ec273bfaf2882f13703';
+exports.RepToken = '0xf61b8003637e5d5dbb9ca8d799ab54e5082cbdbc';
 
 // Price Feeds
 

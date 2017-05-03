@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import AddressList from '/imports/lib/ethereum/address_list.js'
+import AddressList from '/imports/lib/ethereum/address_list';
+import Specs from '/imports/lib/assets/utils/specs.js';
 
 // SMART-CONTRACT IMPORT
 
@@ -27,7 +28,7 @@ Orders.sync = () => {
   let numberOfOrdersCreated;
   exchangeContract.getLastOrderId().then((result) => {
     numberOfOrdersCreated = result.toNumber();
-    for (let id = 0; id < numberOfOrdersCreated; id += 1) {
+    for (let id = 1; id < numberOfOrdersCreated + 1; id += 1) {
       Orders.syncOrderById(id);
     }
   });
@@ -35,7 +36,13 @@ Orders.sync = () => {
 
 Orders.syncOrderById = (id) => {
   exchangeContract.orders(id).then((order) => {
-    let [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, owner, isActive] = order;
+    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, owner, isActive] = order;
+    const buyPrecision = Specs.getTokenPrecisionByAddress(buyWhichToken);
+    const sellPrecision = Specs.getTokenPrecisionByAddress(sellWhichToken);
+    const buySymbol = Specs.getTokenSymbolByAddress(buyWhichToken);
+    const sellSymbol = Specs.getTokenSymbolByAddress(sellWhichToken);
+    const buyPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
+    const sellPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
     // Insert into Orders collection
     Orders.update(
       { id },
@@ -43,12 +50,20 @@ Orders.syncOrderById = (id) => {
         id,
         owner,
         isActive,
-        buyHowMuch: buyHowMuch.toNumber(),
-        buyWhichToken,
-        sellHowMuch: sellHowMuch.toNumber(),
-        sellWhichToken,
-        buyPrice: buyHowMuch / sellHowMuch,
-        sellPrice: sellHowMuch / buyHowMuch,
+        buy: {
+          token: buyWhichToken,
+          symbol: buySymbol,
+          howMuch: buyHowMuch.toNumber(),
+          precision: buyPrecision,
+          price: buyPrice,
+        },
+        sell: {
+          token: sellWhichToken,
+          symbol: sellSymbol,
+          howMuch: sellHowMuch.toNumber(),
+          precision: sellPrecision,
+          price: sellPrice,
+        },
         createdAt: new Date(),
       },
       }, {

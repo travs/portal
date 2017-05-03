@@ -14,7 +14,6 @@ Template.orderbook_contents.helpers({
   orders() {
     // TODO clean up
     const docs = Orders.findOne({}, { sort: { id: -1 } })
-    console.log(docs);
     return Orders.find({}, { sort: { id: -1 } });
   },
   openOrders() {
