@@ -137,38 +137,11 @@ function checkIfSynching() {
 function checkIfServerIsConncected() {
   Meteor.call('isServerConnected', (err, result) => {
     if(!err) {
-      console.log(result)
       Session.set('isServerConnected', result);
     } else {
       console.log(err);
     }
   });
-}
-
-function getTestnetEther() {
-  if (Session.get('network') === 'Ropsten' && Session.get('clientManagerAccountBalance') <= web3.toWei('1', 'ether')) {
-    const address = Session.get('clientManagerAccount');
-    // TODO outsource in library
-    Meteor.call('sendTestnetEther', address, (err, res) => {
-      if (!err) {
-        //TODO replace toast
-        // Materialize.toast('We\'ve seen you\'re low on cash so requested some for you.', 30000, 'green');
-        const amount = parseInt(web3.fromWei(parseInt(res.data, 10), 'ether'), 10);
-        const msg = res.message;
-        if (amount === 0) {
-          //TODO replace toast
-          // Materialize.toast(`Ethereum Faucet says: "${msg}"`, 30000, 'red');
-          //TODO replace toast
-          // Materialize.toast(`Go to: https://faucet.metamask.io/ for an alternative faucet`, 30000, 'blue');
-        } else {
-          //TODO replace toast
-          // Materialize.toast(`Sent ${amount} ETH to your account.  Wait a few seconds and let it rain!`, 30000, 'green');
-        }
-      } else {
-        console.log(err);
-      }
-    });
-  }
 }
 
 // EXECUTION
@@ -178,6 +151,5 @@ Meteor.startup(() => {
   checkIfSynching();
   checkIfServerIsConncected();
 
-  Meteor.setInterval(getTestnetEther, 30 * 1000);
   Meteor.setInterval(checkNetwork, 2503);
 });

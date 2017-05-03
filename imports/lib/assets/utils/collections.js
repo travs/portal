@@ -16,8 +16,8 @@ const async = require('async');
 //
 // // Pre:
 // // Post:
-// export function syncOffer(id, callback) {
-//   Exchange.at(EXCHANGE_ADDR).offers(id)
+// export function syncOrder(id, callback) {
+//   Exchange.at(EXCHANGE_ADDR).orders(id)
 //   .then((res) => {
 //     const [sellHowMuch, sellWhichTokenAddress, buyHowMuch, buyWhichTokenAddress, owner, active] = res;
 //     if (active) {
@@ -27,7 +27,7 @@ const async = require('async');
 //       const buySymbol = specs.getTokenSymbolByAddress(buyWhichTokenAddress);
 //       const buyHowMuchValue = buyHowMuch / (Math.pow(10, buyPrecision));
 //       const sellHowMuchValue = sellHowMuch / (Math.pow(10, sellPrecision));
-//       const offer = {
+//       const order = {
 //         id,
 //         owner,
 //         buyWhichTokenAddress,
@@ -39,7 +39,7 @@ const async = require('async');
 //         ask_price: buyHowMuchValue / sellHowMuchValue,
 //         bid_price: sellHowMuchValue / buyHowMuchValue,
 //       };
-//       callback(null, offer);
+//       callback(null, order);
 //     } else {
 //       callback('Not active', undefined);
 //     }
@@ -49,22 +49,22 @@ const async = require('async');
 // // Pre:
 // // Post:
 // export function sync(callback) {
-//   Exchange.at(EXCHANGE_ADDR).lastOfferId()
+//   Exchange.at(EXCHANGE_ADDR).lastOrderId()
 //   .then((result) => {
-//     const numOffers = result.toNumber();
-//     console.log(`numOffers: ${numOffers}`)
-//     async.times(numOffers, (id, callbackMap) => {
-//       syncOffer(id + 1, (err, offer) => {
+//     const numOrders = result.toNumber();
+//     console.log(`numOrders: ${numOrders}`)
+//     async.times(numOrders, (id, callbackMap) => {
+//       syncOrder(id + 1, (err, order) => {
 //         if (!err) {
-//           callbackMap(null, offer);
+//           callbackMap(null, order);
 //         } else if (err == 'Not active') {
 //           callbackMap(null, undefined);
 //         } else {
 //           callbackMap(err, undefined);
 //         }
 //       });
-//     }, (err, offers) => {
-//       callback(null, offers);
+//     }, (err, orders) => {
+//       callback(null, orders);
 //     });
 //   });
 // };

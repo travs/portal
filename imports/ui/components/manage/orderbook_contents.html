@@ -18,11 +18,11 @@
               </tr>
             </thead>
             <tbody>
-              {{#each offers}}
+              {{#each orders}}
               <tr>
-                <td>{{this.offer.buyHowMuch}}</td>
-                <td>{{this.offer.buyHowMuch}}</td>
-                <td>{{this.offer.ask_price}}</td>
+                <td>{{convertFromTokenPrecision this.buyHowMuch}}</td>
+                <td>{{convertFromTokenPrecision this.buyHowMuch}}</td>
+                <td>{{this.buyPrice}}</td>
               </tr>
               {{/each}}
             </tbody>
@@ -40,11 +40,11 @@
               </tr>
             </thead>
             <tbody>
-              {{#each offers}}
+              {{#each orders}}
               <tr>
-                <td>{{this.offer.bid_price}}</td>
-                <td>{{this.offer.sellHowMuch}}</td>
-                <td>{{this.offer.sellHowMuch}}</td>
+                <td>{{this.sellPrice}}</td>
+                <td>{{convertFromTokenPrecision this.sellHowMuch}}</td>
+                <td>{{convertFromTokenPrecision this.sellHowMuch}}</td>
               </tr>
               {{/each}}
             </tbody>

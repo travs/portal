@@ -1,46 +1,116 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import AddressList from '/imports/lib/ethereum/address_list.js'
 
 // SMART-CONTRACT IMPORT
 
 import contract from 'truffle-contract';
-import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
-const Core = contract(CoreJson); // Set Provider
+import VersionJson from '/imports/lib/assets/contracts/Version.json';
+import CoreJson from '/imports/lib/assets/contracts/Core.json';
+const Version = contract(VersionJson);
+const Core = contract(CoreJson);
+// Creation of contract object
+Version.setProvider(web3.currentProvider);
 Core.setProvider(web3.currentProvider);
+const versionContract = Version.at(AddressList.Version);
 
 // COLLECTIONS
 
 export const Cores = new Mongo.Collection('cores');
 if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish Collection
 
-// METHODS
+// COLLECTION METHODS
+
+Cores.sync = () => {
+  let numberOfCoresCreated;
+  versionContract.numCreatedCores()
+  .then((result) => {
+    numberOfCoresCreated = result.toNumber();
+    for (let index = 0; index < numberOfCoresCreated; index += 1) {
+      let coreContract;
+
+      // List of inputs for core collection
+      let address;
+      let name;
+      let managerAddress;
+      let universeAddress;
+      //TODO clean up database entries
+      const sharePrice = web3.toWei(1.0, 'ether');
+      const notional = 0;
+      const intraday = 1.0;
+
+
+      versionContract.coreAt(index).then((result) => {
+        address = result;
+        coreContract = Core.at(address);
+        return coreContract.name();
+      })
+      .then((result) => {
+        name = result;
+        return coreContract.owner();
+      })
+      .then((result) => {
+        managerAddress = result;
+        return coreContract.getUniverseAddress();
+      })
+      .then((result) => {
+        universeAddress = result;
+        // Insert into Portfolio collection
+        Cores.update(
+          { address },
+          { $set: {
+            address,
+            index,
+            name,
+            managerAddress,
+            universeAddress,
+            sharePrice,
+            notional,
+            intraday: '±0.0',
+            isNew: true,
+            delta: '±0.0',
+            username: 'N/A',
+            createdAt: new Date(),
+          },
+          }, {
+            upsert: true,
+          });
+      });
+    }
+  });
+};
+
+// METEOR METHODS
 
 Meteor.methods({
-  'cores.insert': (address, name, managerAddress, managerEmail, universeAddress, sharePrice, notional, intraday) => {
+  'cores.upsert': (address, name, managerAddress, universeAddress, sharePrice, notional, intraday) => {
     check(address, String);
     check(name, String);
     check(managerAddress, String);
-    check(managerEmail, String);
     check(universeAddress, String);
     check(sharePrice, String);
     check(notional, Number);
     check(intraday, Number);
 
-    Cores.insert({
-      address,
-      name,
-      managerAddress,
-      managerEmail,
-      universeAddress,
-      sharePrice,
-      notional,
-      intraday: '±0.0',
-      isNew: true,
-      delta: '±0.0',
-      username: 'N/A',
-      createdAt: new Date(),
-    });
+    Cores.update(
+      { address },
+      { $set: {
+        address,
+        name,
+        managerAddress,
+        universeAddress,
+        sharePrice,
+        notional,
+        intraday: '±0.0',
+        isNew: true,
+        delta: '±0.0',
+        username: 'N/A',
+        createdAt: new Date(),
+      },
+      }, {
+        upsert: true,
+      });
   },
   'cores.setToUsed': (portfolioId) => {
     check(portfolioId, String);
