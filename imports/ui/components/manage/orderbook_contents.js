@@ -3,6 +3,8 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
 import { Orders } from '/imports/api/orders.js';
+// Specs
+import specs from '/imports/lib/assets/utils/specs.js';
 // Corresponding html file
 import './orderbook_contents.html';
 
@@ -12,7 +14,10 @@ Template.orderbook_contents.onCreated(() => {
 
 Template.orderbook_contents.helpers({
   orders() {
-    // TODO clean up
+    const [quoteTokenSymbol, baseTokenSymbol] = Session.get('currentAssetPair').split('/');
+    const quoteTokenAddress = specs.getTokenAddress(quoteTokenSymbol);
+    const baseTokenAddress = specs.getTokenAddress(baseTokenSymbol);
+
     return Orders.find({}, { sort: { id: -1 } });
   },
   openOrders() {
