@@ -5,13 +5,24 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { bootstrapSwitch } from 'bootstrap-switch';
 // Collections
 import { Cores } from '/imports/api/cores';
-// Constants
-import assetPairs from '/imports/constants/asset-pairs';
+// Specs
+import specs from '/imports/lib/assets/utils/specs.js';
 // Smart contracts
 import Core from '/imports/lib/assets/contracts/Core.json';
 // Corresponding html file
 import './manage_overview.html';
 
+const numberOfQuoteTokens = specs.getQuoteTokens().length;
+const numberOfBaseTokens = specs.getBaseTokens().length;
+
+const assetPairs =
+  [...Array(numberOfQuoteTokens * numberOfBaseTokens).keys()]
+  .map((value, index) => [
+    specs.getQuoteTokens()[index % numberOfQuoteTokens],
+    '/',
+    specs.getBaseTokens()[index % numberOfBaseTokens],
+  ].join(''))
+  .sort();
 
 Template.manage_overview.onCreated(() => {
   Meteor.subscribe('cores');

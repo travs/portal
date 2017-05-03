@@ -1,5 +1,5 @@
 const constants = require('./constants.js');
-import AddressList from '/imports/lib/ethereum/address_list.js'
+import AddressList from '/imports/lib/ethereum/address_list.js';
 
 // Tokens
 

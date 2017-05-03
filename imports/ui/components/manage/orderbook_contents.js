@@ -13,7 +13,6 @@ Template.orderbook_contents.onCreated(() => {
 Template.orderbook_contents.helpers({
   orders() {
     // TODO clean up
-    const docs = Orders.findOne({}, { sort: { id: -1 } })
     return Orders.find({}, { sort: { id: -1 } });
   },
   openOrders() {
@@ -21,7 +20,7 @@ Template.orderbook_contents.helpers({
     return Orders.find({ owner: address }, { sort: { id: -1 } });
   },
   convertFromTokenPrecision(value) {
-    //TODO get precision from database
+    // TODO get precision from database
     // if (Object.keys(this).length === 0) return '';
     // const precision = this.precision;
     const precision = 18;
