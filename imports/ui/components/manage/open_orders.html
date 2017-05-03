@@ -12,7 +12,7 @@
           <thead>
             <tr>
               <th>Time</th>
-              <th>Type <p>({{baseTokenSymbol}})</p></th>
+              <th>Type</th>
               <th>Buy Price <p>({{currentAssetPair}})</p></th>
               <th>Vol<p>({{baseTokenSymbol}})</p></th>
             </tr>
@@ -21,8 +21,8 @@
             {{#each order in getOpenOrders}}
               <tr>
                 <td><p>{{ formatDate order.createdAt }}</p></td>
-                <td>Sell</td>
-                <td>872.19 EUR</td>
+                <td>{{ buyOrSell order.buy.symbol }}</td>
+                <td>{{ getPrice order }}</td>
                 <td>100</td>
               </tr>
             {{/each}}
