@@ -113,6 +113,7 @@ function initSession() {
   Session.set('isServerConnected', true);
   Session.set('latestBlock', 0);
   Session.set('currentAssetPair', `${specs.getQuoteTokens()[0]}/${specs.getBaseTokens()[0]}`);
+  Session.set('fromPortfolio', true);
 }
 
 function checkIfSynching() {
