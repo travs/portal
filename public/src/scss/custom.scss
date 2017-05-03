@@ -2201,3 +2201,24 @@ img.oraclize{
 .toast-warning{
   background-color:#F5AB35 !important;
 }
+
+//Custome Table
+th:last-child{text-align:left !important;}
+.mp-daemon-table-data tbody tr td:last-child{text-align:left !important;}
+
+//Custome link
+.link-bordered{
+  display: inline-block;
+  min-width: 10px;
+  padding: 5px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+  border: 1px solid #337ab7;
+  border-radius: 20px;
+  color: #1189c6;
+  margin-top: 5px;
+}
