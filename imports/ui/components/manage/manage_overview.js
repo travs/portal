@@ -5,6 +5,8 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { bootstrapSwitch } from 'bootstrap-switch';
 // Collections
 import { Cores } from '/imports/api/cores';
+// Constants
+import assetPairs from '/imports/constants/asset-pairs';
 // Smart contracts
 import Core from '/imports/lib/assets/contracts/Core.json';
 // Corresponding html file
@@ -17,6 +19,9 @@ Template.manage_overview.onCreated(() => {
 });
 
 Template.manage_overview.helpers({
+  assetPairs,
+  currentAssetPair: Session.get('currentAssetPair'),
+  selected: assetPair => assetPair === Session.get('currentAssetPair') ? 'selected' : '',
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
@@ -30,6 +35,6 @@ Template.manage_overview.onRendered(() => {
 
 Template.manage_overview.events({
   'change .js-asset-pair-picker': (event, templateInstance) => {
-    console.log(event, templateInstance);
+    Session.set('currentAssetPair', event.currentTarget.value);
   },
 });

@@ -29,9 +29,11 @@
         <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="volume">Asset Pair</label>
         <div class="col-md-8 col-sm-6 col-xs-12"> <!-- Static -->
           <select class="selectpicker select-form js-asset-pair-picker">
-            <option>ETH/BTC</option>
-            <option>ETH/REP</option>
-            <option>ETH/EUR</option>
+            {{#each assetPair in assetPairs}}
+            <option value="{{assetPair}}" {{ selected assetPair }}>
+              {{assetPair}}
+            </option>
+            {{/each}}
           </select>
         </div>
       </div>
