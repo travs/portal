@@ -1,6 +1,6 @@
 // Meteor imports
-import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 // NPM imports
 import moment from 'moment';
 // Utils
@@ -21,9 +21,9 @@ Template.open_orders.helpers({
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   getOpenOrders() {
     const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    const owner = '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf';
-
-    // const address = FlowRouter.getParam('address'); <-- portfolio
+    const owner = Session.get('fromPortfolio')
+      ? FlowRouter.getParam('address')
+      : Session.get('clientManagerAccount');
 
     return Orders.find({
       owner,
