@@ -147,6 +147,7 @@ Template.manage_holdings.events({
     const Asset = contract(AssetJson);
     Asset.setProvider(web3.currentProvider);
     const assetContract = Asset.at(sellTokenAddress);
+    console.log('sell token address', sellTokenAddress)
 
     const myGas = web3.toWei(200, 'shannon');
 
