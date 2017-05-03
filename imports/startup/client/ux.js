@@ -14,12 +14,12 @@ Meteor.startup(() => {
   });
 
   // Basic Usage:
-  cc.price('BTC', ['USD', 'EUR'])
-  .then(prices => {
-    console.log(prices)
-    // -> { USD: 1100.24, EUR: 1039.63 }
-  })
-  .catch(console.error)
+  // cc.price('BTC', ['USD', 'EUR'])
+  // .then(prices => {
+  //   console.log(prices)
+  //   // -> { USD: 1100.24, EUR: 1039.63 }
+  // })
+  // .catch(console.error)
   // Set 24h Change
   // TODO change is relative to Dollar!
   // TODO check and handle statusCode
