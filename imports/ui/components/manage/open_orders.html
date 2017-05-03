@@ -23,7 +23,7 @@
                 <td><p>{{ formatDate order.createdAt }}</p></td>
                 <td>{{ buyOrSell order.buy.symbol }}</td>
                 <td>{{ getPrice order }}</td>
-                <td>100</td>
+                <td>{{ getVolume order }}</td>
               </tr>
             {{/each}}
           </tbody>
@@ -31,6 +31,8 @@
       </div>
     </div>
   </div>
+
+  {{#if more}}
   <div class="row order-book-more">
     <div class="col-md-12">
       <div class="table-load-more">
@@ -38,5 +40,6 @@
       </div>
     </div>
   </div>
+  {{/if}}
 
 </template>
