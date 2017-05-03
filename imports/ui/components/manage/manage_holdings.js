@@ -39,4 +39,13 @@ Template.manage_holdings.onRendered(() => {});
 
 
 Template.manage_holdings.events({
+  'change select#select_type': (event, templateInstance) => {
+    const currentlySelectedTypeValue = parseFloat(templateInstance.find('select#select_type').value, 10);
+    // Template.instance().typeValue.set(currentlySelectedTypeValue);
+    console.log(currentlySelectedTypeValue);
+    if(currentlySelectedTypeValue) Template.instance().state.set({ buyingSelected: false });
+
+  }
 });
+
+

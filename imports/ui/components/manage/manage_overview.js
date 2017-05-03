@@ -23,6 +23,9 @@ Template.manage_overview.helpers({
     const doc = Cores.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
+  'assetpairs': () => {
+    return ['ETH/BTC', 'ETH/REP', 'ETH/EUR', 'ETH/MLN'];
+  }
 });
 
 
