@@ -108,7 +108,6 @@ Template.manage_holdings.events({
       return;
     }
 
-    const coreContract = Core.at(coreAddress);
 
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
@@ -144,15 +143,15 @@ Template.manage_holdings.events({
     console.log("BUY ", buyToken, "@ ", buyVolume);
 
 
+    const coreContract = Core.at(coreAddress);
     const Asset = contract(AssetJson);
     Asset.setProvider(web3.currentProvider);
     const assetContract = Asset.at(sellTokenAddress);
     console.log('sell token address', sellTokenAddress)
 
-    const myGas = web3.toWei(200, 'shannon');
-
-    coreContract.makeOffer(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, {from: managerAddress, gasPrice: myGas}).then((result) => {
+    coreContract.makeOffer(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, {from: managerAddress}).then((result) => {
       console.log(result);
+      // Meteor.call('orders.upsert', );
     })
 
 
