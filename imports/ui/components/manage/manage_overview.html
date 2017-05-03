@@ -1,13 +1,13 @@
 <template name="manage_overview">
   <div class="exchange-overview-header asset">
     <h2 class="exchange-title">Asset Overview</h2>
-    <span class="badge btn-sm-outline-green">+ 2.09%</span>
+    <span class="badge btn-sm-outline-blue">+ 2.09%</span>
     <div class="line-divider"></div>
   </div>
   <div class="exchange-overview-block">
     <div class="form-horizontal mp-form">
       <div class="form-group">
-        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="from_portofolio">From Portofolio</label>
+        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="from_portofolio">From Portfolio</label>
         <div class="col-md-8 col-sm-6 col-xs-12">
           <div class="make-switch custom-switch al-right">
             <input type="checkbox" name="my-checkbox" checked>
@@ -28,9 +28,11 @@
       <div class="form-group">
         <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="volume">Asset Pair</label>
         <div class="col-md-8 col-sm-6 col-xs-12"> <!-- Static -->
-          <select class="selectpicker select-form js-assetpair">
-            {{#each assetpairs}}
-            <option value="{{this.option}}">{{this}}</option>
+          <select class="selectpicker select-form js-asset-pair-picker">
+            {{#each assetPair in assetPairs}}
+            <option value="{{assetPair}}" {{ selected assetPair }}>
+              {{assetPair}}
+            </option>
             {{/each}}
           </select>
         </div>

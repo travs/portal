@@ -2,7 +2,7 @@
     <div class="row order-book-head">
       <div class="col-md-12">
         <h2 class="exchange-title">
-          <a class="table-link" href="https://testnet.etherscan.io/address/{{exchangeContractAddress}}" target="_blank">Order Book</a> of ETH/BTC</h2>
+          <a class="table-link" href="https://kovan.etherscan.io/address/{{exchangeContractAddress}}" target="_blank">Order Book</a> of ETH/BTC</h2>
       </div>
     </div>
 
@@ -20,9 +20,9 @@
             <tbody>
               {{#each orders}}
               <tr>
-                <td>{{convertFromTokenPrecision this.buyHowMuch}}</td>
-                <td>{{convertFromTokenPrecision this.buyHowMuch}}</td>
-                <td>{{this.buyPrice}}</td>
+                <td>{{convertFromTokenPrecision this.buy.howMuch}}</td>
+                <td>{{convertFromTokenPrecision this.buy.howMuch}}</td>
+                <td>{{this.buy.price}}</td>
               </tr>
               {{/each}}
             </tbody>
@@ -42,9 +42,9 @@
             <tbody>
               {{#each orders}}
               <tr>
-                <td>{{this.sellPrice}}</td>
-                <td>{{convertFromTokenPrecision this.sellHowMuch}}</td>
-                <td>{{convertFromTokenPrecision this.sellHowMuch}}</td>
+                <td>{{this.sell.price}}</td>
+                <td>{{convertFromTokenPrecision this.sell.howMuch}}</td>
+                <td>{{convertFromTokenPrecision this.sell.howMuch}}</td>
               </tr>
               {{/each}}
             </tbody>

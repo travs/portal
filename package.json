@@ -8,10 +8,14 @@
     "test:chimp:watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
     "test:chimp:once": "chimp --ddp=http://localhost:3000 --mocha --path=tests"
   },
+  "eslintConfig": {
+    "extends": "@meteorjs/eslint-config-meteor"
+  },
   "dependencies": {
     "async": "^2.1.4",
     "babel-runtime": "^6.23.0",
     "bootstrap-switch": "^3.3.3",
+    "cryptocompare": "^0.1.0",
     "ethapi-js": "^0.4.2",
     "jquery": "^3.1.1",
     "meteor-node-stubs": "~0.2.0",
@@ -21,15 +25,16 @@
     "web3": "^0.17.0-beta"
   },
   "devDependencies": {
-    "babel-eslint": "^7.1.0",
+    "@meteorjs/eslint-config-meteor": "^1.0.5",
+    "babel-eslint": "^7.2.3",
     "chimp": "^0.48.0",
-    "eslint": "^3.9.1",
+    "eslint": "^3.19.0",
     "eslint-config-airbnb": "^12.0.0",
-    "eslint-import-resolver-meteor": "^0.3.3",
-    "eslint-plugin-import": "^2.0.1",
+    "eslint-import-resolver-meteor": "^0.3.4",
+    "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-meteor": "^4.0.1",
-    "eslint-plugin-react": "^6.4.1",
+    "eslint-plugin-react": "^6.10.3",
     "ethereumjs-testrpc": "^3.0.5"
   }
 }

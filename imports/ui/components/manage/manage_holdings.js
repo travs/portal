@@ -4,12 +4,18 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
-import contract from 'truffle-contract';
+import AddressList from '/imports/lib/ethereum/address_list.js';
 import constants from '/imports/lib/assets/utils/constants.js';
+import Specs from '/imports/lib/assets/utils/specs.js';
+//Collections
+import { Cores } from '/imports/api/cores';
+//Contracts
+import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
+import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json';
+import AssetJson from '/imports/lib/assets/contracts/Asset.json';
 
 import './manage_holdings.html';
-
 
 const Core = contract(CoreJson);
 Template.manage_holdings.onCreated(() => {
@@ -33,27 +39,19 @@ Template.manage_holdings.helpers({
     }
     return 'Sell';
   },
-  'selectedAssetPair': () => {
-    if(Template.instance().state.get('buyingSelected')) {
-      if(Session.get('selectedAssetPair')) return Session.get('selectedAssetPair');
-      else if(!Session.get('selectedAssetPair')) return 'BTC/ETH';
-    } else {
-      if(Session.get('selectedAssetPair')) {
-        const reversedPair = Session.get('selectedAssetPair').substring(4,7)+"/"+Session.get('selectedAssetPair').substring(0,3);
+  'currentAssetPair': () => {
+      if(Template.instance().state.get('buyingSelected')) {
+       return Session.get('currentAssetPair');
+      } else {
+        const reversedPair = Session.get('currentAssetPair').substring(6,11)+"/"+Session.get('currentAssetPair').substring(0,5);
         return reversedPair;
       }
-      else if(!Session.get('selectedAssetPair')) return 'ETH/BTC';
-    }
 
   },
-  'volumeAsset': () => {
-    if(Session.get('selectedAssetPair')) return Session.get('selectedAssetPair').substring(0,3);
-    else if(!Session.get('selectedAssetPair')) return 'BTC';
-  },
-  'totalAsset': () => {
-    if(Session.get('selectedAssetPair')) return Session.get('selectedAssetPair').substring(4,7);
-    else if(!Session.get('selectedAssetPair')) return 'ETH';
-  }
+
+  'volumeAsset': () => { return Session.get('currentAssetPair').substring(0,5); },
+
+  'totalAsset': () => { return Session.get('currentAssetPair').substring(6,11); }
 });
 
 Template.manage_holdings.onRendered(() => {});
@@ -84,11 +82,11 @@ Template.manage_holdings.events({
     templateInstance.find('input.js-volume').value = total / price;
   },
   'click .js-placeorder': (event, templateInstance) => {
-    const type = Session.get(buyingSelected);
+    const type = Template.instance().state.get('buyingSelected')? 'Buy':'Sell';
     const price = parseFloat(templateInstance.find('input.js-price').value, 10);
     const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
     const total = parseFloat(templateInstance.find('input.js-total').value, 10);
-    if (isNaN(type) || isNaN(price) || isNaN(volume) || isNaN(total)) {
+    if (!type || isNaN(price) || isNaN(volume) || isNaN(total)) {
       //TODO replace toast
       // Materialize.toast('Please fill out the form', 4000, 'blue');
       alert('All fields are required.')
@@ -102,7 +100,7 @@ Template.manage_holdings.events({
       return;
     }
 
-    const coreAddress = FlowRouter.getParal('address');
+    const coreAddress = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address: coreAddress });
     if (doc === undefined) {
       //TODO replace toast
@@ -115,10 +113,46 @@ Template.manage_holdings.events({
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
-    const weiPrice = web3.toWei(price, 'ether'); //ether hardcoded
-    const baseUnitVolume = web3.toWei(volume, 'ether');
-    const weiTotal = web3.toWei(total, 'ether');
+    let sellToken;
+    let buyToken;
+    let sellVolume;
+    let buyVolume;
 
+    if(type === 'Buy') {
+       sellToken = Session.get('currentAssetPair').substring(6,11);
+       sellVolume = total;
+       buyToken = Session.get('currentAssetPair').substring(0,5);
+       buyVolume = volume;
+    } else if(type === 'Sell') {
+       sellToken = Session.get('currentAssetPair').substring(0,5);
+       sellVolume = volume;
+       buyToken = Session.get('currentAssetPair').substring(6,11);
+       buyVolume = total;
+    }
+
+    //Get token addresses
+    const sellTokenAddress = Specs.getTokenAddress(sellToken);
+    const buyTokenAddress = Specs.getTokenAddress(buyToken);
+    //Get token precision
+    const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
+    const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
+    //Get base unit volume
+    const sellBaseUnitVolume = sellVolume * Math.pow(10, sellTokenPrecision);
+    const buyBaseUnitVolume = buyVolume * Math.pow(10, buyTokenPrecision);
+
+    console.log("SELL ", sellToken, "@ ", sellVolume);
+    console.log("BUY ", buyToken, "@ ", buyVolume);
+
+
+    const Asset = contract(AssetJson);
+    Asset.setProvider(web3.currentProvider);
+    const assetContract = Asset.at(sellTokenAddress);
+
+    const myGas = web3.toWei(200, 'shannon');
+
+    coreContract.makeOffer(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, {from: managerAddress, gasPrice: myGas}).then((result) => {
+      console.log(result);
+    })
 
 
   }

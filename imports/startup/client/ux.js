@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { HTTP } from 'meteor/http';
 
+import cc from 'cryptocompare';
+
 
 Meteor.startup(() => {
   Session.set('NetworkStatus', {
@@ -11,6 +13,13 @@ Meteor.startup(() => {
     isMined: false,
   });
 
+  // Basic Usage:
+  // cc.price('BTC', ['USD', 'EUR'])
+  // .then(prices => {
+  //   console.log(prices)
+  //   // -> { USD: 1100.24, EUR: 1039.63 }
+  // })
+  // .catch(console.error)
   // Set 24h Change
   // TODO change is relative to Dollar!
   // TODO check and handle statusCode

@@ -1,5 +1,5 @@
 const constants = require('./constants.js');
-import AddressList from '/imports/lib/ethereum/address_list.js'
+import AddressList from '/imports/lib/ethereum/address_list.js';
 
 // Tokens
 
@@ -17,7 +17,7 @@ exports.getTokenSymbolByAddress = (address) => {
   if (address === AddressList.MelonToken) return 'MLN-T';
   if (address === AddressList.BitcoinToken) return 'BTC-T';
   if (address === AddressList.EuroToken) return 'EUR-T';
-  if (address === AddressList.RepToken) return 'REP';
+  if (address === AddressList.RepToken) return 'REP-T';
   return false;
 };
 
@@ -26,12 +26,12 @@ exports.getTokenAddress = (symbol) => {
   if (symbol === 'MLN-T') return AddressList.MelonToken;
   if (symbol === 'BTC-T') return AddressList.BitcoinToken;
   if (symbol === 'EUR-T') return AddressList.EuroToken;
-  if (symbol === 'REP') return AddressList.RepToken;
+  if (symbol === 'REP-T') return AddressList.RepToken;
   return false;
 };
 
 exports.getQuoteTokens = () => ['ETH-T'];
 
-exports.getBaseTokens = () => ['MLN-T', 'BTC-T', 'EUR-T', 'REP'];
+exports.getBaseTokens = () => ['MLN-T', 'BTC-T', 'EUR-T', 'REP-T'];
 
-exports.getTokens = () => ['ETH-T', 'MLN-T', 'BTC-T', 'EUR-T', 'REP'];
+exports.getTokens = () => ['ETH-T', 'MLN-T', 'BTC-T', 'EUR-T', 'REP-T'];

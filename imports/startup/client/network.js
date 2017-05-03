@@ -1,7 +1,9 @@
-/// Remark: Code mostly taken from: https://github.com/makerdao/maker-market
+// / Remark: Code mostly taken from: https://github.com/makerdao/maker-market
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
+// Specs
+import specs from '/imports/lib/assets/utils/specs.js';
 
 // Check which accounts are available and if defaultAccount is still available,
 // Otherwise set it to localStorage, Session, or first element in accounts
@@ -21,7 +23,7 @@ function checkAccounts() {
       }
       localStorage.setItem('clientManagerAccount', web3.eth.defaultAccount);
       web3.eth.getBalance(web3.eth.defaultAccount, (error, result) => {
-        if(!error) {
+        if (!error) {
           Session.set('clientManagerAccountBalance', result.toNumber());
         } else {
           Session.set('clientManagerAccountBalance', undefined);
@@ -110,6 +112,7 @@ function initSession() {
   Session.set('isClientConnected', false);
   Session.set('isServerConnected', true);
   Session.set('latestBlock', 0);
+  Session.set('currentAssetPair', `${specs.getBaseTokens()[0]}/${specs.getQuoteTokens()[0]}`);
 }
 
 function checkIfSynching() {
@@ -136,7 +139,7 @@ function checkIfSynching() {
 
 function checkIfServerIsConncected() {
   Meteor.call('isServerConnected', (err, result) => {
-    if(!err) {
+    if (!err) {
       Session.set('isServerConnected', result);
     } else {
       console.log(err);
