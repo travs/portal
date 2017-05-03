@@ -6,21 +6,21 @@ import { bootstrapSwitch } from 'bootstrap-switch';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Specs
-import specs from '/imports/lib/assets/utils/specs.js';
+import Specs from '/imports/lib/assets/utils/specs.js';
 // Smart contracts
 import Core from '/imports/lib/assets/contracts/Core.json';
 // Corresponding html file
 import './manage_overview.html';
 
-const numberOfQuoteTokens = specs.getQuoteTokens().length;
-const numberOfBaseTokens = specs.getBaseTokens().length;
+const numberOfQuoteTokens = Specs.getQuoteTokens().length;
+const numberOfBaseTokens = Specs.getBaseTokens().length;
 
 const assetPairs =
   [...Array(numberOfQuoteTokens * numberOfBaseTokens).keys()]
   .map((value, index) => [
-    specs.getQuoteTokens()[index % numberOfQuoteTokens],
+    Specs.getQuoteTokens()[index % numberOfQuoteTokens],
     '/',
-    specs.getBaseTokens()[index % numberOfBaseTokens],
+    Specs.getBaseTokens()[index % numberOfBaseTokens],
   ].join(''))
   .sort();
 
