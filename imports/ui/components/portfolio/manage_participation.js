@@ -4,11 +4,13 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import select2 from 'select2';
+import AddressList from '/imports/lib/ethereum/address_list.js';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Contracts
 import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
+import EtherTokenJson from '/imports/lib/assets/contracts/EtherToken.json';
 
 import './manage_participation.html';
 
@@ -21,7 +23,6 @@ Template.manage_participation.onCreated(() => {
   Meteor.subscribe('cores');
   Template.instance().typeValue = new ReactiveVar(0);
 });
-
 
 Template.manage_participation.helpers({
   getPortfolioDoc() {
@@ -54,7 +55,6 @@ Template.manage_participation.onRendered(() => {
   Meteor.call('assets.sync', address); // Upsert Assets Collection
 });
 
-
 Template.manage_participation.events({
   'change select#type': (event, templateInstance) => {
     const currentlySelectedTypeValue = parseFloat(templateInstance.find('select#type').value, 10);
@@ -80,6 +80,7 @@ Template.manage_participation.events({
     templateInstance.find('input#volume').value = total / price;
   },
   'click .manage': (event, templateInstance) => {
+
     // Prevent default browser form submit
     event.preventDefault();
 
@@ -109,6 +110,7 @@ Template.manage_participation.events({
       // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
       return;
     }
+
     const coreContract = Core.at(coreAddress);
 
     // Is mining
@@ -116,29 +118,43 @@ Template.manage_participation.events({
 
     // From price to volume of shares
     const weiPrice = web3.toWei(price, 'ether');
-    const weiVolume = web3.toWei(volume, 'ether');
+    const baseUnitVolume = web3.toWei(volume, 'ether');
     const weiTotal = web3.toWei(total, 'ether');
 
-    // Invest or Redeem
-    // TODO use switch as above
-    if (type === 0) {
-      coreContract.createShares(weiTotal, { value: weiVolume, from: managerAddress }).then((result) => {
+    const EtherToken = contract(EtherTokenJson);
+    EtherToken.setProvider(web3.currentProvider);
+    const EtherTokenContract = EtherToken.at(AddressList.EtherToken);
+
+    switch (type) {
+      //Invest case
+      case 0:
+      EtherTokenContract.deposit({from: managerAddress, value: weiTotal}).then((result) => {
+        return EtherTokenContract.approve(coreAddress, baseUnitVolume, {from: managerAddress});
+      }).then((result) => {
+        return coreContract.createShares(baseUnitVolume, {from: managerAddress});
+      }).then((result) => {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-        // TODO insert txHash into appropriate collection
-        console.log(`Tx Hash: ${result}`);
+        console.log(`Shares successfully created. Tx Hash: ${result}`);
         Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
         Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
         return coreContract.totalSupply();
-      });
-    } else if (type === 1) {
-      coreContract.annihilateShares(weiVolume, weiTotal, { from: managerAddress }).then((result) => {
+      }).catch((error) => {
+        console.log(error);
+      })
+      break;
+
+      //Redeem case
+      case 1:
+      coreContract.annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress }).then((result) => {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-        // TODO insert txHash into appropriate collection
-        console.log(`Tx Hash: ${result}`);
+        console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
         Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
         Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
         return coreContract.totalSupply();
-      });
+      }).catch((error) => {
+        console.log(error);
+      })
+      default: return 'Error';
     }
   },
 });
