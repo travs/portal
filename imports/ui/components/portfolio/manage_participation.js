@@ -24,7 +24,6 @@ Template.manage_participation.onCreated(() => {
   Template.instance().typeValue = new ReactiveVar(0);
 });
 
-
 Template.manage_participation.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
@@ -55,7 +54,6 @@ Template.manage_participation.onRendered(() => {
   Meteor.call('cores.sync', address); // Upsert cores Collection
   Meteor.call('assets.sync', address); // Upsert Assets Collection
 });
-
 
 Template.manage_participation.events({
   'change select#type': (event, templateInstance) => {
@@ -127,28 +125,16 @@ Template.manage_participation.events({
     EtherToken.setProvider(web3.currentProvider);
     const EtherTokenContract = EtherToken.at(AddressList.EtherToken);
 
-    coreContract.getReferenceAsset().then((result) => {
-      console.log('here', result);
-    })
-
     switch (type) {
-      case 0:
       //Invest case
-      console.log(coreAddress);
-
+      case 0:
       EtherTokenContract.deposit({from: managerAddress, value: weiTotal}).then((result) => {
-        console.log('Result from deposit to eth token contract', result);
         return EtherTokenContract.approve(coreAddress, baseUnitVolume, {from: managerAddress});
       }).then((result) => {
-        console.log('Result from approve function', result);
-        console.log('baseUnitVolume', baseUnitVolume);
-        console.log('managerAddress', managerAddress);
         return coreContract.createShares(baseUnitVolume, {from: managerAddress});
       }).then((result) => {
-        console.log('Result from createShares function', result);
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         console.log(`Shares successfully created. Tx Hash: ${result}`);
-
         Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
         Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
         return coreContract.totalSupply();
@@ -156,8 +142,9 @@ Template.manage_participation.events({
         console.log(error);
       })
       break;
-      case 1:
+
       //Redeem case
+      case 1:
       coreContract.annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress }).then((result) => {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
