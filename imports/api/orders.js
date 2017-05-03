@@ -27,31 +27,35 @@ Orders.sync = () => {
   let numberOfOrdersCreated;
   exchangeContract.getLastOrderId().then((result) => {
     numberOfOrdersCreated = result.toNumber();
-    for (let index = 0; index < numberOfOrdersCreated; index += 1) {
-      exchangeContract.orders(index).then((order) => {
-        let [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, owner, isActive] = order;
-        // Insert into Orders collection
-        Orders.update(
-          { id: index },
-          { $set: {
-            index,
-            owner,
-            isActive,
-            buyHowMuch: buyHowMuch.toNumber(),
-            buyWhichToken,
-            sellHowMuch: sellHowMuch.toNumber(),
-            sellWhichToken,
-            buyPrice: buyHowMuch / sellHowMuch,
-            sellPrice: sellHowMuch / buyHowMuch,
-            createdAt: new Date(),
-          },
-          }, {
-            upsert: true,
-          });
-      });
+    for (let id = 0; id < numberOfOrdersCreated; id += 1) {
+      Orders.syncOrderById(id);
     }
   });
 };
+
+Orders.syncOrderById = (id) => {
+  exchangeContract.orders(id).then((order) => {
+    let [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, owner, isActive] = order;
+    // Insert into Orders collection
+    Orders.update(
+      { id },
+      { $set: {
+        id,
+        owner,
+        isActive,
+        buyHowMuch: buyHowMuch.toNumber(),
+        buyWhichToken,
+        sellHowMuch: sellHowMuch.toNumber(),
+        sellWhichToken,
+        buyPrice: buyHowMuch / sellHowMuch,
+        sellPrice: sellHowMuch / buyHowMuch,
+        createdAt: new Date(),
+      },
+      }, {
+        upsert: true,
+      });
+  });
+}
 
 // METEOR METHODS
 
@@ -59,4 +63,7 @@ Meteor.methods({
   'orders.sync': () => {
     Orders.sync();
   },
+  'orders.upsert': (orderId) => {
+    Orders.syncOrderById(orderId);
+  }
 });
