@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import AddressList from '/imports/lib/ethereum/address_list';
-import Specs from '/imports/lib/assets/utils/specs.js';
+import specs from '/imports/lib/assets/utils/specs.js';
 
 // SMART-CONTRACT IMPORT
 
@@ -37,10 +37,10 @@ Orders.sync = () => {
 Orders.syncOrderById = (id) => {
   exchangeContract.orders(id).then((order) => {
     const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, owner, isActive] = order;
-    const buyPrecision = Specs.getTokenPrecisionByAddress(buyWhichToken);
-    const sellPrecision = Specs.getTokenPrecisionByAddress(sellWhichToken);
-    const buySymbol = Specs.getTokenSymbolByAddress(buyWhichToken);
-    const sellSymbol = Specs.getTokenSymbolByAddress(sellWhichToken);
+    const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
+    const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
+    const buySymbol = specs.getTokenSymbolByAddress(buyWhichToken);
+    const sellSymbol = specs.getTokenSymbolByAddress(sellWhichToken);
     const buyPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
     const sellPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
     // Insert into Orders collection
