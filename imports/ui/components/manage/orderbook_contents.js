@@ -3,18 +3,14 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
 import { Orders } from '/imports/api/orders.js';
+// Utils
+import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
 // Corresponding html file
 import './orderbook_contents.html';
 
 
-const convertFromTokenPrecision = (value, precision) => {
-  const divisor = Math.pow(10, precision);
-  return value / divisor;
-};
-
 Template.orderbook_contents.onCreated(() => {
   Meteor.subscribe('orders');
-  console.log('Template.orderbook_contents.onCreated');
 });
 
 Template.orderbook_contents.helpers({
@@ -55,10 +51,6 @@ Template.orderbook_contents.helpers({
       (accumulator, currentValue) => accumulator + currentValue.buy.howMuch, 0);
 
     return convertFromTokenPrecision(cummulatedDouble, precision);
-  },
-  openOrders() {
-    const address = FlowRouter.getParam('address');
-    return Orders.find({ owner: address }, { sort: { id: -1 } });
   },
 });
 
