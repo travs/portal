@@ -2,7 +2,7 @@
     <div class="row order-book-head">
       <div class="col-md-12">
         <h2 class="exchange-title">
-          <a class="table-link" href="https://kovan.etherscan.io/address/{{exchangeContractAddress}}" target="_blank">Order Book</a> of ETH/BTC</h2>
+          <a class="table-link" href="https://kovan.etherscan.io/address/{{exchangeContractAddress}}" target="_blank">Order Book</a> of {{currentAssetPair}}</h2>
       </div>
     </div>
 
@@ -12,16 +12,16 @@
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%">
             <thead>
               <tr>
-                <th>Cum. Vol. <p>(BTC)</p></th>
-                <th>Vol <p>(BTC)</p></th>
-                <th>Buy Price <p>(ETH/BTC)</p></th>
+                <th>Cum. Vol. <p>({{quoteTokenSymbol}})</p></th>
+                <th>Vol <p>({{quoteTokenSymbol}})</p></th>
+                <th>Buy Price <p>({{currentAssetPair}})</p></th>
               </tr>
             </thead>
             <tbody>
               {{#each orders}}
               <tr>
-                <td>{{convertFromTokenPrecision this.buy.howMuch}}</td>
-                <td>{{convertFromTokenPrecision this.buy.howMuch}}</td>
+                <td>{{calcCumulativeVolume this.buy.price this.buy.precision}}</td>
+                <td>{{convertFromTokenPrecision this.buy.howMuch this.buy.precision}}</td>
                 <td>{{this.buy.price}}</td>
               </tr>
               {{/each}}
@@ -34,16 +34,16 @@
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%">
             <thead>
               <tr>
-                <th>Sell Price <p>(ETC/BTC)</p></th>
-                <th>Vol <p>(BTC)</p></th>
-                <th>Cum. Vol. <p>(BTC)</p></th>
+                <th>Sell Price <p>({{baseTokenSymbol}}/{{quoteTokenSymbol}})</p></th>
+                <th>Vol <p>({{baseTokenSymbol}})</p></th>
+                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
               </tr>
             </thead>
             <tbody>
               {{#each orders}}
               <tr>
                 <td>{{this.sell.price}}</td>
-                <td>{{convertFromTokenPrecision this.sell.howMuch}}</td>
+                <td>{{convertFromTokenPrecision this.sell.howMuch this.sell.precision}}</td>
                 <td>{{convertFromTokenPrecision this.sell.howMuch}}</td>
               </tr>
               {{/each}}
@@ -53,6 +53,7 @@
       </div>
     </div>
 
+    {{#if more}}
     <div class="row order-book-more">
       <div class="col-md-12">
         <div class="table-load-more">
@@ -60,4 +61,5 @@
         </div>
       </div>
     </div>
+    {{/if}}
 </template>
