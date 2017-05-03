@@ -14,36 +14,37 @@
               <tr>
                 <th>Cum. Vol. <p>({{quoteTokenSymbol}})</p></th>
                 <th>Vol <p>({{quoteTokenSymbol}})</p></th>
-                <th>Buy Price <p>({{currentAssetPair}})</p></th>
+                <th>Buy Price <p>({{baseTokenSymbol}}/{{quoteTokenSymbol}})</p></th>
               </tr>
             </thead>
             <tbody>
-              {{#each orders}}
+              {{#each order in buyOrders}}
               <tr>
-                <td>{{calcCumulativeVolume this.buy.price this.buy.precision}}</td>
-                <td>{{convertFromTokenPrecision this.buy.howMuch this.buy.precision}}</td>
-                <td>{{this.buy.price}}</td>
+                <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision}}</td>
+                <td>{{convertFromTokenPrecision order.buy.howMuch order.buy.precision}}</td>
+                <td>{{order.buy.price}}</td>
               </tr>
               {{/each}}
             </tbody>
           </table>
         </div>
       </div>
+
       <div class="col-md-6">
         <div class="table-responsive">
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%">
             <thead>
               <tr>
-                <th>Sell Price <p>({{baseTokenSymbol}}/{{quoteTokenSymbol}})</p></th>
+                <th>Sell Price <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
                 <th>Vol <p>({{baseTokenSymbol}})</p></th>
                 <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
               </tr>
             </thead>
             <tbody>
-              {{#each orders}}
+              {{#each order in sellOrders}}
               <tr>
-                <td>{{this.sell.price}}</td>
-                <td>{{convertFromTokenPrecision this.sell.howMuch this.sell.precision}}</td>
+                <td>{{order.sell.price}}</td>
+                <td>{{convertFromTokenPrecision order.sell.howMuch order.sell.precision}}</td>
                 <td>{{convertFromTokenPrecision this.sell.howMuch}}</td>
               </tr>
               {{/each}}
