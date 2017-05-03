@@ -24,7 +24,11 @@ Template.manage_overview.helpers({
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   'assetpairs': () => {
-    return ['ETH/BTC', 'ETH/REP', 'ETH/EUR', 'ETH/MLN'];
+    return ['BTC/ETH', 'REP/ETH', 'EUR/ETH', 'MLN/ETH'];
+  },
+  'selectedAssetPair': () => {
+    if(!Session.get('selectedAssetPair')) return 'BTC/ETH';
+    return Session.get('selectedAssetPair');
   }
 });
 
@@ -34,4 +38,9 @@ Template.manage_overview.onRendered(() => {
 });
 
 
-Template.manage_overview.events({});
+Template.manage_overview.events({
+  'change select.js-assetpair': (event, templateInstance) => {
+    Session.set('selectedAssetPair', templateInstance.find('select.js-assetpair').value);
+    console.log('Asset pair selected is:', Session.get('selectedAssetPair'));
+  }
+});
