@@ -25,23 +25,32 @@ Template.orderbook_contents.helpers({
   currentAssetPair: () => Session.get('currentAssetPair'),
   quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
-  orders() {
+  buyOrders() {
     const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
     return Orders.find({
       isActive: true,
-      'buy.symbol': { $in: [quoteTokenSymbol, baseTokenSymbol] },
-      'sell.symbol': { $in: [quoteTokenSymbol, baseTokenSymbol] },
+      'buy.symbol': baseTokenSymbol,
+      'sell.symbol': quoteTokenSymbol,
     }, { sort: { 'buy.price': 1 } });
   },
-  calcCumulativeVolume(buyPrice, precision) {
+  sellOrders() {
+    const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+
+    return Orders.find({
+      isActive: true,
+      'buy.symbol': quoteTokenSymbol,
+      'sell.symbol': baseTokenSymbol,
+    }, { sort: { 'sell.price': 1 } });
+  },
+  calcBuyCumulativeVolume(buyPrice, precision) {
     const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
     const cheaperOrders = Orders.find({
       isActive: true,
       'buy.price': { $lte: buyPrice },
-      'buy.symbol': { $in: [quoteTokenSymbol, baseTokenSymbol] },
-      'sell.symbol': { $in: [quoteTokenSymbol, baseTokenSymbol] },
+      'buy.symbol': baseTokenSymbol,
+      'sell.symbol': quoteTokenSymbol,
     }, { sort: { 'buy.price': 1 } }).fetch();
 
     const cummulatedDouble = cheaperOrders.reduce(
@@ -56,7 +65,7 @@ Template.orderbook_contents.helpers({
 });
 
 Template.orderbook_contents.onRendered(() => {
-  Meteor.call('orders.sync');
+  // Meteor.call('orders.sync');
 });
 
 Template.orderbook_contents.events({});
