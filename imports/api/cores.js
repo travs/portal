@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-
 import AddressList from '/imports/lib/ethereum/address_list.js'
 
 // SMART-CONTRACT IMPORT
@@ -14,6 +13,7 @@ const Core = contract(CoreJson);
 // Creation of contract object
 Version.setProvider(web3.currentProvider);
 Core.setProvider(web3.currentProvider);
+const versionContract = Version.at(AddressList.Version);
 
 // COLLECTIONS
 
@@ -23,11 +23,9 @@ if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish
 // COLLECTION METHODS
 
 Cores.sync = () => {
-  const versionContract = Version.at(AddressList.Version);
   let numberOfCoresCreated;
   versionContract.numCreatedCores()
   .then((result) => {
-    console.log(result.toNumber());
     numberOfCoresCreated = result.toNumber();
     for (let index = 0; index < numberOfCoresCreated; index += 1) {
       let coreContract;
@@ -63,6 +61,7 @@ Cores.sync = () => {
           { address },
           { $set: {
             address,
+            index,
             name,
             managerAddress,
             universeAddress,
@@ -80,7 +79,6 @@ Cores.sync = () => {
       });
     }
   });
-
 };
 
 // METEOR METHODS

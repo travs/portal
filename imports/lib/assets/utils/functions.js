@@ -52,21 +52,21 @@ exports.krakenPricesRelEther = (data) => {
 
 // Exchange
 
-// Pre: Initialised offer object
-// Post: Executed offer as specified in offer object
-exports.approveAndOffer = (offer, callback) => {
+// Pre: Initialised order object
+// Post: Executed order as specified in order object
+exports.approveAndOrder = (order, callback) => {
   // Approve spending of selling amount at selling token
-  AssetProtocol.at(offer.sell_which_token).approve(
+  AssetProtocol.at(order.sell_which_token).approve(
     Exchange.deployed().address,
-    offer.sell_how_much)
-  // Offer selling amount of selling token for buying amount of buying token
+    order.sell_how_much)
+  // Order selling amount of selling token for buying amount of buying token
   .then(() =>
-    Exchange.deployed().offer(
-      offer.sell_how_much,
-      offer.sell_which_token,
-      offer.buy_how_much,
-      offer.buy_which_token,
-      { from: offer.owner }))
+    Exchange.deployed().order(
+      order.sell_how_much,
+      order.sell_which_token,
+      order.buy_how_much,
+      order.buy_which_token,
+      { from: order.owner }))
   .then((txHash) => {
     callback(null, txHash);
   });
@@ -74,29 +74,29 @@ exports.approveAndOffer = (offer, callback) => {
 
 // Pre:
 // Post:
-exports.buyOffer = (id, owner, callback) => {};
+exports.buyOrder = (id, owner, callback) => {};
 
 // Pre:
 // Post:
-exports.cancelOffer = (id, owner, callback) => {
+exports.cancelOrder = (id, owner, callback) => {
   Exchange.deployed().cancel(id, { from: owner })
   .then((txHash) => {
     //TODO handel better
-    // const result = Object.assign({ txHash }, offer);
+    // const result = Object.assign({ txHash }, order);
     callback(null, txHash);
   });
 };
 
 // Pre:
 // Post:
-exports.cancelAllOffersOfOwner = (owner, callback) => {
-  Exchange.deployed().lastOfferId()
+exports.cancelAllOrdersOfOwner = (owner, callback) => {
+  Exchange.deployed().lastOrderId()
   .then((result) => {
-    const numOffers = result.toNumber();
+    const numOrders = result.toNumber();
 
-    async.times(numOffers, (id, callbackMap) => {
-      // TODO better naming of offer - see cnacelOffer callback
-      this.cancelOffer(id + 1, owner, (err, txHash) => {
+    async.times(numOrders, (id, callbackMap) => {
+      // TODO better naming of order - see cnacelOrder callback
+      this.cancelOrder(id + 1, owner, (err, txHash) => {
         if (!err) {
           callbackMap(null, txHash);
         } else {
@@ -113,13 +113,13 @@ exports.cancelAllOffersOfOwner = (owner, callback) => {
 
 // Note: Simple liquidity provider
 // Pre: Only owner of premined amount of assets. Always buying one Ether
-// Post: Multiple offers created
+// Post: Multiple orders created
 exports.buyOneEtherFor = (sellHowMuch, sellWhichToken, owner, depth, callback) => {
-  let offers = [];
+  let orders = [];
   // Reduce sell amount by 0.1 on each order
   for (let i = 0; i < depth; i += 1) {
     // console.log((Math.random() - 0.5) * 0.1)
-    offers.push({
+    orders.push({
       sell_how_much: Math.floor(sellHowMuch * (1 - (i * 0.1))),
       sell_which_token: sellWhichToken,
       buy_how_much: 1 * constants.ether,
@@ -129,20 +129,20 @@ exports.buyOneEtherFor = (sellHowMuch, sellWhichToken, owner, depth, callback) =
       active: true,
     });
   }
-  // Execute all above created offers
+  // Execute all above created orders
   async.mapSeries(
-    offers,
-    (offer, callbackMap) => {
-      this.approveAndOffer(offer,
+    orders,
+    (order, callbackMap) => {
+      this.approveAndOrder(order,
         (err, hash) => {
           if (!err) {
-            callbackMap(null, Object.assign({ txHash: hash }, offer));
+            callbackMap(null, Object.assign({ txHash: hash }, order));
           } else {
             callbackMap(err, undefined);
           }
         });
     }, (err, results) => {
-      offers = results;
-      callback(null, offers);
+      orders = results;
+      callback(null, orders);
     });
 };
