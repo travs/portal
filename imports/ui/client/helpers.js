@@ -26,7 +26,7 @@ Template.registerHelper('hasManagerCreatedCore', () => Cores.find({ managerAddre
 Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).address : false));
 Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).name : false));
 Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).delta : false));
-Template.registerHelper('getIsNewOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).isNew : false));
+Template.registerHelper('getIsNewOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? !Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).isUsed : false));
 Template.registerHelper('isCoreManagerThisManager', coreManagerAccount => coreManagerAccount === Session.get('clientManagerAccount'));
 // Modules
 Template.registerHelper('getUniverses', () => Universes.find({}, { sort: { index: 1 } }));

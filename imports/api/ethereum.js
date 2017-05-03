@@ -14,10 +14,7 @@ function checkIfSynching(callback) {
 }
 
 Meteor.methods({
-  isServerConnected: () => {
-    console.log(web3.isConnected());
-    return web3.isConnected();
-  },
+  isServerConnected: () => web3.isConnected(),
   // TODO via check if syncing
   isServerSnycing: () => {},
   // TODO via external server (eg client side blknumber) && comparing blocknumbers
