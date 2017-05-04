@@ -32,7 +32,8 @@ Template.manage_overview.onCreated(() => {
 Template.manage_overview.helpers({
   assetPairs,
   currentAssetPair: Session.get('currentAssetPair'),
-  selected: assetPair => assetPair === Session.get('currentAssetPair') ? 'selected' : '',
+  selected: assetPair => (assetPair === Session.get('currentAssetPair') ? 'selected' : ''),
+  isFromPortfolio: () => (Session.get('fromPortfolio') ? 'checked' : ''),
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
@@ -41,11 +42,16 @@ Template.manage_overview.helpers({
 });
 
 Template.manage_overview.onRendered(() => {
-  $("[name='my-checkbox']").bootstrapSwitch();
+  $('.js-from-portfolio').bootstrapSwitch({
+    state: Session.get('fromPortfolio'),
+    onSwitchChange(event, state) {
+      Session.set('fromPortfolio', state);
+    },
+  });
 });
 
 Template.manage_overview.events({
-  'change .js-asset-pair-picker': (event, templateInstance) => {
+  'change .js-asset-pair-picker': (event) => {
     Session.set('currentAssetPair', event.currentTarget.value);
   },
 });

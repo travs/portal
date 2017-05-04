@@ -81,7 +81,7 @@ exports.buyOrder = (id, owner, callback) => {};
 exports.cancelOrder = (id, owner, callback) => {
   Exchange.deployed().cancel(id, { from: owner })
   .then((txHash) => {
-    //TODO handel better
+    // TODO handel better
     // const result = Object.assign({ txHash }, order);
     callback(null, txHash);
   });
@@ -145,4 +145,10 @@ exports.buyOneEtherFor = (sellHowMuch, sellWhichToken, owner, depth, callback) =
       orders = results;
       callback(null, orders);
     });
+};
+
+
+exports.convertFromTokenPrecision = (value, precision) => {
+  const divisor = Math.pow(10, precision);
+  return value / divisor;
 };
