@@ -68,8 +68,9 @@ Template.manage_participation.events({
     else if (!isNaN(total)) templateInstance.find('input#volume').value = total / price;
   },
   'input input#volume': (event, templateInstance) => {
-    const price = parseFloat(templateInstance.find('input#price').value, 10);
-    const volume = parseFloat(templateInstance.find('input#volume').value, 10);
+    const price = parseFloat(templateInstance.find('input#price').value || 0, 10);
+    const volume = parseFloat(templateInstance.find('input#volume').value || 0, 10);
+    console.log('price: ', price, 'volume: ', volume,);
     /* eslint no-param-reassign: ["error", { "props": false }]*/
     templateInstance.find('input#total').value = price * volume;
   },

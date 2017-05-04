@@ -25,7 +25,7 @@ Template.layout_header.events({
       FlowRouter.go('/');
     } else {
       const doc = Cores.findOne({ managerAddress: Session.get('clientManagerAccount') });
-      if (doc.isNew === true) {
+      if (doc.isUsed === undefined) {
         Meteor.call('cores.setToUsed', doc._id);
         //TODO replace toast
         // Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
@@ -44,7 +44,7 @@ Template.layout_header.events({
       FlowRouter.go('/');
     } else {
       const doc = Cores.findOne({ managerAddress: Session.get('clientManagerAccount') });
-      if (doc.isNew === true) {
+      if (doc.isUsed === undefined) {
         Meteor.call('cores.setToUsed', doc._id);
         //TODO replace toast
         // Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');

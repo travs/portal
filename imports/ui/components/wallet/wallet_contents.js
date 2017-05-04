@@ -5,7 +5,7 @@ import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 // Collections
 import { Assets } from '/imports/api/assets.js';
-import Specs from '/imports/lib/assets/utils/specs.js';
+import specs from '/imports/lib/assets/utils/specs.js';
 // Smart Contracts
 import contract from 'truffle-contract';
 import EtherTokenJson from '/imports/lib/assets/contracts/EtherToken.json';
@@ -95,7 +95,7 @@ Template.wallet_contents.events({
     event.preventDefault();
 
     // Convert Eth Token
-    const assetAddress = Specs.getTokenAddress('ETH-T');
+    const assetAddress = specs.getTokenAddress('ETH-T');
     const assetHolderAddress = FlowRouter.getParam('address');
     const doc = Assets.findOne({ address: assetAddress, holder: assetHolderAddress }, { sort: { createdAt: -1 } });
     if (doc === undefined) return '';
