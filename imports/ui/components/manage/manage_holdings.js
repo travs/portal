@@ -12,8 +12,8 @@ import { Cores } from '/imports/api/cores';
 //Contracts
 import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
-import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json';
-import AssetJson from '/imports/lib/assets/contracts/Asset.json';
+import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
+import AssetJson from '/imports/lib/assets/contracts/AssetProtocol.json';
 
 import './manage_holdings.html';
 
@@ -151,7 +151,14 @@ Template.manage_holdings.events({
 
     coreContract.makeOffer(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, {from: managerAddress}).then((result) => {
       console.log(result);
-      // Meteor.call('orders.upsert', );
+      // Check Logs
+      // console.log('Make Order Content');
+      // for (let i = 0; i < result.logs.length; i += 1) {
+      //   if (result.logs[i].event === 'OrderUpdate') {
+      //     console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
+      //     Meteor.call('orders.upsert', ${result.logs[i].args.id.toNumber());
+      //   }
+      // }
     })
 
 

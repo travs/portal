@@ -62,12 +62,6 @@ Template.portal_new.events({
     console.log('before the contract');
     // Init contract instance
     const versionContract = Version.at(Session.get('versionContractAddress'));
-    console.log('portfolio ', portfolioName, Session.get('universeContractAddress'),
-      Session.get('subscribeContractAddress'),
-      Session.get('redeemContractAddress'),
-      Session.get('riskMgmtContractAddress'),
-      Session.get('managmentFeeContractAddress'),
-      Session.get('performanceFeeContractAddress'), managerAddress);
     versionContract.createCore(
       portfolioName,
       Session.get('universeContractAddress'),
@@ -79,21 +73,17 @@ Template.portal_new.events({
       { from: managerAddress }
     )
     .then((result) => {
-      console.log('result from createCore', result);
       return versionContract.numCreatedCores();
     })
     .then((result) => {
-      console.log('result from numCreatedCores', result);
       return versionContract.coreAt(result.toNumber() - 1);
     })
     .then((result) => {
-      console.log('result from coreAt', result)
       portfolioAddress = result;
       const coreContract = Core.at(portfolioAddress);
       return coreContract.owner();
     })
     .then((result) => {
-      console.log('result from .owner', result);
       if (result !== managerAddress) {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
         console.log('Portfolio Owner != Manager Address');
