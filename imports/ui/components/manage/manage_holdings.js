@@ -26,7 +26,6 @@ Template.manage_holdings.onCreated(() => {
   Core.setProvider(web3.currentProvider);
 });
 
-
 Template.manage_holdings.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
@@ -46,10 +45,6 @@ Template.manage_holdings.helpers({
         const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
         return  quoteTokenSymbol + '/' + baseTokenSymbol;
       }
-
-
-
-
   },
 
   'volumeAsset': () => { return Session.get('currentAssetPair').substring(0,5); },
@@ -112,7 +107,6 @@ Template.manage_holdings.events({
       return;
     }
 
-
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
@@ -159,8 +153,6 @@ Template.manage_holdings.events({
           console.log('Order registered');
         }
       }
-    })
-
-
-  }
+    });
+  },
 });
