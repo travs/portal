@@ -21,19 +21,19 @@ exports.Universe = '0x7e56AD30007801ABbD5595C6FA232E4FCF72F667';
 
 // Participation
 
-exports.Subscribe = '0x0';
-exports.Redeem = '0x0';
+exports.Subscribe = '0x6a0c3afe2b64176e246ba5aff9892046879f69fb';
+exports.Redeem = '0xf102c38daf0219b9fef8bd9c454e657bf965b453';
 
 // Risk Mgmt
 
-exports.RiskMgmt = '0xCc77bFA392c80517Ead85477f82b62e04513388A';
+exports.RiskMgmt = '0x6406a04dfe66d90a44d4f332fd52d4e52765186a';
 
 // Fees
 
-exports.ManagementFee = '0x0';
-exports.PerformanceFee = '0x0';
+exports.ManagementFee = '0xf5e7c2434565e5f58b5f2aaee675340e113e8327';
+exports.PerformanceFee = '0x2dd21c0af98e47cdada3430438d1cef544f590a9';
 
 // Governance
 
-exports.Version = '0x928b49fB4BC2bA378e32821eefe39f6Cf20f3a92';
-exports.Governance = '0x4516acbcf84804af1bf629eced55c894efb2cce3';
+exports.Version = '0x98943e493091c0106b8ceb6fb0fd5d0cadb0c933';
+exports.Governance = '0x9dcbbf156fb2ff3dad20f6d3e2900a08d1001ff6';
