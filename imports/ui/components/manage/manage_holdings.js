@@ -12,8 +12,8 @@ import { Cores } from '/imports/api/cores';
 //Contracts
 import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
-import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json';
-import AssetJson from '/imports/lib/assets/contracts/Asset.json';
+import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
+import AssetJson from '/imports/lib/assets/contracts/AssetProtocol.json';
 
 import './manage_holdings.html';
 
@@ -25,7 +25,6 @@ Template.manage_holdings.onCreated(() => {
   // Creation of contract object
   Core.setProvider(web3.currentProvider);
 });
-
 
 Template.manage_holdings.helpers({
   getPortfolioDoc() {
@@ -43,10 +42,9 @@ Template.manage_holdings.helpers({
       if(Template.instance().state.get('buyingSelected')) {
        return Session.get('currentAssetPair');
       } else {
-        const reversedPair = Session.get('currentAssetPair').substring(6,11)+"/"+Session.get('currentAssetPair').substring(0,5);
-        return reversedPair;
+        const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+        return  quoteTokenSymbol + '/' + baseTokenSymbol;
       }
-
   },
 
   'volumeAsset': () => { return Session.get('currentAssetPair').substring(0,5); },
@@ -82,6 +80,7 @@ Template.manage_holdings.events({
     templateInstance.find('input.js-volume').value = total / price;
   },
   'click .js-placeorder': (event, templateInstance) => {
+    event.preventDefault();
     const type = Template.instance().state.get('buyingSelected')? 'Buy':'Sell';
     const price = parseFloat(templateInstance.find('input.js-price').value, 10);
     const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
@@ -107,8 +106,6 @@ Template.manage_holdings.events({
       // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
       return;
     }
-
-    const coreContract = Core.at(coreAddress);
 
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
@@ -140,23 +137,22 @@ Template.manage_holdings.events({
     const sellBaseUnitVolume = sellVolume * Math.pow(10, sellTokenPrecision);
     const buyBaseUnitVolume = buyVolume * Math.pow(10, buyTokenPrecision);
 
-    console.log("SELL ", sellToken, "@ ", sellVolume);
-    console.log("BUY ", buyToken, "@ ", buyVolume);
-
-
+    const coreContract = Core.at(coreAddress);
     const Asset = contract(AssetJson);
     Asset.setProvider(web3.currentProvider);
     const assetContract = Asset.at(sellTokenAddress);
-    console.log('sell token address', sellTokenAddress)
 
-    const myGas = web3.toWei(200, 'shannon');
-
-    coreContract.makeOffer(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, {from: managerAddress, gasPrice: myGas}).then((result) => {
+    coreContract.makeOrder(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, {from: managerAddress}).then((result) => {
       console.log(result);
-    })
-
-
-  }
+      // Check Logs
+      console.log('Make Order Content');
+      for (let i = 0; i < result.logs.length; i += 1) {
+        if (result.logs[i].event === 'OrderUpdate') {
+          console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
+          Meteor.call('orders.upsert', result.logs[i].args.id.toNumber());
+          console.log('Order registered');
+        }
+      }
+    });
+  },
 });
-
-
