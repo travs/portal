@@ -33,7 +33,7 @@ Cores.sync = () => {
       let name;
       let managerAddress;
       let universeAddress;
-      versionContract.coreAt(index).then((result) => {
+      versionContract.getCore(index).then((result) => {
         address = result;
         coreContract = Core.at(address);
         return coreContract.name();
