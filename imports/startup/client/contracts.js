@@ -5,7 +5,7 @@ import { Session } from 'meteor/session';
 import { Cores } from '/imports/api/cores';
 import { Universes } from '/imports/api/modules';
 
-import AddressList from '/imports/lib/ethereum/address_list.js'
+import AddressList from '/imports/lib/ethereum/address_list.js';
 import EtherToken from '/imports/lib/assets/contracts/EtherToken.json';
 import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.json';
 import RepToken from '/imports/lib/assets/contracts/RepToken.json';
@@ -35,4 +35,5 @@ Meteor.startup(() => {
 
   Meteor.subscribe('cores');
   Meteor.subscribe('universes');
+  Meteor.subscribe('trades');
 });
