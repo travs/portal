@@ -138,4 +138,7 @@ Meteor.methods({
     //   throw new Meteor.Error('not-authorized');
     Cores.remove(portfolioId);
   },
+  'cores.reset': () => {
+    // Cores.remove();
+  },
 });

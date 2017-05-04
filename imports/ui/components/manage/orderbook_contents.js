@@ -32,8 +32,8 @@ Template.orderbook_contents.helpers({
     //TODO: issue#79
     return Orders.find({
       isActive: true,
-      'buy.symbol': quoteTokenSymbol,
-      'sell.symbol': baseTokenSymbol,
+      'buy.symbol': baseTokenSymbol,
+      'sell.symbol': quoteTokenSymbol,
     }, { sort: { 'sell.price': 1 } });
   },
   calcBuyCumulativeVolume(buyPrice, precision) {
