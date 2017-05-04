@@ -13,5 +13,6 @@ Meteor.startup(() => {
   Cores.sync();
   Orders.remove({});
   Orders.sync();
+  Trades.remove({});
   Trades.watch();
 });
