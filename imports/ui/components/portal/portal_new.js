@@ -59,6 +59,7 @@ Template.portal_new.events({
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
+    console.log('before the contract');
     // Init contract instance
     const versionContract = Version.at(Session.get('versionContractAddress'));
     versionContract.createCore(

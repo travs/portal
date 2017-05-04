@@ -18,9 +18,9 @@ const numberOfBaseTokens = specs.getBaseTokens().length;
 const assetPairs =
   [...Array(numberOfQuoteTokens * numberOfBaseTokens).keys()]
   .map((value, index) => [
-    specs.getQuoteTokens()[index % numberOfQuoteTokens],
-    '/',
     specs.getBaseTokens()[index % numberOfBaseTokens],
+    '/',
+    specs.getQuoteTokens()[index % numberOfQuoteTokens],
   ].join(''))
   .sort();
 

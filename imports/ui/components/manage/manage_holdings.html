@@ -1,7 +1,10 @@
 <template name="manage_holdings">
   <div class="exchange-overview-header">
-    <h2 class="exchange-title">Manage Holdings</h2>
+    <h2 class="exchange-title">Manage Holdings in {{volumeAsset}}</h2>
     <span class="badge btn-sm-outline-blue">48%</span>
+  </div>
+  <div>
+    <h6 >Asset pair: {{currentAssetPair}}</h6>
   </div>
   <div class="exchange-overview-block">
     <div class="form-horizontal mp-form">
@@ -18,27 +21,27 @@
       <div class="form-group">
         <label class="col-md-2 col-sm-3 col-xs-12 control-label" for="price">Price</label>
         <div class="col-md-8 col-sm-6 col-xs-12">
-          <input type="text" id="price" class="form-control" placeholder="">
+          <input type="text" id="price" class="form-control js-price" placeholder="">
         </div>
-        <span class="col-md-2 col-sm-3 col-xs-12">ETH/BTC</span>
+        <span class="col-md-2 col-sm-3 col-xs-12">{{currentAssetPair}}</span>
       </div>
       <div class="form-group">
         <label class="col-md-2 col-sm-3 col-xs-12 control-label" for="volume">Volume</label>
         <div class="col-md-8 col-sm-6 col-xs-12">
-          <input type="text" id="volume" class="form-control" placeholder="">
+          <input type="text" id="volume" class="form-control js-volume" placeholder="">
         </div>
-        <span class="col-md-2 col-sm-3 col-xs-12">BTC</span>
+        <span class="col-md-2 col-sm-3 col-xs-12">{{volumeAsset}}</span>
       </div>
       <div class="line-divider"></div>
       <div class="form-group">
         <label class="col-md-2 col-sm-3 col-xs-12 control-label" for="total">Total</label>
         <div class="col-md-8 col-sm-6 col-xs-12">
-          <input type="text" id="total" class="form-control" placeholder="">
+          <input type="text" id="total" class="form-control js-total" placeholder="">
         </div>
-        <span class="col-md-2 col-sm-3 col-xs-12">ETH</span>
+        <span class="col-md-2 col-sm-3 col-xs-12">{{totalAsset}}</span>
       </div>
       <div class="form-group">
-        <a href="#" class="btn btn-def btn-light-blue mt-20">Buy</a>
+        <a href="#" class="btn btn-def btn-light-blue mt-20 js-placeorder">{{isBuyingSelected}}</a>
       </div>
     </div>
   </div>
