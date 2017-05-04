@@ -1,5 +1,5 @@
 // Initialize web3 as global object for entire client side
-import web3 from '/imports/lib/client/ethereum/web3.js'
+import web3 from '/imports/lib/client/ethereum/web3.js';
 
 // Load global components
 import '/imports/ui/components/ux/ux_pages.js';

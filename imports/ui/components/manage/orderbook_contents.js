@@ -20,7 +20,7 @@ Template.orderbook_contents.helpers({
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   buyOrders() {
     const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    console.log({'buy.symbol': baseTokenSymbol,'sell.symbol': quoteTokenSymbol});
+    console.log({ 'buy.symbol': baseTokenSymbol, 'sell.symbol': quoteTokenSymbol });
     return Orders.find({
       isActive: true,
       'buy.symbol': quoteTokenSymbol,
@@ -29,7 +29,7 @@ Template.orderbook_contents.helpers({
   },
   sellOrders() {
     const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    //TODO: issue#79
+    // TODO: issue#79
     return Orders.find({
       isActive: true,
       'buy.symbol': baseTokenSymbol,
