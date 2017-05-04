@@ -43,9 +43,12 @@ Template.manage_holdings.helpers({
       if(Template.instance().state.get('buyingSelected')) {
        return Session.get('currentAssetPair');
       } else {
-        const reversedPair = Session.get('currentAssetPair').substring(6,11)+"/"+Session.get('currentAssetPair').substring(0,5);
-        return reversedPair;
+        const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+        return  quoteTokenSymbol + '/' + baseTokenSymbol;
       }
+
+
+
 
   },
 
