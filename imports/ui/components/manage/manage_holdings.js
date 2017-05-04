@@ -152,7 +152,7 @@ Template.manage_holdings.events({
     const assetContract = Asset.at(sellTokenAddress);
     console.log('sell token address', sellTokenAddress)
 
-    coreContract.makeOffer(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, {from: managerAddress}).then((result) => {
+    coreContract.makeOrder(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, {from: managerAddress}).then((result) => {
       console.log(result);
       // Check Logs
       // console.log('Make Order Content');
@@ -167,5 +167,3 @@ Template.manage_holdings.events({
 
   }
 });
-
-
