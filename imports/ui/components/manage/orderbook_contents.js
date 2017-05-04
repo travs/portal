@@ -20,16 +20,16 @@ Template.orderbook_contents.helpers({
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   buyOrders() {
     const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-
+    console.log({'buy.symbol': baseTokenSymbol,'sell.symbol': quoteTokenSymbol});
     return Orders.find({
       isActive: true,
-      'buy.symbol': baseTokenSymbol,
-      'sell.symbol': quoteTokenSymbol,
+      'buy.symbol': quoteTokenSymbol,
+      'sell.symbol': baseTokenSymbol,
     }, { sort: { 'buy.price': 1 } });
   },
   sellOrders() {
     const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-
+    //TODO: issue#79
     return Orders.find({
       isActive: true,
       'buy.symbol': quoteTokenSymbol,

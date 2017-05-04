@@ -85,6 +85,7 @@ Template.manage_holdings.events({
     templateInstance.find('input.js-volume').value = total / price;
   },
   'click .js-placeorder': (event, templateInstance) => {
+    event.preventDefault();
     const type = Template.instance().state.get('buyingSelected')? 'Buy':'Sell';
     const price = parseFloat(templateInstance.find('input.js-price').value, 10);
     const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
@@ -142,26 +143,22 @@ Template.manage_holdings.events({
     const sellBaseUnitVolume = sellVolume * Math.pow(10, sellTokenPrecision);
     const buyBaseUnitVolume = buyVolume * Math.pow(10, buyTokenPrecision);
 
-    console.log("SELL ", sellToken, "@ ", sellVolume);
-    console.log("BUY ", buyToken, "@ ", buyVolume);
-
-
     const coreContract = Core.at(coreAddress);
     const Asset = contract(AssetJson);
     Asset.setProvider(web3.currentProvider);
     const assetContract = Asset.at(sellTokenAddress);
-    console.log('sell token address', sellTokenAddress)
 
     coreContract.makeOrder(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, {from: managerAddress}).then((result) => {
       console.log(result);
       // Check Logs
-      // console.log('Make Order Content');
-      // for (let i = 0; i < result.logs.length; i += 1) {
-      //   if (result.logs[i].event === 'OrderUpdate') {
-      //     console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
-      //     Meteor.call('orders.upsert', ${result.logs[i].args.id.toNumber());
-      //   }
-      // }
+      console.log('Make Order Content');
+      for (let i = 0; i < result.logs.length; i += 1) {
+        if (result.logs[i].event === 'OrderUpdate') {
+          console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
+          Meteor.call('orders.upsert', result.logs[i].args.id.toNumber());
+          console.log('Order registered');
+        }
+      }
     })
 
 
