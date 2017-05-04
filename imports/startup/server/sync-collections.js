@@ -8,6 +8,8 @@ import { Orders } from '/imports/api/orders';
 
 // EXECUTION
 Meteor.startup(() => {
+  Cores.remove({});
   Cores.sync();
+  Orders.remove({});
   Orders.sync();
 });

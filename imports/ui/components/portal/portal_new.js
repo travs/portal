@@ -76,7 +76,7 @@ Template.portal_new.events({
       return versionContract.numCreatedCores();
     })
     .then((result) => {
-      return versionContract.coreAt(result.toNumber() - 1);
+      return versionContract.getCore(result.toNumber() - 1);
     })
     .then((result) => {
       portfolioAddress = result;
