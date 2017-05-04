@@ -57,4 +57,8 @@ Template.orderbook_contents.onRendered(() => {
   // Meteor.call('orders.sync');
 });
 
-Template.orderbook_contents.events({});
+Template.orderbook_contents.events({
+  'click .js-takeorder': (event) => {
+
+  }
+});
