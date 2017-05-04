@@ -14,9 +14,20 @@ Exchange.setProvider(web3.currentProvider);
 const exchangeContract = Exchange.at(AddressList.Exchange);
 
 // COLLECTIONS
+
 const Trades = new Mongo.Collection('Trades');
 if (Meteor.isServer) {
-  Meteor.publish('trades', () => Trades.find());
+  Meteor.publish('trades', (limit = 50, skip = 0) => Trades.find(
+    {},
+    {
+      sort: {
+        blockTimestamp: -1,
+        transactionIndex: -1,
+      },
+      limit,
+      skip,
+    }
+  ));
 }
 
 // COLLECTION METHODS
@@ -44,6 +55,8 @@ Trades.watch = () => {
       transactionHash: event.transactionHash,
     }, {
       transactionHash: event.transactionHash,
+      transactionIndex: event.transactionIndex,
+      blockTimestamp: new Date(web3.eth.getBlock(event.blockNumber).timestamp * 1000),
       buy: {
         howMuch: buyHowMuch.toNumber(),
         token: buyWhichToken,
