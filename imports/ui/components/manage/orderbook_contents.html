@@ -19,8 +19,8 @@
             </thead>
             <tbody>
               {{#each order in buyOrders}}
-              <tr class="js-takeorder interactive">
-                <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision}}</td>
+              <tr class="js-takeorder interactive" data-id="{{order.id}}">
+                <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision @index}}</td>
                 <td>{{convertFromTokenPrecision order.buy.howMuch order.buy.precision}}</td>
                 <td>{{order.buy.price}}</td>
               </tr>

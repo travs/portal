@@ -9,11 +9,14 @@ import constants from '/imports/lib/assets/utils/constants.js';
 import Specs from '/imports/lib/assets/utils/specs.js';
 //Collections
 import { Cores } from '/imports/api/cores';
+import { Orders } from '/imports/api/orders.js';
 //Contracts
 import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
 import AssetJson from '/imports/lib/assets/contracts/AssetProtocol.json';
+// Utils
+import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
 
 import './manage_holdings.html';
 
@@ -25,6 +28,39 @@ Template.manage_holdings.onCreated(() => {
   // Creation of contract object
   Core.setProvider(web3.currentProvider);
 });
+
+
+const prefillTakeOrder = (id) => {
+  const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+  const cheaperOrders = Orders.find({
+    isActive: true,
+    'buy.symbol': quoteTokenSymbol,
+    'sell.symbol': baseTokenSymbol,
+  }, { sort: { 'buy.price': 1, 'buy.howMuch': 1 } }).fetch();
+
+  const index = cheaperOrders.findIndex(element => element.id === parseInt(id));
+
+  const setOfOrders = cheaperOrders.slice(0,index+1);
+
+  const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
+    accumulator + currentValue.buy.howMuch, 0);
+
+  const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
+    accumulator + currentValue.buy.howMuch * currentValue.buy.price, 0) / volumeTakeOrder
+
+  const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
+  const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
+  // const sellTokenAddress = Specs.getTokenAddress(quoteTokenSymbol);
+  // const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
+
+  console.log('volumeTakeOrder', volumeTakeOrder);
+  const volume = convertFromTokenPrecision(volumeTakeOrder, buyTokenPrecision);
+  // const price = convertFromTokenPrecision(averagePrice, sellTokenPrecision);
+  const total = averagePrice * volume;
+  console.log({volume, averagePrice, total, setOfOrders})
+
+  return {volume, averagePrice, total}
+}
 
 Template.manage_holdings.helpers({
   getPortfolioDoc() {
@@ -49,7 +85,24 @@ Template.manage_holdings.helpers({
 
   'volumeAsset': () => { return Session.get('currentAssetPair').substring(0,5); },
 
-  'totalAsset': () => { return Session.get('currentAssetPair').substring(6,11); }
+  'totalAsset': () => { return Session.get('currentAssetPair').substring(6,11); },
+  'preFillType': () => {
+    if(Session.get('selectedOrderId') !== null) {
+      return "Buy"; //TODO
+    }
+  },
+  'preFillPrice': () =>
+    Session.get('selectedOrderId') !== null
+    ? prefillTakeOrder(Session.get('selectedOrderId')).averagePrice
+    : "" ,
+  'preFillVolume': () =>
+    Session.get('selectedOrderId') !== null
+    ? prefillTakeOrder(Session.get('selectedOrderId')).volume
+    : "" ,
+  'preFillTotal': () =>
+    Session.get('selectedOrderId') !== null
+    ? prefillTakeOrder(Session.get('selectedOrderId')).total
+    : "" ,
 });
 
 Template.manage_holdings.onRendered(() => {});
@@ -81,6 +134,19 @@ Template.manage_holdings.events({
   },
   'click .js-placeorder': (event, templateInstance) => {
     event.preventDefault();
+
+    if(Session.get('selectedOrderId') !== null) {
+      console.log('HERE', prefillTakeOrder(Session.get('selectedOrderId')));
+      console.log(prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders)
+      // const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
+      // for(let i=0 ; i < setOfOrders.length ; i++) {
+      //   coreContract
+      // }
+
+    }
+
+    else {
+
     const type = Template.instance().state.get('buyingSelected')? 'Buy':'Sell';
     const price = parseFloat(templateInstance.find('input.js-price').value, 10);
     const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
@@ -154,5 +220,8 @@ Template.manage_holdings.events({
         }
       }
     });
+    }
+
+
   },
 });

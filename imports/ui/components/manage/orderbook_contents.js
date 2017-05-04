@@ -25,7 +25,7 @@ Template.orderbook_contents.helpers({
       isActive: true,
       'buy.symbol': quoteTokenSymbol,
       'sell.symbol': baseTokenSymbol,
-    }, { sort: { 'buy.price': 1 } });
+    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1 } });
   },
   sellOrders() {
     const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
@@ -36,20 +36,28 @@ Template.orderbook_contents.helpers({
       'sell.symbol': quoteTokenSymbol,
     }, { sort: { 'sell.price': 1 } });
   },
-  calcBuyCumulativeVolume(buyPrice, precision) {
+  calcBuyCumulativeVolume(buyPrice, precision, index) {
     const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-
     const cheaperOrders = Orders.find({
       isActive: true,
       'buy.price': { $lte: buyPrice },
-      'buy.symbol': baseTokenSymbol,
-      'sell.symbol': quoteTokenSymbol,
-    }, { sort: { 'buy.price': 1 } }).fetch();
+      'buy.symbol': quoteTokenSymbol,
+      'sell.symbol': baseTokenSymbol,
+    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1 } }).fetch();
 
-    const cummulatedDouble = cheaperOrders.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.buy.howMuch, 0);
+    let cumulativeDouble = 0;
 
-    return convertFromTokenPrecision(cummulatedDouble, precision);
+    for(let i=0; i<=index; i++) {
+      cumulativeDouble += cheaperOrders[i]['buy']['howMuch'];
+    }
+
+    // const cummulatedDouble = cheaperOrders.reduce(
+    //   (accumulator, currentValue) => accumulator + currentValue.buy.howMuch, 0);
+    // console.log({buyPrice, precision, cheaperOrders, cummulatedDouble});
+
+    // return convertFromTokenPrecision(cummulatedDouble, precision);
+
+    return convertFromTokenPrecision(cumulativeDouble, precision);
   },
 });
 
@@ -59,6 +67,9 @@ Template.orderbook_contents.onRendered(() => {
 
 Template.orderbook_contents.events({
   'click .js-takeorder': (event) => {
-
+    console.log('event', event);
+    Session.set('selectedOrderId', event.currentTarget.dataset.id);
+    location.hash = "manage-holdings";
+    history.replaceState(null, null, location.pathname);
   }
 });
