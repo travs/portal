@@ -26,7 +26,7 @@ Template.orderbook_contents.helpers({
       isActive: true,
       'buy.symbol': baseTokenSymbol,
       'sell.symbol': quoteTokenSymbol,
-    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1 } });
+    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
   },
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
@@ -35,7 +35,7 @@ Template.orderbook_contents.helpers({
       isActive: true,
       'buy.symbol': quoteTokenSymbol,
       'sell.symbol': baseTokenSymbol,
-    }, { sort: { 'sell.price': 1 } });
+    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
   },
   calcBuyCumulativeVolume(buyPrice, precision, index) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
@@ -44,7 +44,7 @@ Template.orderbook_contents.helpers({
       'buy.price': { $lte: buyPrice },
       'buy.symbol': baseTokenSymbol,
       'sell.symbol': quoteTokenSymbol,
-    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1 } }).fetch();
+    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
 
     let cumulativeDouble = 0;
 
@@ -68,7 +68,6 @@ Template.orderbook_contents.onRendered(() => {
 
 Template.orderbook_contents.events({
   'click .js-takeorder': (event) => {
-    console.log('event', event);
     Session.set('selectedOrderId', event.currentTarget.dataset.id);
     location.hash = 'manage-holdings';
     history.replaceState(null, null, location.pathname);
