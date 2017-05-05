@@ -33,13 +33,23 @@ Template.manage_holdings.onCreated(() => {
 
 const prefillTakeOrder = (id) => {
   const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+
+  const isSellOrder = true;
+
+  if (Template.instance().state.get('buyingSelected') === isSellOrder) {
+    Template.instance().state.set('buyingSelected', false);
+  }
+
   const cheaperOrders = Orders.find({
     isActive: true,
     'sell.symbol': baseTokenSymbol,
     'buy.symbol': quoteTokenSymbol,
   }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
 
+
   console.log(cheaperOrders);
+
+  console.log(Template.instance().state.get('buyingSelected'));
 
   const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
 
@@ -69,12 +79,13 @@ Template.manage_holdings.helpers({
     const doc = Cores.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
-  isBuyingSelected() {
+  buyOrSell() {
     if (Template.instance().state.get('buyingSelected')) {
       return 'Buy';
     }
     return 'Sell';
   },
+  isBuyingSelected: () => Template.instance().state.get('buyingSelected'),
   currentAssetPair: () => {
     if (Template.instance().state.get('buyingSelected')) {
       return Session.get('currentAssetPair');
@@ -125,7 +136,7 @@ Template.manage_holdings.events({
     const price = parseFloat(templateInstance.find('input.js-price').value, 10);
     const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
     const total = parseFloat(templateInstance.find('input.js-total').value, 10);
-    if (!isNaN(volume)) templateInstance.find('input.js-total').value = price * volume;
+    if (!NaN(volume)) templateInstance.find('input.js-total').value = price * volume;
     else if (!isNaN(total)) templateInstance.find('input.js-volume').value = total / price;
   },
   'input input.js-volume': (event, templateInstance) => {
