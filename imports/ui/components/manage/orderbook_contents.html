@@ -14,7 +14,7 @@
               <tr>
                 <th>Cum. Vol. <p>({{quoteTokenSymbol}})</p></th>
                 <th>Vol <p>({{quoteTokenSymbol}})</p></th>
-                <th>Buy Price <p>({{baseTokenSymbol}}/{{quoteTokenSymbol}})</p></th>
+                <th>Buy Price <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
               </tr>
             </thead>
             <tbody>
@@ -36,8 +36,8 @@
             <thead>
               <tr>
                 <th>Sell Price <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
+                <th>Vol <p>({{quoteTokenSymbol}})</p></th>
+                <th>Cum. Vol. <p>({{quoteTokenSymbol}})</p></th>
               </tr>
             </thead>
             <tbody>
@@ -45,7 +45,7 @@
               <tr>
                 <td>{{order.sell.price}}</td>
                 <td>{{convertFromTokenPrecision order.sell.howMuch order.sell.precision}}</td>
-                <td>{{convertFromTokenPrecision this.sell.howMuch}}</td>
+                <td>{{calcSellCumulativeVolume order.sell.price order.sell.precision @index}}</td>
               </tr>
               {{/each}}
             </tbody>

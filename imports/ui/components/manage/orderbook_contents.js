@@ -52,11 +52,22 @@ Template.orderbook_contents.helpers({
       cumulativeDouble += cheaperOrders[i].buy.howMuch;
     }
 
-    // const cummulatedDouble = cheaperOrders.reduce(
-    //   (accumulator, currentValue) => accumulator + currentValue.buy.howMuch, 0);
-    // console.log({buyPrice, precision, cheaperOrders, cummulatedDouble});
+    return convertFromTokenPrecision(cumulativeDouble, precision);
+  },
+  calcSellCumulativeVolume(sellPrice, precision, index) {
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const cheaperOrders = Orders.find({
+      isActive: true,
+      'sell.price': { $lte: sellPrice },
+      'sell.symbol': baseTokenSymbol,
+      'buy.symbol': quoteTokenSymbol,
+    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
 
-    // return convertFromTokenPrecision(cummulatedDouble, precision);
+    let cumulativeDouble = 0;
+
+    for (let i = 0; i <= index; i += 1) {
+      cumulativeDouble += cheaperOrders[i].sell.howMuch;
+    }
 
     return convertFromTokenPrecision(cumulativeDouble, precision);
   },

@@ -39,28 +39,24 @@ const prefillTakeOrder = (id) => {
     'sell.symbol': quoteTokenSymbol,
   }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
 
-  const index = cheaperOrders.findIndex(element => element.id === parseInt(id));
+  const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
 
   const setOfOrders = cheaperOrders.slice(0, index + 1);
-
-  console.log({ id, index, setOfOrders });
 
   const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
     accumulator + currentValue.buy.howMuch, 0);
 
   const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
-    accumulator + currentValue.buy.howMuch * currentValue.buy.price, 0) / volumeTakeOrder;
+    (accumulator + currentValue.buy.howMuch) * currentValue.buy.price, 0) / volumeTakeOrder;
 
   const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
   const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
   // const sellTokenAddress = Specs.getTokenAddress(quoteTokenSymbol);
   // const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
 
-  // console.log('volumeTakeOrder', volumeTakeOrder);
   const volume = convertFromTokenPrecision(volumeTakeOrder, buyTokenPrecision);
   // const price = convertFromTokenPrecision(averagePrice, sellTokenPrecision);
   const total = averagePrice * volume;
-  // console.log({ volume, averagePrice, total, setOfOrders });
 
   return { volume, averagePrice, total };
 };
