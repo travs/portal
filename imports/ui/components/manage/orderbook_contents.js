@@ -16,10 +16,10 @@ Template.orderbook_contents.helpers({
   convertFromTokenPrecision,
   more: false,
   currentAssetPair: () => Session.get('currentAssetPair'),
-  quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
-  baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
+  baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
+  quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   buyOrders() {
-    const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     console.log({ 'buy.symbol': baseTokenSymbol, 'sell.symbol': quoteTokenSymbol });
     return Orders.find({
       isActive: true,
@@ -47,8 +47,8 @@ Template.orderbook_contents.helpers({
 
     let cumulativeDouble = 0;
 
-    for(let i=0; i<=index; i++) {
-      cumulativeDouble += cheaperOrders[i]['buy']['howMuch'];
+    for (let i = 0; i <= index; i++) {
+      cumulativeDouble += cheaperOrders[i].buy.howMuch;
     }
 
     // const cummulatedDouble = cheaperOrders.reduce(
@@ -69,7 +69,7 @@ Template.orderbook_contents.events({
   'click .js-takeorder': (event) => {
     console.log('event', event);
     Session.set('selectedOrderId', event.currentTarget.dataset.id);
-    location.hash = "manage-holdings";
+    location.hash = 'manage-holdings';
     history.replaceState(null, null, location.pathname);
-  }
+  },
 });

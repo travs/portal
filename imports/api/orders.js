@@ -41,8 +41,8 @@ Orders.syncOrderById = (id) => {
     const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
     const buySymbol = specs.getTokenSymbolByAddress(buyWhichToken);
     const sellSymbol = specs.getTokenSymbolByAddress(sellWhichToken);
-    const buyPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
-    const sellPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
+    const sellPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
+    const buyPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
     // Insert into Orders collection
     Orders.update(
       { id },
@@ -70,7 +70,7 @@ Orders.syncOrderById = (id) => {
         upsert: true,
       });
   });
-}
+};
 
 // METEOR METHODS
 
@@ -80,5 +80,5 @@ Meteor.methods({
   },
   'orders.upsert': (orderId) => {
     Orders.syncOrderById(orderId);
-  }
+  },
 });
