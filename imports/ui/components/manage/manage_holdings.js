@@ -21,6 +21,8 @@ import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.j
 import './manage_holdings.html';
 
 const Core = contract(CoreJson);
+
+
 Template.manage_holdings.onCreated(() => {
   Meteor.subscribe('cores');
   Template.instance().state = new ReactiveDict();
@@ -28,7 +30,6 @@ Template.manage_holdings.onCreated(() => {
   // Creation of contract object
   Core.setProvider(web3.currentProvider);
 });
-
 
 const prefillTakeOrder = (id) => {
   const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
@@ -211,9 +212,16 @@ Template.manage_holdings.events({
       Asset.setProvider(web3.currentProvider);
       const assetContract = Asset.at(sellTokenAddress);
 
-      coreContract.makeOrder(AddressList.Exchange, sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, { from: managerAddress }).then((result) => {
+      coreContract.makeOrder(
+        AddressList.Exchange,
+        sellBaseUnitVolume,
+        sellTokenAddress,
+        buyBaseUnitVolume,
+        buyTokenAddress,
+        { from: managerAddress }
+      ).then((result) => {
         console.log(result);
-      // Check Logs
+        // Check Logs
         console.log('Make Order Content');
         for (let i = 0; i < result.logs.length; i += 1) {
           if (result.logs[i].event === 'OrderUpdate') {
@@ -222,7 +230,7 @@ Template.manage_holdings.events({
             console.log('Order registered');
           }
         }
-      });
+      }).catch((err) => { throw err; });
     }
   },
 });

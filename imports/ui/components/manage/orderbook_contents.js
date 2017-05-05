@@ -21,33 +21,34 @@ Template.orderbook_contents.helpers({
   buyOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     console.log({ 'buy.symbol': baseTokenSymbol, 'sell.symbol': quoteTokenSymbol });
-    return Orders.find({
-      isActive: true,
-      'buy.symbol': quoteTokenSymbol,
-      'sell.symbol': baseTokenSymbol,
-    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1 } });
-  },
-  sellOrders() {
-    const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    // TODO: issue#79
+
     return Orders.find({
       isActive: true,
       'buy.symbol': baseTokenSymbol,
       'sell.symbol': quoteTokenSymbol,
+    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1 } });
+  },
+  sellOrders() {
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    // TODO: issue#79
+    return Orders.find({
+      isActive: true,
+      'buy.symbol': quoteTokenSymbol,
+      'sell.symbol': baseTokenSymbol,
     }, { sort: { 'sell.price': 1 } });
   },
   calcBuyCumulativeVolume(buyPrice, precision, index) {
-    const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     const cheaperOrders = Orders.find({
       isActive: true,
       'buy.price': { $lte: buyPrice },
-      'buy.symbol': quoteTokenSymbol,
-      'sell.symbol': baseTokenSymbol,
+      'buy.symbol': baseTokenSymbol,
+      'sell.symbol': quoteTokenSymbol,
     }, { sort: { 'buy.price': 1, 'buy.howMuch': 1 } }).fetch();
 
     let cumulativeDouble = 0;
 
-    for (let i = 0; i <= index; i++) {
+    for (let i = 0; i <= index; i += 1) {
       cumulativeDouble += cheaperOrders[i].buy.howMuch;
     }
 
