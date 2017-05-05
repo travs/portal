@@ -61,12 +61,12 @@ Template.orderbook_contents.helpers({
       'sell.price': { $lte: sellPrice },
       'sell.symbol': baseTokenSymbol,
       'buy.symbol': quoteTokenSymbol,
-    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
 
     let cumulativeDouble = 0;
 
     for (let i = 0; i <= index; i += 1) {
-      cumulativeDouble += cheaperOrders[i].sell.howMuch;
+      cumulativeDouble += cheaperOrders[i].buy.howMuch;
     }
 
     return convertFromTokenPrecision(cumulativeDouble, precision);

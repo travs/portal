@@ -35,9 +35,11 @@ const prefillTakeOrder = (id) => {
   const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
   const cheaperOrders = Orders.find({
     isActive: true,
-    'buy.symbol': baseTokenSymbol,
-    'sell.symbol': quoteTokenSymbol,
-  }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    'sell.symbol': baseTokenSymbol,
+    'buy.symbol': quoteTokenSymbol,
+  }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+
+  console.log(cheaperOrders);
 
   const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
 
@@ -47,14 +49,14 @@ const prefillTakeOrder = (id) => {
     accumulator + currentValue.buy.howMuch, 0);
 
   const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
-    (accumulator + currentValue.buy.howMuch) * currentValue.buy.price, 0) / volumeTakeOrder;
+    (accumulator + currentValue.buy.howMuch) * currentValue.sell.price, 0) / volumeTakeOrder;
 
-  const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
-  const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
-  // const sellTokenAddress = Specs.getTokenAddress(quoteTokenSymbol);
-  // const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
+  // const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
+  // const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
+  const sellTokenAddress = Specs.getTokenAddress(quoteTokenSymbol);
+  const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
 
-  const volume = convertFromTokenPrecision(volumeTakeOrder, buyTokenPrecision);
+  const volume = convertFromTokenPrecision(volumeTakeOrder, sellTokenPrecision);
   // const price = convertFromTokenPrecision(averagePrice, sellTokenPrecision);
   const total = averagePrice * volume;
 
