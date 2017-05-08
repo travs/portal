@@ -56,10 +56,10 @@ const prefillTakeOrder = (id) => {
   const setOfOrders = cheaperOrders.slice(0, index + 1);
 
   const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
-    accumulator + currentValue.buy.howMuch, 0);
+    accumulator + currentValue.sell.howMuch, 0); //J: change to .sell
 
   const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
-    (accumulator + currentValue.buy.howMuch) * currentValue.sell.price, 0) / volumeTakeOrder;
+    (accumulator + currentValue.sell.howMuch) * currentValue.sell.price, 0) / volumeTakeOrder; //J: change to currentValue.sell.howMuch
 
   // const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
   // const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
@@ -70,7 +70,7 @@ const prefillTakeOrder = (id) => {
   // const price = convertFromTokenPrecision(averagePrice, sellTokenPrecision);
   const total = averagePrice * volume;
 
-  return { volume, averagePrice, total };
+  return { volume, averagePrice, total, setOfOrders };
 };
 
 Template.manage_holdings.helpers({
@@ -155,12 +155,48 @@ Template.manage_holdings.events({
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
     if (Session.get('selectedOrderId') !== null) {
-      console.log('HERE', prefillTakeOrder(Session.get('selectedOrderId')));
-      console.log(prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders);
-      // const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
-      // for(let i=0 ; i < setOfOrders.length ; i++) {
-      //   coreContract
-      // }
+      console.log('Vol, averagePrice, Total, setOfOrders', prefillTakeOrder(Session.get('selectedOrderId')));
+      console.log('setOfOrders', prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders);
+
+      const managerAddress = Session.get('clientManagerAccount');
+      if (managerAddress === undefined) {
+      // TODO replace toast
+      // Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
+        return;
+      }
+      const coreAddress = FlowRouter.getParam('address');
+      const doc = Cores.findOne({ address: coreAddress });
+      if (doc === undefined) {
+      // TODO replace toast
+      // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
+        return;
+      }
+      const coreContract = Core.at(coreAddress);
+
+      const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
+      const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).volume;
+
+      // Get token address, precision and base unit volume
+      const buyTokenAddress = Specs.getTokenAddress(setOfOrders[0]['sell']['symbol']);
+      const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
+      let buyBaseUnitVolume = totalWantedBuyAmount * Math.pow(10, buyTokenPrecision);
+
+      for (let i = 0; i < setOfOrders.length; i += 1) {
+        if(buyBaseUnitVolume) {
+          console.log('buyBaseUnitVolume', buyBaseUnitVolume);
+          if(buyBaseUnitVolume >= setOfOrders[i]['sell']['howMuch']) {
+            coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], setOfOrders[i]['sell']['howMuch'], { from: managerAddress }).then(() => {
+              console.log('Transaction for order id ', setOfOrders[i]['id'], ' sent!');
+            }).catch((err) => console.log(err));
+          } else if(buyBaseUnitVolume < setOfOrders[i]['sell']['howMuch']) {
+            coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], buyBaseUnitVolume, { from: managerAddress }).then(() => {
+              console.log('Transaction for order id ', setOfOrders[i]['id'], ' sent!');
+            }).catch((err) => console.log(err));
+          }
+          buyBaseUnitVolume -= 1;
+        }
+      }
+
     } else {
       const type = Template.instance().state.get('buyingSelected') ? 'Buy' : 'Sell';
       const price = parseFloat(templateInstance.find('input.js-price').value, 10);
