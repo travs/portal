@@ -36,6 +36,14 @@ const prefillTakeOrder = (id) => {
 
   const isSellOrder = true;
 
+  const selectedOrderId = Number(Session.get('selectedOrderId'))
+  const selectedOffer = Orders.find({'id': selectedOrderId}).fetch()
+
+  console.log('selectedOffer ', Session.get('selectedOrderId'), selectedOffer);
+
+  const symbol = selectedOffer[0].sell.symbol === 'ETH-T'? "Sell" : "Buy"
+  console.log(symbol);
+
   if (Template.instance().state.get('buyingSelected') === isSellOrder) {
     Template.instance().state.set('buyingSelected', false);
   }
@@ -70,7 +78,7 @@ const prefillTakeOrder = (id) => {
   // const price = convertFromTokenPrecision(averagePrice, sellTokenPrecision);
   const total = averagePrice * volume;
 
-  return { volume, averagePrice, total, setOfOrders };
+  return { volume, averagePrice, total, setOfOrders, symbol };
 };
 
 Template.manage_holdings.helpers({
@@ -103,11 +111,13 @@ Template.manage_holdings.helpers({
   volumeAsset: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
 
   totalAsset: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
-  preFillType: () => {
-    if (Session.get('selectedOrderId') !== null) {
-      return 'Buy'; // TODO
-    }
-  },
+  preFillType: () =>
+    // if (Session.get('selectedOrderId') !== null) {
+    //   return 'Buy'; // TODO
+    // }
+    Session.get('selectedOrderId') !== null
+    ? prefillTakeOrder(Session.get('selectedOrderId')).symbol
+    : '',
   preFillPrice: () =>
     Session.get('selectedOrderId') !== null
     ? prefillTakeOrder(Session.get('selectedOrderId')).averagePrice
@@ -154,11 +164,7 @@ Template.manage_holdings.events({
 
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    if (Session.get('selectedOrderId') !== null) {
-      console.log('Vol, averagePrice, Total, setOfOrders', prefillTakeOrder(Session.get('selectedOrderId')));
-      console.log('setOfOrders', prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders);
-
-      const managerAddress = Session.get('clientManagerAccount');
+    const managerAddress = Session.get('clientManagerAccount');
       if (managerAddress === undefined) {
       // TODO replace toast
       // Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
@@ -173,6 +179,12 @@ Template.manage_holdings.events({
       }
       const coreContract = Core.at(coreAddress);
 
+
+    //Case form pre-filled w order book information
+    if (Session.get('selectedOrderId') !== null) {
+      console.log('Vol, averagePrice, Total, setOfOrders', prefillTakeOrder(Session.get('selectedOrderId')));
+      console.log('setOfOrders', prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders);
+
       const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
       const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).volume;
 
@@ -183,20 +195,22 @@ Template.manage_holdings.events({
 
       for (let i = 0; i < setOfOrders.length; i += 1) {
         if(buyBaseUnitVolume) {
-          console.log('buyBaseUnitVolume', buyBaseUnitVolume);
           if(buyBaseUnitVolume >= setOfOrders[i]['sell']['howMuch']) {
-            coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], setOfOrders[i]['sell']['howMuch'], { from: managerAddress }).then(() => {
+            coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], setOfOrders[i]['sell']['howMuch'], { from: managerAddress }).then((result) => {
+              console.log(result);
               console.log('Transaction for order id ', setOfOrders[i]['id'], ' sent!');
             }).catch((err) => console.log(err));
           } else if(buyBaseUnitVolume < setOfOrders[i]['sell']['howMuch']) {
-            coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], buyBaseUnitVolume, { from: managerAddress }).then(() => {
-              console.log('Transaction for order id ', setOfOrders[i]['id'], ' sent!');
+            coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], buyBaseUnitVolume, { from: managerAddress }).then((result) => {
+              console.log(result);
+              console.log('Transaction for order id ', setOfOrders[i]['id'], ' executed!');
             }).catch((err) => console.log(err));
           }
           buyBaseUnitVolume -= 1;
         }
       }
 
+    //Case form filled out manually by manager
     } else {
       const type = Template.instance().state.get('buyingSelected') ? 'Buy' : 'Sell';
       const price = parseFloat(templateInstance.find('input.js-price').value, 10);
@@ -206,21 +220,6 @@ Template.manage_holdings.events({
       // TODO replace toast
       // Materialize.toast('Please fill out the form', 4000, 'blue');
         alert('All fields are required.');
-        return;
-      }
-
-      const managerAddress = Session.get('clientManagerAccount');
-      if (managerAddress === undefined) {
-      // TODO replace toast
-      // Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
-        return;
-      }
-
-      const coreAddress = FlowRouter.getParam('address');
-      const doc = Cores.findOne({ address: coreAddress });
-      if (doc === undefined) {
-      // TODO replace toast
-      // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
         return;
       }
 
@@ -239,9 +238,9 @@ Template.manage_holdings.events({
         buyVolume = volume;
       } else if (type === 'Sell') {
         sellToken = baseTokenSymbol;
-        sellVolume = total;
+        sellVolume = volume; //here test
         buyToken = quoteTokenSymbol;
-        buyVolume = volume;
+        buyVolume = total;
       }
 
     // Get token addresses
@@ -254,7 +253,7 @@ Template.manage_holdings.events({
       const sellBaseUnitVolume = sellVolume * Math.pow(10, sellTokenPrecision);
       const buyBaseUnitVolume = buyVolume * Math.pow(10, buyTokenPrecision);
 
-      const coreContract = Core.at(coreAddress);
+      // const coreContract = Core.at(coreAddress);
       const Asset = contract(AssetJson);
       Asset.setProvider(web3.currentProvider);
       const assetContract = Asset.at(sellTokenAddress);

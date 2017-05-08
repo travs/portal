@@ -19,9 +19,9 @@
             </thead>
             <tbody>
               {{#each order in buyOrders}}
-              <tr data-id="{{order.id}}">
+              <tr class="js-takeorder interactive" data-id="{{order.id}}">
                 <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision @index}}</td>
-                <td>{{convertFromTokenPrecision order.buy.howMuch order.buy.precision}}</td>
+                <td>{{convertFromTokenPrecision order.sell.howMuch order.sell.precision}}</td>
                 <td>{{order.buy.price}}</td>
               </tr>
               {{/each}}
