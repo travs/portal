@@ -20,7 +20,7 @@
           <tbody>
             {{#each trade in getRecentTrades}}
               <tr>
-                <td><p>{{ formatDate trade.createdAt }}</p></td>
+                <td>{{ formatDate trade.createdAt }}</td>
                 <td>{{ buyOrSell trade.buy.symbol }}</td>
                 <td>{{ getPrice trade }}</td>
                 <td>{{ getVolume trade }}</td>
