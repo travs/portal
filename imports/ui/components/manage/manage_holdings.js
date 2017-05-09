@@ -25,7 +25,6 @@ import specs from '/imports/lib/assets/utils/specs.js';
 
 const Core = contract(CoreJson);
 
-<<<<<<< HEAD
 const numberOfQuoteTokens = specs.getQuoteTokens().length;
 const numberOfBaseTokens = specs.getBaseTokens().length;
 const assetPairs =
@@ -37,8 +36,6 @@ const assetPairs =
   ].join(''))
   .sort();
 
-=======
->>>>>>> 240dd5c77ec0cea3b18efcf8f7e75350fdd21166
 
 Template.manage_holdings.onCreated(() => {
   Meteor.subscribe('cores');
@@ -73,7 +70,10 @@ const prefillTakeOrder = (id) => {
     const volume = convertFromTokenPrecision(volumeTakeOrder, buyTokenPrecision);
     const total = averagePrice * volume;
 
-    return { volume, averagePrice, total, setOfOrders, orderType };
+    const totalWantedBuyAmount = total;
+
+
+    return { volume, averagePrice, total, setOfOrders, orderType, totalWantedBuyAmount };
   } else if (orderType === 'Buy') {
     Template.instance().state.set('buyingSelected', true);
     const cheaperOrders = Orders.find({
@@ -92,8 +92,9 @@ const prefillTakeOrder = (id) => {
     const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
     const volume = convertFromTokenPrecision(volumeTakeOrder, sellTokenPrecision);
     const total = averagePrice * volume;
+    const totalWantedBuyAmount = volume;
 
-    return { volume, averagePrice, total, setOfOrders, orderType };
+    return { volume, averagePrice, total, setOfOrders, orderType, totalWantedBuyAmount };
   }
 };
 
@@ -210,8 +211,7 @@ Template.manage_holdings.events({
     // Case form pre-filled w order book information
     if (Session.get('selectedOrderId') !== null) {
       const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
-      const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).volume;
-
+      const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).totalWantedBuyAmount;
       // Get token address, precision and base unit volume
       const buyTokenAddress = Specs.getTokenAddress(setOfOrders[0]['sell']['symbol']);
       const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
@@ -234,7 +234,7 @@ Template.manage_holdings.events({
               Meteor.call('orders.sync');
             }).catch((err) => console.log(err));
           }
-          buyBaseUnitVolume -= 1;
+          // buyBaseUnitVolume -= 1;
         }
       }
     // Case: form filled out manually by manager
@@ -265,7 +265,7 @@ Template.manage_holdings.events({
         buyVolume = volume;
       } else if (type === 'Sell') {
         sellToken = baseTokenSymbol;
-        sellVolume = volume; //here test
+        sellVolume = volume;
         buyToken = quoteTokenSymbol;
         buyVolume = total;
       }
@@ -280,7 +280,6 @@ Template.manage_holdings.events({
       const sellBaseUnitVolume = sellVolume * Math.pow(10, sellTokenPrecision);
       const buyBaseUnitVolume = buyVolume * Math.pow(10, buyTokenPrecision);
 
-      // const coreContract = Core.at(coreAddress);
       const Asset = contract(AssetJson);
       Asset.setProvider(web3.currentProvider);
       const assetContract = Asset.at(sellTokenAddress);
