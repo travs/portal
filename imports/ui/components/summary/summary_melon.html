@@ -25,10 +25,13 @@
         {{#if isRopstenNetwork}}
           <p class="value">{{getNetwork}} != Kovan</p>
         {{/if}}
+        {{#if isPrivateNetwork}}
+          <p class="value">{{getNetwork}} != Kovan</p>
+        {{/if}}
         {{#if isKovanNetwork}}
           <p class="value">Connected</p>
-          {{/if}}
         {{/if}}
+      {{/if}}
     </li>
 
     {{#if isMiningNetworkStatus}}
