@@ -17,7 +17,23 @@ import AssetJson from '/imports/lib/assets/contracts/AssetProtocol.json';
 
 import './manage_holdings.html';
 
+// Specs
+import specs from '/imports/lib/assets/utils/specs.js';
+
 const Core = contract(CoreJson);
+
+const numberOfQuoteTokens = specs.getQuoteTokens().length;
+const numberOfBaseTokens = specs.getBaseTokens().length;
+const assetPairs =
+  [...Array(numberOfQuoteTokens * numberOfBaseTokens).keys()]
+  .map((value, index) => [
+    specs.getBaseTokens()[index % numberOfBaseTokens],
+    '/',
+    specs.getQuoteTokens()[index % numberOfQuoteTokens],
+  ].join(''))
+  .sort();
+
+
 Template.manage_holdings.onCreated(() => {
   Meteor.subscribe('cores');
   Template.instance().state = new ReactiveDict();
@@ -27,6 +43,9 @@ Template.manage_holdings.onCreated(() => {
 });
 
 Template.manage_holdings.helpers({
+  assetPairs,
+  currentAssetPair: Session.get('currentAssetPair'),
+  selected: assetPair => (assetPair === Session.get('currentAssetPair') ? 'selected' : ''),
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
@@ -38,15 +57,15 @@ Template.manage_holdings.helpers({
     }
     return 'Sell';
   },
-  'currentAssetPair': () => {
-      if(Template.instance().state.get('buyingSelected')) {
-       return Session.get('currentAssetPair');
-      } else {
-        const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-        return  quoteTokenSymbol + '/' + baseTokenSymbol;
-      }
-  },
-
+  // 'currentAssetPair': () => {
+  //     if(Template.instance().state.get('buyingSelected')) {
+  //      return Session.get('currentAssetPair');
+  //     } else {
+  //       const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+  //       return  quoteTokenSymbol + '/' + baseTokenSymbol;
+  //     }
+  // },
+  // currentAssetPair: Session.get('currentAssetPair'),
   'volumeAsset': () => { return Session.get('currentAssetPair').substring(0,5); },
 
   'totalAsset': () => { return Session.get('currentAssetPair').substring(6,11); }
@@ -56,6 +75,9 @@ Template.manage_holdings.onRendered(() => {});
 
 
 Template.manage_holdings.events({
+  'change .js-asset-pair-picker': (event) => {
+    Session.set('currentAssetPair', event.currentTarget.value);
+  },
   'change select#select_type': (event, templateInstance) => {
     const currentlySelectedTypeValue = parseFloat(templateInstance.find('select#select_type').value, 10);
     if(currentlySelectedTypeValue) Template.instance().state.set({ buyingSelected: false });
