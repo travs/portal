@@ -22,6 +22,19 @@ if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish
 
 // COLLECTION METHODS
 
+Cores.watch = () => {
+  const cores = versionContract.CoreCreated({}, {
+    fromBlock: 0,
+    toBlock: 'latest',
+  });
+
+  cores.watch(Meteor.bindEnvironment((err, event) => {
+    if (err) throw err;
+
+    Cores.syncOne(event.args._id['c'][0]);
+  }));
+};
+
 Cores.sync = () => {
   let numberOfCoresCreated;
   versionContract.numCreatedCores().then((res) => {
@@ -73,7 +86,30 @@ Cores.sync = () => {
 };
 
 // TODO implement consistent w Orders
-Cores.syncOne = () => {}
+Cores.syncOne = (id) => {
+  console.log("will sync core with id ", id)
+  versionContract.cores(id).then((core) => {
+    const [address, name, managerAddress, universeAddress, sharePrice, notional, intraday] = core;
+
+    Cores.update(
+      { address },
+      { $set: {
+        address,
+        name,
+        managerAddress,
+        universeAddress,
+        sharePrice,
+        notional,
+        intraday: '±0.0',
+        delta: '±0.0',
+        username: 'N/A',
+        createdAt: new Date(),
+      },
+      }, {
+        upsert: true,
+      });
+  });
+};
 
 // METEOR METHODS
 
