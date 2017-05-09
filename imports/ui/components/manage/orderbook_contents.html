@@ -14,14 +14,14 @@
               <tr>
                 <th>Cum. Vol. <p>({{quoteTokenSymbol}})</p></th>
                 <th>Vol <p>({{quoteTokenSymbol}})</p></th>
-                <th>Buy Price <p>({{baseTokenSymbol}}/{{quoteTokenSymbol}})</p></th>
+                <th>Buy Price <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
               </tr>
             </thead>
             <tbody>
               {{#each order in buyOrders}}
-              <tr>
-                <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision}}</td>
-                <td>{{convertFromTokenPrecision order.buy.howMuch order.buy.precision}}</td>
+              <tr class="js-takeorder interactive" data-id="{{order.id}}">
+                <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision @index}}</td>
+                <td>{{convertFromTokenPrecision order.sell.howMuch order.sell.precision}}</td>
                 <td>{{order.buy.price}}</td>
               </tr>
               {{/each}}
@@ -36,16 +36,16 @@
             <thead>
               <tr>
                 <th>Sell Price <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
+                <th>Vol <p>({{quoteTokenSymbol}})</p></th>
+                <th>Cum. Vol. <p>({{quoteTokenSymbol}})</p></th>
               </tr>
             </thead>
             <tbody>
               {{#each order in sellOrders}}
-              <tr>
+              <tr class="js-takeorder interactive" data-id="{{order.id}}">
                 <td>{{order.sell.price}}</td>
-                <td>{{convertFromTokenPrecision order.sell.howMuch order.sell.precision}}</td>
-                <td>{{convertFromTokenPrecision this.sell.howMuch}}</td>
+                <td>{{convertFromTokenPrecision order.buy.howMuch order.buy.precision}}</td>
+                <td>{{calcSellCumulativeVolume order.sell.price order.sell.precision @index}}</td>
               </tr>
               {{/each}}
             </tbody>

@@ -1,6 +1,7 @@
+// TODO Addresses are curr case sensitive!
+
 // Assets
 
-// TODO Addresses are curr case sensitive!
 exports.EtherToken = '0x7506c7bfed179254265d443856ef9bda19221cd7';
 exports.MelonToken = '0x4dffea52b0b4b48c71385ae25de41ce6ad0dd5a7';
 exports.BitcoinToken = '0x9e4c56a633dd64a2662bdfa69de4fde33ce01bdd';
@@ -37,3 +38,7 @@ exports.PerformanceFee = '0x2dd21c0af98e47cdada3430438d1cef544f590a9';
 
 exports.Version = '0x98943e493091c0106b8ceb6fb0fd5d0cadb0c933';
 exports.Governance = '0x9dcbbf156fb2ff3dad20f6d3e2900a08d1001ff6';
+
+// Liquidity Provider
+
+exports.LiquidityProvider = '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf';
