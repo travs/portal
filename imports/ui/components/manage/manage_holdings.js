@@ -33,52 +33,51 @@ Template.manage_holdings.onCreated(() => {
 
 const prefillTakeOrder = (id) => {
   const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+  const selectedOrderId = Number(Session.get('selectedOrderId'));
+  const selectedOffer = Orders.find({'id': selectedOrderId}).fetch();
+  const orderType = selectedOffer[0].sell.symbol === 'ETH-T' ? 'Sell' : 'Buy';
 
-  const isSellOrder = true;
-
-  const selectedOrderId = Number(Session.get('selectedOrderId'))
-  const selectedOffer = Orders.find({'id': selectedOrderId}).fetch()
-
-  console.log('selectedOffer ', Session.get('selectedOrderId'), selectedOffer);
-
-  const symbol = selectedOffer[0].sell.symbol === 'ETH-T'? "Sell" : "Buy"
-  console.log(symbol);
-
-  if (Template.instance().state.get('buyingSelected') === isSellOrder) {
+  if (orderType === 'Sell') {
     Template.instance().state.set('buyingSelected', false);
+    const cheaperOrders = Orders.find({
+      isActive: true,
+      'sell.symbol': quoteTokenSymbol,
+      'buy.symbol': baseTokenSymbol,
+    }, { sort: { 'buy.price': 1, 'sell.howMuch': 1, createdAt: 1 } }).fetch();
+
+    const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
+    const setOfOrders = cheaperOrders.slice(0, index + 1);
+    const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
+      accumulator + currentValue.buy.howMuch, 0);
+    const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
+      (accumulator + currentValue.buy.howMuch * currentValue.buy.price), 0) / volumeTakeOrder;
+    const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
+    const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
+    const volume = convertFromTokenPrecision(volumeTakeOrder, buyTokenPrecision);
+    const total = averagePrice * volume;
+
+    return { volume, averagePrice, total, setOfOrders, orderType };
+  } else if (orderType === 'Buy') {
+    Template.instance().state.set('buyingSelected', true);
+    const cheaperOrders = Orders.find({
+      isActive: true,
+      'sell.symbol': baseTokenSymbol,
+      'buy.symbol': quoteTokenSymbol,
+    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+
+    const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
+    const setOfOrders = cheaperOrders.slice(0, index + 1);
+    const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
+      accumulator + currentValue.sell.howMuch, 0);
+    const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
+      (accumulator + currentValue.sell.howMuch * currentValue.sell.price), 0) / volumeTakeOrder;
+    const sellTokenAddress = Specs.getTokenAddress(quoteTokenSymbol);
+    const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
+    const volume = convertFromTokenPrecision(volumeTakeOrder, sellTokenPrecision);
+    const total = averagePrice * volume;
+
+    return { volume, averagePrice, total, setOfOrders, orderType };
   }
-
-  const cheaperOrders = Orders.find({
-    isActive: true,
-    'sell.symbol': baseTokenSymbol,
-    'buy.symbol': quoteTokenSymbol,
-  }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
-
-
-  console.log(cheaperOrders);
-
-  console.log(Template.instance().state.get('buyingSelected'));
-
-  const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
-
-  const setOfOrders = cheaperOrders.slice(0, index + 1);
-
-  const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
-    accumulator + currentValue.sell.howMuch, 0); //J: change to .sell
-
-  const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
-    (accumulator + currentValue.sell.howMuch) * currentValue.sell.price, 0) / volumeTakeOrder; //J: change to currentValue.sell.howMuch
-
-  // const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
-  // const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
-  const sellTokenAddress = Specs.getTokenAddress(quoteTokenSymbol);
-  const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
-
-  const volume = convertFromTokenPrecision(volumeTakeOrder, sellTokenPrecision);
-  // const price = convertFromTokenPrecision(averagePrice, sellTokenPrecision);
-  const total = averagePrice * volume;
-
-  return { volume, averagePrice, total, setOfOrders, symbol };
 };
 
 Template.manage_holdings.helpers({
@@ -102,19 +101,12 @@ Template.manage_holdings.helpers({
     return `${quoteTokenSymbol}/${baseTokenSymbol}`;
   },
   priceAssetPair: () => {
-    // TODO: Check if we need to swap for buy/sell button
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     return `${quoteTokenSymbol}/${baseTokenSymbol}`;
   },
-
-  // TODO: Check if needs to swap for buy/sell button also
   volumeAsset: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
-
   totalAsset: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   preFillType: () =>
-    // if (Session.get('selectedOrderId') !== null) {
-    //   return 'Buy'; // TODO
-    // }
     Session.get('selectedOrderId') !== null
     ? prefillTakeOrder(Session.get('selectedOrderId')).symbol
     : '',
@@ -180,11 +172,8 @@ Template.manage_holdings.events({
       const coreContract = Core.at(coreAddress);
 
 
-    //Case form pre-filled w order book information
+    // Case form pre-filled w order book information
     if (Session.get('selectedOrderId') !== null) {
-      console.log('Vol, averagePrice, Total, setOfOrders', prefillTakeOrder(Session.get('selectedOrderId')));
-      console.log('setOfOrders', prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders);
-
       const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
       const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).volume;
 
@@ -199,18 +188,21 @@ Template.manage_holdings.events({
             coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], setOfOrders[i]['sell']['howMuch'], { from: managerAddress }).then((result) => {
               console.log(result);
               console.log('Transaction for order id ', setOfOrders[i]['id'], ' sent!');
+              buyBaseUnitVolume -= setOfOrders[i]['sell']['howMuch'];
+              Meteor.call('orders.sync');
             }).catch((err) => console.log(err));
           } else if(buyBaseUnitVolume < setOfOrders[i]['sell']['howMuch']) {
             coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], buyBaseUnitVolume, { from: managerAddress }).then((result) => {
               console.log(result);
               console.log('Transaction for order id ', setOfOrders[i]['id'], ' executed!');
+              buyBaseUnitVolume = 0;
+              Meteor.call('orders.sync');
             }).catch((err) => console.log(err));
           }
           buyBaseUnitVolume -= 1;
         }
       }
-
-    //Case form filled out manually by manager
+    // Case: form filled out manually by manager
     } else {
       const type = Template.instance().state.get('buyingSelected') ? 'Buy' : 'Sell';
       const price = parseFloat(templateInstance.find('input.js-price').value, 10);

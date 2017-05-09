@@ -30,7 +30,6 @@ Template.orderbook_contents.helpers({
   },
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    // TODO: issue#79
     return Orders.find({
       isActive: true,
       'buy.symbol': quoteTokenSymbol,
