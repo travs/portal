@@ -7,10 +7,47 @@ import cc from 'cryptocompare';
 import specs from '/imports/lib/assets/utils/specs.js';
 
 
-Session.set('referenceCurrency', 'ETH')
 EthTools.ticker.start();
 EthTools.setUnit('ether');
+Session.set('referenceCurrency', 'ETH')
 
+// CONSTANTS
+
+const PRECISION = 4;
+const CCREFERENCECURRENCY = 'ETH';
+const CCMARKET = 'Kraken';
+
+// FUNCTIONS
+
+const invertNumber = number => 1.0 / number;
+
+const setIntradayChange = (referenceCurrency) => {
+
+  // By definition
+  Session.set('ethChange24h', '±0.0');
+
+  cc.generateAvg(CCREFERENCECURRENCY, 'EUR', CCMARKET)
+  .then(data => Session.set('eurChange24h', data.CHANGEPCT24HOUR.toPrecision(PRECISION)))
+  .catch(console.error);
+
+  cc.generateAvg(CCREFERENCECURRENCY, 'EUR', CCMARKET)
+  .then(data => Session.set('eurChange24h', data.CHANGEPCT24HOUR.toPrecision(PRECISION)))
+  .catch(console.error);
+
+  cc.generateAvg(CCREFERENCECURRENCY, 'BTC', CCMARKET)
+  .then(data => Session.set('btcChange24h', data.CHANGEPCT24HOUR.toPrecision(PRECISION)))
+  .catch(console.error);
+
+  cc.generateAvg('MLN', CCREFERENCECURRENCY, CCMARKET)
+  .then(data => Session.set('mlnChange24h', invertNumber(data.CHANGEPCT24HOUR).toPrecision(PRECISION)))
+  .catch(console.error);
+
+  cc.generateAvg('REP', CCREFERENCECURRENCY, CCMARKET)
+  .then(data => Session.set('repChange24h', invertNumber(data.CHANGEPCT24HOUR).toPrecision(PRECISION)))
+  .catch(console.error);
+}
+
+// ON STARTUP
 
 Meteor.startup(() => {
   Session.set('NetworkStatus', {
@@ -20,22 +57,6 @@ Meteor.startup(() => {
     isMined: false,
   });
 
-  // By definition
-  Session.set('ethChange24h', '±0.0');
-
-  cc.generateAvg(Session.get('referenceCurrency'), 'EUR', ['Kraken'])
-  .then(data => Session.set('eurChange24h', data.CHANGEPCT24HOUR.toPrecision(4)))
-  .catch(console.error)
-
-  cc.generateAvg(Session.get('referenceCurrency'), 'BTC', ['Kraken'])
-  .then(data => Session.set('btcChange24h', data.CHANGEPCT24HOUR.toPrecision(4)))
-  .catch(console.error)
-
-  cc.generateAvg('MLN', Session.get('referenceCurrency'), ['Kraken'])
-  .then(data => Session.set('mlnChange24h', data.CHANGEPCT24HOUR.toPrecision(4)))
-  .catch(console.error)
-
-  cc.generateAvg('REP', Session.get('referenceCurrency'), ['Kraken'])
-  .then(data => Session.set('repChange24h', data.CHANGEPCT24HOUR.toPrecision(4)))
-  .catch(console.error)
+  // TODO handle case where CCREFERENCECURRENCY !== 'ETH'
+  setIntradayChange(CCREFERENCECURRENCY);
 });
