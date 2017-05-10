@@ -14,11 +14,11 @@ exports.CryptoCompare = '0x442Fd95C32162F914364C5fEFf27A0Dc05214706';
 
 // Exchanges
 
-exports.Exchange = '0xe4183415d59F0A619654fA1D9898472C5EA852Ab';
+exports.Exchange = '0x6d46E96E8a9E2544611B4cC2c59f3919B11Df9b1';
 
 // Universe
 
-exports.Universe = '0x7e56AD30007801ABbD5595C6FA232E4FCF72F667';
+exports.Universe = '0x5ddffcabf67835f0905e7744626a105a84048038';
 
 // Participation
 

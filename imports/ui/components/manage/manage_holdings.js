@@ -64,7 +64,7 @@ const prefillTakeOrder = (id) => {
     const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
       accumulator + currentValue.buy.howMuch, 0);
     const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
-      (accumulator + currentValue.buy.howMuch * currentValue.buy.price), 0) / volumeTakeOrder;
+      (accumulator + currentValue.sell.howMuch), 0) / volumeTakeOrder;
     const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
     const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
     const volume = convertFromTokenPrecision(volumeTakeOrder, buyTokenPrecision);
@@ -87,7 +87,7 @@ const prefillTakeOrder = (id) => {
     const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
       accumulator + currentValue.sell.howMuch, 0);
     const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
-      (accumulator + currentValue.sell.howMuch * currentValue.sell.price), 0) / volumeTakeOrder;
+      (accumulator + currentValue.buy.howMuch), 0) / volumeTakeOrder;
     const sellTokenAddress = Specs.getTokenAddress(quoteTokenSymbol);
     const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
     const volume = convertFromTokenPrecision(volumeTakeOrder, sellTokenPrecision);
@@ -113,18 +113,6 @@ Template.manage_holdings.helpers({
     }
     return 'Sell';
   },
-  // 'currentAssetPair': () => {
-  //     if(Template.instance().state.get('buyingSelected')) {
-  //      return Session.get('currentAssetPair');
-  //     } else {
-  //       const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-  //       return  quoteTokenSymbol + '/' + baseTokenSymbol;
-  //     }
-  // },
-  // currentAssetPair: Session.get('currentAssetPair'),
-  // 'volumeAsset': () => { return Session.get('currentAssetPair').substring(0,5); },
-
-  // 'totalAsset': () => { return Session.get('currentAssetPair').substring(6,11); }
   isBuyingSelected: () => Template.instance().state.get('buyingSelected'),
   currentAssetPair: () => {
     if (Template.instance().state.get('buyingSelected')) {
@@ -217,28 +205,46 @@ Template.manage_holdings.events({
       const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
       let buyBaseUnitVolume = totalWantedBuyAmount * Math.pow(10, buyTokenPrecision);
 
+      let quantity = 0;
+
+      if (prefillTakeOrder(Session.get('selectedOrderId')).orderType === 'Sell') {
+        quantity = parseFloat(templateInstance.find('input.js-total').value, 10)* Math.pow(10, buyTokenPrecision);
+      } else {
+        quantity = parseFloat(templateInstance.find('input.js-volume').value, 10)* Math.pow(10, buyTokenPrecision);
+      }
+
       for (let i = 0; i < setOfOrders.length; i += 1) {
-        if(buyBaseUnitVolume) {
-          if(buyBaseUnitVolume >= setOfOrders[i]['sell']['howMuch']) {
+        if (quantity) {
+          if (quantity >= setOfOrders[i]['sell']['howMuch']) {
+            console.log('Desired uantity ', quantity, ' Available quantity ', setOfOrders[i]['sell']['howMuch'])
             coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], setOfOrders[i]['sell']['howMuch'], { from: managerAddress }).then((result) => {
               console.log(result);
               console.log('Transaction for order id ', setOfOrders[i]['id'], ' sent!');
-              buyBaseUnitVolume -= setOfOrders[i]['sell']['howMuch'];
               Meteor.call('orders.sync');
-            }).catch((err) => console.log(err));
-          } else if(buyBaseUnitVolume < setOfOrders[i]['sell']['howMuch']) {
-            coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], buyBaseUnitVolume, { from: managerAddress }).then((result) => {
+              Session.get('selectedOrderId') !== null
+              toastr.success('Order successfully executed!');
+            }).catch((err) => {
+              console.log(err)
+              toastr.error('Oops, an error has occured. Please verify the transaction informations');
+            });
+              quantity -= setOfOrders[i]['sell']['howMuch'];
+          } else if (quantity < setOfOrders[i]['sell']['howMuch']) {
+            coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], quantity, { from: managerAddress }).then((result) => {
               console.log(result);
               console.log('Transaction for order id ', setOfOrders[i]['id'], ' executed!');
-              buyBaseUnitVolume = 0;
               Meteor.call('orders.sync');
-            }).catch((err) => console.log(err));
+              Session.set('selectedOrderId', null);
+              toastr.success('Order successfully executed!');
+            }).catch((err) => {
+              toastr.error('Oops, an error has occured. Please verify the transaction informations');
+              console.log(err);
+            });
+              quantity = 0;
           }
-          // buyBaseUnitVolume -= 1;
         }
       }
     // Case: form filled out manually by manager
-    } else {
+    } else if(Session.get('selectedOrderId') == null) {
       const type = Template.instance().state.get('buyingSelected') ? 'Buy' : 'Sell';
       const price = parseFloat(templateInstance.find('input.js-price').value, 10);
       const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
@@ -300,9 +306,13 @@ Template.manage_holdings.events({
             console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
             Meteor.call('orders.upsert', result.logs[i].args.id.toNumber());
             console.log('Order registered');
+            toastr.success('Order successfully submitted!');
           }
         }
-      }).catch((err) => { throw err; });
+      }).catch((err) => {
+        toastr.error('Oops, an error has occured. Please verify your order informations.');
+        throw err;
+      });
     }
   },
 });
