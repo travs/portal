@@ -15,22 +15,23 @@ Template.recent_trades.onCreated(() => {});
 Template.recent_trades.helpers({
   more: false,
   currentAssetPair: () => Session.get('currentAssetPair'),
-  baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
+  baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
+  quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   getRecentTrades: () => Trades.find(),
   buyOrSell: buyTokenSymbol =>
     (buyTokenSymbol === (Session.get('currentAssetPair') || '---/---').split('/')[1]
     ? 'buy' : 'sell'
   ),
   getPrice(trade) {
-    const baseTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = trade.buy.symbol === baseTokenSymbol
+    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
+    const details = trade.buy.symbol === quoteTokenSymbol
       ? trade.buy : trade.sell;
 
     return details.price;
   },
   getVolume(trade) {
-    const baseTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = trade.buy.symbol === baseTokenSymbol
+    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
+    const details = trade.buy.symbol === quoteTokenSymbol
       ? trade.buy : trade.sell;
 
     return convertFromTokenPrecision(details.howMuch, details.precision);
