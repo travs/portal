@@ -73,6 +73,7 @@ Template.portal_new.events({
       { from: managerAddress }
     )
     .then((result) => {
+      console.log('Core created ', result);
       return versionContract.numCreatedCores();
     })
     .then((result) => {

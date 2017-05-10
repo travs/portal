@@ -17,10 +17,10 @@ Template.open_orders.onCreated(() => {});
 Template.open_orders.helpers({
   more: false,
   currentAssetPair: () => Session.get('currentAssetPair'),
-  quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
-  baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
+  baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
+  quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   getOpenOrders() {
-    const [quoteTokenSymbol, baseTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     const owner = Session.get('fromPortfolio')
       ? FlowRouter.getParam('address')
       : Session.get('clientManagerAccount');
@@ -29,8 +29,8 @@ Template.open_orders.helpers({
       owner,
       isActive: true,
       $or: [
-        { 'buy.symbol': { $in: [quoteTokenSymbol, baseTokenSymbol] } },
-        { 'sell.symbol': { $in: [quoteTokenSymbol, baseTokenSymbol] } },
+        { 'buy.symbol': { $in: [baseTokenSymbol, quoteTokenSymbol] } },
+        { 'sell.symbol': { $in: [baseTokenSymbol, quoteTokenSymbol] } },
       ],
     });
   },
@@ -39,15 +39,15 @@ Template.open_orders.helpers({
     ? 'buy' : 'sell'
   ),
   getPrice(order) {
-    const baseTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = order.buy.symbol === baseTokenSymbol
+    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
+    const details = order.buy.symbol === quoteTokenSymbol
       ? order.buy : order.sell;
 
     return details.price;
   },
   getVolume(order) {
-    const baseTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = order.buy.symbol === baseTokenSymbol
+    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
+    const details = order.buy.symbol === quoteTokenSymbol
       ? order.buy : order.sell;
 
     return convertFromTokenPrecision(details.howMuch, details.precision);

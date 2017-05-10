@@ -24,6 +24,20 @@ if (Meteor.isServer) { Meteor.publish('orders', () => Orders.find({}, { sort: { 
 
 // COLLECTION METHODS
 
+Orders.watch = () => {
+  const orders = exchangeContract.OrderUpdate({}, {
+    fromBlock: 0,
+    toBlock: 'latest',
+  });
+
+  orders.watch(Meteor.bindEnvironment((err, event) => {
+    if (err) throw err;
+
+    Orders.syncOrderById(event.args.id.toNumber());
+  }));
+};
+
+
 Orders.sync = () => {
   let numberOfOrdersCreated;
   exchangeContract.getLastOrderId().then((result) => {
@@ -32,7 +46,8 @@ Orders.sync = () => {
       Orders.syncOrderById(id);
     }
   });
-};
+}
+
 
 Orders.syncOrderById = (id) => {
   exchangeContract.orders(id).then((order) => {
