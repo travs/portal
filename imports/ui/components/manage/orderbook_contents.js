@@ -28,6 +28,12 @@ Template.orderbook_contents.helpers({
       'sell.symbol': quoteTokenSymbol,
     }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
   },
+  calcBuyPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
+    return convertFromTokenPrecision(sellHowMuch, sellPrecision) / convertFromTokenPrecision(buyHowMuch, buyPrecision);
+  },
+  calcSellPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
+    return convertFromTokenPrecision(buyHowMuch, buyPrecision)/convertFromTokenPrecision(sellHowMuch, sellPrecision);
+  },
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     return Orders.find({
@@ -79,6 +85,7 @@ Template.orderbook_contents.onRendered(() => {
 Template.orderbook_contents.events({
   'click .js-takeorder': (event) => {
     Session.set('selectedOrderId', event.currentTarget.dataset.id);
+    console.log(Session.get('selectedOrderId'));
     location.hash = 'manage-holdings';
     history.replaceState(null, null, location.pathname);
   },
