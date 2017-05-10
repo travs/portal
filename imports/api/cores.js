@@ -31,7 +31,7 @@ Cores.watch = () => {
   cores.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
-    Cores.syncOne(event.args._id['c'][0]);
+    Cores.syncCoreById(event.args._id['c'][0]); //see event object, doesnt have .id
   }));
 };
 
@@ -40,75 +40,55 @@ Cores.sync = () => {
   versionContract.numCreatedCores().then((res) => {
     numberOfCoresCreated = res.toNumber();
     for (let index = 0; index < numberOfCoresCreated; index += 1) {
-      let coreContract;
-      // List of inputs for core collection
-      let address;
-      let name;
-      let managerAddress;
-      let universeAddress;
-      versionContract.getCore(index).then((result) => {
-        address = result;
-        coreContract = Core.at(address);
-        return coreContract.name();
-      })
-      .then((result) => {
-        name = result;
-        return coreContract.owner();
-      })
-      .then((result) => {
-        managerAddress = result;
-        return coreContract.getUniverseAddress();
-      })
-      .then((result) => {
-        universeAddress = result;
-        // Insert into Portfolio collection
-        Cores.update(
-          { address },
-          { $set: {
-            address,
-            index,
-            name,
-            managerAddress,
-            universeAddress,
-            sharePrice: web3.toWei(1.0, 'ether'),
-            notional: 0,
-            intraday: '±0.0',
-            delta: '±0.0',
-            username: 'N/A',
-            createdAt: new Date(),
-          },
-          }, {
-            upsert: true,
-          });
-      });
+      Cores.syncCoreById(index);
     }
   });
 };
 
 // TODO implement consistent w Orders
-Cores.syncOne = (id) => {
-  console.log("will sync core with id ", id)
-  versionContract.cores(id).then((core) => {
-    const [address, name, managerAddress, universeAddress, sharePrice, notional, intraday] = core;
-
-    Cores.update(
-      { address },
-      { $set: {
-        address,
-        name,
-        managerAddress,
-        universeAddress,
-        sharePrice,
-        notional,
-        intraday: '±0.0',
-        delta: '±0.0',
-        username: 'N/A',
-        createdAt: new Date(),
-      },
-      }, {
-        upsert: true,
-      });
-  });
+Cores.syncCoreById = (id) => {
+    let coreContract;
+    // List of inputs for core collection
+    let address;
+    let name;
+    let managerAddress;
+    let universeAddress;
+    versionContract.cores(id).then((result) => {
+      address = result;
+      coreContract = Core.at(address);
+      return coreContract.name();
+    })
+    .then((result) => {
+      name = result;
+      return coreContract.owner();
+    })
+    .then((result) => {
+      managerAddress = result;
+      return coreContract.getUniverseAddress();
+    })
+    .then((result) => {
+      universeAddress = result;
+      // Insert into Portfolio collection
+      Cores.update(
+        { address },
+        { $set: {
+          address,
+          id,
+          name,
+          managerAddress,
+          universeAddress,
+          sharePrice: web3.toWei(1.0, 'ether'),
+          notional: 0,
+          intraday: '±0.0',
+          delta: '±0.0',
+          username: 'N/A',
+          createdAt: new Date(),
+        },
+        }, {
+          upsert: true,
+        });
+    });
+  // });
 };
 
 // METEOR METHODS
