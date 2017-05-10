@@ -220,25 +220,36 @@ Template.manage_holdings.events({
       for (let i = 0; i < setOfOrders.length; i += 1) {
         if(buyBaseUnitVolume) {
           if(buyBaseUnitVolume >= setOfOrders[i]['sell']['howMuch']) {
+            console.log('buybaseunitvol ', buyBaseUnitVolume, ' order amount ', setOfOrders[i]['sell']['howMuch'])
             coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], setOfOrders[i]['sell']['howMuch'], { from: managerAddress }).then((result) => {
               console.log(result);
               console.log('Transaction for order id ', setOfOrders[i]['id'], ' sent!');
-              buyBaseUnitVolume -= setOfOrders[i]['sell']['howMuch'];
               Meteor.call('orders.sync');
-            }).catch((err) => console.log(err));
+              Session.get('selectedOrderId') !== null
+              toastr.success('Order successfully executed!');
+            }).catch((err) => {
+              console.log(err)
+              toastr.error('Oops, an error has occured. Please verify the transaction informations');
+            });
+              buyBaseUnitVolume -= setOfOrders[i]['sell']['howMuch'];
           } else if(buyBaseUnitVolume < setOfOrders[i]['sell']['howMuch']) {
             coreContract.takeOrder(AddressList.Exchange, setOfOrders[i]['id'], buyBaseUnitVolume, { from: managerAddress }).then((result) => {
               console.log(result);
               console.log('Transaction for order id ', setOfOrders[i]['id'], ' executed!');
-              buyBaseUnitVolume = 0;
               Meteor.call('orders.sync');
-            }).catch((err) => console.log(err));
+              Session.set('selectedOrderId', null);
+              toastr.success('Order successfully executed!');
+            }).catch((err) => {
+              toastr.error('Oops, an error has occured. Please verify the transaction informations');
+              console.log(err);
+            });
+              buyBaseUnitVolume = 0;
           }
           // buyBaseUnitVolume -= 1;
         }
       }
     // Case: form filled out manually by manager
-    } else {
+    } else if(Session.get('selectedOrderId') == null) {
       const type = Template.instance().state.get('buyingSelected') ? 'Buy' : 'Sell';
       const price = parseFloat(templateInstance.find('input.js-price').value, 10);
       const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
@@ -300,9 +311,13 @@ Template.manage_holdings.events({
             console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
             Meteor.call('orders.upsert', result.logs[i].args.id.toNumber());
             console.log('Order registered');
+            toastr.success('Order successfully submitted!');
           }
         }
-      }).catch((err) => { throw err; });
+      }).catch((err) => {
+        toastr.error('Oops, an error has occured. Please verify your order informations.');
+        throw err;
+      });
     }
   },
 });
