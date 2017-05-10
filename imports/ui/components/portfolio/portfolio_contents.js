@@ -17,21 +17,12 @@ Template.portfolio_contents.onCreated(() => {
   Meteor.subscribe('assets');
   // Portfolio Value in Wei
   Template.instance().totalPortfolioValue = new ReactiveVar();
-  const assetHolderAddress = FlowRouter.getParam('address');
-  const docs = Assets.findOne({ holder: assetHolderAddress });
-  let value = 0;
-  for (doc in docs) {
-    if (doc === undefined) continue;
-    if (doc.holdings === undefined) continue;
-    if (doc.priceFeed.price === undefined) continue;
-    if (doc.precision === undefined) continue;
-    const holdings = parseInt(doc.holdings, 10);
-    const price = parseInt(doc.priceFeed.price, 10);
-    const precision = parseInt(doc.precision, 10);
-    const divisor = Math.pow(10, precision);
-    value += holdings * (price / divisor);
-  }
-  Template.instance().totalPortfolioValue.set(value);
+    const coreAddress = FlowRouter.getParam('address');
+    const myCore = Cores.find({ address: coreAddress }).fetch();
+    const coreId = myCore[0]['id'];
+    Cores.syncCoreById(coreId);
+    console.log('core', myCore);
+    Template.instance().totalPortfolioValue.set(myCore[0]['notional']);
 });
 
 Template.portfolio_contents.helpers({

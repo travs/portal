@@ -1,7 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import AddressList from '/imports/lib/ethereum/address_list.js'
+import AddressList from '/imports/lib/ethereum/address_list.js';
+import specs from '/imports/lib/assets/utils/specs.js';
+import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
+
 
 // SMART-CONTRACT IMPORT
 
@@ -23,7 +26,7 @@ if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish
 // COLLECTION METHODS
 
 Cores.watch = () => {
-  const cores = versionContract.CoreCreated({}, {
+  const cores = versionContract.CoreUpdate({}, {
     fromBlock: 0,
     toBlock: 'latest',
   });
@@ -31,7 +34,7 @@ Cores.watch = () => {
   cores.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
-    Cores.syncCoreById(event.args._id['c'][0]); //see event object, doesnt have .id
+    Cores.syncCoreById(event.args.id.toNumber()); //see event object, doesnt have .id
   }));
 };
 
@@ -53,6 +56,7 @@ Cores.syncCoreById = (id) => {
     let name;
     let managerAddress;
     let universeAddress;
+    let nav;
     versionContract.cores(id).then((result) => {
       address = result;
       coreContract = Core.at(address);
@@ -64,6 +68,12 @@ Cores.syncCoreById = (id) => {
     })
     .then((result) => {
       managerAddress = result;
+      return coreContract.calcNAV();
+    })
+    .then((result) => {
+      const tokenAddress = specs.getTokenAddress('ETH-T');
+      const tokenPrecision = specs.getTokenPrecisionByAddress(tokenAddress);
+      nav = convertFromTokenPrecision(result.toNumber(), tokenPrecision);
       return coreContract.getUniverseAddress();
     })
     .then((result) => {
@@ -78,7 +88,7 @@ Cores.syncCoreById = (id) => {
           managerAddress,
           universeAddress,
           sharePrice: web3.toWei(1.0, 'ether'),
-          notional: 0,
+          notional: nav,
           intraday: '±0.0',
           delta: '±0.0',
           username: 'N/A',

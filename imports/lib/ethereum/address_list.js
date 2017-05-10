@@ -36,7 +36,7 @@ exports.PerformanceFee = '0x2dd21c0af98e47cdada3430438d1cef544f590a9';
 
 // Governance
 
-exports.Version = '0x98943e493091c0106b8ceb6fb0fd5d0cadb0c933';
+exports.Version = '0xe12c88cffba39a0a83acba65b7d74804f41db253';
 exports.Governance = '0x9dcbbf156fb2ff3dad20f6d3e2900a08d1001ff6';
 
 // Liquidity Provider
