@@ -74,27 +74,25 @@ Template.portal_new.events({
     )
     .then((result) => {
       console.log('Core created ', result);
-      return versionContract.numCreatedCores();
+      return versionContract.getLastCoreId();
     })
     .then((result) => {
+      console.log(result);
       return versionContract.getCore(result.toNumber() - 1);
     })
     .then((result) => {
-      portfolioAddress = result;
-      const coreContract = Core.at(portfolioAddress);
-      return coreContract.owner();
-    })
-    .then((result) => {
-      if (result !== managerAddress) {
+      const [coreAddr, managerAddr, isActive] = result;
+      if (managerAddr !== managerAddress) {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
         console.log('Portfolio Owner != Manager Address');
       } else {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         // Insert into Portfolio collection
         Meteor.call('cores.upsert',
-          portfolioAddress,
+          portfolioAddress: coreAddr,
           portfolioName,
-          managerAddress,
+          managerAddress: managerAddr,
+          isActive,
           universeAddress,
           sharePrice,
           notional,

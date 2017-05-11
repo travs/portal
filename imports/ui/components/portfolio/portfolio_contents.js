@@ -15,7 +15,6 @@ import './portfolio_contents.html';
 Template.portfolio_contents.onCreated(() => {
   Meteor.subscribe('cores');
   Meteor.subscribe('assets');
-  // Portfolio Value in Wei
   Template.instance().totalPortfolioValue = new ReactiveVar();
     const coreAddress = FlowRouter.getParam('address');
     const myCore = Cores.find({ address: coreAddress }).fetch();
@@ -54,7 +53,7 @@ Template.portfolio_contents.helpers({
     // TODO fix function naming
     return web3.toWei(1.0 / parseFloat(value, 10), 'ether');
   },
-  portfolioPercentrage() {
+  portfolioPercentage() {
     const holdings = parseInt(this.holdings, 10);
     const price = parseInt(this.priceFeed.price, 10);
     const precision = parseInt(this.precision, 10);
@@ -62,6 +61,8 @@ Template.portfolio_contents.helpers({
     console.log({holdings, price, precision, divisor})
     const value = holdings * (price / divisor);
     if (Template.instance().totalPortfolioValue.get() === 0) return 'N/A';
+    console.log('value asset ', value, ' totalportfolio ', Template.instance().totalPortfolioValue.get())
+
     return ((value * 100) / Template.instance().totalPortfolioValue.get())/Math.pow(10,18);
   },
   change24h() {

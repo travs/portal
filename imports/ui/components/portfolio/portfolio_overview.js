@@ -27,6 +27,7 @@ Template.portfolio_overview.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
+    console.log(doc.sharePrice)
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   // TODO implement cleaner

@@ -9,7 +9,7 @@ import Trades from '/imports/api/trades.js';
 
 // EXECUTION
 Meteor.startup(() => {
-  Cores.remove({});
+  // Cores.remove({});
   Cores.sync();
   Cores.watch();
   Orders.remove({});

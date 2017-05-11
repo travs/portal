@@ -40,7 +40,7 @@ Cores.watch = () => {
 
 Cores.sync = () => {
   let numberOfCoresCreated;
-  versionContract.numCreatedCores().then((res) => {
+  versionContract.getLastCoreId().then((res) => {
     numberOfCoresCreated = res.toNumber();
     for (let index = 0; index < numberOfCoresCreated; index += 1) {
       Cores.syncCoreById(index);
@@ -57,6 +57,7 @@ Cores.syncCoreById = (id) => {
     let managerAddress;
     let universeAddress;
     let nav;
+    let shareP;
     versionContract.cores(id).then((result) => {
       address = result;
       coreContract = Core.at(address);
@@ -75,7 +76,12 @@ Cores.syncCoreById = (id) => {
       const tokenAddress = specs.getTokenAddress('ETH-T');
       const tokenPrecision = specs.getTokenPrecisionByAddress(tokenAddress);
       nav = convertFromTokenPrecision(result.toNumber(), tokenPrecision);
-      console.log(nav);
+      console.log('NAV ', nav);
+      return coreContract.calcDelta();
+    })
+    .then((result) => {
+      shareP = result;
+      console.log('shareprice ', shareP)
       return coreContract.getUniverseAddress();
     })
     .then((result) => {
@@ -89,7 +95,7 @@ Cores.syncCoreById = (id) => {
           name,
           managerAddress,
           universeAddress,
-          sharePrice: web3.toWei(1.0, 'ether'),
+          sharePrice: shareP,
           notional: nav,
           intraday: '±0.0',
           delta: '±0.0',
@@ -147,7 +153,7 @@ Meteor.methods({
     coreContract.totalSupply().then((result) => {
       notional = result.toNumber();
       //TODO getSharePrice is potentially outdated information; better to exectue calcSharePrice
-      return coreContract.getSharePrice();
+      return coreContract.calcDelta();
     })
     .then((result) => {
       sharePrice = result.toNumber();
