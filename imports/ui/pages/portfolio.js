@@ -5,6 +5,7 @@ import d3 from 'd3';
 import MG from 'metrics-graphics';
 // Collections
 import { Cores } from '/imports/api/cores';
+import { Assets } from '/imports/api/assets';
 // Components
 import '/imports/ui/components/portfolio/portfolio_overview.js';
 import '/imports/ui/components/portfolio/portfolio_contents.js';
@@ -15,6 +16,7 @@ import './portfolio.html';
 
 Template.portfolio.onCreated(() => {
   Meteor.subscribe('cores');
+  Meteor.subscribe('assets');
 });
 
 
@@ -28,6 +30,10 @@ Template.portfolio.helpers({
 
 
 Template.portfolio.onRendered(() => {
+  // Upsert Cores and Asset Collection
+  const address = FlowRouter.getParam('address');
+  Meteor.call('assets.sync', address); // Upsert Assets Collection
+
   // Use Meteor.defer() to create chart after DOM is ready:
   Meteor.defer(() => {
     d3.json('data/confidence_band.json', (data) => {

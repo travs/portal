@@ -49,10 +49,6 @@ Template.manage_participation.helpers({
 
 Template.manage_participation.onRendered(() => {
   $('select').select2();
-  // Sync core and
-  const address = FlowRouter.getParam('address');
-  Meteor.call('cores.sync', address); // Upsert cores Collection
-  Meteor.call('assets.sync', address); // Upsert Assets Collection
 });
 
 Template.manage_participation.events({

@@ -37,7 +37,7 @@ exports.PerformanceFee = '0xc2a003610a67b683e9b3d5f0740584eadcdf41f3';
 // Governance
 
 exports.Governance = '0xbc88bfabffb44b75baee41520659c290f1071c67';
-exports.Version = '0x24a2754dac160dbb164b4629a8d1402dbe8bf922';
+exports.Version = '0xf0ecbeb75fa0c3f8926c11930ab074885bf070b4';
 
 // Liquidity Provider
 
@@ -79,6 +79,6 @@ exports.LiquidityProvider = '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf';
 //   Deploying Governance...
 //   Governance: 0xbc88bfabffb44b75baee41520659c290f1071c67
 //   Deploying Version...
-//   Version: 0x24a2754dac160dbb164b4629a8d1402dbe8bf922
+//   Version: 0x74d5639756291b20c12ef3783382e207bb24c383
 // Saving successful migration to network...
 // Saving artifacts...

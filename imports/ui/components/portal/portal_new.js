@@ -17,6 +17,7 @@ const Core = contract(CoreJson);
 Version.setProvider(web3.currentProvider);
 Core.setProvider(web3.currentProvider);
 
+
 Template.portal_new.onCreated(() => {
   Meteor.subscribe('cores');
   Meteor.subscribe('universes');
@@ -41,69 +42,55 @@ Template.portal_new.events({
   'submit form#new_portfolio': (event, templateInstance) => {
     // Prevent default browser form submit
     event.preventDefault();
-    if(!templateInstance.find('input#portfolio_name').value) {
+    if (!templateInstance.find('input#portfolio_name').value) {
       alert('Please enter a portfolio name.');
       return;
     }
-    // Collection parameters
-    let portfolioAddress;
-    const portfolioName = templateInstance.find('input#portfolio_name').value;
-    const managerAddress = Session.get('clientManagerAccount');
-    let universeAddress = Session.get('universeContractAddress');
+    // Description input parameters
+    const PORTFOLIO_NAME = templateInstance.find('input#portfolio_name').value;
+    const PORTFOLIO_SYMBOL = 'MLN-P';
+    const PORTFOLIO_DECIMALS = 18;
 
-    //TODO clean up database entries
-    const sharePrice = web3.toWei(1.0, 'ether');
-    const notional = 0;
-    const intraday = 1.0;
-
-    // Is mining
-    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
-
-    console.log('before the contract');
-    // Init contract instance
+    // Deploy
     const versionContract = Version.at(Session.get('versionContractAddress'));
+    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
     versionContract.createCore(
-      portfolioName,
+      PORTFOLIO_NAME,
+      PORTFOLIO_SYMBOL,
+      PORTFOLIO_DECIMALS,
       Session.get('universeContractAddress'),
       Session.get('subscribeContractAddress'),
       Session.get('redeemContractAddress'),
       Session.get('riskMgmtContractAddress'),
       Session.get('managmentFeeContractAddress'),
       Session.get('performanceFeeContractAddress'),
-      { from: managerAddress }
+      { from: Session.get('clientManagerAccount') }
     )
     .then((result) => {
-      console.log('Core created ', result);
-      return versionContract.getLastCoreId();
-    })
-    .then((result) => {
-      console.log(result);
-      return versionContract.getCore(result.toNumber() - 1);
-    })
-    .then((result) => {
-      const [coreAddr, managerAddr, isActive] = result;
-      if (managerAddr !== managerAddress) {
-        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
-        console.log('Portfolio Owner != Manager Address');
-      } else {
-        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-        // Insert into Portfolio collection
-        Meteor.call('cores.upsert',
-          portfolioAddress: coreAddr,
-          portfolioName,
-          managerAddress: managerAddr,
-          isActive,
-          universeAddress,
-          sharePrice,
-          notional,
-          intraday
-        );
-        Meteor.call('universes.insert',
-          universeAddress,
-          portfolioAddress,
-          managerAddress
-        );
+      let id;
+      for (let i = 0; i < result.logs.length; i += 1) {
+        if (result.logs[i].event === 'CoreUpdate') {
+          id = result.logs[i].args.id.toNumber();
+          console.log('Core has been created');
+          console.log(`Core id: ${id}`);
+          Meteor.call('cores.syncCoreById', id);
+          toastr.success('Core successfully created!');
+        }
       }
+      return versionContract.getCore(id);
+    })
+    .then((info) => {
+      const [address, owner, , , , ] = info;
+      Meteor.call('universes.insert',
+        Session.get('universeContractAddress'),
+        address,
+        owner
+      );
+      Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+    }).catch((err) => {
+      toastr.error('Oops, an error has occured. Please verify your fund informations.');
+      Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+      throw err;
     });
   },
 });

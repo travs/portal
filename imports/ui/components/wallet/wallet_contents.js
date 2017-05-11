@@ -63,7 +63,6 @@ Template.wallet_contents.helpers({
     return web3.toWei(1.0 / parseFloat(value, 10), 'ether');
   },
   portfolioPercentrage() {
-    console.log(Template.instance().totalPortfolioValue.get());
     const holdings = parseInt(this.holdings, 10);
     const price = parseInt(this.priceFeed.price, 10);
     const precision = parseInt(this.precision, 10);

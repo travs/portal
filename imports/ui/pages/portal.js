@@ -10,13 +10,17 @@ import '/imports/ui/components/portal/portal_new.js';
 import './portal.html';
 
 
-Template.portal.onCreated(() => {});
+Template.portal.onCreated(() => {
+  Meteor.subscribe('cores');
+});
 
 
 Template.portal.helpers({});
 
 
-Template.portal.onRendered(() => {});
+Template.portal.onRendered(() => {
+  Meteor.call('cores.sync'); // Upsert cores Collection
+});
 
 
 Template.portal.events({});

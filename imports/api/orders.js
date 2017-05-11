@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+import { check } from 'meteor/check';
+
 import AddressList from '/imports/lib/ethereum/address_list';
 import specs from '/imports/lib/assets/utils/specs.js';
 
@@ -26,7 +28,7 @@ if (Meteor.isServer) { Meteor.publish('orders', () => Orders.find({}, { sort: { 
 
 Orders.watch = () => {
   const orders = exchangeContract.OrderUpdate({}, {
-    fromBlock: 0,
+    fromBlock: web3.eth.blockNumber,
     toBlock: 'latest',
   });
 
@@ -39,19 +41,17 @@ Orders.watch = () => {
 
 
 Orders.sync = () => {
-  let numberOfOrdersCreated;
-  exchangeContract.getLastOrderId().then((result) => {
-    numberOfOrdersCreated = result.toNumber();
-    for (let id = 1; id < numberOfOrdersCreated + 1; id += 1) {
+  exchangeContract.getLastOrderId().then((lastId) => {
+    for (let id = 1; id < lastId.toNumber() + 1; id += 1) {
       Orders.syncOrderById(id);
     }
   });
-}
+};
 
 
 Orders.syncOrderById = (id) => {
-  exchangeContract.orders(id).then((order) => {
-    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, owner, isActive] = order;
+  exchangeContract.orders(id).then((info) => {
+    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, owner, isActive] = info;
     const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
     const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
     const buySymbol = specs.getTokenSymbolByAddress(buyWhichToken);
@@ -59,31 +59,28 @@ Orders.syncOrderById = (id) => {
     const sellPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
     const buyPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
     // Insert into Orders collection
-    Orders.update(
-      { id },
-      { $set: {
-        id,
-        owner,
-        isActive,
-        buy: {
-          token: buyWhichToken,
-          symbol: buySymbol,
-          howMuch: buyHowMuch.toNumber(),
-          precision: buyPrecision,
-          price: buyPrice,
-        },
-        sell: {
-          token: sellWhichToken,
-          symbol: sellSymbol,
-          howMuch: sellHowMuch.toNumber(),
-          precision: sellPrecision,
-          price: sellPrice,
-        },
-        createdAt: new Date(),
+    Orders.upsert({
+      id,
+    }, {
+      id,
+      owner,
+      isActive,
+      buy: {
+        token: buyWhichToken,
+        symbol: buySymbol,
+        howMuch: buyHowMuch.toNumber(),
+        precision: buyPrecision,
+        price: buyPrice,
       },
-      }, {
-        upsert: true,
-      });
+      sell: {
+        token: sellWhichToken,
+        symbol: sellSymbol,
+        howMuch: sellHowMuch.toNumber(),
+        precision: sellPrecision,
+        price: sellPrice,
+      },
+      createdAt: new Date(),
+    });
   });
 };
 
@@ -93,7 +90,8 @@ Meteor.methods({
   'orders.sync': () => {
     Orders.sync();
   },
-  'orders.upsert': (orderId) => {
-    Orders.syncOrderById(orderId);
+  'orders.syncOrderById': (id) => {
+    check(id, Number);
+    Orders.syncOrderById(id);
   },
 });

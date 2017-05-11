@@ -6,7 +6,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 // Collections
 import { Cores } from '/imports/api/cores';
-import { Assets } from '/imports/api/assets.js';
+import { Assets } from '/imports/api/assets';
 import specs from '/imports/lib/assets/utils/specs.js';
 
 // Corresponding html file
@@ -16,12 +16,6 @@ Template.portfolio_contents.onCreated(() => {
   Meteor.subscribe('cores');
   Meteor.subscribe('assets');
   Template.instance().totalPortfolioValue = new ReactiveVar();
-    const coreAddress = FlowRouter.getParam('address');
-    const myCore = Cores.find({ address: coreAddress }).fetch();
-    const coreId = myCore[0]['id'];
-    Cores.syncCoreById(coreId);
-    console.log('core', myCore);
-    Template.instance().totalPortfolioValue.set(myCore[0]['notional']);
 });
 
 Template.portfolio_contents.helpers({
@@ -41,7 +35,7 @@ Template.portfolio_contents.helpers({
     if (Object.keys(this).length === 0) return '';
     const precision = this.precision;
     const divisor = Math.pow(10, precision);
-    return value / divisor;
+    return (value / divisor).toPrecision(4);
   },
   convertTo18Precision(value) {
     if (Object.keys(this).length === 0) return '';
@@ -58,12 +52,17 @@ Template.portfolio_contents.helpers({
     const price = parseInt(this.priceFeed.price, 10);
     const precision = parseInt(this.precision, 10);
     const divisor = Math.pow(10, precision);
-    console.log({holdings, price, precision, divisor})
     const value = holdings * (price / divisor);
-    if (Template.instance().totalPortfolioValue.get() === 0) return 'N/A';
-    console.log('value asset ', value, ' totalportfolio ', Template.instance().totalPortfolioValue.get())
 
-    return ((value * 100) / Template.instance().totalPortfolioValue.get())/Math.pow(10,18);
+    const address = FlowRouter.getParam('address');
+    const doc = Cores.findOne({ address });
+    if (doc === undefined) {
+      return 'N/A';
+    }
+    const nav = doc.nav;
+    console.log(value, nav);
+
+    return ((value * 100) / nav).toPrecision(4);
   },
   change24h() {
     switch (this.name) {
@@ -77,10 +76,6 @@ Template.portfolio_contents.helpers({
   },
 });
 
-Template.portfolio_contents.onRendered(() => {
-  // Upsert Asset Collection
-  const address = FlowRouter.getParam('address');
-  Meteor.call('assets.sync', address);
-});
+Template.portfolio_contents.onRendered(() => {});
 
 Template.portfolio_contents.events({});

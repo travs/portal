@@ -27,8 +27,7 @@ Template.portfolio_overview.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
-    console.log(doc.sharePrice)
-    return (doc === undefined || address === undefined) ? '' : doc;
+    return (doc === undefined || address === undefined) ? [''] : doc;
   },
   // TODO implement cleaner
   getPersonalStake() {
@@ -40,6 +39,10 @@ Template.portfolio_overview.helpers({
       return coreContract.balanceOf(Session.get('clientManagerAccount'));
     }).then((result) => {
       template.personalShareAmount.set(result.toNumber());
+      return coreContract.getLastCalculations();
+    }).then((result) => {
+      console.log('Core information');
+      console.log(result);
     });
     return `${web3.fromWei(template.personalShareAmount.get(), 'ether')} of
       ${web3.fromWei(template.totalShareAmount.get(), 'ether')}`;
@@ -62,7 +65,7 @@ Template.portfolio_overview.events({
     if ((doc === undefined || address === undefined)) {
       return false;
     }
-    Meteor.call('cores.remove', doc._id);
+    Meteor.call('cores.removeById', doc._id);
     //TODO replace toast
     // Materialize.toast('Portfolio deleted!', 4000, 'blue');
     return true;
