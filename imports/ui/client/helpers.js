@@ -23,18 +23,18 @@ Template.registerHelper('getAccountCount', () => Session.get('getAccountCount'))
 // Cores
 Template.registerHelper('getCores', () => Cores.find({}, { sort: { notional: -1, sharePrice: -1 } }));
 Template.registerHelper('getCoreCount', () => Cores.find().count());
-Template.registerHelper('hasManagerCreatedCore', () => Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0);
-Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).address : false));
-Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).name : false));
-Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).delta : false));
-Template.registerHelper('getIsNewOfCore', () => (Cores.find({ managerAddress: Session.get('clientManagerAccount') }).count() !== 0 ? !Cores.findOne({ managerAddress: Session.get('clientManagerAccount') }).isUsed : false));
+Template.registerHelper('hasManagerCreatedCore', () => Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0);
+Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).address : false));
+Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).name : false));
+Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).delta : false));
+Template.registerHelper('getIsNewOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? !Cores.findOne({ owner: Session.get('clientManagerAccount') }).isUsed : false));
 Template.registerHelper('isCoreManagerThisManager', coreManagerAccount => coreManagerAccount === Session.get('clientManagerAccount'));
 // Modules
 Template.registerHelper('getUniverses', () => Universes.find({}, { sort: { index: 1 } }));
 Template.registerHelper('getUniverseOfThisPortfolioManager', () => {
   //TODO case for when portfolio manager has more than one core
   const universeAddress = Cores.findOne({
-    managerAddress: Session.get('clientManagerAccount')
+    owner: Session.get('clientManagerAccount')
   }).universeAddress
 
   return Universes.find({ address: universeAddress }, { sort: { createdAt: -1 } });

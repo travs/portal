@@ -298,14 +298,11 @@ Template.manage_holdings.events({
         buyTokenAddress,
         { from: managerAddress }
       ).then((result) => {
-        console.log(result);
-        // Check Logs
-        console.log('Make Order Content');
         for (let i = 0; i < result.logs.length; i += 1) {
           if (result.logs[i].event === 'OrderUpdate') {
-            console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
-            Meteor.call('orders.upsert', result.logs[i].args.id.toNumber());
             console.log('Order registered');
+            console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
+            Meteor.call('orders.syncOrderById', result.logs[i].args.id.toNumber());
             toastr.success('Order successfully submitted!');
           }
         }

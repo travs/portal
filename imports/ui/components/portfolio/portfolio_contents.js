@@ -6,7 +6,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 // Collections
 import { Cores } from '/imports/api/cores';
-import { Assets } from '/imports/api/assets.js';
+import { Assets } from '/imports/api/assets';
 import specs from '/imports/lib/assets/utils/specs.js';
 
 // Corresponding html file
@@ -15,23 +15,7 @@ import './portfolio_contents.html';
 Template.portfolio_contents.onCreated(() => {
   Meteor.subscribe('cores');
   Meteor.subscribe('assets');
-  // Portfolio Value in Wei
   Template.instance().totalPortfolioValue = new ReactiveVar();
-  const assetHolderAddress = FlowRouter.getParam('address');
-  const docs = Assets.findOne({ holder: assetHolderAddress });
-  let value = 0;
-  for (doc in docs) {
-    if (doc === undefined) continue;
-    if (doc.holdings === undefined) continue;
-    if (doc.priceFeed.price === undefined) continue;
-    if (doc.precision === undefined) continue;
-    const holdings = parseInt(doc.holdings, 10);
-    const price = parseInt(doc.priceFeed.price, 10);
-    const precision = parseInt(doc.precision, 10);
-    const divisor = Math.pow(10, precision);
-    value += holdings * (price / divisor);
-  }
-  Template.instance().totalPortfolioValue.set(value);
 });
 
 Template.portfolio_contents.helpers({
@@ -51,7 +35,7 @@ Template.portfolio_contents.helpers({
     if (Object.keys(this).length === 0) return '';
     const precision = this.precision;
     const divisor = Math.pow(10, precision);
-    return value / divisor;
+    return (value / divisor).toPrecision(4);
   },
   convertTo18Precision(value) {
     if (Object.keys(this).length === 0) return '';
@@ -63,14 +47,22 @@ Template.portfolio_contents.helpers({
     // TODO fix function naming
     return web3.toWei(1.0 / parseFloat(value, 10), 'ether');
   },
-  portfolioPercentrage() {
+  portfolioPercentage() {
     const holdings = parseInt(this.holdings, 10);
     const price = parseInt(this.priceFeed.price, 10);
     const precision = parseInt(this.precision, 10);
     const divisor = Math.pow(10, precision);
     const value = holdings * (price / divisor);
-    if (Template.instance().totalPortfolioValue.get() === 0) return 'N/A';
-    return (value * 100) / Template.instance().totalPortfolioValue.get();
+
+    const address = FlowRouter.getParam('address');
+    const doc = Cores.findOne({ address });
+    if (doc === undefined) {
+      return 'N/A';
+    }
+    const nav = doc.nav;
+    console.log(value, nav);
+
+    return ((value * 100) / nav).toPrecision(4);
   },
   change24h() {
     switch (this.name) {
@@ -84,10 +76,6 @@ Template.portfolio_contents.helpers({
   },
 });
 
-Template.portfolio_contents.onRendered(() => {
-  // Upsert Asset Collection
-  const address = FlowRouter.getParam('address');
-  Meteor.call('assets.sync', address);
-});
+Template.portfolio_contents.onRendered(() => {});
 
 Template.portfolio_contents.events({});

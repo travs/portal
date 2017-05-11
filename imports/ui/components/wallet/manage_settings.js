@@ -18,7 +18,7 @@ Template.manage_settings.onCreated(() => {
 
 Template.manage_settings.helpers({
    'currencies' : () => {
-    return ["BTC", "EUR", "USD", "ETH"];
+    return ["ETH", "BTC", "EUR", "USD"];
   }
 });
 
@@ -37,6 +37,10 @@ Template.manage_settings.events({
     Session.set('referenceCurrency', templateInstance.find('select#referencecurrency').value)
     console.log(Session.get('referenceCurrency'));
     switch(Session.get('referenceCurrency')) {
+      case "ETH": {
+        EthTools.setUnit('ether');
+        break;
+      }
       case "BTC": {
         EthTools.setUnit('btc');
         break;
@@ -49,10 +53,6 @@ Template.manage_settings.events({
         EthTools.setUnit('usd');
         break;
       }
-      case "ETH": {
-        EthTools.setUnit('ether');
-        break;
-      }
       default: return 'Error';
     }
   },
@@ -63,7 +63,7 @@ Template.manage_settings.events({
     if ((doc === undefined || managerAddress === undefined)) {
       return false;
     }
-    Meteor.call('cores.remove', doc._id);
+    Meteor.call('cores.removeById', doc._id);
     //TODO close modal
     return true;
   },

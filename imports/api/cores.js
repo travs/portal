@@ -1,7 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import AddressList from '/imports/lib/ethereum/address_list.js'
+import AddressList from '/imports/lib/ethereum/address_list.js';
+import specs from '/imports/lib/assets/utils/specs.js';
+import { convertFromTokenPrecision, convertTo18Precision } from '/imports/lib/assets/utils/functions.js';
+
 
 // SMART-CONTRACT IMPORT
 
@@ -23,138 +26,120 @@ if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish
 // COLLECTION METHODS
 
 Cores.watch = () => {
-  const cores = versionContract.CoreCreated({}, {
-    fromBlock: 0,
+  const cores = versionContract.CoreUpdate({}, {
+    fromBlock: web3.eth.blockNumber,
     toBlock: 'latest',
   });
 
   cores.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
-    Cores.syncCoreById(event.args._id['c'][0]); //see event object, doesnt have .id
+    console.log(`Cores.watch ${event.args.id}`)
+    Cores.syncCoreById(event.args.id.toNumber()); //see event object, doesnt have .id
   }));
 };
 
 Cores.sync = () => {
-  let numberOfCoresCreated;
-  versionContract.numCreatedCores().then((res) => {
-    numberOfCoresCreated = res.toNumber();
-    for (let index = 0; index < numberOfCoresCreated; index += 1) {
-      Cores.syncCoreById(index);
+  versionContract.getLastCoreId().then((lastId) => {
+    for (let id = 1; id < lastId.toNumber() + 1; id += 1) {
+      Cores.syncCoreById(id);
     }
   });
 };
 
-// TODO implement consistent w Orders
 Cores.syncCoreById = (id) => {
-    let coreContract;
-    // List of inputs for core collection
-    let address;
-    let name;
-    let managerAddress;
-    let universeAddress;
-    versionContract.cores(id).then((result) => {
-      address = result;
-      coreContract = Core.at(address);
-      return coreContract.name();
-    })
-    .then((result) => {
-      name = result;
-      return coreContract.owner();
-    })
-    .then((result) => {
-      managerAddress = result;
-      return coreContract.getUniverseAddress();
-    })
-    .then((result) => {
-      universeAddress = result;
-      // Insert into Portfolio collection
-      Cores.update(
-        { address },
-        { $set: {
-          address,
-          id,
-          name,
-          managerAddress,
-          universeAddress,
-          sharePrice: web3.toWei(1.0, 'ether'),
-          notional: 0,
-          intraday: '±0.0',
-          delta: '±0.0',
-          username: 'N/A',
-          createdAt: new Date(),
-        },
-        }, {
-          upsert: true,
-        });
+  let coreContract;
+  // Description of Core
+  let address;
+  let owner;
+  let name;
+  let symbol;
+  let decimals;
+  let isActive;
+  // Properties of Core
+  let universeAddress;
+  let referenceAsset;
+  // Calculation of Core
+  let nav;
+  let delta;
+  let sharePrice;
+  let sharesSupply;
+  let atTimestamp;
+
+  // Temp
+  let currGav;
+  let currTotalSupply;
+
+  // Get description values of Core
+  versionContract.cores(id).then((info) => {
+    [address, owner, name, symbol, decimals, isActive] = info;
+    coreContract = Core.at(address);
+    return coreContract.getUniverseAddress();
+  })
+  .then((result) => {
+    universeAddress = result;
+    return coreContract.getReferenceAsset();
+  })
+  .then((result) => {
+    referenceAsset = result;
+    return coreContract.getLastCalculations();
+  })
+  .then((calculations) => {
+    [nav, delta, sharePrice, sharesSupply, atTimestamp] = calculations;
+    return coreContract.calcGAV();
+  })
+  .then((result) => {
+    currGav = result.toNumber();
+    return coreContract.totalSupply();
+  })
+  .then((result) => {
+    currTotalSupply = result.toNumber();
+    // Insert into Portfolio collection
+    Cores.upsert({
+      id,
+    }, {
+      id,
+      address,
+      owner,
+      name,
+      symbol,
+      decimals: decimals.toNumber(),
+      isActive,
+      universeAddress,
+      referenceAsset,
+      nav: nav.toNumber(),
+      delta: delta.toNumber(),
+      sharePrice: sharePrice.toNumber(),
+      sharesSupply: currGav / currTotalSupply, // TODO sharePrice by NAV value
+      atTimestamp: atTimestamp.toNumber(),
+      createdAt: new Date(),
     });
-  // });
+  });
 };
 
 // METEOR METHODS
 
 Meteor.methods({
-  'cores.upsert': (address, name, managerAddress, universeAddress, sharePrice, notional, intraday) => {
-    check(address, String);
-    check(name, String);
-    check(managerAddress, String);
-    check(universeAddress, String);
-    check(sharePrice, String);
-    check(notional, Number);
-    check(intraday, Number);
-
-    Cores.update(
-      { address },
-      { $set: {
-        address,
-        name,
-        managerAddress,
-        universeAddress,
-        sharePrice,
-        notional,
-        intraday: '±0.0',
-        delta: '±0.0',
-        username: 'N/A',
-        createdAt: new Date(),
-      },
-      }, {
-        upsert: true,
-      });
+  'cores.setToUsed': (_id) => {
+    check(_id, String);
+    Cores.update(_id, { $set: { isUsed: true } });
   },
-  'cores.setToUsed': (portfolioId) => {
-    check(portfolioId, String);
-    Cores.update(portfolioId, { $set: { isUsed: true } });
+  'cores.sync': () => {
+    Cores.sync();
   },
-  'cores.sync': (address) => {
-    check(address, String);
-
-    // Sync these parameters
-    let notional;
-    let sharePrice;
-    const coreContract = Core.at(address);
-    coreContract.totalSupply().then((result) => {
-      notional = result.toNumber();
-      //TODO getSharePrice is potentially outdated information; better to exectue calcSharePrice
-      return coreContract.getSharePrice();
-    })
-    .then((result) => {
-      sharePrice = result.toNumber();
-      Cores.update(
-        { address },
-        { $set: {
-          notional,
-          sharePrice,
-        } });
-    });
+  'cores.syncCoreByAddress': (ofCore) => {
+    check(ofCore, String);
+    Cores.syncCoreByAddress(ofCore);
   },
-  'cores.remove': (portfolioId) => {
-    check(portfolioId, String);
+  'cores.syncCoreById': (id) => {
+    check(id, Number);
+    Cores.syncCoreById(id);
+  },
+  'cores.removeById': (id) => {
+    check(id, Number);
     // TODO Only the owner can delete it
     // if (portfolio.owner !== Meteor.userId())
     //   throw new Meteor.Error('not-authorized');
-    Cores.remove(portfolioId);
-  },
-  'cores.reset': () => {
-    // Cores.remove();
+    Cores.remove(id);
   },
 });

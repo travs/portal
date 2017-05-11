@@ -13,6 +13,10 @@ const Exchange = contract(ExchangeJson);
 Exchange.setProvider(web3.currentProvider);
 const exchangeContract = Exchange.at(AddressList.Exchange);
 
+// CONSTANTS
+
+const blocksPerDay = 21600;
+
 // COLLECTIONS
 
 const Trades = new Mongo.Collection('Trades');
@@ -34,7 +38,7 @@ if (Meteor.isServer) {
 
 Trades.watch = () => {
   const trades = exchangeContract.Trade({}, { // eslint-disable-line new-cap
-    fromBlock: 0,
+    fromBlock: web3.eth.blockNumber - blocksPerDay,
     toBlock: 'latest',
   });
 

@@ -25,7 +25,7 @@ if (Meteor.isServer) {
       it('can delete owned portfolio', () => {
         // Find the internal implementation of the portfolio method so we can
         // test it in isolation
-        const deletePortfolio = Meteor.server.method_handlers['cores.remove'];
+        const deletePortfolio = Meteor.server.method_handlers['cores.removeById'];
 
         // Set up a fake method invocation that looks like what the method expects
         const invocation = { userId };

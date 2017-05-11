@@ -12,8 +12,7 @@ Template.portal_list.onCreated(() => {
 
 
 Template.portal_list.helpers({
-  searchedCores: () => Cores.find({ name: {'$regex' : '.*' + Session.get('searchCores') + '.*', '$options' : 'i'} })
-
+  searchedCores: () => Cores.find({ name: {'$regex' : '.*' + Session.get('searchCores') + '.*', '$options' : 'i'} }, { sort: { sharePrice: -1 } })
 });
 
 
