@@ -71,9 +71,11 @@ Cores.syncCoreById = (id) => {
       return coreContract.calcNAV();
     })
     .then((result) => {
+      console.log('result NAV', result)
       const tokenAddress = specs.getTokenAddress('ETH-T');
       const tokenPrecision = specs.getTokenPrecisionByAddress(tokenAddress);
       nav = convertFromTokenPrecision(result.toNumber(), tokenPrecision);
+      console.log(nav);
       return coreContract.getUniverseAddress();
     })
     .then((result) => {

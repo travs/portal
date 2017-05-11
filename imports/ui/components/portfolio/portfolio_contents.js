@@ -59,9 +59,10 @@ Template.portfolio_contents.helpers({
     const price = parseInt(this.priceFeed.price, 10);
     const precision = parseInt(this.precision, 10);
     const divisor = Math.pow(10, precision);
+    console.log({holdings, price, precision, divisor})
     const value = holdings * (price / divisor);
     if (Template.instance().totalPortfolioValue.get() === 0) return 'N/A';
-    return (value * 100) / Template.instance().totalPortfolioValue.get();
+    return ((value * 100) / Template.instance().totalPortfolioValue.get())/Math.pow(10,18);
   },
   change24h() {
     switch (this.name) {
