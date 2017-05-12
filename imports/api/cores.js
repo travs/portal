@@ -89,11 +89,11 @@ Cores.syncCoreById = (id) => {
     return coreContract.calcGAV();
   })
   .then((result) => {
-    currGav = result.toNumber();
+    currGav = result;
     return coreContract.totalSupply();
   })
   .then((result) => {
-    currTotalSupply = result.toNumber();
+    currTotalSupply = result;
     // Insert into Portfolio collection
     Cores.upsert({
       id,
@@ -109,8 +109,8 @@ Cores.syncCoreById = (id) => {
       referenceAsset,
       nav: nav.toNumber(),
       delta: delta.toNumber(),
-      sharePrice: sharePrice.toNumber(),
-      sharesSupply: currGav / currTotalSupply, // TODO sharePrice by NAV value
+      sharePrice: currGav.toNumber() / currTotalSupply.toNumber(), // TODO sharePrice by NAV value
+      sharesSupply: currTotalSupply.toNumber(),
       atTimestamp: atTimestamp.toNumber(),
       createdAt: new Date(),
     });
