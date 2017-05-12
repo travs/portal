@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import AddressList from '/imports/lib/ethereum/address_list.js';
 import specs from '/imports/lib/assets/utils/specs.js';
-import { convertFromTokenPrecision, convertTo18Precision } from '/imports/lib/assets/utils/functions.js';
+import { convertFromTokenPrecision, convertToTokenPrecision } from '/imports/lib/assets/utils/functions.js';
 
 
 // SMART-CONTRACT IMPORT
@@ -94,6 +94,9 @@ Cores.syncCoreById = (id) => {
   })
   .then((result) => {
     currTotalSupply = result;
+    // TODO use NAV value
+    sharePrice = (currTotalSupply.toNumber() === 0) ? 1.0 : currGav.toNumber() / currTotalSupply.toNumber();
+    sharePrice = convertToTokenPrecision(sharePrice, decimals);
     // Insert into Portfolio collection
     Cores.upsert({
       id,
@@ -109,7 +112,7 @@ Cores.syncCoreById = (id) => {
       referenceAsset,
       nav: nav.toNumber(),
       delta: delta.toNumber(),
-      sharePrice: currGav.toNumber() / currTotalSupply.toNumber(), // TODO sharePrice by NAV value
+      sharePrice, // TODO sharePrice by NAV value
       sharesSupply: currTotalSupply.toNumber(),
       atTimestamp: atTimestamp.toNumber(),
       createdAt: new Date(),
