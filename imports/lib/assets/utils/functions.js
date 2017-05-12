@@ -152,3 +152,5 @@ exports.convertFromTokenPrecision = (value, precision) => {
   const divisor = Math.pow(10, precision);
   return value / divisor;
 };
+
+exports.convertToTokenPrecision = (value, precision) => value * Math.pow(10, precision);
