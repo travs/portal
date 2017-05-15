@@ -74,7 +74,8 @@ Template.portal_new.events({
           console.log('Core has been created');
           console.log(`Core id: ${id}`);
           Meteor.call('cores.syncCoreById', id);
-          toastr.success('Core successfully created!');
+          Session.set('isNew', true);
+          toastr.success('Fund successfully created!');
         }
       }
       return versionContract.getCore(id);
