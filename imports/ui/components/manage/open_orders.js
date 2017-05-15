@@ -36,12 +36,12 @@ Template.open_orders.helpers({
   },
   buyOrSell: buyTokenSymbol =>
     (buyTokenSymbol === (Session.get('currentAssetPair') || '---/---').split('/')[1]
-    ? 'buy' : 'sell'
+    ? 'sell' : 'buy'
   ),
   getPrice(order) {
     const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
     const details = order.buy.symbol === quoteTokenSymbol
-      ? order.buy : order.sell;
+      ? order.sell : order.buy;
 
     return details.price;
   },
