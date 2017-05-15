@@ -2,6 +2,7 @@
   "name": "portal",
   "private": true,
   "scripts": {
+    "start": "meteor",
     "lint": "eslint .",
     "pretest": "npm run lint --silent",
     "testrpc": "testrpc",
