@@ -34,23 +34,25 @@ Template.open_orders.helpers({
       ],
     });
   },
-  buyOrSell: buyTokenSymbol =>
-    (buyTokenSymbol === (Session.get('currentAssetPair') || '---/---').split('/')[1]
-    ? 'sell' : 'buy'
-  ),
-  getPrice(order) {
-    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = order.buy.symbol === quoteTokenSymbol
-      ? order.sell : order.buy;
+  buyOrSell(order) {
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    return details.price;
+    if(order.buy.symbol === baseTokenSymbol) return  'Buy'
+    else return 'Sell'
+}
+,
+  getPrice(order) {
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+
+    if(order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision) / convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
+    else return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision) / convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
+
   },
   getVolume(order) {
-    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = order.buy.symbol === quoteTokenSymbol
-      ? order.buy : order.sell;
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    return convertFromTokenPrecision(details.howMuch, details.precision);
+    if(order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
+    else return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
   },
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
 });

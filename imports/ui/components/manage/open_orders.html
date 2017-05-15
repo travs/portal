@@ -21,7 +21,7 @@
             {{#each order in getOpenOrders}}
               <tr>
                 <td>{{ formatDate order.createdAt }}</td>
-                <td>{{ buyOrSell order.buy.symbol }}</td>
+                <td>{{ buyOrSell order }}</td>
                 <td>{{ getPrice order }}</td>
                 <td>{{ getVolume order }}</td>
               </tr>
