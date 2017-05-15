@@ -4,12 +4,18 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 // NPM imports
 import moment from 'moment';
 // Utils
+import AddressList from '/imports/lib/ethereum/address_list.js';
 import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
 // Collections
 import { Orders } from '/imports/api/orders.js';
 
 // Corresponding html file
 import './open_orders.html';
+
+
+//Contracts
+import contract from 'truffle-contract';
+import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
 
 
 Template.open_orders.onCreated(() => {});
@@ -34,27 +40,44 @@ Template.open_orders.helpers({
       ],
     });
   },
-  buyOrSell: buyTokenSymbol =>
-    (buyTokenSymbol === (Session.get('currentAssetPair') || '---/---').split('/')[1]
-    ? 'buy' : 'sell'
-  ),
-  getPrice(order) {
-    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = order.buy.symbol === quoteTokenSymbol
-      ? order.buy : order.sell;
+  buyOrSell(order) {
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    return details.price;
+    if(order.buy.symbol === baseTokenSymbol) return  'Buy'
+    else return 'Sell'
+}
+,
+  getPrice(order) {
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+
+    if(order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision) / convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
+    else return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision) / convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
+
   },
   getVolume(order) {
-    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = order.buy.symbol === quoteTokenSymbol
-      ? order.buy : order.sell;
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    return convertFromTokenPrecision(details.howMuch, details.precision);
+    if(order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
+    else return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
   },
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
 });
 
 Template.open_orders.onRendered(() => {});
 
-Template.open_orders.events({});
+Template.open_orders.events({
+  'click .js-cancel': (event, order) => {
+    const Core = contract(CoreJson);
+    Core.setProvider(web3.currentProvider);
+    const coreAddress = FlowRouter.getParam('address');
+    const coreContract = Core.at(coreAddress);
+    const managerAddress = Session.get('clientManagerAccount');
+
+    coreContract.cancelOrder(AddressList.Exchange, event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
+      console.log(result);
+    })
+
+  }
+});
+
+
