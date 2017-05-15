@@ -23,18 +23,18 @@ Template.recent_trades.helpers({
     ? 'buy' : 'sell'
   ),
   getPrice(trade) {
-    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = trade.buy.symbol === quoteTokenSymbol
-      ? trade.buy : trade.sell;
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    return details.price;
+    if(trade.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision) / convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision);
+    else return convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision) / convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision);
+
   },
   getVolume(trade) {
-    const quoteTokenSymbol = (Session.get('currentAssetPair') || '---/---')[1];
-    const details = trade.buy.symbol === quoteTokenSymbol
-      ? trade.buy : trade.sell;
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    return convertFromTokenPrecision(details.howMuch, details.precision);
+    if(trade.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision);
+    else return convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision);
+
   },
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
 });
