@@ -35,7 +35,7 @@ Template.portfolio_contents.helpers({
     if (Object.keys(this).length === 0) return '';
     const precision = this.precision;
     const divisor = Math.pow(10, precision);
-    return (value / divisor).toPrecision(4);
+    return (value / divisor).toFixed(4);
   },
   convertTo18Precision(value) {
     if (Object.keys(this).length === 0) return '';
@@ -62,7 +62,7 @@ Template.portfolio_contents.helpers({
     const nav = doc.nav;
     console.log(value, nav);
 
-    return ((value * 100) / nav).toPrecision(4);
+    return ((value * 100) / nav).toFixed(2);
   },
   change24h() {
     switch (this.name) {

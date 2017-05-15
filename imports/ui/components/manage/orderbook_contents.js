@@ -29,10 +29,10 @@ Template.orderbook_contents.helpers({
     }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
   },
   calcBuyPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    return convertFromTokenPrecision(sellHowMuch, sellPrecision) / convertFromTokenPrecision(buyHowMuch, buyPrecision);
+    return (convertFromTokenPrecision(sellHowMuch, sellPrecision) / convertFromTokenPrecision(buyHowMuch, buyPrecision)).toFixed(4);
   },
   calcSellPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    return convertFromTokenPrecision(buyHowMuch, buyPrecision)/convertFromTokenPrecision(sellHowMuch, sellPrecision);
+    return (convertFromTokenPrecision(buyHowMuch, buyPrecision)/convertFromTokenPrecision(sellHowMuch, sellPrecision)).toFixed(4);
   },
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');

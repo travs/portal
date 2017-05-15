@@ -50,8 +50,8 @@ Template.open_orders.helpers({
   getPrice(order) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    if(order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision) / convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
-    else return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision) / convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
+    if(order.buy.symbol === baseTokenSymbol) return (convertFromTokenPrecision(order.sell.howMuch, order.sell.precision) / convertFromTokenPrecision(order.buy.howMuch, order.buy.precision)).toFixed(4);
+    else return (convertFromTokenPrecision(order.buy.howMuch, order.buy.precision) / convertFromTokenPrecision(order.sell.howMuch, order.sell.precision)).toFixed(4);
 
   },
   getVolume(order) {
