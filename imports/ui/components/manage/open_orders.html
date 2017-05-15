@@ -1,5 +1,4 @@
 <template name="open_orders">
-
   <div class="row order-book-head">
     <div class="col-md-12">
       <h2 class="exchange-title">My Open Orders</h2>
@@ -15,6 +14,7 @@
               <th>Type</th>
               <th>Buy Price <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
               <th>Vol<p>({{quoteTokenSymbol}})</p></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -24,6 +24,11 @@
                 <td>{{ buyOrSell order }}</td>
                 <td>{{ getPrice order }}</td>
                 <td>{{ getVolume order }}</td>
+                <td>
+                  <button class="cancel js-cancel" type="button" data-id="{{order.id}}">
+                    <b>X</b>
+                  </button>
+                </td>
               </tr>
             {{/each}}
           </tbody>
