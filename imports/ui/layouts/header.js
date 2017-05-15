@@ -14,6 +14,12 @@ Template.layout_header.onCreated(() => {
 Template.layout_header.onRendered(() => {
 });
 
+Template.layout_header.helpers({
+  isNew() {
+    return Session.get('isNew');
+  },
+});
+
 Template.layout_header.events({
   'click .portfolio'(event) {
     // Prevent default browser form submit
@@ -53,4 +59,7 @@ Template.layout_header.events({
       FlowRouter.go(`/manage/${doc.address}`);
     }
   },
+  'click .newclick'() {
+    Session.set('isNew', false);
+  }
 });

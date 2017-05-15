@@ -22,7 +22,9 @@
                     {{#if hasManagerCreatedCore}}
                       {{getManagerNameOfCore}}
                       {{#if getIsNewOfCore}}
-                        <span class="badge btn-outline-green" data-badge-caption="New">New</span>
+                        {{#if isNew}}
+                        <span class="badge btn-outline-green newclick" data-badge-caption="New">New</span>
+                        {{/if}}
                       {{/if}}
                     {{else}}
                       Portfolio <span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>
