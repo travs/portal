@@ -50,7 +50,7 @@ Template.wallet_contents.helpers({
     if (Object.keys(this).length === 0) return '';
     const precision = this.precision;
     const divisor = Math.pow(10, precision);
-    return value / divisor;
+    return (value / divisor).toFixed(4);
   },
   convertTo18Precision(value) {
     if (Object.keys(this).length === 0) return '';
