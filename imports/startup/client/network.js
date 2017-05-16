@@ -40,7 +40,7 @@ function checkAccounts() {
 
 // Initialize everything on new network
 function initNetwork(newNetwork) {
-  Session.set('isClientConnected', true);
+  Session.set('isClientConnected', false);
   checkAccounts();
   Session.set('network', newNetwork);
   Session.set('latestBlock', 0);
