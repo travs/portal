@@ -10,7 +10,7 @@ Template.ux_index_portal.onCreated(() => {
 Template.ux_index_portal.events({
 	'input #searchCores': (event, template) => {
 		Session.set("searchCores", event.currentTarget.value);
-	}
+	},
 })
 
 Template.ux_index_graph.onCreated(() => {});
