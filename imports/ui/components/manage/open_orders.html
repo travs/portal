@@ -20,7 +20,7 @@
           <tbody>
             {{#each order in getOpenOrders}}
               <tr>
-                <td>{{ formatDate order.createdAt }}</td>
+                <td>{{ formatDate order.blockTimestamp }}</td>
                 <td>{{ buyOrSell order }}</td>
                 <td>{{ getPrice order }}</td>
                 <td>{{ getVolume order }}</td>
