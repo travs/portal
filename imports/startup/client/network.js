@@ -17,8 +17,10 @@ function checkAccounts() {
           web3.eth.defaultAccount = Session.get('clientManagerAccount');
         } else if (accounts.length > 0) {
           web3.eth.defaultAccount = accounts[0];
+          Session.set('isClientConnected', true);
         } else {
           web3.eth.defaultAccount = undefined;
+          Session.set('isClientConnected', false);
         }
       }
       localStorage.setItem('clientManagerAccount', web3.eth.defaultAccount);
