@@ -12,16 +12,16 @@
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%">
             <thead>
               <tr>
-                <th>Cum. Vol. <p>({{quoteTokenSymbol}})</p></th>
-                <th>Vol <p>({{quoteTokenSymbol}})</p></th>
-                <th>Buy Price <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
+                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
+                <th>Vol <p>({{baseTokenSymbol}})</p></th>
+                <th>Bid <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
               </tr>
             </thead>
             <tbody>
               {{#each order in buyOrders}}
               <tr class="js-takeorder interactive" data-id="{{order.id}}">
                 <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision @index}}</td>
-                <td>{{convertFromTokenPrecision order.sell.howMuch order.sell.precision}}</td>
+                <td>{{convertFromTokenPrecision order.buy.howMuch order.buy.precision}}</td>
                 <td>{{calcBuyPrice order.sell.howMuch order.sell.precision order.buy.howMuch order.buy.precision}}</td>
               </tr>
               {{/each}}
@@ -35,16 +35,16 @@
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%">
             <thead>
               <tr>
-                <th>Sell Price <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{quoteTokenSymbol}})</p></th>
-                <th>Cum. Vol. <p>({{quoteTokenSymbol}})</p></th>
+                <th>Ask <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
+                <th>Vol <p>({{baseTokenSymbol}})</p></th>
+                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
               </tr>
             </thead>
             <tbody>
               {{#each order in sellOrders}}
               <tr class="js-takeorder interactive" data-id="{{order.id}}">
                 <td>{{calcSellPrice order.sell.howMuch order.sell.precision order.buy.howMuch order.buy.precision}}</td>
-                <td>{{convertFromTokenPrecision order.buy.howMuch order.buy.precision}}</td>
+                <td>{{convertFromTokenPrecision order.sell.howMuch order.sell.precision}}</td>
                 <td>{{calcSellCumulativeVolume order.sell.price order.sell.precision @index}}</td>
               </tr>
               {{/each}}

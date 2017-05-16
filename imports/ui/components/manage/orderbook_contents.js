@@ -54,7 +54,7 @@ Template.orderbook_contents.helpers({
     let cumulativeDouble = 0;
 
     for (let i = 0; i <= index; i += 1) {
-      cumulativeDouble += cheaperOrders[i].sell.howMuch;
+      cumulativeDouble += cheaperOrders[i].buy.howMuch;
     }
 
     return convertFromTokenPrecision(cumulativeDouble, precision);
@@ -71,7 +71,7 @@ Template.orderbook_contents.helpers({
     let cumulativeDouble = 0;
 
     for (let i = 0; i <= index; i += 1) {
-      cumulativeDouble += cheaperOrders[i].buy.howMuch;
+      cumulativeDouble += cheaperOrders[i].sell.howMuch;
     }
 
     return convertFromTokenPrecision(cumulativeDouble, precision);

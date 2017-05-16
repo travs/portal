@@ -32,8 +32,8 @@ Template.recent_trades.helpers({
   getVolume(trade) {
   const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     console.log(trade);
-    if(trade.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision);
-    else return convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision);
+    if(trade.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision);
+    else return convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision);
 
   },
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
