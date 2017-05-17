@@ -41,8 +41,7 @@ Template.portfolio_overview.helpers({
       template.personalShareAmount.set(result.toNumber());
       return coreContract.getLastCalculations();
     }).then((result) => {
-      console.log('Core information');
-      console.log(result);
+      console.log('Core information: ', result);
     });
     return `${web3.fromWei(template.personalShareAmount.get(), 'ether')} of
       ${web3.fromWei(template.totalShareAmount.get(), 'ether')}`;
