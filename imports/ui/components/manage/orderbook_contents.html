@@ -22,8 +22,8 @@
               {{#each order in buyOrders}}
               <tr style="position: relative">
                 <td colspan="3" style="position: relative; color: transparent;">
-                  {{percentageOfTotalSum order.buy.price order.buy.precision @index}}
-                  <div style="position: absolute; background-color:rgba(40, 193, 44, 0.3); height: 100%; width: {{percentageOfTotalSum order.buy.price order.buy.precision @index}}%; right: 0; top: 0; "></div>
+                  {{percentageOfBuySum order.buy.price order.buy.precision @index}}
+                  <div style="position: absolute; background-color:rgba(40, 193, 44, 0.3); height: 100%; width: {{percentageOfBuySum order.buy.price order.buy.precision @index}}%; right: 0; top: 0; "></div>
                 </td>
               </tr>
               {{/each}}
@@ -51,8 +51,33 @@
         </div>
       </div>
 
+
+
+
       <div class="col-md-6">
-        <div class="table-responsive">
+        <div class="table-responsive" style="position: relative;">
+     <!-- Shadow table for sell side -->
+          <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;">
+            <thead>
+              <tr>
+                <th>Ask <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
+                <th>Vol <p>({{baseTokenSymbol}})</p></th>
+                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each order in sellOrders}}
+              <tr style="position: relative">
+                <td colspan="3" style="position: relative; color: transparent;">
+                  {{percentageOfSellSum order.sell.price order.sell.precision @index}}
+                  <div style="position: absolute; background-color:rgba(255, 0, 0, 0.4); height: 100%; width: {{percentageOfSellSum order.sell.price order.sell.precision @index}}%; left: 0; top: 0; "></div>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+
+          <!-- Real table for sell side -->
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%">
             <thead>
               <tr>
