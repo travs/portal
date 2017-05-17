@@ -16,13 +16,8 @@ Template.summary_melon.helpers({
     const numberOfCores = Cores.find().count();
     let coreAddress = FlowRouter.getParam('address');
 
-    if(!coreAddress && Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0) {
+    if(Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0) {
       coreAddress = Cores.findOne({ owner: Session.get('clientManagerAccount') }).address;
-    } else if(!coreAddress && Cores.find({ owner: Session.get('clientManagerAccount') }).count() == 0) {
-        return 'No ranking available.'
-    }
-
-    if(coreAddress) {
       const sortedCores = Cores.find({}, { sort: { sharePrice: -1 } }).fetch();
       let ranking;
       for (let i = 0; i < sortedCores.length; i++) {
@@ -32,7 +27,10 @@ Template.summary_melon.helpers({
         }
       }
       return ranking + ' out of ' + numberOfCores;
+    } else if(Cores.find({ owner: Session.get('clientManagerAccount') }).count() == 0) {
+        return 'No ranking available.'
     }
+
   },
 });
 
