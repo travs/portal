@@ -56,7 +56,6 @@ Template.open_orders.helpers({
   },
   getVolume(order) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    console.log('here ', order)
     if(order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
     else return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
   },
