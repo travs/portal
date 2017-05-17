@@ -60,7 +60,6 @@ Template.portfolio_contents.helpers({
       return 'N/A';
     }
     const nav = doc.nav;
-    console.log(value, nav);
 
     return ((value * 100) / nav).toFixed(2);
   },
