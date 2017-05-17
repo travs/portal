@@ -22,13 +22,10 @@ Template.wallet_contents.onCreated(() => {
   // Portfolio Value in Wei
   Template.instance().totalPortfolioValue = new ReactiveVar();
   const assetHolderAddress = FlowRouter.getParam('address');
-  const docs = Assets.findOne({ holder: assetHolderAddress });
+  const docs = Assets.find({ holder: assetHolderAddress }).fetch();
+  console.log('docs ', docs);
   let value = 0;
   for (doc in docs) {
-    if (doc === undefined) continue;
-    if (doc.holdings === undefined) continue;
-    if (doc.priceFeed.price === undefined) continue;
-    if (doc.precision === undefined) continue;
     const holdings = parseInt(doc.holdings, 10);
     const price = parseInt(doc.priceFeed.price, 10);
     const precision = parseInt(doc.precision, 10);
@@ -68,6 +65,7 @@ Template.wallet_contents.helpers({
     const precision = parseInt(this.precision, 10);
     const divisor = Math.pow(10, precision);
     const value = holdings * (price / divisor);
+    console.log(Template.instance().totalPortfolioValue.get())
     if (Template.instance().totalPortfolioValue.get() === 0) return 'N/A';
     return (value * 100) / Template.instance().totalPortfolioValue.get();
   },
