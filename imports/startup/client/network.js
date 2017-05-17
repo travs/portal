@@ -9,7 +9,8 @@ import specs from '/imports/lib/assets/utils/specs.js';
 // Otherwise set it to localStorage, Session, or first element in accounts
 function checkAccounts() {
   web3.eth.getAccounts((error, accounts) => {
-    if (!error) {
+    if(error) Session.set('isClientConnected', false);
+    else if (!error) {
       if (!_.contains(accounts, web3.eth.defaultAccount)) {
         if (_.contains(accounts, localStorage.getItem('clientManagerAccount'))) {
           web3.eth.defaultAccount = localStorage.getItem('clientManagerAccount');
@@ -32,15 +33,16 @@ function checkAccounts() {
       Session.set('clientManagerAccount', web3.eth.defaultAccount);
       Session.set('getAccountCount', accounts.length);
       Session.set('clientAccountList', accounts);
+      Session.set('isClientConnected', true);
     }
   });
 }
 
 // Initialize everything on new network
 function initNetwork(newNetwork) {
+  Session.set('isClientConnected', false);
   checkAccounts();
   Session.set('network', newNetwork);
-  Session.set('isClientConnected', true);
   Session.set('latestBlock', 0);
   Session.set('startBlock', 0);
 }

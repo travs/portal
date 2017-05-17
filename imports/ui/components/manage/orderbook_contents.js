@@ -26,7 +26,7 @@ Template.orderbook_contents.helpers({
       isActive: true,
       'buy.symbol': baseTokenSymbol,
       'sell.symbol': quoteTokenSymbol,
-    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
+    }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } });
   },
   calcBuyPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
     return (convertFromTokenPrecision(sellHowMuch, sellPrecision) / convertFromTokenPrecision(buyHowMuch, buyPrecision)).toFixed(4);
@@ -46,10 +46,10 @@ Template.orderbook_contents.helpers({
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     const cheaperOrders = Orders.find({
       isActive: true,
-      'buy.price': { $lte: buyPrice },
+      'buy.price': { $gte: buyPrice },
       'buy.symbol': baseTokenSymbol,
       'sell.symbol': quoteTokenSymbol,
-    }, { sort: { 'buy.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
 
     let cumulativeDouble = 0;
 

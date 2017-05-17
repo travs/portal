@@ -8,21 +8,28 @@
     {{#if isClientConnected}}
       {{#if clientManagerAccount}}
         {{#if isKovanNetwork}}
-          {{#if hasManagerCreatedCore}}
+          {{#if clientManagerAccountBalance}}
+            {{#if hasManagerCreatedCore}}
               {{> portal_list}}
+            {{else}}
+              {{> portal_new}}
+            {{/if}}
           {{else}}
-            {{> portal_new}}
+            {{> ux_insufficient_funds}}
           {{/if}}
         {{else}}
+          {{> ux_ethereum_testnet}}
           {{> portal_list}}
         {{/if}}
       {{else}}
         {{> portal_list}}
       {{/if}}
     {{else}}
+      {{> ux_no_account_selected}}
       {{> portal_list}}
     {{/if}}
   {{else}}
     {{> ux_server_connection}}
   {{/if}}
 </template>
+

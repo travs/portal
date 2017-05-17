@@ -9,6 +9,7 @@ import '/imports/ui/components/portal/portal_new.js';
 // Corresponding html file
 import './portal.html';
 
+import {Tracker} from 'meteor/tracker'
 
 Template.portal.onCreated(() => {
   Meteor.subscribe('cores');
