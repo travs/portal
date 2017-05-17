@@ -14,22 +14,19 @@
             {{else}}
               {{> portal_new}}
             {{/if}}
-          {{else}}
+          {{else}} <!-- Client balance zero -->
             {{> ux_insufficient_funds}}
           {{/if}}
-        {{else}}
+        {{else}} <!-- Client not on Kovan -->
           {{> ux_ethereum_testnet}}
-          {{> portal_list}}
         {{/if}}
-      {{else}}
-        {{> portal_list}}
+      {{else}} <!-- Client has no account selected -->
+        {{> ux_no_account_selected}}
       {{/if}}
-    {{else}}
+    {{else}} <!-- Client not connected -->
       {{> ux_no_account_selected}}
-      {{> portal_list}}
     {{/if}}
-  {{else}}
+  {{else}} <!-- Server not connected -->
     {{> ux_server_connection}}
   {{/if}}
 </template>
-
