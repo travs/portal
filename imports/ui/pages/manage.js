@@ -91,8 +91,8 @@ Template.manage.onRendered(function () {
 
       const allOrders = Orders.find({
         isActive: true,
-        'buy.symbol': { $in: [baseTokenSymbol] }, /* ,quoteTokenSymbol */
-        'sell.symbol': { $in: [quoteTokenSymbol] }, /*baseTokenSymbol, */
+        'buy.symbol': { $in: [baseTokenSymbol, quoteTokenSymbol] },
+        'sell.symbol': { $in: [baseTokenSymbol, quoteTokenSymbol] },
       }, {
         sort: {
           'buy.symbol': 1,
@@ -112,7 +112,8 @@ Template.manage.onRendered(function () {
         cumulativeVolume: order.buy.symbol === baseTokenSymbol
           ? convertFromTokenPrecision(calcBuyCumulativeVolume(order), order.buy.precision)
           : convertFromTokenPrecision(calcSellCumulativeVolume(order), order.sell.precision),
-      })); // .sort((a, b) => (a > b ? 1 : -1));
+      }))
+      .sort((a, b) => (a.price > b.price ? 1 : -1));
 
       Meteor.defer(() => {
         const svg = d3.select('svg.js-charts');
@@ -120,11 +121,9 @@ Template.manage.onRendered(function () {
         const data = allOrders.map(o => ({
           price: o.price,
           howMuch: o.howMuch,
-          total: o.cumulativeVolume,
+          total: parseInt(o.cumulativeVolume, 10),
           type: o.buySymbol === baseTokenSymbol ? 'bid' : 'ask',
         }));
-
-        console.log(data);
 
         drawOrderbook(data, svg, d3);
       });
