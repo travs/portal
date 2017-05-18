@@ -16,7 +16,7 @@ import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Con
 import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
 import AssetJson from '/imports/lib/assets/contracts/AssetProtocol.json';
 import EtherTokenJson from '/imports/lib/assets/contracts/EtherToken.json';
-// import EuroTokenJson from '/imports/lib/assets/contracts/EuroToken.json';
+import ERC20Json from '/imports/lib/assets/contracts/ERC20.json';
 // import BitcoinTokenJson from '/imports/lib/assets/contracts/BitcoinToken.json';
 // import RepTokenJson from '/imports/lib/assets/contracts/RepToken.json';
 
@@ -206,7 +206,7 @@ Template.manage_holdings.events({
       const exchangeContract = Exchange.at(AddressList.Exchange);
 
 
-    // Case form pre-filled w order book information
+    // Case 1: form pre-filled w order book information
     if (Session.get('selectedOrderId') !== null) {
       const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
       const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).totalWantedBuyAmount;
@@ -222,7 +222,7 @@ Template.manage_holdings.events({
       } else {
         quantity = parseFloat(templateInstance.find('input.js-volume').value, 10)* Math.pow(10, buyTokenPrecision);
       }
-
+      // Case 1.1 : Trade through fund
       if(Session.get('fromPortfolio')) {
         for (let i = 0; i < setOfOrders.length; i += 1) {
           if (quantity) {
@@ -255,44 +255,96 @@ Template.manage_holdings.events({
           }
         }
       }
+      //Case 1.2 : Trade through manager's wallet
       else {
+        // Differenciation case for Ethertokens and ERC20 tokens
+        const sellTokenAddress = Specs.getTokenAddress(setOfOrders[0]['buy']['symbol']);
+        console.log(sellTokenAddress)
+        let assetContract;
+        if(sellTokenAddress == AddressList.EtherToken) {
+          const EtherToken = contract(EtherTokenJson);
+          EtherToken.setProvider(web3.currentProvider);
+          assetContract = EtherToken.at(sellTokenAddress);
+        } else {
+          const Asset = contract(AssetJson);
+          Asset.setProvider(web3.currentProvider);
+          assetContract = Asset.at(sellTokenAddress);
+        }
+
         console.log('Manager takes offer for his own wallet');
-        for (let i = 0; i < setOfOrders.length; i += 1) {
-          if (quantity) {
-            if (quantity >= setOfOrders[i]['sell']['howMuch']) {
-              console.log('Manager Address ', managerAddress)
-              console.log('Desired uantity ', quantity, ' Available quantity ', setOfOrders[i]['sell']['howMuch'])
-              exchangeContract.take(setOfOrders[i]['id'], setOfOrders[i]['sell']['howMuch'], { from: managerAddress }).then((result) => {
-                console.log(result);
-                console.log('Transaction for manager wallet for order id ', setOfOrders[i]['id'], ' sent!');
-                Meteor.call('orders.sync');
-                Session.get('selectedOrderId') !== null
-                toastr.success('Order successfully executed - for manager wallet!');
-              }).catch((err) => {
-                console.log(err)
-                toastr.error('Oops, an error has occured. Please verify the transaction informations');
-              });
-                quantity -= setOfOrders[i]['sell']['howMuch'];
-            } else if (quantity < setOfOrders[i]['sell']['howMuch']) {
-              exchangeContract.take(setOfOrders[i]['id'], quantity, { from: managerAddress }).then((result) => {
-                console.log(result);
-                console.log('Transaction for manager wallet for order id ', setOfOrders[i]['id'], ' executed!');
-                Meteor.call('orders.sync');
-                Session.set('selectedOrderId', null);
-                toastr.success('Order successfully executed!');
-              }).catch((err) => {
-                toastr.error('Oops, an error has occured. Please verify the transaction informations');
-                console.log(err);
-              });
-                quantity = 0;
+        //Case 1.2.1 : Sell token is EtherToken (not ERC20)
+        if(sellTokenAddress == AddressList.EtherToken) {
+          for (let i = 0; i < setOfOrders.length; i += 1) {
+            if (quantity) {
+              const quantityToApprove = setOfOrders[i]['buy']['howMuch'];
+              if (quantity >= setOfOrders[i]['sell']['howMuch']) {
+                assetContract.deposit({from: managerAddress, value: quantityToApprove}).then((result) => {
+                  return assetContract.approve(AddressList.Exchange, quantityToApprove, {from: managerAddress})
+                }).then((result) => {
+                  return exchangeContract.take(setOfOrders[i]['id'], quantity, { from: managerAddress })
+                }).then((result) => {
+                  console.log('Transaction for order id ', setOfOrders[i]['id'], ' sent!');
+                  Meteor.call('orders.sync');
+                  Session.get('selectedOrderId') !== null
+                  toastr.success('Order successfully executed!');
+                })
+              } else if (quantity < setOfOrders[i]['sell']['howMuch']) {
+                assetContract.deposit({from: managerAddress, value: quantityToApprove}).then((result) => {
+                  return assetContract.approve(AddressList.Exchange, quantityToApprove, {from: managerAddress})
+                }).then((result) => {
+                  exchangeContract.take(setOfOrders[i]['id'], quantity, { from: managerAddress })
+                }).then((result) => {
+                  console.log(result);
+                  console.log('Transaction for manager wallet for order id ', setOfOrders[i]['id'], ' executed!');
+                  Meteor.call('orders.sync');
+                  Session.set('selectedOrderId', null);
+                  toastr.success('Order successfully executed!');
+                }).catch((err) => {
+                  toastr.error('Oops, an error has occured. Please verify the transaction informations');
+                  console.log(err);
+                });
+                  quantity = 0;
+            }
             }
           }
         }
+        //Case 1.2.2 : Sell token is ERC20
+        else {
+          for (let i = 0; i < setOfOrders.length; i += 1) {
+            if (quantity) {
+              const quantityToApprove = setOfOrders[i]['buy']['howMuch'];
+              if (quantity >= setOfOrders[i]['sell']['howMuch']) {
+                assetContract.approve(AddressList.Exchange, quantityToApprove, {from: managerAddress}).then((result) => {
+                  return exchangeContract.take(setOfOrders[i]['id'], quantity, { from: managerAddress })
+                }).then((result) => {
+                  console.log('Transaction for order id ', setOfOrders[i]['id'], ' sent!');
+                  Meteor.call('orders.sync');
+                  Session.get('selectedOrderId') !== null
+                  toastr.success('Order successfully executed!');
+                })
+              } else if (quantity < setOfOrders[i]['sell']['howMuch']) {
+                assetContract.approve(AddressList.Exchange, quantityToApprove, {from: managerAddress}).then((result) => {
+                  exchangeContract.take(setOfOrders[i]['id'], quantity, { from: managerAddress })
+                }).then((result) => {
+                  console.log(result);
+                  console.log('Transaction for manager wallet for order id ', setOfOrders[i]['id'], ' executed!');
+                  Meteor.call('orders.sync');
+                  Session.set('selectedOrderId', null);
+                  toastr.success('Order successfully executed!');
+                }).catch((err) => {
+                  toastr.error('Oops, an error has occured. Please verify the transaction informations');
+                  console.log(err);
+                });
+                  quantity = 0;
+            }
+          }
       }
-    // Case: form filled out manually by manager
     }
+  }
+}
 
-    else if (Session.get('selectedOrderId') == null) {
+  //Case 2: User enters manually order information
+  else if (Session.get('selectedOrderId') == null) {
       const type = Template.instance().state.get('buyingSelected') ? 'Buy' : 'Sell';
       const price = parseFloat(templateInstance.find('input.js-price').value, 10);
       const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
@@ -334,15 +386,18 @@ Template.manage_holdings.events({
       const sellBaseUnitVolume = sellVolume * Math.pow(10, sellTokenPrecision);
       const buyBaseUnitVolume = buyVolume * Math.pow(10, buyTokenPrecision);
 
+    // Differenciation case for Ethertokens and ERC20 tokens
+    let assetContract;
+    if(sellTokenAddress == AddressList.EtherToken) {
+      const EtherToken = contract(EtherTokenJson);
+      EtherToken.setProvider(web3.currentProvider);
+      assetContract = EtherToken.at(sellTokenAddress);
+    } else {
       const Asset = contract(AssetJson);
       Asset.setProvider(web3.currentProvider);
-      const assetContract = Asset.at(sellTokenAddress);
-
-    const EtherToken = contract(EtherTokenJson);
-    EtherToken.setProvider(web3.currentProvider);
-    const EtherTokenContract = EtherToken.at(sellTokenAddress);
-
-
+      assetContract = Asset.at(sellTokenAddress);
+    }
+      //Case 2.1 : Trade through fund
       if (Session.get('fromPortfolio')) {
         coreContract.makeOrder(
           AddressList.Exchange,
@@ -364,29 +419,54 @@ Template.manage_holdings.events({
           toastr.error('Oops, an error has occured. Please verify your order informations.');
           throw err;
         });
-      } else {
+      }
+      //Case 2.2 : Trade through manager's wallet
+      else {
         console.log('Manager makes offer for his own wallet');
         console.log(sellTokenAddress, AddressList.EtherToken)
-        EtherTokenContract.deposit({from: managerAddress, value: sellBaseUnitVolume}).then((result) => {
-          console.log('result from deposit ', result);
-          return EtherTokenContract.approve(AddressList.Exchange, sellBaseUnitVolume, {from: managerAddress})
-        }).then((result) => {
-          console.log('result from approve ', result);
-          return exchangeContract.make(sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, { from: managerAddress })
-        }).then((result) => {
-          for (let i = 0; i < result.logs.length; i += 1) {
-            if (result.logs[i].event === 'OrderUpdate') {
-              console.log('obj ', result.logs[i])
-              console.log('Order registered for manager wallet');
-              console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
-              Meteor.call('orders.syncOrderById', result.logs[i].args.id.toNumber());
-              toastr.success('Order successfully submitted!');
+        //Case 2.2.1 : Sell token is Ether token (not ERC20)
+        if(sellTokenAddress === AddressList.EtherToken) {
+          assetContract.deposit({from: managerAddress, value: sellBaseUnitVolume}).then((result) => {
+            console.log('result from deposit ', result);
+            return assetContract.approve(AddressList.Exchange, sellBaseUnitVolume, {from: managerAddress})
+          }).then((result) => {
+            console.log('result from approve ', result);
+            return exchangeContract.make(sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, { from: managerAddress })
+          }).then((result) => {
+            for (let i = 0; i < result.logs.length; i += 1) {
+              if (result.logs[i].event === 'OrderUpdate') {
+                console.log('obj ', result.logs[i])
+                console.log('Order registered for manager wallet');
+                console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
+                Meteor.call('orders.syncOrderById', result.logs[i].args.id.toNumber());
+                toastr.success('Order successfully submitted!');
+              }
             }
-          }
-        }).catch((err) => {
-          toastr.error('Oops, an error has occured. Please verify your order informations.');
-          throw err;
-        });
+          }).catch((err) => {
+            toastr.error('Oops, an error has occured. Please verify your order informations.');
+            throw err;
+          });
+        }
+        //Case 2.2.2 : Sell token is ERC20
+        else {
+          assetContract.approve(AddressList.Exchange, sellBaseUnitVolume, {from: managerAddress})
+          .then((result) => {
+            console.log('result from approve ', result);
+            return exchangeContract.make(sellBaseUnitVolume, sellTokenAddress, buyBaseUnitVolume, buyTokenAddress, { from: managerAddress })}).then((result) => {
+            for (let i = 0; i < result.logs.length; i += 1) {
+              if (result.logs[i].event === 'OrderUpdate') {
+                console.log('obj ', result.logs[i])
+                console.log('Order registered for manager wallet');
+                console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
+                Meteor.call('orders.syncOrderById', result.logs[i].args.id.toNumber());
+                toastr.success('Order successfully submitted!');
+              }
+            }
+          }).catch((err) => {
+            toastr.error('Oops, an error has occured. Please verify your order informations.');
+            throw err;
+          });
+        }
       }
     }
   },
