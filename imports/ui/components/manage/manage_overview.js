@@ -46,6 +46,7 @@ Template.manage_overview.onRendered(() => {
     state: Session.get('fromPortfolio'),
     onSwitchChange(event, state) {
       Session.set('fromPortfolio', state);
+      console.log(Session.get('fromPortfolio'))
     },
   });
 });
