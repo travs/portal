@@ -1,6 +1,6 @@
 // NPM
 import d3 from 'd3';
-import select2 from 'select2';
+import drawOrderbook from 'order-book-visualisation';
 // Meteor
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
@@ -89,13 +89,6 @@ Template.manage.onRendered(function () {
 
       Meteor.defer(() => {
         const svg = d3.select('svg.js-charts');
-        const width = svg.attr('width');
-        const height = svg.attr('height');
-
-        const x = d3.scaleLinear().rangeRound([0, width]); // .padding(0.1);
-        const y = d3.scaleLinear().rangeRound([height, 0]);
-
-        const g = svg.append('g');
 
         const data = allOrders.map(o => ({
           price: o.buyPrice,
@@ -105,30 +98,7 @@ Template.manage.onRendered(function () {
 
         console.log(d3.min(data, d => d.price), d3.max(data, d => d.price));
 
-
-        x.domain([
-          d3.min(data, d => d.price),
-          d3.max(data, d => d.price) + 1,
-        ]);
-        y.domain([0, d3.max(data, d => d.total)]);
-
-        g.append('g')
-            .attr('class', 'axis axis--x')
-            .attr('transform', `translate(0,${height})`)
-            .call(d3.axisBottom(x));
-
-        g.append('g')
-            .attr('class', 'axis axis--y')
-            .call(d3.axisLeft(y).ticks(10));
-
-        g.selectAll('.bar')
-          .data(data)
-          .enter().append('rect')
-            .attr('class', d => `bar ${d.type}`)
-            .attr('x', d => x(d.price))
-            .attr('y', d => y(d.total))
-            .attr('width', 5)
-            .attr('height', d => height - y(d.total));
+        drawOrderbook(data, svg, d3);
       });
     }
   });
