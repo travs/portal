@@ -18,7 +18,7 @@ Template.summary_melon.helpers({
 
     if(Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0) {
       coreAddress = Cores.findOne({ owner: Session.get('clientManagerAccount') }).address;
-      const sortedCores = Cores.find({}, { sort: { sharePrice: -1 } }).fetch();
+      const sortedCores = Cores.find({}, { sort: { sharePrice: -1, createdAt: -1 } }).fetch();
       let ranking;
       for (let i = 0; i < sortedCores.length; i++) {
         if (coreAddress == sortedCores[i]['address']) {
