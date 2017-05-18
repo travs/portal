@@ -1,5 +1,26 @@
 <template name="manage">
+  <style>
 
+    .bar.bid {
+      fill: rgba(40, 193, 44, 0.3);
+    }
+
+    .bar.ask {
+      fill: rgba(255, 0, 0, 0.4);
+    }
+
+    .bar:hover {
+      fill: #1189c6;
+    }
+
+    .axis--x path {
+      display: none;
+    }
+
+    .axis--y path {
+      display: none;
+    }
+  </style>
   <!-- Index-banner -->
   {{> ux_index_graph}}
 
