@@ -107,11 +107,6 @@ Template.orderbook_contents.helpers({
     .fetch()
     .reduce((accumulator, currentValue) => accumulator + currentValue.sell.howMuch, 0);
 
-    console.log({
-      currentCumVol,
-      totalConverted: convertFromTokenPrecision(total, precision),
-      ratio: (currentCumVol / convertFromTokenPrecision(total, precision)),
-    });
     return (currentCumVol / convertFromTokenPrecision(total, precision)) * 100;
   },
 });

@@ -21,28 +21,53 @@ import '/imports/ui/components/manage/recent_trades.js';
 import './manage.html';
 
 
-const calcCumulativeVolume = (currentOrder) => {
-  let lowerThanCurrent = true;
+const calcBuyCumulativeVolume = (currentOrder) => {
+  let beforeCurrent = true;
+
   return Orders.find({
     isActive: true,
-    'buy.price': { $lte: currentOrder.buy.price },
+    'buy.price': { $gte: currentOrder.buy.price },
     'buy.symbol': currentOrder.buy.symbol,
     'sell.symbol': currentOrder.sell.symbol,
   }, {
     sort: {
-      'buy.price': 1,
+      'buy.price': -1,
       'buy.howMuch': 1,
       createdAt: 1,
     },
   }).fetch()
   .reduce((accumulator, currentValue) => {
-    const cumulativeVolume = lowerThanCurrent
-      ? accumulator + currentValue.buy.howMuch
+    let cumulativeBuyVolume = accumulator;
+    if (beforeCurrent) cumulativeBuyVolume += currentValue.buy.howMuch;
+
+    if (currentValue._id === currentOrder._id) { beforeCurrent = false; }
+
+    return cumulativeBuyVolume;
+  }, 0);
+};
+
+const calcSellCumulativeVolume = (currentOrder) => {
+  let beforeCurrent = true;
+  return Orders.find({
+    isActive: true,
+    'sell.price': { $lte: currentOrder.sell.price },
+    'sell.symbol': currentOrder.sell.symbol,
+    'buy.symbol': currentOrder.buy.symbol,
+  }, {
+    sort: {
+      'sell.price': 1,
+      'buy.howMuch': 1,
+      createdAt: 1,
+    },
+  }).fetch()
+  .reduce((accumulator, currentValue) => {
+    const cumulativeSellVolume = beforeCurrent
+      ? accumulator + currentValue.sell.howMuch
       : accumulator;
 
-    if (currentValue._id === currentOrder._id) { lowerThanCurrent = false; }
+    if (currentValue._id === currentOrder._id) { beforeCurrent = false; }
 
-    return cumulativeVolume;
+    return cumulativeSellVolume;
   }, 0);
 };
 
@@ -66,37 +91,40 @@ Template.manage.onRendered(function () {
 
       const allOrders = Orders.find({
         isActive: true,
-        'buy.symbol': { $in: [baseTokenSymbol, quoteTokenSymbol] },
-        'sell.symbol': { $in: [baseTokenSymbol, quoteTokenSymbol] },
+        'buy.symbol': { $in: [baseTokenSymbol] }, /* ,quoteTokenSymbol */
+        'sell.symbol': { $in: [quoteTokenSymbol] }, /*baseTokenSymbol, */
       }, {
         sort: {
           'buy.symbol': 1,
           'buy.price': 1,
-          'buy.howMuch': 1,
           createdAt: 1,
         },
       }).map(order => ({
-        buyPrice: order.buy.price,
+        price: order.buy.symbol === baseTokenSymbol
+          ? convertFromTokenPrecision(order.sell.howMuch, order.sell.precision)
+            / convertFromTokenPrecision(order.buy.howMuch, order.buy.precision)
+          : convertFromTokenPrecision(order.buy.howMuch, order.buy.precision)
+            / convertFromTokenPrecision(order.sell.howMuch, order.sell.precision),
         buySymbol: order.buy.symbol,
-        buyHowMuch: convertFromTokenPrecision(order.buy.howMuch, order.buy.precision),
-        cumulativeVolume: convertFromTokenPrecision(
-          calcCumulativeVolume(order),
-          order.buy.precision,
-        ),
-      }));
-
-      console.log(allOrders);
+        howMuch: order.buy.symbol === baseTokenSymbol
+          ? convertFromTokenPrecision(order.buy.howMuch, order.buy.precision)
+          : convertFromTokenPrecision(order.sell.howMuch, order.sell.precision),
+        cumulativeVolume: order.buy.symbol === baseTokenSymbol
+          ? convertFromTokenPrecision(calcBuyCumulativeVolume(order), order.buy.precision)
+          : convertFromTokenPrecision(calcSellCumulativeVolume(order), order.sell.precision),
+      })); // .sort((a, b) => (a > b ? 1 : -1));
 
       Meteor.defer(() => {
         const svg = d3.select('svg.js-charts');
 
         const data = allOrders.map(o => ({
-          price: o.buyPrice,
-          total: o.buyHowMuch,
-          type: o.buySymbol === baseTokenSymbol ? 'ask' : 'bid',
+          price: o.price,
+          howMuch: o.howMuch,
+          total: o.cumulativeVolume,
+          type: o.buySymbol === baseTokenSymbol ? 'bid' : 'ask',
         }));
 
-        console.log(d3.min(data, d => d.price), d3.max(data, d => d.price));
+        console.log(data);
 
         drawOrderbook(data, svg, d3);
       });
