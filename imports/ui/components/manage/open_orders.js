@@ -16,6 +16,7 @@ import './open_orders.html';
 //Contracts
 import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
+import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
 
 
 Template.open_orders.onCreated(() => {});
@@ -71,11 +72,21 @@ Template.open_orders.events({
     Core.setProvider(web3.currentProvider);
     const coreAddress = FlowRouter.getParam('address');
     const coreContract = Core.at(coreAddress);
+    const Exchange = contract(ExchangeJson);
+    Exchange.setProvider(web3.currentProvider);
+    const ExchangeAddress = FlowRouter.getParam('address');
+    const exchangeContract = Exchange.at(ExchangeAddress);
     const managerAddress = Session.get('clientManagerAccount');
 
-    coreContract.cancelOrder(AddressList.Exchange, event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
-      console.log(result);
-    })
+    if(Session.get('fromPortfolio')) {
+      coreContract.cancelOrder(AddressList.Exchange, event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
+        console.log(result);
+      })
+    } else {
+      exchangeContract.cancel(event.currentTarget.dataset.id, { from : managerAddress }).then((result) => {
+        console.log(result);
+      })
+    }
 
   }
 });
