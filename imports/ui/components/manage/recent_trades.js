@@ -31,7 +31,6 @@ Template.recent_trades.helpers({
   },
   getVolume(trade) {
   const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    console.log(trade);
     if(trade.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision);
     else return convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision);
 
