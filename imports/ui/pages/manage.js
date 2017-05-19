@@ -1,6 +1,6 @@
 // NPM
 import d3 from 'd3';
-import drawOrderbook from 'order-book-visualisation';
+import drawOrderbook from '@melonproject/orderbook-visualisation';
 // Meteor
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
