@@ -4,6 +4,8 @@ import { Session } from 'meteor/session';
 import { Cores } from '/imports/api/cores';
 import { Universes } from '/imports/api/modules';
 
+import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
+
 // Server network
 Template.registerHelper('isServerConnected', () => Session.get('isServerConnected'));
 // Client network
@@ -26,7 +28,7 @@ Template.registerHelper('getCoreCount', () => Cores.find().count());
 Template.registerHelper('hasManagerCreatedCore', () => Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0);
 Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).address : false));
 Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).name : false));
-Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).delta : false));
+Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? convertFromTokenPrecision(Cores.findOne({ owner: Session.get('clientManagerAccount') }).delta, 18) : false));
 Template.registerHelper('getIsNewOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? !Cores.findOne({ owner: Session.get('clientManagerAccount') }).isUsed : false));
 Template.registerHelper('isCoreManagerThisManager', coreManagerAccount => coreManagerAccount === Session.get('clientManagerAccount'));
 // Modules

@@ -13,9 +13,10 @@ import { Orders } from '/imports/api/orders.js';
 import './open_orders.html';
 
 
-//Contracts
+// Contracts
 import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
+import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
 
 
 Template.open_orders.onCreated(() => {});
@@ -44,20 +45,19 @@ Template.open_orders.helpers({
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
     if(order.buy.symbol === baseTokenSymbol) return  'Buy'
-    else return 'Sell'
-}
-,
+    return 'Sell'
+},
   getPrice(order) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
     if(order.buy.symbol === baseTokenSymbol) return (convertFromTokenPrecision(order.sell.howMuch, order.sell.precision) / convertFromTokenPrecision(order.buy.howMuch, order.buy.precision)).toFixed(4);
-    else return (convertFromTokenPrecision(order.buy.howMuch, order.buy.precision) / convertFromTokenPrecision(order.sell.howMuch, order.sell.precision)).toFixed(4);
+    return (convertFromTokenPrecision(order.buy.howMuch, order.buy.precision) / convertFromTokenPrecision(order.sell.howMuch, order.sell.precision)).toFixed(4);
 
   },
   getVolume(order) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     if(order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
-    else return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
+    return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
   },
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
 });
@@ -70,13 +70,21 @@ Template.open_orders.events({
     Core.setProvider(web3.currentProvider);
     const coreAddress = FlowRouter.getParam('address');
     const coreContract = Core.at(coreAddress);
+    const Exchange = contract(ExchangeJson);
+    Exchange.setProvider(web3.currentProvider);
+    const ExchangeAddress = FlowRouter.getParam('address');
+    const exchangeContract = Exchange.at(ExchangeAddress);
     const managerAddress = Session.get('clientManagerAccount');
 
-    coreContract.cancelOrder(AddressList.Exchange, event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
-      console.log(result);
-    })
-
-  }
+    if (Session.get('fromPortfolio')) {
+      coreContract.cancelOrder(AddressList.Exchange, event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
+        console.log(result);
+      });
+    } else {
+      exchangeContract.cancel(event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
+        console.log(result);
+      });
+    }
+  },
 });
-
 
