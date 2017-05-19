@@ -39,6 +39,10 @@ Template.manage_overview.helpers({
     const doc = Cores.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
+  getStatus() {
+    if(Session.get('fromPortfolio')) return 'Manage fund'
+    else return 'Manage personal wallet'
+  }
 });
 
 Template.manage_overview.onRendered(() => {
@@ -46,6 +50,7 @@ Template.manage_overview.onRendered(() => {
     state: Session.get('fromPortfolio'),
     onSwitchChange(event, state) {
       Session.set('fromPortfolio', state);
+      console.log(Session.get('fromPortfolio'))
     },
   });
 });
