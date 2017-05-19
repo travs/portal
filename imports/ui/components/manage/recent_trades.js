@@ -26,13 +26,13 @@ Template.recent_trades.helpers({
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
     if(trade.buy.symbol === baseTokenSymbol) return (convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision) / convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision)).toFixed(4);
-    else return (convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision) / convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision)).toFixed(4);
+    return (convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision) / convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision)).toFixed(4);
 
   },
   getVolume(trade) {
   const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    if(trade.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision);
-    else return convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision);
+    if(trade.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision);
+    return convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision);
 
   },
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),

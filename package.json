@@ -2,6 +2,7 @@
   "name": "portal",
   "private": true,
   "scripts": {
+    "start": "meteor",
     "lint": "eslint .",
     "pretest": "npm run lint --silent",
     "testrpc": "testrpc",
@@ -12,10 +13,12 @@
     "extends": "@meteorjs/eslint-config-meteor"
   },
   "dependencies": {
+    "@melonproject/orderbook-visualisation": "0.0.4",
     "async": "^2.1.4",
     "babel-runtime": "^6.23.0",
     "bootstrap-switch": "^3.3.3",
     "cryptocompare": "^0.1.0",
+    "d3": "^4.9.1",
     "ethapi-js": "^0.4.2",
     "jquery": "^3.1.1",
     "meteor-node-stubs": "~0.2.0",
@@ -30,7 +33,7 @@
     "babel-eslint": "^7.2.3",
     "chimp": "^0.48.0",
     "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^12.0.0",
+    "eslint-config-airbnb": "^13.0.0",
     "eslint-import-resolver-meteor": "^0.3.4",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",

@@ -32,7 +32,7 @@ Template.orderbook_contents.helpers({
     return (convertFromTokenPrecision(sellHowMuch, sellPrecision) / convertFromTokenPrecision(buyHowMuch, buyPrecision)).toFixed(4);
   },
   calcSellPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    return (convertFromTokenPrecision(buyHowMuch, buyPrecision)/convertFromTokenPrecision(sellHowMuch, sellPrecision)).toFixed(4);
+    return (convertFromTokenPrecision(buyHowMuch, buyPrecision) / convertFromTokenPrecision(sellHowMuch, sellPrecision)).toFixed(4);
   },
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
@@ -54,7 +54,7 @@ Template.orderbook_contents.helpers({
     let cumulativeDouble = 0;
 
     for (let i = 0; i <= index; i += 1) {
-      cumulativeDouble += cheaperOrders[i].sell.howMuch;
+      cumulativeDouble += cheaperOrders[i].buy.howMuch;
     }
 
     return convertFromTokenPrecision(cumulativeDouble, precision);
@@ -71,10 +71,43 @@ Template.orderbook_contents.helpers({
     let cumulativeDouble = 0;
 
     for (let i = 0; i <= index; i += 1) {
-      cumulativeDouble += cheaperOrders[i].buy.howMuch;
+      cumulativeDouble += cheaperOrders[i].sell.howMuch;
     }
 
     return convertFromTokenPrecision(cumulativeDouble, precision);
+  },
+  percentageOfBuySum(buyPrice, precision, index) {
+    const currentCumVol = Template.orderbook_contents.__helpers.get('calcBuyCumulativeVolume').call(this, buyPrice, precision, index);
+
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const total = Orders.find({
+      isActive: true,
+      'sell.symbol': quoteTokenSymbol,
+      'buy.symbol': baseTokenSymbol,
+    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } })
+    .fetch()
+    .reduce((accumulator, currentValue) => accumulator + currentValue.buy.howMuch, 0);
+
+    // console.log({
+    //   currentCumVol,
+    //   totalConverted: convertFromTokenPrecision(total, precision),
+    //   ratio: (currentCumVol / convertFromTokenPrecision(total, precision)),
+    // });
+    return (currentCumVol / convertFromTokenPrecision(total, precision)) * 100;
+  },
+  percentageOfSellSum(sellPrice, precision, index) {
+    const currentCumVol = Template.orderbook_contents.__helpers.get('calcSellCumulativeVolume').call(this, sellPrice, precision, index);
+
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const total = Orders.find({
+      isActive: true,
+      'sell.symbol': baseTokenSymbol,
+      'buy.symbol': quoteTokenSymbol,
+    }, { sort: { 'buy.price': 1, 'sell.howMuch': 1, createdAt: 1 } })
+    .fetch()
+    .reduce((accumulator, currentValue) => accumulator + currentValue.sell.howMuch, 0);
+
+    return (currentCumVol / convertFromTokenPrecision(total, precision)) * 100;
   },
 });
 
