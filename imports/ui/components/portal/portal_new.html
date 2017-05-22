@@ -4,7 +4,6 @@
 
     {{#if showModal}}
     {{> disclaimerModal}}
-
     {{/if}}
 
 
@@ -98,30 +97,9 @@
   {{/if}}
 </template>
 
-<!-- <template name="disclaimerModal">
-    <script src="/path/to/bootstrap/js/bootstrap.min.js"></script>
-    <div class="modal fade show" id="disclaimerModal" tabindex="-1" role="dialog" aria-labelledby="disclaimerModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="disclaimerModalLabel">Remove?</h4>
-          </div>
-          <div class="modal-body">
-            Are you sure?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="delete" class="btn btn-primary">Remove</button>
-          </div>
-        </div>
-      </div>
-    </div>
-</template>
- -->
 
+    <!-- Modal Template-->
  <template name="disclaimerModal">
-    <!-- Modal -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <div class="modal fade in show" id="disclaimerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
@@ -135,7 +113,6 @@
             <p>THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
           </div>
           <div class="modal-footer">
-            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
             <button type="button" id="okDisclaimer" class="btn btn-primary">OK</button>
           </div>
         </div>
