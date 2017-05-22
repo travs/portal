@@ -27,7 +27,7 @@ After installation is complete
 Go to the above `portal` directory, open a terminal and launch meteor:
 
 ```
-meteor
+npm start
 ```
 
 ## Running [chimp tests](https://chimp.readme.io/)
@@ -36,7 +36,7 @@ To run the chimp tests, you need to have a Meteor &
 [testrpc](https://github.com/ethereumjs/testrpc) instances running. To do this,
 open 3 terminal windows and run the following commands in each window:
 
-- ```meteor```
+- ```npm start```
 - ```npm run testrpc```
 - ```npm run test:chimp:watch``` to only run tests annotated with '@watch' or
     ```npm run test:chimp:once``` to run all chimp tests (can take some time)
@@ -45,7 +45,10 @@ open 3 terminal windows and run the following commands in each window:
 If you have your own Ethereum client running locally on http://localhost:8545, 
 I strongly suggest that you pause it as long as the tests run.
 
-### TODO:
-See [#43](https://github.com/melonproject/portal/issues/43)
-- [ ] One command to run meteor, testrpc and the full chimp tests
-- [ ] Run that command on the CI server
+
+## Deploy
+
+Deployment is made with the awesome [zodern/meteor-up](https://github.com/zodern/meteor-up)
+
+If meteor-up is configured, deploy with
+```npm run deploy```
