@@ -22,7 +22,6 @@
     "ethapi-js": "^0.4.2",
     "jquery": "^3.1.1",
     "meteor-node-stubs": "~0.2.0",
-    "metrics-graphics": "^2.11.0",
     "moment": "^2.18.1",
     "select2": "^4.0.3",
     "truffle-contract": "^2.0.0",
