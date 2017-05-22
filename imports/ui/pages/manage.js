@@ -118,6 +118,9 @@ Template.manage.onRendered(function () {
       Meteor.defer(() => {
         const svg = d3.select('svg.js-charts');
 
+        // HACK: set svg inner html to "" empty string to prevent overdrawing
+        svg.html('');
+
         const data = allOrders.map(o => ({
           price: o.price,
           howMuch: o.howMuch,
