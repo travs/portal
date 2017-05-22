@@ -118,6 +118,7 @@ function initSession() {
   Session.set('currentAssetPair', `${specs.getBaseTokens()[0]}/${specs.getQuoteTokens()[0]}`);
   Session.set('fromPortfolio', true);
   Session.set('selectedOrderId', null);
+  Session.set('showModal', true);
 }
 
 function checkIfSynching() {

@@ -19,6 +19,7 @@ Core.setProvider(web3.currentProvider);
 
 
 Template.portal_new.onCreated(() => {
+  Session.set('showModal', true);
   Meteor.subscribe('cores');
   Meteor.subscribe('universes');
 });
@@ -31,6 +32,10 @@ Template.portal_new.onRendered(() => {});
 
 
 Template.portal_new.events({
+    'shown.bs.modal #myModal': (event, templateInstance) => {
+    // Prevent default browser form submit
+    event.preventDefault();
+  },
   'change form#new_portfolio #universe_select': (event) => {
     // Get value from form element
     const target = event.target;
@@ -94,5 +99,11 @@ Template.portal_new.events({
       Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
       throw err;
     });
+  },
+});
+
+Template.disclaimerModal.events({
+  'click button#okDisclaimer': (event) => {
+    Session.set('showModal', false);
   },
 });
