@@ -116,7 +116,6 @@ function initSession() {
   Session.set('isClientConnected', false);
   Session.set('isServerConnected', true);
   Session.set('latestBlock', 0);
-  Session.set('currentAssetPair', `${specs.getBaseTokens()[0]}/${specs.getQuoteTokens()[0]}`);
   Session.set('fromPortfolio', true);
   Session.set('selectedOrderId', null);
   Session.set('showModal', true);

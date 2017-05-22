@@ -12,3 +12,7 @@ import '/imports/startup/client/routes.js';
 import '/imports/startup/client/contracts.js';
 import '/imports/startup/client/config.js';
 import '/imports/startup/client/network.js';
+import '/imports/startup/client/store.js';
+import '/imports/startup/client/sync-session.js';
+
+window.web3 = web3;
