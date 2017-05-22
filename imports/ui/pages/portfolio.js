@@ -1,11 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import d3 from 'd3';
-import MG from 'metrics-graphics';
 // Collections
 import { Cores } from '/imports/api/cores';
-import { Assets } from '/imports/api/assets';
 // Components
 import '/imports/ui/components/portfolio/portfolio_overview.js';
 import '/imports/ui/components/portfolio/portfolio_contents.js';
@@ -36,6 +33,9 @@ Template.portfolio.onRendered(() => {
 
   // Use Meteor.defer() to create chart after DOM is ready:
   Meteor.defer(() => {
+    /*
+    TODO: Reimplement this visualisation with real data and d3
+
     d3.json('data/confidence_band.json', (data) => {
       data = MG.convert.date(data, 'date');
       MG.data_graphic({
@@ -54,5 +54,6 @@ Template.portfolio.onRendered(() => {
         x_extended_ticks: true,
       });
     });
+    */
   });
 });
