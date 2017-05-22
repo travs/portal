@@ -97,17 +97,17 @@ Template.wallet_contents.events({
     if (doc === undefined) return '';
     const holdings = parseInt(doc.holdings, 10);
     if (holdings === 0) {
-      //TODO replace toast
+      // TODO replace toast
       // Materialize.toast('All ETH Token already converted', 4000, 'blue');
     } else {
-      console.log(`Holdings: ${holdings}`)
+      console.log(`Holdings: ${holdings}`);
       EtherToken.at(assetAddress).withdraw(holdings, { from: assetHolderAddress }).then((result) => {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         // TODO insert txHash into appropriate collection
         console.log(`Tx Hash: ${result}`);
         Meteor.call('assets.sync', assetHolderAddress); // Upsert Assets Collection
         // Notification
-        //TODO replace toast
+        // TODO replace toast
         // Materialize.toast('All ETH Token converted', 4000, 'green');
       });
     }
