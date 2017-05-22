@@ -27,7 +27,7 @@ After installation is complete
 Go to the above `portal` directory, open a terminal and launch meteor:
 
 ```
-meteor
+$ meteor
 ```
 
 ## Running [chimp tests](https://chimp.readme.io/)
@@ -49,3 +49,24 @@ I strongly suggest that you pause it as long as the tests run.
 See [#43](https://github.com/melonproject/portal/issues/43)
 - [ ] One command to run meteor, testrpc and the full chimp tests
 - [ ] Run that command on the CI server
+
+## Deploy
+
+If everything is already setup, deploy with
+```$ npm run deploy```
+
+Deployment is made with the awesome [zodern/meteor-up](https://github.com/zodern/meteor-up).
+
+### To portal.melonport.com
+
+To deploy to the Melonport servers, you need to have access to them.
+
+1. copy ```mup.example.js``` to ```mup.js```
+1. get ```privkey.pem``` and ```fullchain.pem``` from the Melonport team and
+   add it to the project root.
+1. ```$ npm run deploy```
+
+### To somewhere else
+
+Usually, you need to setup the server before deploying:
+```$ ./node_modules/.bin/mup setup ```
