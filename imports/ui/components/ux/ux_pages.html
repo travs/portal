@@ -54,6 +54,34 @@
 	</section>
 </template>
 
+<template name="ux_wallet_overview">
+ <section class="mp-hero mp-portal-hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
+            <h1>Wallet</h1>
+            <p class="blue-text text-lighten-2">Overview of you Ethereum Wallet</p>
+        </div>
+        {{> ux_index_summaries}}
+      </div>
+    </div>
+  </section>
+</template>
+
+<template name="ux_portfolio_overview">
+ <section class="mp-hero mp-portal-hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
+            <h1>Portfolio</h1>
+            <p class="blue-text text-lighten-2">Overview of you Melon portfolio</p>
+        </div>
+        {{> ux_index_summaries}}
+      </div>
+    </div>
+  </section>
+</template>
+
 <template name="ux_index_summaries">
   {{#if isClientConnected}}
     <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
