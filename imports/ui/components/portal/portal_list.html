@@ -5,39 +5,51 @@
         <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
           <div class="table-responsive">
             {{#if getCoreCount}}
-              <table id="table-portal-overview" class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-portal-table" cellspacing="0" width="100%">
-                <thead>
+              <table id="table-portal-overview" class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-portal-table">
+                  <thead>
+                      <td>
+                         <table id="table-portal-overview" class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-portal-table" style="width:100%;">
+                           <tr>
+                              <th style="width:25%">Manager <p>(Identicon)</p></th>
+                              <th style="width:40%">Portfolio<p>(Name)</p></th>
+                              <th style="width:18%">AUM <p>({{refCurrency}})</p></th>
+                              <th style="width:25%">Share Price <p>(Finney)</p></th>
+                           </tr>
+                         </table>
+                      </td>
+                  </thead>
                   <tr>
-                    <th>Manager <p>(Identicon)</p></th>
-                    <th>Portfolio <p>(Name)</p></th>
-                    <th>AUM <p>({{refCurrency}})</p></th>
-                    <th>Share Price <p>(Finney)</p></th>
+                    <td>
+                      <div style="width:100%; height:400px; overflow:auto;">
+                       <table id="table-portal-overview" class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-portal-table" style="width:100%">
+                        {{#each searchedCores}}
+                        <tbody>
+                          <tr>
+                            <td class="identicon">
+                              <a class="table-link" href="https://kovan.etherscan.io/address/{{owner}}" target="_blank">
+                                {{> dapp_identicon identity=owner class="dapp-small"}}
+                              </a>
+                            </td>
+                            <td class="portfolio">
+                              <a href="/portfolio/{{address}}" class="btn btn-small btn-outline-blue">{{name}}</a>
+                            </td>
+                            <td>
+                              <a class="table-link" href="https://kovan.etherscan.io/address/{{address}}" target="_blank">
+                                {{dapp_formatBalance nav "0,0.0[00]"}}
+                              </a>
+                            </td>
+                            <td>
+                              <a class="table-link" href="https://kovan.etherscan.io/address/{{address}}" target="_blank">
+                                {{dapp_formatBalance sharePrice "0,0.0[00]" "finney"}}
+                              </a>
+                            </td>
+                          </tr>
+                          </tbody>
+                        {{/each}}
+                       </table>
+                      </div>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {{#each searchedCores}}
-                    <tr>
-                      <td class="identicon">
-                        <a class="table-link" href="https://kovan.etherscan.io/address/{{owner}}" target="_blank">
-                          {{> dapp_identicon identity=owner class="dapp-small"}}
-                        </a>
-                      </td>
-                      <td class="portfolio">
-                        <a href="/portfolio/{{address}}" class="btn btn-small btn-outline-blue">{{name}}</a>
-                      </td>
-                      <td>
-                        <a class="table-link" href="https://kovan.etherscan.io/address/{{address}}" target="_blank">
-                          {{dapp_formatBalance nav "0,0.0[00]"}}
-                        </a>
-                      </td>
-                      <td>
-                        <a class="table-link" href="https://kovan.etherscan.io/address/{{address}}" target="_blank">
-                          {{dapp_formatBalance sharePrice "0,0.0[00]" "finney"}}
-                        </a>
-                      </td>
-                    </tr>
-                  {{/each}}
-                </tbody>
               </table>
             {{/if}}
           </div>
