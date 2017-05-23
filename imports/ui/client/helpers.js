@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
 import { Cores } from '/imports/api/cores';
 import { Universes } from '/imports/api/modules';
@@ -31,6 +32,11 @@ Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ owner: Sessi
 Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? convertFromTokenPrecision(Cores.findOne({ owner: Session.get('clientManagerAccount') }).delta, 18) : false));
 Template.registerHelper('getIsNewOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? !Cores.findOne({ owner: Session.get('clientManagerAccount') }).isUsed : false));
 Template.registerHelper('getIsFundedCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).fetch()[0].sharesSupply !== 0));
+Template.registerHelper('getPortfolioDoc', () => {
+  const address = FlowRouter.getParam('address');
+  const doc = Cores.findOne({ address });
+  return (doc === undefined || address === undefined) ? '' : doc;
+});
 // Modules
 Template.registerHelper('getUniverses', () => Universes.find({}, { sort: { index: 1 } }));
 Template.registerHelper('getUniverseOfThisPortfolioManager', () => {

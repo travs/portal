@@ -16,18 +16,18 @@
           {{#if isClientConnected}}
             {{#if clientManagerAccount}}
               {{#if isKovanNetwork}}
-                <li><a href="/account/{{clientManagerAccount}}">Account</a></li>
+                <li><a href="/account/{{clientManagerAccount}}">My Account</a></li>
                 <li class="has-badge">
                   <a class="portfolio">
                     {{#if hasManagerCreatedCore}}
-                      {{getManagerNameOfCore}}
+                      My Fund
                       {{#if getIsNewOfCore}}
                         {{#if isNew}}
                         <span class="badge btn-outline-green newclick" data-badge-caption="New">New</span>
                         {{/if}}
                       {{/if}}
                     {{else}}
-                      Portfolio <span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>
+                      Melon Fund <span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>
                     {{/if}}
                   </a>
                 </li>

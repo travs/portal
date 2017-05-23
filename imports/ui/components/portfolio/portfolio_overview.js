@@ -24,11 +24,6 @@ Template.portfolio_overview.onCreated(() => {
 
 
 Template.portfolio_overview.helpers({
-  getPortfolioDoc() {
-    const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
-    return (doc === undefined || address === undefined) ? [''] : doc;
-  },
   // TODO implement cleaner
   getPersonalStake() {
     const template = Template.instance();
