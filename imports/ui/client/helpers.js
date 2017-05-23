@@ -30,13 +30,14 @@ Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ owner: Se
 Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).name : false));
 Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? convertFromTokenPrecision(Cores.findOne({ owner: Session.get('clientManagerAccount') }).delta, 18) : false));
 Template.registerHelper('getIsNewOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? !Cores.findOne({ owner: Session.get('clientManagerAccount') }).isUsed : false));
+Template.registerHelper('getIsFundedCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).fetch()[0].sharesSupply !== 0));
 // Modules
 Template.registerHelper('getUniverses', () => Universes.find({}, { sort: { index: 1 } }));
 Template.registerHelper('getUniverseOfThisPortfolioManager', () => {
-  //TODO case for when portfolio manager has more than one core
+  // TODO case for when portfolio manager has more than one core
   const universeAddress = Cores.findOne({
-    owner: Session.get('clientManagerAccount')
-  }).universeAddress
+    owner: Session.get('clientManagerAccount'),
+  }).universeAddress;
 
   return Universes.find({ address: universeAddress }, { sort: { createdAt: -1 } });
 });
@@ -55,6 +56,6 @@ Template.registerHelper('isInactiveNetworkStatus', () => Session.get('NetworkSta
 Template.registerHelper('isMiningNetworkStatus', () => Session.get('NetworkStatus').isMining);
 Template.registerHelper('isErrorNetworkStatus', () => Session.get('NetworkStatus').isError);
 Template.registerHelper('isMinedNetworkStatus', () => Session.get('NetworkStatus').isMined);
-//Reference currency
+// Reference currency
 Template.registerHelper('refCurrency', () => Session.get('referenceCurrency'));
 Template.registerHelper('showModal', () => Session.get('showModal'));
