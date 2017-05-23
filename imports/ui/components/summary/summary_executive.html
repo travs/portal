@@ -7,7 +7,7 @@
         {{#if clientManagerAccount}}
           <p class="value">
             {{# if clientManagerAccountBalance }}
-              <a href="/wallet/{{clientManagerAccount}}" class="truncate green-text text-lighten-2">
+              <a href="/account/{{clientManagerAccount}}" class="truncate green-text text-lighten-2">
                 {{dapp_formatBalance clientManagerAccountBalance "0,0.0[00] UNIT"}}
               </a>
             {{else}}
