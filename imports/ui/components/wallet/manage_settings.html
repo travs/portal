@@ -1,7 +1,8 @@
 <template name="manage_settings">
   <div class="asset-overview-wrapper">
     <div class="exchange-overview-header">
-      <h2 class="exchange-title">Manage Settings</h2>
+      <h2 class="exchange-title">Account Settings</h2>
+      <div class="line-divider"></div>
     </div>
     <div class="exchange-overview-block">
       <div class="form-horizontal mp-form">
@@ -15,41 +16,6 @@
             </select>
           </div>
           <span class="col-md-3 col-sm-3 col-xs-12">Currency</span>
-        </div>
-        <div class="line-divider"></div>
-        <div class="form-group">
-          <label class="col-md-3 col-sm-3 col-xs-12 control-label" for="type_buy">Manage</label>
-          <div class="col-md-6 col-sm-6 col-xs-12">
-            <select class="selectpicker select-form">
-              <option>{{getManagerNameOfCore}}</option>
-            </select>
-          </div>
-          <span class="col-md-3 col-sm-3 col-xs-12">Participation</span>
-        </div>
-        <div>
-          <a class="manage btn btn-def btn-light-blue mt-20">Manage</a>
-          <!-- Button trigger modal -->
-          <a class="remove btn btn-def btn-outline-blue mt-20" data-toggle="modal" data-target="#myModal">Remove</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Remove?</h4>
-          </div>
-          <div class="modal-body">
-            Are you sure?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="delete" class="btn btn-primary">Remove</button>
-          </div>
         </div>
       </div>
     </div>

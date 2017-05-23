@@ -19,19 +19,6 @@ EtherToken.setProvider(web3.currentProvider);
 
 Template.wallet_contents.onCreated(() => {
   Meteor.subscribe('assets');
-  // Portfolio Value in Wei
-  Template.instance().totalPortfolioValue = new ReactiveVar();
-  const assetHolderAddress = FlowRouter.getParam('address');
-  const docs = Assets.find({ holder: assetHolderAddress }).fetch();
-  let value = 0;
-  for (doc in docs) {
-    const holdings = parseInt(doc.holdings, 10);
-    const price = parseInt(doc.priceFeed.price, 10);
-    const precision = parseInt(doc.precision, 10);
-    const divisor = Math.pow(10, precision);
-    value += holdings * (price / divisor);
-  }
-  Template.instance().totalPortfolioValue.set(value);
 });
 
 Template.wallet_contents.helpers({
@@ -59,13 +46,7 @@ Template.wallet_contents.helpers({
     return web3.toWei(1.0 / parseFloat(value, 10), 'ether');
   },
   portfolioPercentrage() {
-    const holdings = parseInt(this.holdings, 10);
-    const price = parseInt(this.priceFeed.price, 10);
-    const precision = parseInt(this.precision, 10);
-    const divisor = Math.pow(10, precision);
-    const value = holdings * (price / divisor);
-    if (Template.instance().totalPortfolioValue.get() === 0) return 'N/A';
-    return (value * 100) / Template.instance().totalPortfolioValue.get();
+    return 'N/A';
   },
   change24h() {
     switch (this.name) {
@@ -79,11 +60,7 @@ Template.wallet_contents.helpers({
   },
 });
 
-Template.wallet_contents.onRendered(() => {
-  // Upsert Asset Collection
-  const address = FlowRouter.getParam('address');
-  Meteor.call('assets.sync', address);
-});
+Template.wallet_contents.onRendered(() => {});
 
 Template.wallet_contents.events({
   'click .convert_to_eth': (event) => {

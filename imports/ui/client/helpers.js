@@ -30,7 +30,6 @@ Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ owner: Se
 Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).name : false));
 Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? convertFromTokenPrecision(Cores.findOne({ owner: Session.get('clientManagerAccount') }).delta, 18) : false));
 Template.registerHelper('getIsNewOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? !Cores.findOne({ owner: Session.get('clientManagerAccount') }).isUsed : false));
-Template.registerHelper('isCoreManagerThisManager', coreManagerAccount => coreManagerAccount === Session.get('clientManagerAccount'));
 // Modules
 Template.registerHelper('getUniverses', () => Universes.find({}, { sort: { index: 1 } }));
 Template.registerHelper('getUniverseOfThisPortfolioManager', () => {

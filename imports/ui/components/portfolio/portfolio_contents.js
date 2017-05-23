@@ -24,6 +24,12 @@ Template.portfolio_contents.helpers({
     const doc = Cores.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
+  isPortfolioOwner() {
+    const address = FlowRouter.getParam('address');
+    const doc = Cores.findOne({ address });
+    if (doc === undefined || address === undefined) return false;
+    return doc.owner === Session.get('clientManagerAccount');
+  },
   assets() {
     const assetHolderAddress = FlowRouter.getParam('address');
     return Assets.find({ holder: assetHolderAddress }, { sort: { name: 1 } });
@@ -53,7 +59,6 @@ Template.portfolio_contents.helpers({
     const precision = parseInt(this.precision, 10);
     const divisor = Math.pow(10, precision);
     const value = holdings * (price / divisor);
-
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
     if (doc === undefined) {
