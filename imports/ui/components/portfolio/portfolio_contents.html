@@ -2,9 +2,6 @@
   <div class="row order-book-head">
     <div class="col-md-12">
       <h2 class="exchange-title">Portfolio Holdings</h2>
-      <span class="price-desc">
-        Price data provided by <img src="dist/img/oraclize.png" class="oraclize"> Oraclize
-      </span>
     </div>
   </div>
 
@@ -44,7 +41,7 @@
       </div>
     </div>
   </div>
-  {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
+  {{#if isPortfolioOwner}}
   <div class="row order-book-more">
     <div class="col-md-12">
       <div class="table-load-more text-left">

@@ -160,5 +160,5 @@ Meteor.startup(() => {
   checkIfSynching();
   checkIfServerIsConncected();
 
-  Meteor.setInterval(checkNetwork, 2503);
+  Meteor.setInterval(checkNetwork, 1000);
 });

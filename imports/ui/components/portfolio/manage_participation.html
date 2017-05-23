@@ -1,12 +1,9 @@
 <template name="manage_participation">
   <div class="exchange-overview-header">
     <h2 class="exchange-title">
-      {{#if isCoreManagerThisManager getPortfolioDoc.managerAddress}}
-        Manage Investment in your Portfolio
-      {{else}}
         Manage Investment in {{getPortfolioDoc.name}}
-      {{/if}}
     </h2>
+    <div class="line-divider"></div>
   </div>
   <div class="exchange-overview-block">
     <div class="form-horizontal mp-form">

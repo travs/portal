@@ -50,16 +50,12 @@ Template.layout_header.events({
       FlowRouter.go('/');
     } else {
       const doc = Cores.findOne({ owner: Session.get('clientManagerAccount') });
-      if (doc.isUsed === undefined) {
-        Meteor.call('cores.setToUsed', doc._id);
-        //TODO replace toast
-        // Materialize.toast('Well done! Now show us your managing skills!', 8000, 'green');
-        toastr.success("Well done! Now show us your managing skills!");
-      }
       FlowRouter.go(`/manage/${doc.address}`);
     }
   },
   'click .newclick'() {
+    if (Session.get('isNew'))
+      toastr.success("Well done! Now start by investing some K-ETH");
     Session.set('isNew', false);
   }
 });
