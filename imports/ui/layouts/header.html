@@ -16,7 +16,7 @@
           {{#if isClientConnected}}
             {{#if clientManagerAccount}}
               {{#if isKovanNetwork}}
-                <li><a href="/wallet/{{clientManagerAccount}}">Wallet</a></li>
+                <li><a href="/account/{{clientManagerAccount}}">Account</a></li>
                 <li class="has-badge">
                   <a class="portfolio">
                     {{#if hasManagerCreatedCore}}
@@ -31,7 +31,9 @@
                     {{/if}}
                   </a>
                 </li>
+                {{#if getIsFundedCore}}
                 <li class="manage btn-request"><a href="#" class="btn outline-white">Manage</a></li>
+                {{/if}}
               {{/if}}
             {{/if}}
           {{/if}}

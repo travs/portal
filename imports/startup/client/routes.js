@@ -46,9 +46,9 @@ FlowRouter.route('/manage/:address', {
 });
 
 
-// Route for wallet
-FlowRouter.route('/wallet/:address', {
-  name: 'wallet',
+// Route for account
+FlowRouter.route('/account/:address', {
+  name: 'account',
   action() {
     BlazeLayout.render('layout_main', {
       nav: 'layout_header',
