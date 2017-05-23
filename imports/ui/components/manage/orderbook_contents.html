@@ -12,41 +12,65 @@
           <!-- this is a shadow table just to visualise the cumulated volume -->
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;">
             <thead>
-              <tr>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Bid <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-              </tr>
+              <td>
+                <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" style="width:100%;">
+                  <tr>
+                    <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
+                    <th>Vol <p>({{baseTokenSymbol}})</p></th>
+                    <th>Bid <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
+                  </tr>
+                  </table>
+                  </td>
             </thead>
-            <tbody>
-              {{#each order in buyOrders}}
-              <tr style="position: relative">
-                <td colspan="3" style="position: relative; color: transparent;">
-                  {{percentageOfBuySum order.buy.price order.buy.precision @index}}
-                  <div style="position: absolute; background-color:rgba(40, 193, 44, 0.3); height: 100%; width: {{percentageOfBuySum order.buy.price order.buy.precision @index}}%; right: 0; top: 0; "></div>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
+            <tr>
+            <td>
+              <div style="width:100%; height:400px; overflow:auto;">
+                       <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" style="width:100%">
+                <tbody>
+                  {{#each order in buyOrders}}
+                  <tr style="position: relative">
+                    <td colspan="3" style="position: relative; color: transparent;">
+                      {{percentageOfBuySum order.buy.price order.buy.precision @index}}
+                      <div style="position: absolute; background-color:rgba(40, 193, 44, 0.3); height: 100%; width: {{percentageOfBuySum order.buy.price order.buy.precision @index}}%; right: 0; top: 0; "></div>
+                    </td>
+                  </tr>
+                  {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
           <!-- here comes the real table :D -->
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%" style="position: relative; z-index: 10; overflow:auto;">
             <thead>
-              <tr>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Bid <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-              </tr>
+              <td>
+                  <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" style="width:100%;">
+                    <tr>
+                      <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
+                      <th>Vol <p>({{baseTokenSymbol}})</p></th>
+                      <th>Bid <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
+                    </tr>
+                  </table>
+                </td>
             </thead>
-            <tbody>
-              {{#each order in buyOrders}}
-              <tr class="js-takeorder interactive" data-id="{{order.id}}">
-                <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision @index}}</td>
-                <td>{{convertFromTokenPrecision order.buy.howMuch order.buy.precision}}</td>
-                <td>{{calcBuyPrice order.sell.howMuch order.sell.precision order.buy.howMuch order.buy.precision}}</td>
-              </tr>
-              {{/each}}
-            </tbody>
+            <tr>
+                <td>
+                  <div style="width:100%; height:400px; overflow:auto;">
+                       <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" style="width:100%">
+                    <tbody>
+                      {{#each order in buyOrders}}
+                      <tr class="js-takeorder interactive" data-id="{{order.id}}">
+                        <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision @index}}</td>
+                        <td>{{convertFromTokenPrecision order.buy.howMuch order.buy.precision}}</td>
+                        <td>{{calcBuyPrice order.sell.howMuch order.sell.precision order.buy.howMuch order.buy.precision}}</td>
+                      </tr>
+                      {{/each}}
+                   </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
           </table>
         </div>
       </div>
@@ -56,42 +80,66 @@
      <!-- Shadow table for sell side -->
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;">
             <thead>
-              <tr>
-                <th>Ask <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each order in sellOrders}}
-              <tr style="position: relative">
-                <td colspan="3" style="position: relative; color: transparent;">
-                  {{percentageOfSellSum order.sell.price order.sell.precision @index}}
-                  <div style="position: absolute; background-color:rgba(255, 0, 0, 0.4); height: 100%; width: {{percentageOfSellSum order.sell.price order.sell.precision @index}}%; left: 0; top: 0; "></div>
+              <td>
+                <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" style="width:100%;">
+                    <tr>
+                      <th>Ask <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
+                      <th>Vol <p>({{baseTokenSymbol}})</p></th>
+                      <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
+                    </tr>
+                  </table>
                 </td>
-              </tr>
-              {{/each}}
-            </tbody>
+              </thead>
+              <tr>
+                <td>
+                  <div style="width:100%; height:400px; overflow:auto;">
+                       <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" style="width:100%">
+                    <tbody>
+                      {{#each order in sellOrders}}
+                      <tr style="position: relative">
+                        <td colspan="3" style="position: relative; color: transparent;">
+                          {{percentageOfSellSum order.sell.price order.sell.precision @index}}
+                          <div style="position: absolute; background-color:rgba(255, 0, 0, 0.4); height: 100%; width: {{percentageOfSellSum order.sell.price order.sell.precision @index}}%; left: 0; top: 0; "></div>
+                        </td>
+                      </tr>
+                      {{/each}}
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
           </table>
 
           <!-- Real table for sell side -->
           <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%" style="position: relative; z-index: 10;">
             <thead>
-              <tr>
-                <th>Ask <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
-              </tr>
+              <td>
+                <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" style="width:100%;">
+                  <tr>
+                    <th>Ask <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
+                    <th>Vol <p>({{baseTokenSymbol}})</p></th>
+                    <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
+                  </tr>
+                </table>
+                </td>
             </thead>
-            <tbody>
-              {{#each order in sellOrders}}
-              <tr class="js-takeorder interactive" data-id="{{order.id}}">
-                <td>{{calcSellPrice order.sell.howMuch order.sell.precision order.buy.howMuch order.buy.precision}}</td>
-                <td>{{convertFromTokenPrecision order.sell.howMuch order.sell.precision}}</td>
-                <td>{{calcSellCumulativeVolume order.sell.price order.sell.precision @index}}</td>
-              </tr>
-              {{/each}}
-            </tbody>
+            <tr>
+                <td>
+                  <div style="width:100%; height:400px; overflow:auto;">
+                       <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" style="width:100%">
+                    <tbody>
+                      {{#each order in sellOrders}}
+                      <tr class="js-takeorder interactive" data-id="{{order.id}}">
+                        <td>{{calcSellPrice order.sell.howMuch order.sell.precision order.buy.howMuch order.buy.precision}}</td>
+                        <td>{{convertFromTokenPrecision order.sell.howMuch order.sell.precision}}</td>
+                        <td>{{calcSellCumulativeVolume order.sell.price order.sell.precision @index}}</td>
+                      </tr>
+                      {{/each}}
+                    </tbody>
+                    </table>
+                    </div>
+                    </td>
+                    </tr>
           </table>
         </div>
       </div>
