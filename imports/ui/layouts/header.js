@@ -54,6 +54,8 @@ Template.layout_header.events({
     }
   },
   'click .newclick'() {
+    if (Session.get('isNew'))
+      toastr.success("Well done! Now start by investing some K-ETH");
     Session.set('isNew', false);
   }
 });
