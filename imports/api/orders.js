@@ -20,9 +20,20 @@ Exchange.setProvider(web3.currentProvider);
 const exchangeContract = Exchange.at(AddressList.Exchange); // Initialize contract instance
 
 // COLLECTIONS
-
 export const Orders = new Mongo.Collection('orders');
-if (Meteor.isServer) { Meteor.publish('orders', () => Orders.find({}, { sort: { id: -1 } })); } // Publish Collection
+if (Meteor.isServer) {
+  // Note: you need to specify an asset pair. There is no way to get all orders to the client.
+  Meteor.publish('orders', (currentAssetPair = '---/---') => {
+    check(currentAssetPair, String);
+    const [baseTokenSymbol, quoteTokenSymbol] = currentAssetPair.split('/');
+
+    return Orders.find({
+      isActive: true,
+      'buy.symbol': { $in: [baseTokenSymbol, quoteTokenSymbol] },
+      'sell.symbol': { $in: [baseTokenSymbol, quoteTokenSymbol] },
+    }, { sort: { id: -1 } });
+  });
+}
 
 // COLLECTION METHODS
 
@@ -51,7 +62,7 @@ Orders.sync = () => {
 
 Orders.syncOrderById = (id) => {
   exchangeContract.orders(id).then((info) => {
-    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, /*TODO for new exchange version add _timestamp_!*/owner, isActive] = info;
+    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, /* TODO for new exchange version add _timestamp_!*/owner, isActive] = info;
     const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
     const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
     const buySymbol = specs.getTokenSymbolByAddress(buyWhichToken);
