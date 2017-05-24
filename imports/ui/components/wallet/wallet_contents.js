@@ -60,7 +60,10 @@ Template.wallet_contents.helpers({
   },
 });
 
-Template.wallet_contents.onRendered(() => {});
+Template.wallet_contents.onRendered(() => {
+  const address = FlowRouter.getParam('address');
+  Meteor.call('assets.sync', address);
+});
 
 Template.wallet_contents.events({
   'click .convert_to_eth': (event) => {
