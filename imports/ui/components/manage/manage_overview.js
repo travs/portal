@@ -27,6 +27,16 @@ const assetPairs =
 Template.manage_overview.onCreated(() => {
   Meteor.subscribe('cores');
   // TODO send command to server to update current coreContract
+
+  const address = FlowRouter.getParam('address');
+  const doc = Cores.find({ address });
+  if (doc.count()) {
+    console.log('fromPortfolio');
+    Session.set('fromPortfolio', true);
+  } else if (address) {
+    console.log('fromWallet');
+    Session.set('fromPortfolio', false);
+  }
 });
 
 Template.manage_overview.helpers({
@@ -45,7 +55,14 @@ Template.manage_overview.helpers({
   },
 });
 
-Template.manage_overview.onRendered(() => {});
+Template.manage_overview.onRendered(() => {
+  $('.js-from-portfolio').bootstrapSwitch({
+    state: Session.get('fromPortfolio'),
+    onSwitchChange(event, state) {
+      Session.set('fromPortfolio', state);
+    },
+  });
+});
 
 Template.manage_overview.events({
   'change .js-asset-pair-picker': (event) => {
