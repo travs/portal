@@ -21,12 +21,19 @@ Template.orderbook_contents.helpers({
   buyOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     console.log({ 'buy.symbol': baseTokenSymbol, 'sell.symbol': quoteTokenSymbol });
-
-    return Orders.find({
+    const liquidityProviderOrders = Orders.find({
+      isActive: true,
+      'buy.symbol': baseTokenSymbol,
+      'sell.symbol': quoteTokenSymbol,
+      owner: '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf',
+    }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } });
+    const allOrders = Orders.find({
       isActive: true,
       'buy.symbol': baseTokenSymbol,
       'sell.symbol': quoteTokenSymbol,
     }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } });
+    if (Session.get('fromPortfolio')) return liquidityProviderOrders;
+    else if (!Session.get('fromPortfolio')) return allOrders;
   },
   calcBuyPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
     return (convertFromTokenPrecision(sellHowMuch, sellPrecision) / convertFromTokenPrecision(buyHowMuch, buyPrecision)).toFixed(4);
@@ -36,21 +43,41 @@ Template.orderbook_contents.helpers({
   },
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    return Orders.find({
+    const liquidityProviderOrders = Orders.find({
+      isActive: true,
+      'buy.symbol': quoteTokenSymbol,
+      'sell.symbol': baseTokenSymbol,
+      owner: '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf',
+    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
+    const allOrders = Orders.find({
       isActive: true,
       'buy.symbol': quoteTokenSymbol,
       'sell.symbol': baseTokenSymbol,
     }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
+
+    if (Session.get('fromPortfolio')) return liquidityProviderOrders;
+    else if (!Session.get('fromPortfolio')) return allOrders;
   },
   calcBuyCumulativeVolume(buyPrice, precision, index) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    const cheaperOrders = Orders.find({
-      isActive: true,
-      'buy.price': { $gte: buyPrice },
-      'buy.symbol': baseTokenSymbol,
-      'sell.symbol': quoteTokenSymbol,
-    }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    let cheaperOrders;
 
+    if (Session.get('fromPortfolio')) {
+      cheaperOrders = Orders.find({
+        isActive: true,
+        'buy.price': { $gte: buyPrice },
+        'buy.symbol': baseTokenSymbol,
+        'sell.symbol': quoteTokenSymbol,
+        owner: '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf',
+      }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    } else {
+      cheaperOrders = Orders.find({
+        isActive: true,
+        'buy.price': { $gte: buyPrice },
+        'buy.symbol': baseTokenSymbol,
+        'sell.symbol': quoteTokenSymbol,
+      }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    }
     let cumulativeDouble = 0;
 
     for (let i = 0; i <= index; i += 1) {
@@ -61,12 +88,23 @@ Template.orderbook_contents.helpers({
   },
   calcSellCumulativeVolume(sellPrice, precision, index) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    const cheaperOrders = Orders.find({
-      isActive: true,
-      'sell.price': { $lte: sellPrice },
-      'sell.symbol': baseTokenSymbol,
-      'buy.symbol': quoteTokenSymbol,
-    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    let cheaperOrders;
+    if (Session.get('fromPortfolio')) {
+      cheaperOrders = Orders.find({
+        isActive: true,
+        'sell.price': { $lte: sellPrice },
+        'sell.symbol': baseTokenSymbol,
+        'buy.symbol': quoteTokenSymbol,
+        owner: '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf',
+      }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    } else {
+      cheaperOrders = Orders.find({
+        isActive: true,
+        'sell.price': { $lte: sellPrice },
+        'sell.symbol': baseTokenSymbol,
+        'buy.symbol': quoteTokenSymbol,
+      }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    }
 
     let cumulativeDouble = 0;
 
