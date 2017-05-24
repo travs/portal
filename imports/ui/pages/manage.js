@@ -1,6 +1,6 @@
 // NPM
-import d3 from 'd3';
-import drawOrderbook from '@melonproject/orderbook-visualisation';
+// import d3 from 'd3';
+// import drawOrderbook from '@melonproject/orderbook-visualisation';
 // Meteor
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
@@ -77,6 +77,8 @@ Template.manage.helpers({});
 
 Template.manage.onRendered(function () {
   $('select').select2();
+
+  /*
   const templateInstance = this;
 
   // Wait until all Session variables are set to ensure that #charts is in the DOM
@@ -132,5 +134,6 @@ Template.manage.onRendered(function () {
       });
     }
   });
+  */
 });
 
