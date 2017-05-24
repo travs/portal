@@ -9,7 +9,7 @@ import './orderbook_contents.html';
 
 
 Template.orderbook_contents.onCreated(() => {
-  Meteor.subscribe('orders');
+  Meteor.subscribe('orders', Session.get('currentAssetPair'));
 });
 
 Template.orderbook_contents.helpers({
