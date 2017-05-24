@@ -164,6 +164,8 @@ Template.manage_holdings.onRendered(() => {
     onSwitchChange(event, state) {
       Session.set('fromPortfolio', state);
       console.log(Session.get('fromPortfolio'));
+      $('.js-price').attr('readonly') ? $('.js-price').removeAttr('readonly', false) : $('.js-price').attr('readonly', true);
+      $('#select_type').attr('disabled') ? $('#select_type').removeAttr('disabled', false) : $('#select_type').attr('disabled', true);
     },
   });
 });
