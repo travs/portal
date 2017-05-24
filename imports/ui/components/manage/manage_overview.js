@@ -40,19 +40,19 @@ Template.manage_overview.helpers({
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   getStatus() {
-    if(Session.get('fromPortfolio')) return 'Manage fund'
-    else return 'Manage personal wallet'
-  }
+    if (Session.get('fromPortfolio')) return 'Manage fund';
+    return 'Manage personal wallet';
+  },
 });
 
 Template.manage_overview.onRendered(() => {
-  $('.js-from-portfolio').bootstrapSwitch({
-    state: Session.get('fromPortfolio'),
-    onSwitchChange(event, state) {
-      Session.set('fromPortfolio', state);
-      console.log(Session.get('fromPortfolio'))
-    },
-  });
+  // $('.js-from-portfolio').bootstrapSwitch({
+  //   state: Session.get('fromPortfolio'),
+  //   onSwitchChange(event, state) {
+  //     Session.set('fromPortfolio', state);
+  //     console.log(Session.get('fromPortfolio'))
+  //   },
+  // });
 });
 
 Template.manage_overview.events({
