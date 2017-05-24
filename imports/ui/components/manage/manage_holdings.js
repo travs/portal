@@ -66,7 +66,7 @@ const prefillTakeOrder = (id) => {
       isActive: true,
       'sell.symbol': quoteTokenSymbol,
       'buy.symbol': baseTokenSymbol,
-    }, { sort: { 'buy.price': 1, 'sell.howMuch': 1, createdAt: 1 } }).fetch();
+    }, { sort: { 'buy.price': -1, 'sell.howMuch': -1, createdAt: 1 } }).fetch();
 
     const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
     const setOfOrders = cheaperOrders.slice(0, index + 1);
