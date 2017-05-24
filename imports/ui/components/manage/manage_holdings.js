@@ -18,15 +18,9 @@ import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
 import AssetJson from '/imports/lib/assets/contracts/AssetProtocol.json';
 import EtherTokenJson from '/imports/lib/assets/contracts/EtherToken.json';
 import ERC20Json from '/imports/lib/assets/contracts/ERC20.json';
-// import BitcoinTokenJson from '/imports/lib/assets/contracts/BitcoinToken.json';
-// import RepTokenJson from '/imports/lib/assets/contracts/RepToken.json';
-
-
 // Utils
 import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
-
 import './manage_holdings.html';
-
 // Specs
 import specs from '/imports/lib/assets/utils/specs.js';
 
@@ -62,11 +56,21 @@ const prefillTakeOrder = (id) => {
 
   if (orderType === 'Sell') {
     Template.instance().state.set('buyingSelected', false);
-    const cheaperOrders = Orders.find({
-      isActive: true,
-      'sell.symbol': quoteTokenSymbol,
-      'buy.symbol': baseTokenSymbol,
-    }, { sort: { 'buy.price': -1, 'sell.howMuch': -1, createdAt: 1 } }).fetch();
+    let cheaperOrders;
+    if (Session.get('fromPortfolio')) {
+      cheaperOrders = Orders.find({
+        isActive: true,
+        'sell.symbol': quoteTokenSymbol,
+        'buy.symbol': baseTokenSymbol,
+        owner: '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf',
+      }, { sort: { 'buy.price': -1, 'sell.howMuch': -1, createdAt: 1 } }).fetch();
+    } else {
+      cheaperOrders = Orders.find({
+        isActive: true,
+        'sell.symbol': quoteTokenSymbol,
+        'buy.symbol': baseTokenSymbol,
+      }, { sort: { 'buy.price': -1, 'sell.howMuch': -1, createdAt: 1 } }).fetch();
+    }
 
     const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
     const setOfOrders = cheaperOrders.slice(0, index + 1);
@@ -78,18 +82,26 @@ const prefillTakeOrder = (id) => {
     const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
     const volume = convertFromTokenPrecision(volumeTakeOrder, buyTokenPrecision);
     const total = averagePrice * volume;
-
     const totalWantedBuyAmount = total;
-
 
     return { volume, averagePrice, total, setOfOrders, orderType, totalWantedBuyAmount };
   } else if (orderType === 'Buy') {
     Template.instance().state.set('buyingSelected', true);
-    const cheaperOrders = Orders.find({
-      isActive: true,
-      'sell.symbol': baseTokenSymbol,
-      'buy.symbol': quoteTokenSymbol,
-    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    let cheaperOrders;
+    if (Session.get('fromPortfolio')) {
+      cheaperOrders = Orders.find({
+        isActive: true,
+        'sell.symbol': baseTokenSymbol,
+        'buy.symbol': quoteTokenSymbol,
+        owner: '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf',
+      }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    } else {
+      cheaperOrders = Orders.find({
+        isActive: true,
+        'sell.symbol': baseTokenSymbol,
+        'buy.symbol': quoteTokenSymbol,
+      }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
+    }
 
     const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
     const setOfOrders = cheaperOrders.slice(0, index + 1);

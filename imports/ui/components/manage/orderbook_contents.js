@@ -125,12 +125,6 @@ Template.orderbook_contents.helpers({
     }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } })
     .fetch()
     .reduce((accumulator, currentValue) => accumulator + currentValue.buy.howMuch, 0);
-
-    // console.log({
-    //   currentCumVol,
-    //   totalConverted: convertFromTokenPrecision(total, precision),
-    //   ratio: (currentCumVol / convertFromTokenPrecision(total, precision)),
-    // });
     return (currentCumVol / convertFromTokenPrecision(total, precision)) * 100;
   },
   percentageOfSellSum(sellPrice, precision, index) {
@@ -150,7 +144,7 @@ Template.orderbook_contents.helpers({
 });
 
 Template.orderbook_contents.onRendered(() => {
-  // Meteor.call('orders.sync');
+  Meteor.call('orders.sync');
 });
 
 Template.orderbook_contents.events({
