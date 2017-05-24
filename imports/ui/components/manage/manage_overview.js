@@ -29,6 +29,24 @@ FlowRouter.triggers.enter([(context) => {
   Session.set('fromPortfolio', doc !== undefined);
 }], { only: ['manage'] });
 
+Tracker.autorun(() => {
+  const fromPortfolio = Session.get('fromPortfolio');
+
+  console.log(FlowRouter.getRouteName(), fromPortfolio);
+
+  if (FlowRouter.getRouteName() === 'manage') {
+    const core = Cores.findOne({ owner: Session.get('clientManagerAccount') });
+
+    console.log(core, Session.get('clientManagerAccount'));
+
+    if (fromPortfolio && core) {
+      FlowRouter.setParams({ address: core.address });
+    } else {
+      FlowRouter.setParams({ address: Session.get('clientManagerAccount') });
+    }
+  }
+});
+
 Template.manage_overview.onCreated(() => {
   Meteor.subscribe('cores');
   // TODO send command to server to update current coreContract
