@@ -9,7 +9,7 @@ import specs from '/imports/lib/assets/utils/specs.js';
 // Otherwise set it to localStorage, Session, or first element in accounts
 function checkAccounts() {
   web3.eth.getAccounts((error, accounts) => {
-    if(error) Session.set('isClientConnected', false);
+    if (error) Session.set('isClientConnected', false);
     else if (!error) {
       if (!_.contains(accounts, web3.eth.defaultAccount)) {
         if (_.contains(accounts, localStorage.getItem('clientManagerAccount'))) {
@@ -55,7 +55,7 @@ function checkNetwork() {
     // Check if we are synced
     if (isClientConnected) {
       web3.eth.getBlock('latest', (e, res) => {
-        if(e !== null) throw e;
+        if (e !== null) throw e;
         if (res.number >= Session.get('latestBlock')) {
           Session.set('outOfSync', e != null || (new Date().getTime() / 1000) - res.timestamp > 600);
           Session.set('latestBlock', res.number);
