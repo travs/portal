@@ -6,10 +6,10 @@
   <div class="exchange-overview-block">
     <div class="form-horizontal mp-form">
       <div class="form-group">
-        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="from_portofolio">{{getStatus}}</label>
+        <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="from_portofolio">Trade with</label>
         <div class="col-md-8 col-sm-6 col-xs-12">
-          <div class="make-switch custom-switch al-right" onText="HELLO">
-            <input class="js-from-portfolio" type="checkbox" {{ isFromPortfolio }}>
+          <div cclass="bootstrap-switch-id-switch-onText bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-on">
+            <input class="js-from-portfolio" type="checkbox" data-on-text="Portfolio" data-off-text="Account" {{ isFromPortfolio }}>
           </div>
         </div>
       </div>
