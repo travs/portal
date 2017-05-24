@@ -24,19 +24,14 @@ const assetPairs =
   ].join(''))
   .sort();
 
+FlowRouter.triggers.enter([(context) => {
+  const doc = Cores.findOne({ address: context.params.address });
+  Session.set('fromPortfolio', doc !== undefined);
+}], { only: ['manage'] });
+
 Template.manage_overview.onCreated(() => {
   Meteor.subscribe('cores');
   // TODO send command to server to update current coreContract
-
-  const address = FlowRouter.getParam('address');
-  const doc = Cores.find({ address });
-  if (doc.count()) {
-    console.log('fromPortfolio');
-    Session.set('fromPortfolio', true);
-  } else if (address) {
-    console.log('fromWallet');
-    Session.set('fromPortfolio', false);
-  }
 });
 
 Template.manage_overview.helpers({
