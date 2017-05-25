@@ -64,15 +64,6 @@ Template.manage_overview.helpers({
   },
 });
 
-Template.manage_overview.onRendered(() => {
-  $('.js-from-portfolio').bootstrapSwitch({
-    state: Session.get('fromPortfolio'),
-    onSwitchChange(event, state) {
-      Session.set('fromPortfolio', state);
-    },
-  });
-});
-
 Template.manage_overview.events({
   'change .js-asset-pair-picker': (event) => {
     Session.set('currentAssetPair', event.currentTarget.value);
