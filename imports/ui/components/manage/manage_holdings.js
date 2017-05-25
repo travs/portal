@@ -176,9 +176,9 @@ Template.manage_holdings.onRendered(() => {
     $('#select_type').attr('disabled', true);
   }
   $('.js-from-portfolio').bootstrapSwitch({
-    state: Session.get('fromPortfolio'),
+    state: !Session.get('fromPortfolio'),
     onSwitchChange(event, state) {
-      Session.set('fromPortfolio', state);
+      Session.set('fromPortfolio', !state);
       console.log(Session.get('fromPortfolio'));
       $('.js-price').attr('readonly') ? $('.js-price').removeAttr('readonly', false) : $('.js-price').attr('readonly', true);
       $('#select_type').attr('disabled') ? $('#select_type').removeAttr('disabled', false) : $('#select_type').attr('disabled', true);

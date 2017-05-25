@@ -80,6 +80,7 @@ Template.orderbook_contents.helpers({
     }
     let cumulativeDouble = 0;
 
+    console.log('buyPrice', buyPrice);
     for (let i = 0; i <= index; i += 1) {
       cumulativeDouble += cheaperOrders[i].buy.howMuch;
     }
