@@ -186,7 +186,6 @@ Template.manage_holdings.onRendered(() => {
   });
 });
 
-
 Template.manage_holdings.events({
   'change .js-asset-pair-picker': (event) => {
     Session.set('currentAssetPair', event.currentTarget.value);
@@ -255,18 +254,18 @@ Template.manage_holdings.events({
       let quantity = 0;
       let quantityToApprove = 0; // will be used in case 1.2
       if (prefillTakeOrder(Session.get('selectedOrderId')).orderType === 'Sell') {
-        quantity = parseFloat(templateInstance.find('input.js-total').value, 10) * Math.pow(10, buyTokenPrecision);
-        quantityToApprove = parseFloat(templateInstance.find('input.js-volume').value, 10) * Math.pow(10, sellTokenPrecision);
+        quantity = new BigNumber(templateInstance.find('input.js-total').value).pow(10, buyTokenPrecision);
+        quantityToApprove = new BigNumber(templateInstance.find('input.js-volume').value).pow(10, sellTokenPrecision);
       } else {
-        quantity = parseFloat(templateInstance.find('input.js-volume').value, 10) * Math.pow(10, buyTokenPrecision);
-        quantityToApprove = parseFloat(templateInstance.find('input.js-total').value, 10) * Math.pow(10, sellTokenPrecision);
+        quantity = new BigNumber(templateInstance.find('input.js-volume').value).pow(10, buyTokenPrecision);
+        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value).pow(10, sellTokenPrecision);
       }
       // Case 1.1 : Take offer -> Trade through fund
       if (Session.get('fromPortfolio')) {
         for (let i = 0; i < setOfOrders.length; i += 1) {
-          if (quantity) {
-            if (quantity >= setOfOrders[i].sell.howMuch) {
-              console.log('Desired quantity ', quantity, ' Available quantity ', setOfOrders[i].sell.howMuch);
+          if (quantity.toNumber()) {
+            if (quantity.gte(setOfOrders[i].sell.howMuchPrecise)) {
+              console.log('Desired quantity ', quantity.toString(), ' Available quantity ', setOfOrders[i].sell.howMuchPrecise);
               console.log(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress });
               coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress }).then((result) => {
                 console.log(result);
@@ -278,8 +277,8 @@ Template.manage_holdings.events({
                 console.log(err);
                 toastr.error('Oops, an error has occured. Please verify the transaction informations');
               });
-              quantity -= setOfOrders[i].sell.howMuch;
-            } else if (quantity < setOfOrders[i].sell.howMuch) {
+              quantity = quantity.minus(setOfOrders[i].sell.howMuchPrecise);
+            } else if (quantity.lt(setOfOrders[i].sell.howMuchPrecise)) {
               coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, quantity, { from: managerAddress }).then((result) => {
                 console.log(result);
                 console.log('Transaction for order id ', setOfOrders[i].id, ' executed!');
@@ -290,7 +289,7 @@ Template.manage_holdings.events({
                 toastr.error('Oops, an error has occured. Please verify the transaction informations');
                 console.log(err);
               });
-              quantity = 0;
+              quantity = new BigNumber(0);
             }
           }
         }
@@ -314,19 +313,28 @@ Template.manage_holdings.events({
         // Case 1.2.1 : Take offer -> Trade through manager's wallet -> Sell token is EtherToken (not ERC20)
         if (sellTokenAddress == AddressList.EtherToken) {
           for (let i = 0; i < setOfOrders.length; i += 1) {
-            if (quantity) {
+            if (quantity.toNumber()) {
               // const quantityToApprove = setOfOrders[i]['buy']['howMuch'];
-              if (quantity >= setOfOrders[i].sell.howMuch) {
-                assetContract.deposit({ from: managerAddress, value: quantityToApprove }).then(result => assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress })).then(result => exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuch, { from: managerAddress })).then((result) => {
+              if (quantity.gte(setOfOrders[i].sell.howMuchPrecise)) {
+                assetContract.deposit({ from: managerAddress, value: quantityToApprove })
+                .then(result => assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress }))
+                .then(result => exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress }))
+                .then((result) => {
                   console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
                   // Meteor.call('orders.sync');
                   Session.get('selectedOrderId') !== null;
                   toastr.success('Order successfully executed!');
+                })
+                .catch((err) => {
+                  toastr.error('Oops, an error has occured. Please verify the transaction informations');
+                  throw err;
                 });
-              } else if (quantity < setOfOrders[i].sell.howMuch) {
-                assetContract.deposit({ from: managerAddress, value: quantityToApprove }).then(result => assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress })).then((result) => {
-                  exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuch, { from: managerAddress });
-                }).then((result) => {
+                quantity = quantity.minus(setOfOrders[i].sell.howMuchPrecise);
+              } else if (quantity.lt(setOfOrders[i].sell.howMuchPrecise)) {
+                assetContract.deposit({ from: managerAddress, value: quantityToApprove })
+                .then(result => assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress }))
+                .then((result) => { exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress }); })
+                .then((result) => {
                   console.log(result);
                   console.log('Transaction for manager wallet for order id ', setOfOrders[i].id, ' executed!');
                   Meteor.call('orders.sync');
@@ -334,9 +342,9 @@ Template.manage_holdings.events({
                   toastr.success('Order successfully executed!');
                 }).catch((err) => {
                   toastr.error('Oops, an error has occured. Please verify the transaction informations');
-                  console.log(err);
+                  throw err;
                 });
-                quantity = 0;
+                quantity = new BigNumber(0);
               }
             }
           }
@@ -344,18 +352,25 @@ Template.manage_holdings.events({
         // Case 1.2.2 : Take offer -> Trade through manager's wallet -> Sell token is ERC20
         else {
           for (let i = 0; i < setOfOrders.length; i += 1) {
-            if (quantity) {
+            if (quantity.toNumber()) {
               // const quantityToApprove = setOfOrders[i]['buy']['howMuch'];
-              if (quantity >= setOfOrders[i].sell.howMuch) {
-                assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress }).then(result => exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuch, { from: managerAddress })).then((result) => {
+              if (quantity.gte(setOfOrders[i].sell.howMuchPrecise)) {
+                assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress })
+                .then(result => exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress }))
+                .then((result) => {
                   console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
                   // Meteor.call('orders.sync');
                   Session.get('selectedOrderId') !== null;
                   toastr.success('Order successfully executed!');
+                })
+                .catch((err) => {
+                  toastr.error('Oops, an error has occured. Please verify the transaction informations');
+                  throw err;
                 });
-              } else if (quantity < setOfOrders[i].sell.howMuch) {
+                quantity = quantity.minus(setOfOrders[i].sell.howMuchPrecise);
+              } else if (quantity.lt(setOfOrders[i].sell.howMuchPrecise)) {
                 assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress }).then((result) => {
-                  exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuch, { from: managerAddress });
+                  exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress });
                 }).then((result) => {
                   console.log(result);
                   console.log('Transaction for manager wallet for order id ', setOfOrders[i].id, ' executed!');
@@ -366,7 +381,7 @@ Template.manage_holdings.events({
                   toastr.error('Oops, an error has occured. Please verify the transaction informations');
                   console.log(err);
                 });
-                quantity = 0;
+                quantity = new BigNumber(0);
               }
             }
           }
