@@ -218,7 +218,10 @@ Template.manage_holdings.events({
     templateInstance.find('input.js-volume').value = total / price;
   },
   'click .js-placeorder': (event, templateInstance) => {
+    console.log('click .js-placeorder', event, templateInstance);
     event.preventDefault();
+
+    const buy = Template.instance().state.get('buyingSelected');
 
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
@@ -238,36 +241,48 @@ Template.manage_holdings.events({
     const coreContract = Core.at(coreAddress);
     const exchangeContract = Exchange.at(AddressList.Exchange);
 
+    // BigNumber is always without decimal in it!
+    // Good: '23452345'
+    // Bad: '2.234235'
 
     // Case 1: form pre-filled w order book information (when user selects an order book)
     if (Session.get('selectedOrderId') !== null) {
       const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
-      const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).totalWantedBuyAmount;
+      // const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).totalWantedBuyAmount;
 
       // Get token address, precision and base unit volume for buy token and sell token
       const buyTokenAddress = Specs.getTokenAddress(setOfOrders[0].sell.symbol);
       const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
-      const buyBaseUnitVolume = totalWantedBuyAmount * Math.pow(10, buyTokenPrecision);
+      // const buyBaseUnitVolume = totalWantedBuyAmount * Math.pow(10, buyTokenPrecision);
       const sellTokenAddress = Specs.getTokenAddress(setOfOrders[0].buy.symbol);
       const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
 
       let quantity = 0;
       let quantityToApprove = 0; // will be used in case 1.2
       if (prefillTakeOrder(Session.get('selectedOrderId')).orderType === 'Sell') {
-        quantity = new BigNumber(templateInstance.find('input.js-total').value).pow(10, buyTokenPrecision);
-        quantityToApprove = new BigNumber(templateInstance.find('input.js-volume').value).pow(10, sellTokenPrecision);
+        quantity = new BigNumber(templateInstance.find('input.js-total').value)
+          .times(Math.pow(10, buyTokenPrecision));
+        quantityToApprove = new BigNumber(templateInstance.find('input.js-volume').value)
+          .times(Math.pow(10, sellTokenPrecision));
       } else {
-        quantity = new BigNumber(templateInstance.find('input.js-volume').value).pow(10, buyTokenPrecision);
-        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value).pow(10, sellTokenPrecision);
+        quantity = new BigNumber(templateInstance.find('input.js-volume').value)
+          .times(Math.pow(10, sellTokenPrecision));
+        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value)
+          .times(Math.pow(10, buyTokenPrecision));
       }
       // Case 1.1 : Take offer -> Trade through fund
       if (Session.get('fromPortfolio')) {
         for (let i = 0; i < setOfOrders.length; i += 1) {
+          // const sellPrecision = setOfOrders[i].sell.precision;
+          const sellHowMuchPrecise = new BigNumber(setOfOrders[i].sell.howMuchPrecise);
+
           if (quantity.toNumber()) {
-            if (quantity.gte(setOfOrders[i].sell.howMuchPrecise)) {
-              console.log('Desired quantity ', quantity.toString(), ' Available quantity ', setOfOrders[i].sell.howMuchPrecise);
-              console.log(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress });
-              coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress }).then((result) => {
+            if (quantity.gte(sellHowMuchPrecise)) {
+              console.log('Desired quantity ', quantity.toString(), ' Available quantity ', sellHowMuchPrecise);
+              console.log(AddressList.Exchange, setOfOrders[i].id, sellHowMuchPrecise, { from: managerAddress });
+              console.log('setOfOrders[i].sell.howMuchPrecise', sellHowMuchPrecise);
+              coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, sellHowMuchPrecise, { from: managerAddress })
+              .then((result) => {
                 console.log(result);
                 console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
                 Meteor.call('orders.sync');
@@ -277,8 +292,8 @@ Template.manage_holdings.events({
                 console.log(err);
                 toastr.error('Oops, an error has occured. Please verify the transaction informations');
               });
-              quantity = quantity.minus(setOfOrders[i].sell.howMuchPrecise);
-            } else if (quantity.lt(setOfOrders[i].sell.howMuchPrecise)) {
+              quantity = quantity.minus(sellHowMuchPrecise);
+            } else if (quantity.lt(sellHowMuchPrecise)) {
               coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, quantity, { from: managerAddress }).then((result) => {
                 console.log(result);
                 console.log('Transaction for order id ', setOfOrders[i].id, ' executed!');
