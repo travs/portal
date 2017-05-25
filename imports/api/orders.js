@@ -46,7 +46,7 @@ Orders.watch = () => {
   orders.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
-    console.log('Order updated', event.args);
+    console.log('Order updated', event.args, event.args.id.toNumber());
 
     Orders.syncOrderById(event.args.id.toNumber());
   }));
@@ -64,14 +64,15 @@ Orders.sync = () => {
 
 Orders.syncOrderById = (id) => {
   exchangeContract.orders(id).then((info) => {
-    console.log(info);
-    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, timestamp, owner, isActive] = info; // TODO for new exchange version add _timestamp_
+    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, timestamp, owner, isActive] = info;
     const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
     const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
     const buySymbol = specs.getTokenSymbolByAddress(buyWhichToken);
     const sellSymbol = specs.getTokenSymbolByAddress(sellWhichToken);
     const sellPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
     const buyPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
+
+    if (sellWhichToken !== '0x0000000000000000000000000000000000000000') console.log(id, info);
 
     // Insert into Orders collection
     if (isActive) {
