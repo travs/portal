@@ -45,7 +45,7 @@
       <p class="status">Share Price</p>
       {{#if hasManagerCreatedCore}}
       <p class="value">
-        <a href="/portfolio/{{getManagerAddressOfCore}}" class="truncate green-text text-lighten-2">{{getSharePrice}}</a>
+        <a href="/portfolio/{{getManagerAddressOfCore}}" class="truncate green-text text-lighten-2">{{dapp_formatBalance getSharePrice "0,0.0" "finney"}}</a>
       </p>
       {{else}}
       <p class="value">
