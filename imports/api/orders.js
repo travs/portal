@@ -46,6 +46,8 @@ Orders.watch = () => {
   orders.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
+    console.log('Order updated', event.args);
+
     Orders.syncOrderById(event.args.id.toNumber());
   }));
 };
@@ -70,30 +72,35 @@ Orders.syncOrderById = (id) => {
     const sellSymbol = specs.getTokenSymbolByAddress(sellWhichToken);
     const sellPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
     const buyPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
+
     // Insert into Orders collection
-    Orders.upsert({
-      id,
-    }, {
-      id,
-      owner,
-      isActive,
-      buy: {
-        token: buyWhichToken,
-        symbol: buySymbol,
-        howMuch: buyHowMuch.toNumber(),
-        precision: buyPrecision,
-        price: buyPrice,
-      },
-      sell: {
-        token: sellWhichToken,
-        symbol: sellSymbol,
-        howMuch: sellHowMuch.toNumber(),
-        precision: sellPrecision,
-        price: sellPrice,
-      },
-      timestamp,
-      createdAt: new Date(),
-    });
+    if (isActive) {
+      Orders.upsert({
+        id,
+      }, {
+        id,
+        owner,
+        isActive,
+        buy: {
+          token: buyWhichToken,
+          symbol: buySymbol,
+          howMuch: buyHowMuch.toNumber(),
+          precision: buyPrecision,
+          price: buyPrice,
+        },
+        sell: {
+          token: sellWhichToken,
+          symbol: sellSymbol,
+          howMuch: sellHowMuch.toNumber(),
+          precision: sellPrecision,
+          price: sellPrice,
+        },
+        timestamp,
+        createdAt: new Date(),
+      });
+    } else {
+      Orders.remove({ id });
+    }
   });
 };
 
