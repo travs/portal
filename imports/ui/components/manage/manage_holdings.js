@@ -62,7 +62,7 @@ const prefillTakeOrder = (id) => {
         isActive: true,
         'sell.symbol': quoteTokenSymbol,
         'buy.symbol': baseTokenSymbol,
-        owner: '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf',
+        owner: AddressList.LiquidityProvider,
       }, { sort: { 'buy.price': -1, 'sell.howMuch': -1, createdAt: 1 } }).fetch();
     } else {
       cheaperOrders = Orders.find({
@@ -93,7 +93,7 @@ const prefillTakeOrder = (id) => {
         isActive: true,
         'sell.symbol': baseTokenSymbol,
         'buy.symbol': quoteTokenSymbol,
-        owner: '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf',
+        owner: AddressList.LiquidityProvider,
       }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
     } else {
       cheaperOrders = Orders.find({
@@ -207,7 +207,11 @@ Template.manage_holdings.events({
   'input input.js-volume': (event, templateInstance) => {
     const price = parseFloat(templateInstance.find('input.js-price').value, 10);
     const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
-    templateInstance.find('input.js-total').value = price * volume;
+    if (Session.get('selectedOrderId') && volume > prefillTakeOrder(Session.get('selectedOrderId')).volume) {
+      templateInstance.find('input.js-volume').value = prefillTakeOrder(Session.get('selectedOrderId')).volume;
+    } else {
+      templateInstance.find('input.js-total').value = price * volume;
+    }
   },
   'input input.js-total': (event, templateInstance) => {
     const price = parseFloat(templateInstance.find('input.js-price').value, 10);
