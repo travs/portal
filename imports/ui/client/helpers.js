@@ -30,6 +30,7 @@ Template.registerHelper('hasManagerCreatedCore', () => Cores.find({ owner: Sessi
 Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).address : false));
 Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).name : false));
 Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? convertFromTokenPrecision(Cores.findOne({ owner: Session.get('clientManagerAccount') }).delta, 18) : false));
+Template.registerHelper('getSharePrice', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('clientManagerAccount') }).sharePrice : false));
 Template.registerHelper('getIsNewOfCore', () => (Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0 ? !Cores.findOne({ owner: Session.get('clientManagerAccount') }).isUsed : false));
 Template.registerHelper('getIsFundedCore', () => ((Cores.find({ owner: Session.get('clientManagerAccount') }).fetch()[0] || { sharesSupply: 0 }).sharesSupply !== 0));
 Template.registerHelper('getPortfolioDoc', () => {

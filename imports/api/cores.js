@@ -34,8 +34,8 @@ Cores.watch = () => {
   cores.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
-    console.log(`Cores.watch ${event.args.id}`)
-    Cores.syncCoreById(event.args.id.toNumber()); //see event object, doesnt have .id
+    console.log(`Cores.watch ${event.args.id}`);
+    Cores.syncCoreById(event.args.id.toNumber()); // see event object, doesnt have .id
   }));
 };
 
@@ -82,21 +82,18 @@ Cores.syncCoreById = (id) => {
   })
   .then((result) => {
     referenceAsset = result;
-    return coreContract.getLastCalculations();
+    return coreContract.performCalculations();
   })
   .then((calculations) => {
-    [nav, delta, sharePrice, sharesSupply, atTimestamp] = calculations;
-    return coreContract.calcGAV();
-  })
-  .then((result) => {
-    currGav = result;
+    // [nav, delta, sharePrice, sharesSupply, atTimestamp] = calculations;
+    [gav, managementFee, performanceFee, unclaimedFees, nav, sharePrice] = calculations;
     return coreContract.totalSupply();
   })
   .then((result) => {
     currTotalSupply = result;
     // TODO use NAV value
-    sharePrice = (currTotalSupply.toNumber() === 0) ? 1.0 : currGav.toNumber() / currTotalSupply.toNumber();
-    sharePrice = convertToTokenPrecision(sharePrice, decimals);
+    // sharePrice = (currTotalSupply.toNumber() === 0) ? 1.0 : currGav.toNumber() / currTotalSupply.toNumber();
+    // sharePrice = convertToTokenPrecision(sharePrice, decimals);
     // Insert into Portfolio collection
     Cores.upsert({
       id,
@@ -111,10 +108,9 @@ Cores.syncCoreById = (id) => {
       universeAddress,
       referenceAsset,
       nav: nav.toNumber(),
-      delta: delta.toNumber(),
-      sharePrice, // TODO sharePrice by NAV value
+      sharePrice: sharePrice.toNumber(), // TODO sharePrice by NAV value
       sharesSupply: currTotalSupply.toNumber(),
-      atTimestamp: atTimestamp.toNumber(),
+      // atTimestamp: atTimestamp.toNumber(), TODO ASK RETO
       createdAt: new Date(),
     });
   });
