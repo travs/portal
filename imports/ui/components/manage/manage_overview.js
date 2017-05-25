@@ -41,7 +41,7 @@ Tracker.autorun(() => {
 
     if (fromPortfolio && core) {
       FlowRouter.setParams({ address: core.address });
-    } else {
+    } else if (Session.get('clientManagerAccount')) {
       FlowRouter.setParams({ address: Session.get('clientManagerAccount') });
     }
   }
