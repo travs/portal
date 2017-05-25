@@ -24,6 +24,25 @@ const assetPairs =
   ].join(''))
   .sort();
 
+FlowRouter.triggers.enter([(context) => {
+  const doc = Cores.findOne({ address: context.params.address });
+  Session.set('fromPortfolio', doc !== undefined);
+}], { only: ['manage'] });
+
+Tracker.autorun(() => {
+  const fromPortfolio = Session.get('fromPortfolio');
+
+  if (FlowRouter.getRouteName() === 'manage') {
+    const core = Cores.findOne({ owner: Session.get('clientManagerAccount') });
+
+    if (fromPortfolio && core) {
+      FlowRouter.setParams({ address: core.address });
+    } else if (Session.get('clientManagerAccount')) {
+      FlowRouter.setParams({ address: Session.get('clientManagerAccount') });
+    }
+  }
+});
+
 Template.manage_overview.onCreated(() => {
   Meteor.subscribe('cores');
   // TODO send command to server to update current coreContract
@@ -44,8 +63,6 @@ Template.manage_overview.helpers({
     return 'Manage personal wallet';
   },
 });
-
-Template.manage_overview.onRendered(() => {});
 
 Template.manage_overview.events({
   'change .js-asset-pair-picker': (event) => {
