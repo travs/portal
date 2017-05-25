@@ -11,7 +11,6 @@ if (typeof web3 !== 'undefined') {
   // (https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md#ear-listening-for-selected-account-changes)
   let initialAccount = window.web3.eth.accounts[0];
   window.setInterval(() => {
-    console.log(initialAccount, window.web3.eth.accounts[0]);
     const currentAccount = window.web3.eth.accounts[0];
     if (!initialAccount && currentAccount) initialAccount = currentAccount;
     if (currentAccount !== initialAccount) window.location.reload();

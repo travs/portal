@@ -62,7 +62,8 @@ Orders.sync = () => {
 
 Orders.syncOrderById = (id) => {
   exchangeContract.orders(id).then((info) => {
-    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, /* TODO for new exchange version add _timestamp_!*/owner, isActive] = info;
+    console.log(info);
+    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, timestamp, owner, isActive] = info; // TODO for new exchange version add _timestamp_
     const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
     const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
     const buySymbol = specs.getTokenSymbolByAddress(buyWhichToken);
@@ -90,7 +91,7 @@ Orders.syncOrderById = (id) => {
         precision: sellPrecision,
         price: sellPrice,
       },
-      // blockTimestamp: new Date(timestamp * 1000),
+      timestamp,
       createdAt: new Date(),
     });
   });
