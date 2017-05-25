@@ -32,12 +32,8 @@ FlowRouter.triggers.enter([(context) => {
 Tracker.autorun(() => {
   const fromPortfolio = Session.get('fromPortfolio');
 
-  console.log(FlowRouter.getRouteName(), fromPortfolio);
-
   if (FlowRouter.getRouteName() === 'manage') {
     const core = Cores.findOne({ owner: Session.get('clientManagerAccount') });
-
-    console.log(core, Session.get('clientManagerAccount'));
 
     if (fromPortfolio && core) {
       FlowRouter.setParams({ address: core.address });
