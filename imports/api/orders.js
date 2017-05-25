@@ -77,7 +77,6 @@ Orders.syncOrderById = (id) => {
       // console.log(buyHowMuch.toString(), buyHowMuch, sellHowMuch.toString(), sellHowMuch);
     }
 
-
     // Insert into Orders collection
     if (isActive) {
       Orders.upsert({

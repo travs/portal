@@ -267,8 +267,8 @@ Template.manage_holdings.events({
           if (quantity) {
             if (quantity >= setOfOrders[i].sell.howMuch) {
               console.log('Desired quantity ', quantity, ' Available quantity ', setOfOrders[i].sell.howMuch);
-              console.log(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuch, { from: managerAddress }, quantity === setOfOrders[i].sell.howMuch, setOfOrders[i]);
-              coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuch, { from: managerAddress }).then((result) => {
+              console.log(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress });
+              coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress }).then((result) => {
                 console.log(result);
                 console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
                 Meteor.call('orders.sync');
