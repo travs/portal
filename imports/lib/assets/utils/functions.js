@@ -148,9 +148,9 @@ exports.buyOneEtherFor = (sellHowMuch, sellWhichToken, owner, depth, callback) =
 };
 
 
-exports.convertFromTokenPrecision = (value, precision) => {
+exports.convertFromTokenPrecision = (value, precision, targetPrecision = 4) => {
   const divisor = Math.pow(10, precision);
-  return (value / divisor).toFixed(4);
+  return (value / divisor).toFixed(targetPrecision);
 };
 
 exports.convertToTokenPrecision = (value, precision) => value * Math.pow(10, precision);

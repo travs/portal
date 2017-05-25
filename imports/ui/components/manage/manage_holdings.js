@@ -75,12 +75,12 @@ const prefillTakeOrder = (id) => {
     const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
     const setOfOrders = cheaperOrders.slice(0, index + 1);
     const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
-      accumulator + currentValue.buy.howMuch, 0);
+      accumulator.add(currentValue.buy.howMuchPrecise), new BigNumber(0));
     const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
       (accumulator + currentValue.sell.howMuch), 0) / volumeTakeOrder;
     const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
     const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
-    const volume = convertFromTokenPrecision(volumeTakeOrder, buyTokenPrecision);
+    const volume = volumeTakeOrder.div(Math.pow(10, buyTokenAddress)).toString();
     const total = averagePrice * volume;
     const totalWantedBuyAmount = total;
 
@@ -106,12 +106,12 @@ const prefillTakeOrder = (id) => {
     const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
     const setOfOrders = cheaperOrders.slice(0, index + 1);
     const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
-      accumulator + currentValue.sell.howMuch, 0);
+      accumulator.add(currentValue.sell.howMuchPrecise), new BigNumber(0));
     const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
       (accumulator + currentValue.buy.howMuch), 0) / volumeTakeOrder;
     const sellTokenAddress = Specs.getTokenAddress(quoteTokenSymbol);
     const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
-    const volume = convertFromTokenPrecision(volumeTakeOrder, sellTokenPrecision);
+    const volume = volumeTakeOrder.div(Math.pow(10, sellTokenPrecision)).toString();
     const total = averagePrice * volume;
     const totalWantedBuyAmount = volume;
 
@@ -266,7 +266,8 @@ Template.manage_holdings.events({
         for (let i = 0; i < setOfOrders.length; i += 1) {
           if (quantity) {
             if (quantity >= setOfOrders[i].sell.howMuch) {
-              console.log('Desired uantity ', quantity, ' Available quantity ', setOfOrders[i].sell.howMuch);
+              console.log('Desired quantity ', quantity, ' Available quantity ', setOfOrders[i].sell.howMuch);
+              console.log(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuch, { from: managerAddress }, quantity === setOfOrders[i].sell.howMuch, setOfOrders[i]);
               coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, setOfOrders[i].sell.howMuch, { from: managerAddress }).then((result) => {
                 console.log(result);
                 console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');

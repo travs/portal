@@ -72,7 +72,11 @@ Orders.syncOrderById = (id) => {
     const sellPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
     const buyPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
 
-    if (sellWhichToken !== '0x0000000000000000000000000000000000000000') console.log(id, info);
+    if (sellWhichToken !== '0x0000000000000000000000000000000000000000') {
+      console.log(id, info);
+      // console.log(buyHowMuch.toString(), buyHowMuch, sellHowMuch.toString(), sellHowMuch);
+    }
+
 
     // Insert into Orders collection
     if (isActive) {
@@ -86,6 +90,7 @@ Orders.syncOrderById = (id) => {
           token: buyWhichToken,
           symbol: buySymbol,
           howMuch: buyHowMuch.toNumber(),
+          howMuchPrecise: buyHowMuch.toString(),
           precision: buyPrecision,
           price: buyPrice,
         },
@@ -93,6 +98,7 @@ Orders.syncOrderById = (id) => {
           token: sellWhichToken,
           symbol: sellSymbol,
           howMuch: sellHowMuch.toNumber(),
+          howMuchPrecise: sellHowMuch.toString(),
           precision: sellPrecision,
           price: sellPrice,
         },
