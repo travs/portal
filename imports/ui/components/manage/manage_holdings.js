@@ -80,7 +80,7 @@ const prefillTakeOrder = (id) => {
       (accumulator + currentValue.sell.howMuch), 0) / volumeTakeOrder;
     const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
     const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
-    const volume = volumeTakeOrder.div(Math.pow(10, buyTokenAddress)).toString();
+    const volume = volumeTakeOrder.div(Math.pow(10, buyTokenPrecision)).toString();
     const total = averagePrice * volume;
     const totalWantedBuyAmount = total;
 
@@ -232,12 +232,12 @@ Template.manage_holdings.events({
       return;
     }
     const coreAddress = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address: coreAddress });
-    if (doc === undefined) {
-      // TODO replace toast
-      // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
-      return;
-    }
+    // const doc = Cores.findOne({ address: coreAddress });
+    // if (doc === undefined) {
+    //   // TODO replace toast
+    //   // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
+    //   return;
+    // }
     const coreContract = Core.at(coreAddress);
     const exchangeContract = Exchange.at(AddressList.Exchange);
 
@@ -294,6 +294,8 @@ Template.manage_holdings.events({
               });
               quantity = quantity.minus(sellHowMuchPrecise);
             } else if (quantity.lt(sellHowMuchPrecise)) {
+              // Select more than one order
+              // TODO: Check if its works!
               coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, quantity, { from: managerAddress }).then((result) => {
                 console.log(result);
                 console.log('Transaction for order id ', setOfOrders[i].id, ' executed!');
@@ -328,12 +330,14 @@ Template.manage_holdings.events({
         // Case 1.2.1 : Take offer -> Trade through manager's wallet -> Sell token is EtherToken (not ERC20)
         if (sellTokenAddress == AddressList.EtherToken) {
           for (let i = 0; i < setOfOrders.length; i += 1) {
+            const sellHowMuchPrecise = new BigNumber(setOfOrders[i].sell.howMuchPrecise);
+
             if (quantity.toNumber()) {
               // const quantityToApprove = setOfOrders[i]['buy']['howMuch'];
-              if (quantity.gte(setOfOrders[i].sell.howMuchPrecise)) {
+              if (quantity.gte(sellHowMuchPrecise)) {
                 assetContract.deposit({ from: managerAddress, value: quantityToApprove })
                 .then(result => assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress }))
-                .then(result => exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress }))
+                .then(result => exchangeContract.take(setOfOrders[i].id, sellHowMuchPrecise, { from: managerAddress }))
                 .then((result) => {
                   console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
                   // Meteor.call('orders.sync');
@@ -344,11 +348,11 @@ Template.manage_holdings.events({
                   toastr.error('Oops, an error has occured. Please verify the transaction informations');
                   throw err;
                 });
-                quantity = quantity.minus(setOfOrders[i].sell.howMuchPrecise);
-              } else if (quantity.lt(setOfOrders[i].sell.howMuchPrecise)) {
+                quantity = quantity.minus(sellHowMuchPrecise);
+              } else if (quantity.lt(sellHowMuchPrecise)) {
                 assetContract.deposit({ from: managerAddress, value: quantityToApprove })
                 .then(result => assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress }))
-                .then((result) => { exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress }); })
+                .then((result) => { exchangeContract.take(setOfOrders[i].id, sellHowMuchPrecise, { from: managerAddress }); })
                 .then((result) => {
                   console.log(result);
                   console.log('Transaction for manager wallet for order id ', setOfOrders[i].id, ' executed!');
@@ -367,11 +371,13 @@ Template.manage_holdings.events({
         // Case 1.2.2 : Take offer -> Trade through manager's wallet -> Sell token is ERC20
         else {
           for (let i = 0; i < setOfOrders.length; i += 1) {
+            const sellHowMuchPrecise = new BigNumber(setOfOrders[i].sell.howMuchPrecise);
+
             if (quantity.toNumber()) {
               // const quantityToApprove = setOfOrders[i]['buy']['howMuch'];
-              if (quantity.gte(setOfOrders[i].sell.howMuchPrecise)) {
+              if (quantity.gte(sellHowMuchPrecise)) {
                 assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress })
-                .then(result => exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress }))
+                .then(result => exchangeContract.take(setOfOrders[i].id, sellHowMuchPrecise, { from: managerAddress }))
                 .then((result) => {
                   console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
                   // Meteor.call('orders.sync');
@@ -382,10 +388,10 @@ Template.manage_holdings.events({
                   toastr.error('Oops, an error has occured. Please verify the transaction informations');
                   throw err;
                 });
-                quantity = quantity.minus(setOfOrders[i].sell.howMuchPrecise);
-              } else if (quantity.lt(setOfOrders[i].sell.howMuchPrecise)) {
+                quantity = quantity.minus(sellHowMuchPrecise);
+              } else if (quantity.lt(sellHowMuchPrecise)) {
                 assetContract.approve(AddressList.Exchange, quantityToApprove, { from: managerAddress }).then((result) => {
-                  exchangeContract.take(setOfOrders[i].id, setOfOrders[i].sell.howMuchPrecise, { from: managerAddress });
+                  exchangeContract.take(setOfOrders[i].id, sellHowMuchPrecise, { from: managerAddress });
                 }).then((result) => {
                   console.log(result);
                   console.log('Transaction for manager wallet for order id ', setOfOrders[i].id, ' executed!');
