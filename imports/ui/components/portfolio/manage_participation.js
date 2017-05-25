@@ -66,7 +66,7 @@ Template.manage_participation.events({
   'input input#volume': (event, templateInstance) => {
     const price = parseFloat(templateInstance.find('input#price').value || 0, 10);
     const volume = parseFloat(templateInstance.find('input#volume').value || 0, 10);
-    console.log('price: ', price, 'volume: ', volume,);
+    console.log('price: ', price, 'volume: ', volume );
     /* eslint no-param-reassign: ["error", { "props": false }]*/
     templateInstance.find('input#total').value = price * volume;
   },
@@ -77,7 +77,6 @@ Template.manage_participation.events({
     templateInstance.find('input#volume').value = total / price;
   },
   'click .manage': (event, templateInstance) => {
-
     // Prevent default browser form submit
     event.preventDefault();
 
@@ -87,7 +86,7 @@ Template.manage_participation.events({
     const volume = parseFloat(templateInstance.find('input#volume').value, 10);
     const total = parseFloat(templateInstance.find('input#total').value, 10);
     if (isNaN(type) || isNaN(price) || isNaN(volume) || isNaN(total)) {
-      //TODO replace toast
+      // TODO replace toast
       // Materialize.toast('Please fill out the form', 4000, 'blue');
       return;
     }
@@ -95,7 +94,7 @@ Template.manage_participation.events({
     // Init
     const managerAddress = Session.get('clientManagerAccount');
     if (managerAddress === undefined) {
-      //TODO replace toast
+      // TODO replace toast
       // Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
       return;
     }
@@ -103,7 +102,7 @@ Template.manage_participation.events({
     const doc = Cores.findOne({ address: coreAddress });
     // Check if core is stored in database
     if (doc === undefined) {
-      //TODO replace toast
+      // TODO replace toast
       // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
       return;
     }
@@ -123,34 +122,35 @@ Template.manage_participation.events({
     const EtherTokenContract = EtherToken.at(AddressList.EtherToken);
 
     switch (type) {
-      //Invest case
+      // Invest case
       case 0:
-      EtherTokenContract.deposit({from: managerAddress, value: weiTotal}).then((result) => {
-        return EtherTokenContract.approve(coreAddress, baseUnitVolume, {from: managerAddress});
-      }).then((result) => {
-        return coreContract.createShares(baseUnitVolume, {from: managerAddress});
-      }).then((result) => {
-        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-        console.log(`Shares successfully created. Tx Hash: ${result}`);
-        Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
-        Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
-        return coreContract.totalSupply();
-      }).catch((error) => {
-        console.log(error);
-      })
-      break;
+        EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then((result) => EtherTokenContract.approve(coreAddress, baseUnitVolume, {from: managerAddress})).then((result) => coreContract.createShares(baseUnitVolume, {from: managerAddress})).then((result) => {
+          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+          console.log(`Shares successfully created. Tx Hash: ${result}`);
+          Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
+          Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+          return coreContract.totalSupply();
+        }).catch((error) => {
+          console.log(error);
+        });
+        templateInstance.find('input#total').value = '';
+        templateInstance.find('input#volume').value = '';
+        window.scrollTo(0, 0);
+        break;
 
-      //Redeem case
+      // Redeem case
       case 1:
-      coreContract.annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress }).then((result) => {
+        coreContract.annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress }).then((result) => {
         Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
         Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
         Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+        templateInstance.find('input#total').value = '';
+        templateInstance.find('input#volume').value = '';
         return coreContract.totalSupply();
       }).catch((error) => {
         console.log(error);
-      })
+      });
       default: return 'Error';
     }
   },
