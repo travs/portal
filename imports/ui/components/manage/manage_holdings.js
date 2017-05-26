@@ -52,7 +52,7 @@ const prefillTakeOrder = (id) => {
   const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
   const selectedOrderId = Number(Session.get('selectedOrderId'));
   const selectedOffer = Orders.find({ id: selectedOrderId }).fetch();
-  const orderType = selectedOffer[0].sell.symbol === 'ETH-T' ? 'Sell' : 'Buy';
+  const orderType = selectedOffer[0] && selectedOffer[0].sell.symbol === 'ETH-T' ? 'Sell' : 'Buy';
 
   if (orderType === 'Sell') {
     Template.instance().state.set('buyingSelected', false);
@@ -260,9 +260,13 @@ Template.manage_holdings.events({
       const sellTokenAddress = Specs.getTokenAddress(setOfOrders[0].buy.symbol);
       const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
 
+      const isSell = prefillTakeOrder(Session.get('selectedOrderId')).orderType === 'Sell';
+
+      console.log({ isSell });
+
       let quantity = 0;
       let quantityToApprove = 0; // will be used in case 1.2
-      if (prefillTakeOrder(Session.get('selectedOrderId')).orderType === 'Sell') {
+      if (isSell) {
         quantity = new BigNumber(templateInstance.find('input.js-total').value)
           .times(Math.pow(10, buyTokenPrecision));
         quantityToApprove = new BigNumber(templateInstance.find('input.js-volume').value)
@@ -278,13 +282,18 @@ Template.manage_holdings.events({
         for (let i = 0; i < setOfOrders.length; i += 1) {
           // const sellPrecision = setOfOrders[i].sell.precision;
           const sellHowMuchPrecise = new BigNumber(setOfOrders[i].sell.howMuchPrecise);
+          // const buyHowMuchPrecise = new BigNumber(setOfOrders[i].buy.howMuchPrecise);
 
           if (quantity.toNumber()) {
             if (quantity.gte(sellHowMuchPrecise)) {
               console.log('Desired quantity ', quantity.toString(), ' Available quantity ', sellHowMuchPrecise);
-              console.log(AddressList.Exchange, setOfOrders[i].id, sellHowMuchPrecise, { from: managerAddress });
+              console.log(AddressList.Exchange, setOfOrders[i].id, sellHowMuchPrecise.toString(), { from: managerAddress });
               console.log('setOfOrders[i].sell.howMuchPrecise', sellHowMuchPrecise);
-              coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, sellHowMuchPrecise, { from: managerAddress })
+              coreContract.takeOrder(
+                AddressList.Exchange,
+                setOfOrders[i].id,
+                sellHowMuchPrecise,
+                { from: managerAddress })
               .then((result) => {
                 console.log(result);
                 console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
@@ -301,6 +310,7 @@ Template.manage_holdings.events({
             } else if (quantity.lt(sellHowMuchPrecise)) {
               // Select more than one order
               // TODO: Check if its works!
+              console.log(AddressList.Exchange, setOfOrders[i].id, quantity.toString(), { from: managerAddress });
               coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, quantity, { from: managerAddress }).then((result) => {
                 console.log(result);
                 console.log('Transaction for order id ', setOfOrders[i].id, ' executed!');
