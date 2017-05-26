@@ -221,6 +221,9 @@ Template.manage_holdings.events({
     console.log('click .js-placeorder', event, templateInstance);
     event.preventDefault();
 
+    window.scrollTo(0, 0);
+    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
+
     const buy = Template.instance().state.get('buyingSelected');
 
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
@@ -287,10 +290,12 @@ Template.manage_holdings.events({
                 console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
                 Meteor.call('orders.sync');
                 Session.get('selectedOrderId') !== null;
+                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                 toastr.success('Order successfully executed!');
               }).catch((err) => {
-                console.log(err);
+                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
                 toastr.error('Oops, an error has occured. Please verify the transaction informations');
+                throw err;
               });
               quantity = quantity.minus(sellHowMuchPrecise);
             } else if (quantity.lt(sellHowMuchPrecise)) {
@@ -301,10 +306,12 @@ Template.manage_holdings.events({
                 console.log('Transaction for order id ', setOfOrders[i].id, ' executed!');
                 Meteor.call('orders.sync');
                 Session.set('selectedOrderId', null);
+                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                 toastr.success('Order successfully executed!');
               }).catch((err) => {
+                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
                 toastr.error('Oops, an error has occured. Please verify the transaction informations');
-                console.log(err);
+                throw err;
               });
               quantity = new BigNumber(0);
             }
@@ -342,10 +349,12 @@ Template.manage_holdings.events({
                   console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
                   // Meteor.call('orders.sync');
                   Session.get('selectedOrderId') !== null;
+                  Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                   toastr.success('Order successfully executed!');
                 })
                 .catch((err) => {
                   toastr.error('Oops, an error has occured. Please verify the transaction informations');
+                  Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
                   throw err;
                 });
                 quantity = quantity.minus(sellHowMuchPrecise);
@@ -358,9 +367,11 @@ Template.manage_holdings.events({
                   console.log('Transaction for manager wallet for order id ', setOfOrders[i].id, ' executed!');
                   Meteor.call('orders.sync');
                   Session.set('selectedOrderId', null);
+                  Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                   toastr.success('Order successfully executed!');
                 }).catch((err) => {
                   toastr.error('Oops, an error has occured. Please verify the transaction informations');
+                  Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
                   throw err;
                 });
                 quantity = new BigNumber(0);
@@ -382,9 +393,11 @@ Template.manage_holdings.events({
                   console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
                   // Meteor.call('orders.sync');
                   Session.get('selectedOrderId') !== null;
+                  Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                   toastr.success('Order successfully executed!');
                 })
                 .catch((err) => {
+                  Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
                   toastr.error('Oops, an error has occured. Please verify the transaction informations');
                   throw err;
                 });
@@ -397,8 +410,10 @@ Template.manage_holdings.events({
                   console.log('Transaction for manager wallet for order id ', setOfOrders[i].id, ' executed!');
                   Meteor.call('orders.sync');
                   Session.set('selectedOrderId', null);
+                  Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                   toastr.success('Order successfully executed!');
                 }).catch((err) => {
+                  Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
                   toastr.error('Oops, an error has occured. Please verify the transaction informations');
                   console.log(err);
                 });
@@ -467,11 +482,13 @@ Template.manage_holdings.events({
               console.log('Order registered');
               console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
               Meteor.call('orders.syncOrderById', result.logs[i].args.id.toNumber());
+              Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
               toastr.success('Order successfully submitted!');
             }
           }
         }).catch((err) => {
           toastr.error('Oops, an error has occured. Please verify your order informations.');
+          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
           throw err;
         });
       }
@@ -505,11 +522,13 @@ Template.manage_holdings.events({
                 console.log('Order registered for manager wallet');
                 console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
                 Meteor.call('orders.syncOrderById', result.logs[i].args.id.toNumber());
+                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                 toastr.success('Order successfully submitted!');
               }
             }
           }).catch((err) => {
             toastr.error('Oops, an error has occured. Please verify your order informations.');
+            Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
             throw err;
           });
         }
@@ -526,10 +545,15 @@ Template.manage_holdings.events({
                 console.log('Order registered for manager wallet');
                 console.log(`Order id: ${result.logs[i].args.id.toNumber()}`);
                 Meteor.call('orders.syncOrderById', result.logs[i].args.id.toNumber());
+                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                 toastr.success('Order successfully submitted!');
+              } else {
+                console.error(result.logs[i].event === 'OrderUpdate', result.logs[i].event);
+                throw new Error('Something went wrong. Dont ask me what.');
               }
             }
           }).catch((err) => {
+            Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
             toastr.error('Oops, an error has occured. Please verify your order informations.');
             throw err;
           });
