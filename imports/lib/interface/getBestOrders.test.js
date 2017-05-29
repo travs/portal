@@ -1,4 +1,5 @@
-const getBestOrders = require('./getBestOrders');
+import getBestOrders from './getBestOrders';
+
 
 const orders = [{
   id: 1,
