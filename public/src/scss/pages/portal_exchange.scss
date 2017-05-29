@@ -181,7 +181,7 @@ li {
 		}
 	}
 }
-@media (max-width: $screen-xs-max){ 
+@media (max-width: $screen-xs-max){
 	.table-responsive{
 		border: 0;
 		margin-bottom: 0;
@@ -237,7 +237,7 @@ li {
 				.exchange-order-wrapper{
 					.order-book-more{
 						.table-load-more{
-							padding: 30px;							
+							padding: 30px;
 						}
 					}
 				}
@@ -246,7 +246,7 @@ li {
 	}
 }
 @media (max-width: $screen-xs-max)
-and (orientation: portrait){ 
+and (orientation: portrait){
 	.mp-portal{
 		&.portal-exchange{
 			.exchange-overview{
@@ -269,11 +269,11 @@ and (orientation: portrait){
 	}
 }
 @media (max-width: $screen-xs-max)
-and (orientation: landscape){ 
+and (orientation: landscape){
 
 }
-@media (min-width: $screen-sm-min) 
-and (max-width: $screen-ipad){ 
+@media (min-width: $screen-sm-min)
+and (max-width: $screen-ipad){
 	.mp-portal{
 		&.portal-exchange{
 			.exchange-overview{
@@ -300,9 +300,9 @@ and (max-width: $screen-ipad){
 		}
 	}
 }
-@media (min-width: $screen-sm-min) 
+@media (min-width: $screen-sm-min)
 and (max-width: $screen-ipad)
-and (orientation: portrait){ 
+and (orientation: portrait){
 	.mp-portal-hero{
 		.hero-text{
 			padding: $spacing-lg * 2 0;
@@ -424,9 +424,9 @@ and (orientation: portrait){
 		}
 	}
 }
-@media (min-width: $screen-sm-min) 
+@media (min-width: $screen-sm-min)
 and (max-width: $screen-ipad)
-and (orientation: landscape){ 
+and (orientation: landscape){
 	.mp-portal-hero{
 		.hero-text{
 			padding: $spacing-lg + $spacing-md 0;
