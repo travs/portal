@@ -4,6 +4,7 @@
   "scripts": {
     "start": "meteor",
     "lint": "eslint .",
+    "test": "jest",
     "pretest": "npm run lint --silent",
     "testrpc": "testrpc",
     "deploy": "mup deploy",
@@ -40,6 +41,7 @@
     "eslint-plugin-meteor": "^4.0.1",
     "eslint-plugin-react": "^6.10.3",
     "ethereumjs-testrpc": "^3.0.5",
+    "jest": "^20.0.4",
     "mup": "^1.2.8"
   }
 }
