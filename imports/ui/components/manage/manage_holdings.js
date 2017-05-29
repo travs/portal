@@ -5,14 +5,13 @@ import { bootstrapSwitch } from 'bootstrap-switch';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
+import contract from 'truffle-contract';
 import AddressList from '/imports/lib/ethereum/address_list.js';
 import constants from '/imports/lib/assets/utils/constants.js';
-import Specs from '/imports/lib/assets/utils/specs.js';
 // Collections
 import { Cores } from '/imports/api/cores';
 import { Orders } from '/imports/api/orders.js';
 // Contracts
-import contract from 'truffle-contract';
 import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
 import AssetJson from '/imports/lib/assets/contracts/AssetProtocol.json';
@@ -21,8 +20,14 @@ import ERC20Json from '/imports/lib/assets/contracts/ERC20.json';
 // Utils
 import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
 import './manage_holdings.html';
-// Specs
+// specs
 import specs from '/imports/lib/assets/utils/specs.js';
+// Interface
+import getOrder from '/imports/lib/interface/getOrder';
+import takeOrder from '/imports/lib/interface/takeOrder';
+
+window.getOrder = getOrder;
+window.takeOrder = takeOrder;
 
 const Core = contract(CoreJson);
 const Exchange = contract(ExchangeJson);
@@ -78,8 +83,8 @@ const prefillTakeOrder = (id) => {
       accumulator.add(currentValue.buy.howMuchPrecise), new BigNumber(0));
     const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
       (accumulator + currentValue.sell.howMuch), 0) / volumeTakeOrder;
-    const buyTokenAddress = Specs.getTokenAddress(baseTokenSymbol);
-    const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
+    const buyTokenAddress = specs.getTokenAddress(baseTokenSymbol);
+    const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
     const volume = volumeTakeOrder.div(Math.pow(10, buyTokenPrecision)).toString();
     const total = averagePrice * volume;
     const totalWantedBuyAmount = total;
@@ -109,8 +114,8 @@ const prefillTakeOrder = (id) => {
       accumulator.add(currentValue.sell.howMuchPrecise), new BigNumber(0));
     const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
       (accumulator + currentValue.buy.howMuch), 0) / volumeTakeOrder;
-    const sellTokenAddress = Specs.getTokenAddress(quoteTokenSymbol);
-    const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
+    const sellTokenAddress = specs.getTokenAddress(quoteTokenSymbol);
+    const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
     const volume = volumeTakeOrder.div(Math.pow(10, sellTokenPrecision)).toString();
     const total = averagePrice * volume;
     const totalWantedBuyAmount = volume;
@@ -254,11 +259,11 @@ Template.manage_holdings.events({
       // const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).totalWantedBuyAmount;
 
       // Get token address, precision and base unit volume for buy token and sell token
-      const buyTokenAddress = Specs.getTokenAddress(setOfOrders[0].sell.symbol);
-      const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
+      const buyTokenAddress = specs.getTokenAddress(setOfOrders[0].sell.symbol);
+      const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
       // const buyBaseUnitVolume = totalWantedBuyAmount * Math.pow(10, buyTokenPrecision);
-      const sellTokenAddress = Specs.getTokenAddress(setOfOrders[0].buy.symbol);
-      const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
+      const sellTokenAddress = specs.getTokenAddress(setOfOrders[0].buy.symbol);
+      const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
 
       const isSell = prefillTakeOrder(Session.get('selectedOrderId')).orderType === 'Sell';
 
@@ -468,11 +473,11 @@ Template.manage_holdings.events({
       }
 
     // Get token addresses
-      const sellTokenAddress = Specs.getTokenAddress(sellToken);
-      const buyTokenAddress = Specs.getTokenAddress(buyToken);
+      const sellTokenAddress = specs.getTokenAddress(sellToken);
+      const buyTokenAddress = specs.getTokenAddress(buyToken);
     // Get token precision
-      const sellTokenPrecision = Specs.getTokenPrecisionByAddress(sellTokenAddress);
-      const buyTokenPrecision = Specs.getTokenPrecisionByAddress(buyTokenAddress);
+      const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
+      const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
     // Get base unit volume
       const sellBaseUnitVolume = sellVolume * Math.pow(10, sellTokenPrecision);
       const buyBaseUnitVolume = buyVolume * Math.pow(10, buyTokenPrecision);

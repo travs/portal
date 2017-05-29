@@ -1,18 +1,16 @@
+/* global web3 */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 import AddressList from '/imports/lib/ethereum/address_list';
-import specs from '/imports/lib/assets/utils/specs.js';
+import getOrder from '/imports/lib/interface/getOrder';
 
 // SMART-CONTRACT IMPORT
-
-import constants from '/imports/lib/assets/utils/constants.js';
-import functions from '/imports/lib/assets/utils/functions.js';
-import collections from '/imports/lib/assets/utils/collections.js';
 import contract from 'truffle-contract';
 import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json';
+
 const PreminedAsset = contract(PreminedAssetJson); // Set Provider
 const Exchange = contract(ExchangeJson);
 PreminedAsset.setProvider(web3.currentProvider);
@@ -52,61 +50,33 @@ Orders.watch = () => {
   }));
 };
 
-
 Orders.sync = () => {
   exchangeContract.getLastOrderId().then((lastId) => {
-    for (let id = 1; id < lastId.toNumber() + 1; id += 1) {
+    for (let id = lastId.toNumber(); id > 0; id -= 1) {
       Orders.syncOrderById(id);
     }
   });
 };
 
-
 Orders.syncOrderById = (id) => {
-  exchangeContract.orders(id).then((info) => {
-    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, timestamp, owner, isActive] = info;
-    const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
-    const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
-    const buySymbol = specs.getTokenSymbolByAddress(buyWhichToken);
-    const sellSymbol = specs.getTokenSymbolByAddress(sellWhichToken);
-    const sellPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
-    const buyPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
-
-    if (sellWhichToken !== '0x0000000000000000000000000000000000000000') {
-      console.log(id, info);
-      // console.log(buyHowMuch.toString(), buyHowMuch, sellHowMuch.toString(), sellHowMuch);
+  getOrder(id).then((order) => {
+    if (order.sell.token !== '0x0000000000000000000000000000000000000000') {
+      console.log('syncOrder with DB', order);
     }
 
-    // Insert into Orders collection
-    if (isActive) {
+    if (order.isActive) {
       Orders.upsert({
-        id,
+        id: order.id,
       }, {
-        id,
-        owner,
-        isActive,
-        buy: {
-          token: buyWhichToken,
-          symbol: buySymbol,
-          howMuch: buyHowMuch.toNumber(),
-          howMuchPrecise: buyHowMuch.toString(),
-          precision: buyPrecision,
-          price: buyPrice,
-        },
-        sell: {
-          token: sellWhichToken,
-          symbol: sellSymbol,
-          howMuch: sellHowMuch.toNumber(),
-          howMuchPrecise: sellHowMuch.toString(),
-          precision: sellPrecision,
-          price: sellPrice,
-        },
-        timestamp,
+        ...order,
         createdAt: new Date(),
       });
     } else {
-      Orders.remove({ id });
+      Orders.remove({ id: order.id });
     }
+  })
+  .catch((err) => {
+    throw err;
   });
 };
 
