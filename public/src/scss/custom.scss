@@ -2030,8 +2030,8 @@ and (orientation: landscape){
 }
 
 @import "pages/daemon";
-@import "pages/portal_overview";
-@import "pages/portal_exchange";
+// @import "pages/portal_overview";
+// @import "pages/portal_exchange";
 
 p.value a{color: #337ab7 !important;}
 .badge-hero{
@@ -2221,4 +2221,673 @@ th:last-child{text-align:left !important;}
   border-radius: 20px;
   color: #1189c6;
   margin-top: 5px;
+}
+
+
+//PORTAL OVERVIEW
+.mp-portal-hero{
+	height: 400px;
+	.hero-text{
+		padding-top: 120px;
+		&.hero-charts{
+			padding-top: 90px !important;
+		}
+		h1{
+		}
+		form{
+			padding: 0 $spacing-lg * 2;
+		}
+		.input-newsletter{
+
+		}
+	}
+	.hero-summary{
+		padding-top: 120px;
+		.hero-network-summary{
+			margin-bottom: $spacing-lg - 20;
+			span{
+				border-bottom: 2px solid rgba(255, 255, 255, 0.11);
+				color: $white;
+				font-size: $font-size-normal;
+				font-weight: $font-weight-medium;
+				text-transform: uppercase;
+				padding-left: 0;
+				padding-bottom: $spacing-sm + 5;
+				margin-bottom: $spacing-sm + 5;
+				display: table;
+			}
+			ul{
+				li{
+					margin-bottom: $spacing-sm;
+					p{
+						margin-bottom: 0;
+						font-size: $font-size-small;
+						font-weight: $font-weight-regular;
+						&.status{
+							color: #ebebeb;
+						}
+						&.value{
+							color: $light-blue;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.mp-portal{
+	padding: $spacing-lg;
+	&.setup-portfolio{
+		.setup-portfolio-wrapper{
+			border: 1px solid #e6e6e6;
+			padding: 30px;
+			.setup-header{
+				h4{
+					margin: 0;
+					font-weight: $font-weight-regular;
+					font-size: $font-size-medium + 2;
+					color: #4e4e4e;
+					margin-bottom: 5px;
+				}
+				p{
+					color: #868686;
+					font-size: $font-size-normal;
+					font-weight: $font-weight-regular;
+					margin-bottom: $spacing-md + $spacing-sm;
+				}
+			}
+			.setup-form{
+				padding: 20px 0 5px;
+			}
+			.line-divider{
+				border-bottom: 1px solid #e6e6e6;
+				margin: 10px 0;
+			}
+			.setup-module{
+				border: 1px solid #e6e6e6;
+				padding: $spacing-md;
+				margin: 20px 0;
+				p{
+					color: #868686;
+					font-weight: $font-weight-regular;
+					font-size: $font-size-normal - 1;
+				}
+				ul{
+					li{
+						margin-bottom: $spacing-sm;
+						&:before{
+							content: "-";
+							margin-right: $spacing-sm;
+							color: $light-blue;
+						}
+						a{
+							color: $light-blue;
+							font-size: $font-size-normal - 1;
+							font-weight: $font-weight-medium;
+						}
+					}
+				}
+			}
+			.btn-portfolio{
+				text-align: right;
+				margin-top: $spacing-md;
+			}
+		}
+	}
+	.mp-portal-table{
+		margin-bottom: 0 !important;
+		thead{
+			tr{
+				background: #f6f6f6;
+				th{
+					&::after{
+						vertical-align: middle;
+						top: 30px;
+						right: 30px;
+					}
+				}
+			}
+		}
+		tbody{
+			tr{
+				td{
+					color: $light-blue;
+					font-weight: $font-weight-medium;
+					font-size: $font-size-small + 1;
+					vertical-align: middle;
+					&.identicon{
+						img{
+							height: 35px;
+							height: 35px;
+							object-fit: cover;
+							object-position: 50% 50%;
+						}
+					}
+					&.portfolio{
+						a{
+							text-transform: uppercase;
+						}
+					}
+				}
+			}
+		}
+	}
+	.table-load-more{
+		text-align: center;
+		padding: 30px $spacing-lg;
+		border: 1px solid #dddddd;
+		margin-top: -2px;
+	}
+}
+@media (max-width: $screen-xs-max){
+	.mp-portal-hero{
+		height: 650px;
+		.hero-text{
+			padding-top: $spacing-lg + $spacing-md;
+			form{
+				padding: 0;
+			}
+		}
+		.hero-summary{
+			padding: $spacing-lg $spacing-md;
+		}
+	}
+	.mp-portal{
+		padding: $spacing-lg 0;
+		.mp-portal-table{
+			margin-top: 0 !important;
+			thead{
+				tr{
+					th{
+						&::after{
+							right: 10px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: $screen-xs-max)
+and (orientation: portrait){
+
+}
+@media (max-width: $screen-xs-max)
+and (orientation: landscape){
+
+}
+@media (min-width: $screen-sm-min)
+and (max-width: $screen-ipad){
+	.mp-portal-hero{
+		.hero-text{
+			form{
+				padding: 0 $spacing-lg;
+			}
+		}
+	}
+	.mp-portal{
+		padding: $spacing-lg 0;
+	}
+	.mp-footer-portal{
+		.btn-big{
+			width: 100%;
+			padding: 13px;
+		}
+	}
+}
+@media (min-width: $screen-sm-min)
+and (max-width: $screen-ipad)
+and (orientation: portrait){
+
+}
+@media (min-width: $screen-sm-min)
+and (max-width: $screen-ipad)
+and (orientation: landscape){
+
+}
+
+//PORTAL EXCHANGE
+.select-form{
+	width: 100% !important;
+	.selectpicker{
+		border-radius: 0 !important;
+		height: 50px;
+		box-shadow: none;
+		span{
+			padding-top: 0 !important;
+		}
+		&:focus{
+			outline: none !important;
+		}
+	}
+}
+.custom-switch{
+	.bootstrap-switch{
+		border-radius: 0;
+		.bootstrap-switch-container{
+			.bootstrap-switch-primary{
+				color: $white !important;
+				border-radius: 0;
+				background: $light-blue;
+				border-color: $light-blue;
+			}
+			.bootstrap-switch-primary, .bootstrap-switch-default{
+				vertical-align: top;
+				height: 44px;
+				padding-top: 12px !important;
+			}
+		}
+	}
+}
+// metricsgraphic custom chart
+.mg-x-axis text,
+.mg-y-axis text,
+.mg-histogram .axis text {
+	fill: #fff;
+}
+text {
+	fill: #fff;
+}
+li {
+	color: #cfcfcf;
+}
+.mg-active-datapoint {
+	fill: #fff;
+	font-size: 11.5px;
+}
+// title
+.exchange-title{
+	color: $par-grey;
+	font-size: $font-size-medium + 2;
+	font-weight: $font-weight-regular;
+	display: inline-block;
+	margin: 0;
+	vertical-align: middle;
+	line-height: 1;
+}
+.mp-portal{
+	&.portal-exchange{
+		.mp-exchange-table{
+			margin-bottom: 0 !important;
+			&.order-book{
+				thead{
+					tr{
+						th{
+							width: 33%;
+						}
+					}
+				}
+			}
+			thead{
+				tr{
+					background: #f6f6f6;
+					th{
+						text-align: left;
+						padding: 15px 15px 15px 50px;
+						&::after{
+							vertical-align: middle;
+							top: 30px;
+							right: 30px;
+						}
+					}
+				}
+			}
+			tbody{
+				tr{
+					td{
+						padding: 15px 15px 15px 50px;
+						text-align: left;
+						p{
+							&.green, &.red, &.blue{
+								font-weight: $font-weight-medium;
+								font-size: $font-size-normal - 1;
+							}
+						}
+					}
+				}
+			}
+		}
+		.exchange-overview{
+			margin-bottom: $spacing-lg;
+			&.wallet{
+				.asset-overview-wrapper{
+					min-height: 285px !important;
+				}
+			}
+			.asset-overview-wrapper{
+				min-height: 555px;
+				border: 1px solid #dddddd;
+				padding: 30px $spacing-lg;
+				.exchange-overview-header{
+					margin-bottom: $spacing-lg;
+					&.asset{
+						margin-bottom: $spacing-md;
+						.line-divider{
+							margin: 30px 0 10px;
+						}
+					}
+					.badge{
+						float: right;
+						border-radius: 2px;
+					}
+				}
+				.exchange-overview-block{
+					.mp-form{
+						.line-divider{
+							margin: 30px 0;
+						}
+						.form-group{
+							width: 100%;
+							margin-bottom: $spacing-md;
+							input{
+							}
+							label, span, p{
+								padding-top: 15px;
+							}
+							label{
+								font-size: $font-size-normal;
+								font-weight: $font-weight-medium;
+								text-align: left;
+							}
+							span, p{
+								font-size: $font-size-normal;
+								font-weight: $font-weight-regular;
+								color: $par-grey;
+							}
+							p{
+								text-align: right;
+								margin-bottom: 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		.exchange-order{
+			margin-bottom: $spacing-lg;
+			.exchange-order-wrapper{
+				border: 1px solid #dddddd;
+				border-bottom: 0;
+				.order-book-head{
+					padding: 30px;
+				}
+				.order-book-table{
+					.col-md-6{
+						&:first-child{
+							padding-right: 0;
+						}
+						&:last-child{
+							padding-left: 0;
+						}
+					}
+				}
+				.order-book-more{
+					.table-load-more{
+						border-top: 0;
+					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: $screen-xs-max){
+	.table-responsive{
+		border: 0;
+		margin-bottom: 0;
+	}
+	.mp-portal{
+		&.portal-exchange{
+			.mp-exchange-table{
+				margin-top: 0 !important;
+				thead{
+					tr{
+						th{
+							padding: 15px 20px;
+							&::after{
+								right: 5px;
+							}
+						}
+					}
+				}
+				tbody{
+					tr{
+						td{
+							padding: 15px 20px;
+						}
+					}
+				}
+			}
+			.exchange-overview{
+				margin-bottom: $spacing-lg;
+				&.wallet{
+					.asset-overview-wrapper{
+						min-height: 410px !important;
+					}
+				}
+				.asset-overview-wrapper{
+					min-height: 555px;
+					padding: $spacing-md;
+					.exchange-overview-block{
+						.form-group{
+							.col-xs-12{
+								p{
+									text-align: left;
+									padding-top: 0;
+								}
+							}
+							span.col-xs-12{
+								padding-top: 5px;
+							}
+						}
+					}
+				}
+			}
+			.exchange-order{
+				.exchange-order-wrapper{
+					.order-book-more{
+						.table-load-more{
+							padding: 30px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: $screen-xs-max)
+and (orientation: portrait){
+	.mp-portal{
+		&.portal-exchange{
+			.exchange-overview{
+				.asset-overview-wrapper{
+					min-height: 555px;
+					padding: $spacing-md;
+					.exchange-overview-header{
+						.badge{
+							display: block;
+							margin-top: 10px;
+							float: left;
+						}
+						.line-divider{
+							margin-top: 60px !important;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: $screen-xs-max)
+and (orientation: landscape){
+
+}
+@media (min-width: $screen-sm-min)
+and (max-width: $screen-ipad){
+	.mp-portal{
+		&.portal-exchange{
+			.exchange-overview{
+				.asset-overview-wrapper{
+					.exchange-overview-block{
+						.mp-form{
+							.line-divider{
+								margin: 30px 0;
+							}
+							.form-group{
+								width: 100%;
+								margin-bottom: $spacing-md;
+								.col-xs-12{
+									padding-right: 0;
+								}
+								.custom-switch{
+									text-align: right;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (min-width: $screen-sm-min)
+and (max-width: $screen-ipad)
+and (orientation: portrait){
+	.mp-portal-hero{
+		.hero-text{
+			padding: $spacing-lg * 2 0;
+		}
+	}
+	.mp-portal{
+		&.portal-exchange{
+			.mp-exchange-table{
+				margin-bottom: 0 !important;
+				&.order-book{
+					thead{
+						tr{
+							th{
+								width: 33%;
+							}
+						}
+					}
+				}
+				thead{
+					tr{
+						background: #f6f6f6;
+						th{
+							text-align: left;
+							padding: 15px 15px 15px 50px;
+							&::after{
+								vertical-align: middle;
+								top: 30px;
+								right: 30px;
+							}
+						}
+					}
+				}
+				tbody{
+					tr{
+						td{
+							padding: 15px 15px 15px 50px;
+							text-align: left;
+							p{
+								&.green, &.red, &.blue{
+									font-weight: $font-weight-medium;
+									font-size: $font-size-normal - 1;
+								}
+							}
+						}
+					}
+				}
+			}
+			.exchange-overview{
+				margin-bottom: $spacing-lg;
+				&.wallet{
+					.asset-overview-wrapper{
+						min-height: 410px !important;
+					}
+				}
+				.asset-overview-wrapper{
+					min-height: 555px;
+					border: 1px solid #dddddd;
+					.exchange-overview-header{
+						margin-bottom: $spacing-lg;
+						&.asset{
+							margin-bottom: $spacing-md;
+							.line-divider{
+								margin: 30px 0 10px;
+							}
+						}
+						.badge{
+							float: right;
+							border-radius: 2px;
+						}
+					}
+					.exchange-overview-block{
+						.mp-form{
+							.line-divider{
+								margin: 30px 0;
+							}
+							.form-group{
+								input{
+								}
+								label, span, p{
+									padding-top: 15px;
+								}
+								label{
+									font-size: $font-size-normal;
+									font-weight: $font-weight-medium;
+									text-align: left;
+								}
+								span, p{
+									font-size: $font-size-normal;
+									font-weight: $font-weight-regular;
+									color: $par-grey;
+								}
+								p{
+									text-align: right;
+									margin-bottom: 0;
+								}
+							}
+						}
+					}
+				}
+			}
+			.exchange-order{
+				margin-bottom: $spacing-lg;
+				.exchange-order-wrapper{
+					border: 1px solid #dddddd;
+					border-bottom: 0;
+					.order-book-head{
+						padding: 30px;
+					}
+					.order-book-table{
+
+					}
+					.order-book-more{
+						.table-load-more{
+							border-top: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (min-width: $screen-sm-min)
+and (max-width: $screen-ipad)
+and (orientation: landscape){
+	.mp-portal-hero{
+		.hero-text{
+			padding: $spacing-lg + $spacing-md 0;
+		}
+	}
+	.mp-portal{
+		&.portal-exchange{
+			.exchange-overview{
+				.asset-overview-wrapper{
+					padding: 30px;
+				}
+			}
+		}
+	}
 }
