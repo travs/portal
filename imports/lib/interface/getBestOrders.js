@@ -1,24 +1,28 @@
+/*
+  @pre: orders are only from the selected asset pair
+  @pre: the orders are already BigNumberified
+*/
 const getBestOrders = (orderType, priceThreshold, quantity, orders) => {
   if (orderType === 'buy') {
     return orders.filter(order =>
-      (order.sell.howMuchPrecise / order.buy.howMuchPrecise) > priceThreshold,
+      order.sell.howMuchBigNumber.div(order.buy.howMuchBigNumber).gte(priceThreshold),
     )
     .sort((a, b) => (
-      (a.sell.howMuchPrecise / a.buy.howMuchPrecise)
-      > (b.sell.howMuchPrecise / b.buy.howMuchPrecise)
+      a.sell.howMuchBigNumber.div(a.buy.howMuchBigNumber)
+      .gt(b.sell.howMuchBigNumber.div(b.buy.howMuchBigNumber))
       ? -1
       : 1),
     )
     .map(order => order.id);
   } else if (orderType === 'sell') {
     return orders.filter(order =>
-      (order.buy.howMuchPrecise / order.sell.howMuchPrecise) > priceThreshold,
+      order.buy.howMuchBigNumber.div(order.sell.howMuchBigNumber).lte(priceThreshold),
     )
     .sort((a, b) => (
-      (a.buy.howMuchPrecise / a.sell.howMuchPrecise)
-      > (b.buy.howMuchPrecise / b.sell.howMuchPrecise)
-      ? -1
-      : 1),
+      a.buy.howMuchBigNumber.div(a.sell.howMuchBigNumber)
+      .gt(b.buy.howMuchBigNumber.div(b.sell.howMuchBigNumber))
+      ? 1
+      : -1),
     )
     .map(order => order.id);
   }

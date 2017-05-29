@@ -5,6 +5,7 @@
     "start": "meteor",
     "lint": "eslint .",
     "jest": "jest",
+    "jest:watch": "jest --watch",
     "pretest": "npm run lint --silent",
     "testrpc": "testrpc",
     "deploy": "mup deploy",
@@ -16,6 +17,7 @@
   },
   "babel": {
     "presets": [
+      "meteor",
       "es2015",
       "react"
     ]
@@ -40,6 +42,7 @@
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-meteor": "^6.26.0",
     "babel-preset-react": "^6.24.1",
     "chimp": "^0.48.0",
     "eslint": "^3.19.0",
