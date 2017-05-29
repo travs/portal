@@ -1,15 +1,17 @@
 /* global test, expect */
 import orders from './fixtures/orderBook.js';
 
-import getBestOrders from './getBestOrders';
+import matchOrders from './matchOrders';
 import orderBigNumberify from './helpers/orderBigNumberify';
 
 
-test('getBestOrders', () => {
+test('matchOrders', () => {
   const sellMelonOrders = orders
   .filter(o => o.sell.symbol === 'MLN-T')
   .map(orderBigNumberify);
 
-  expect(getBestOrders('sell', 0.4, 2, sellMelonOrders).length).toBe(2);
-  expect(getBestOrders('sell', 0.4, 2, sellMelonOrders)).toEqual([1, 2]);
+  const matchedOrders = matchOrders('sell', 0.4, 2, sellMelonOrders);
+
+  expect(matchedOrders.length).toBe(2);
+  expect(matchedOrders.map(o => o.id)).toEqual([1, 2]);
 });
