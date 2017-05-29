@@ -18,7 +18,7 @@ Exchange.setProvider(web3.currentProvider);
 const exchangeContract = Exchange.at(AddressList.Exchange); // Initialize contract instance
 
 // COLLECTIONS
-export const Orders = new Mongo.Collection('orders');
+export const Orders = global.Orders = new Mongo.Collection('orders');
 if (Meteor.isServer) {
   // Note: you need to specify an asset pair. There is no way to get all orders to the client.
   Meteor.publish('orders', (currentAssetPair = '---/---') => {

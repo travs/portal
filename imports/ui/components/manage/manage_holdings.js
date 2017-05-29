@@ -28,6 +28,7 @@ import takeOrder from '/imports/lib/interface/takeOrder';
 
 window.getOrder = getOrder;
 window.takeOrder = takeOrder;
+window.BigNumber = BigNumber;
 
 const Core = contract(CoreJson);
 const Exchange = contract(ExchangeJson);
