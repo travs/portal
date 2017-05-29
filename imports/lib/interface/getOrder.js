@@ -1,6 +1,6 @@
+/* global web3 */
 import contract from 'truffle-contract';
 
-import web3 from '/imports/lib/ethereum/isomorphic-web3';
 import AddressList from '/imports/lib/ethereum/address_list';
 import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json';
 import specs from '/imports/lib/assets/utils/specs.js';

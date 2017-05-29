@@ -1,7 +1,7 @@
+/* global web3 */
 import { BigNumber } from 'meteor/ethereum:web3';
 import contract from 'truffle-contract';
 
-import web3 from '/imports/lib/ethereum/isomorphic-web3';
 import AddressList from '/imports/lib/ethereum/address_list';
 import CoreJson from '/imports/lib/assets/contracts/Core.json';
 import getOrder from './getOrder';

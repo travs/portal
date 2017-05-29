@@ -1,9 +1,8 @@
+/* global web3 */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import AddressList from '/imports/lib/ethereum/address_list.js';
-import specs from '/imports/lib/assets/utils/specs.js';
-import { convertFromTokenPrecision, convertToTokenPrecision } from '/imports/lib/assets/utils/functions.js';
 
 
 // SMART-CONTRACT IMPORT
@@ -11,6 +10,7 @@ import { convertFromTokenPrecision, convertToTokenPrecision } from '/imports/lib
 import contract from 'truffle-contract';
 import VersionJson from '/imports/lib/assets/contracts/Version.json';
 import CoreJson from '/imports/lib/assets/contracts/Core.json';
+
 const Version = contract(VersionJson);
 const Core = contract(CoreJson);
 // Creation of contract object
@@ -61,13 +61,9 @@ Cores.syncCoreById = (id) => {
   let referenceAsset;
   // Calculation of Core
   let nav;
-  let delta;
   let sharePrice;
-  let sharesSupply;
-  let atTimestamp;
 
   // Temp
-  let currGav;
   let currTotalSupply;
 
   // Get description values of Core
@@ -85,8 +81,9 @@ Cores.syncCoreById = (id) => {
     return coreContract.performCalculations();
   })
   .then((calculations) => {
-    // [nav, delta, sharePrice, sharesSupply, atTimestamp] = calculations;
-    [gav, managementFee, performanceFee, unclaimedFees, nav, sharePrice] = calculations;
+    // [gav, managementFee, performanceFee, unclaimedFees, nav, sharePrice] = calculations;
+    nav = calculations[4];
+    sharePrice = calculations[5];
     return coreContract.totalSupply();
   })
   .then((result) => {
