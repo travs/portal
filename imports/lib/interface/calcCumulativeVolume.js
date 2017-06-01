@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 
 /*
   @pre: orders are retrieved from the matchOrders (sorted, and filtered)
+        and BigNumberified
 */
 const calcCumulativeVolume = (orderType, orders) => {
   if (orderType === 'buy') {

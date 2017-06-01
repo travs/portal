@@ -1,4 +1,3 @@
-/* global test, expect */
 import orders from './fixtures/orderBook.js';
 
 import matchOrders from './matchOrders';

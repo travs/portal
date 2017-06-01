@@ -13,6 +13,12 @@
     "test:chimp:once": "chimp --ddp=http://localhost:3000 --mocha --path=tests"
   },
   "eslintConfig": {
+    "env": {
+      "meteor": true,
+      "browser": true,
+      "node": true,
+      "jest": true
+    },
     "extends": "@meteorjs/eslint-config-meteor"
   },
   "babel": {

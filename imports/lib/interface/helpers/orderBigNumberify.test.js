@@ -1,4 +1,3 @@
-/* global test, expect */
 import BigNumber from 'bignumber.js';
 import orderBigNumberify from './orderBigNumberify';
 
