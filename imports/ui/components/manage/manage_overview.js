@@ -26,7 +26,8 @@ const assetPairs =
 
 FlowRouter.triggers.enter([(context) => {
   const doc = Cores.findOne({ address: context.params.address });
-  Session.set('fromPortfolio', doc !== undefined);
+  // TODO: Reactivate this, when we reactivate from portfolio trading
+  // Session.set('fromPortfolio', doc !== undefined);
 }], { only: ['manage'] });
 
 Tracker.autorun(() => {
