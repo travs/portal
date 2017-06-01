@@ -50,16 +50,6 @@ Template.registerHelper('getUniverseOfThisPortfolioManager', () => {
 
   return Universes.find({ address: universeAddress }, { sort: { createdAt: -1 } });
 });
-// Contracts
-Template.registerHelper('etherTokenContractAddress', () => addressList.etherToken);
-Template.registerHelper('melonTokenContractAddress', () => addressList.melonToken);
-Template.registerHelper('bitcoinTokenContractAddress', () => addressList.bitcoinToken);
-Template.registerHelper('repTokenContractAddress', () => addressList.repToken);
-Template.registerHelper('euroTokenContractAddress', () => addressList.euroToken);
-
-Template.registerHelper('exchangeContractAddress', () => addressList.exchange);
-Template.registerHelper('universeContractAddrefunctionss', () => addressList.universe);
-Template.registerHelper('versionContractAddress', () => addressList.version);
 // UX
 Template.registerHelper('isInactiveNetworkStatus', () => Session.get('NetworkStatus').isInactive);
 Template.registerHelper('isMiningNetworkStatus', () => Session.get('NetworkStatus').isMining);

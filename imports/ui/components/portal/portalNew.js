@@ -8,9 +8,9 @@ import { Universes } from '/imports/api/modules';
 import contract from 'truffle-contract';
 import VersionJson from '/imports/melon/contracts/Version.json';
 import CoreJson from '/imports/melon/contracts/Core.json';
-import addressList from '/imports/melon/interface/addressList.js';
+import { etherToken, melonToken, bitcoinToken, repToken, euroToken, universe } from '/imports/melon/interface/addressList.js';
 
-import './portal_new.html';
+import './portalNew.html';
 
 const Version = contract(VersionJson);
 const Core = contract(CoreJson);
@@ -19,20 +19,27 @@ Version.setProvider(web3.currentProvider);
 Core.setProvider(web3.currentProvider);
 
 
-Template.portal_new.onCreated(() => {
+Template.portalNew.onCreated(() => {
   Session.set('showModal', true);
   Meteor.subscribe('cores');
   Meteor.subscribe('universes');
 });
 
 
-Template.portal_new.helpers({});
+Template.portalNew.helpers({
+  etherToken,
+  melonToken,
+  bitcoinToken,
+  repToken,
+  euroToken,
+  universe,
+});
 
 
-Template.portal_new.onRendered(() => {});
+Template.portalNew.onRendered(() => {});
 
 
-Template.portal_new.events({
+Template.portalNew.events({
     'shown.bs.modal #myModal': (event, templateInstance) => {
     // Prevent default browser form submit
     event.preventDefault();
