@@ -55,7 +55,8 @@ function checkNetwork() {
     // Check if we are synced
     if (isClientConnected) {
       web3.eth.getBlock('latest', (e, res) => {
-        if (e !== null) throw e;
+        // HACK: Just ignore errors here from now
+        if (e) return;
         if (res.number >= Session.get('latestBlock')) {
           Session.set('outOfSync', e != null || (new Date().getTime() / 1000) - res.timestamp > 600);
           Session.set('latestBlock', res.number);
