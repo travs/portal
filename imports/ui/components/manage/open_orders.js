@@ -4,7 +4,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 // NPM imports
 import moment from 'moment';
 // Utils
-import AddressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList.js';
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
 // Collections
@@ -78,7 +78,7 @@ Template.open_orders.events({
     const managerAddress = Session.get('clientManagerAccount');
 
     if (Session.get('fromPortfolio')) {
-      coreContract.cancelOrder(AddressList.Exchange, event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
+      coreContract.cancelOrder(addressList.exchange, event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
         console.log(result);
       });
     } else {

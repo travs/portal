@@ -4,7 +4,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import select2 from 'select2';
-import AddressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList.js';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Contracts
@@ -119,7 +119,7 @@ Template.manage_participation.events({
 
     const EtherToken = contract(EtherTokenJson);
     EtherToken.setProvider(web3.currentProvider);
-    const EtherTokenContract = EtherToken.at(AddressList.EtherToken);
+    const EtherTokenContract = EtherToken.at(addressList.etherToken);
 
     switch (type) {
       // Invest case

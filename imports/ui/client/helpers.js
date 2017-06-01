@@ -6,6 +6,7 @@ import { Cores } from '/imports/api/cores';
 import { Universes } from '/imports/api/modules';
 
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+import addressList from '/imports/melon/interface/addressList';
 
 
 // Server network
@@ -50,15 +51,15 @@ Template.registerHelper('getUniverseOfThisPortfolioManager', () => {
   return Universes.find({ address: universeAddress }, { sort: { createdAt: -1 } });
 });
 // Contracts
-Template.registerHelper('etherTokenContractAddress', () => Session.get('etherTokenContractAddress'));
-Template.registerHelper('bitcoinTokenContractAddress', () => Session.get('bitcoinTokenContractAddress'));
-Template.registerHelper('repTokenContractAddress', () => Session.get('repTokenContractAddress'));
-Template.registerHelper('euroTokenContractAddress', () => Session.get('euroTokenContractAddress'));
-Template.registerHelper('priceFeedContractAddress', () => Session.get('priceFeedContractAddress'));
-Template.registerHelper('exchangeContractAddress', () => Session.get('exchangeContractAddress'));
-Template.registerHelper('universeContractAddrefunctionss', () => Session.get('universeContractAddress'));
-Template.registerHelper('versionContractAddress', () => Session.get('versionContractAddress'));
-Template.registerHelper('governanceContractAddress', () => Session.get('governanceContractAddress'));
+Template.registerHelper('etherTokenContractAddress', () => addressList.etherToken);
+Template.registerHelper('melonTokenContractAddress', () => addressList.melonToken);
+Template.registerHelper('bitcoinTokenContractAddress', () => addressList.bitcoinToken);
+Template.registerHelper('repTokenContractAddress', () => addressList.repToken);
+Template.registerHelper('euroTokenContractAddress', () => addressList.euroToken);
+
+Template.registerHelper('exchangeContractAddress', () => addressList.exchange);
+Template.registerHelper('universeContractAddrefunctionss', () => addressList.universe);
+Template.registerHelper('versionContractAddress', () => addressList.version);
 // UX
 Template.registerHelper('isInactiveNetworkStatus', () => Session.get('NetworkStatus').isInactive);
 Template.registerHelper('isMiningNetworkStatus', () => Session.get('NetworkStatus').isMining);

@@ -9,7 +9,6 @@ import '/imports/ui/components/summary/summary_executive.js';
 import '/imports/ui/client/helpers.js';
 
 import '/imports/startup/client/routes.js';
-import '/imports/startup/client/contracts.js';
 import '/imports/startup/client/config.js';
 import '/imports/startup/client/network.js';
 import '/imports/startup/client/store.js';

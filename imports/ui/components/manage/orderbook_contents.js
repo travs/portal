@@ -8,7 +8,7 @@ import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertF
 
 // Corresponding html file
 import './orderbook_contents.html';
-import AddressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList.js';
 
 Template.orderbook_contents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));
@@ -29,7 +29,7 @@ Template.orderbook_contents.helpers({
       isActive: true,
       'buy.symbol': baseTokenSymbol,
       'sell.symbol': quoteTokenSymbol,
-      owner: AddressList.LiquidityProvider,
+      owner: addressList.liquidityProvider,
     }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } });
     const allOrders = Orders.find({
       isActive: true,
@@ -51,7 +51,7 @@ Template.orderbook_contents.helpers({
       isActive: true,
       'buy.symbol': quoteTokenSymbol,
       'sell.symbol': baseTokenSymbol,
-      owner: AddressList.LiquidityProvider,
+      owner: addressList.liquidityProvider,
     }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
     const allOrders = Orders.find({
       isActive: true,
@@ -72,7 +72,7 @@ Template.orderbook_contents.helpers({
         'buy.price': { $gte: buyPrice },
         'buy.symbol': baseTokenSymbol,
         'sell.symbol': quoteTokenSymbol,
-        owner: AddressList.LiquidityProvider,
+        owner: addressList.liquidityProvider,
       }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
     } else {
       cheaperOrders = Orders.find({
@@ -99,7 +99,7 @@ Template.orderbook_contents.helpers({
         'sell.price': { $lte: sellPrice },
         'sell.symbol': baseTokenSymbol,
         'buy.symbol': quoteTokenSymbol,
-        owner: AddressList.LiquidityProvider,
+        owner: addressList.liquidityProvider,
       }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
     } else {
       cheaperOrders = Orders.find({

@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
-import { reducer as preferences } from '/imports/actions/preferences.js';
+import { reducer as preferences } from '/imports/redux/actions/preferences.js';
 
 
 // http://redux.js.org/docs/api/createStore.html

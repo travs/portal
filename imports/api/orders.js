@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-import AddressList from '/imports/melon/interface/addressList';
+import addressList from '/imports/melon/interface/addressList';
 import getOrder from '/imports/melon/interface/getOrder';
 
 // SMART-CONTRACT IMPORT
@@ -15,7 +15,7 @@ const PreminedAsset = contract(PreminedAssetJson); // Set Provider
 const Exchange = contract(ExchangeJson);
 PreminedAsset.setProvider(web3.currentProvider);
 Exchange.setProvider(web3.currentProvider);
-const exchangeContract = Exchange.at(AddressList.Exchange); // Initialize contract instance
+const exchangeContract = Exchange.at(addressList.exchange); // Initialize contract instance
 
 // COLLECTIONS
 export const Orders = global.Orders = new Mongo.Collection('orders');

@@ -1,14 +1,14 @@
 /* global web3 */
 import contract from 'truffle-contract';
 
-import AddressList from '/imports/melon/interface/addressList';
+import addressList from '/imports/melon/interface/addressList';
 import ExchangeJson from '/imports/melon/contracts/Exchange.json';
 import specs from '/imports/melon/interface/helpers/specs.js';
 
 
 const Exchange = contract(ExchangeJson);
 Exchange.setProvider(web3.currentProvider);
-const exchangeContract = Exchange.at(AddressList.Exchange); // Initialize contract instance
+const exchangeContract = Exchange.at(addressList.exchange); // Initialize contract instance
 
 
 const getOrder = id =>

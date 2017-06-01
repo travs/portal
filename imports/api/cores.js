@@ -2,7 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import AddressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList.js';
 
 
 // SMART-CONTRACT IMPORT
@@ -16,7 +16,7 @@ const Core = contract(CoreJson);
 // Creation of contract object
 Version.setProvider(web3.currentProvider);
 Core.setProvider(web3.currentProvider);
-const versionContract = Version.at(AddressList.Version);
+const versionContract = Version.at(addressList.version);
 
 // COLLECTIONS
 

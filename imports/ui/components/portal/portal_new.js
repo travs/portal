@@ -8,6 +8,7 @@ import { Universes } from '/imports/api/modules';
 import contract from 'truffle-contract';
 import VersionJson from '/imports/melon/contracts/Version.json';
 import CoreJson from '/imports/melon/contracts/Core.json';
+import addressList from '/imports/melon/interface/addressList.js';
 
 import './portal_new.html';
 
@@ -55,20 +56,20 @@ Template.portal_new.events({
     const PORTFOLIO_NAME = templateInstance.find('input#portfolio_name').value;
     const PORTFOLIO_SYMBOL = 'MLN-P';
     const PORTFOLIO_DECIMALS = 18;
-
     // Deploy
-    const versionContract = Version.at(Session.get('versionContractAddress'));
+    const versionContract = Version.at(addressList.version);
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
     versionContract.createCore(
       PORTFOLIO_NAME,
       PORTFOLIO_SYMBOL,
       PORTFOLIO_DECIMALS,
-      Session.get('universeContractAddress'),
-      Session.get('subscribeContractAddress'),
-      Session.get('redeemContractAddress'),
-      Session.get('riskMgmtContractAddress'),
-      Session.get('managmentFeeContractAddress'),
-      Session.get('performanceFeeContractAddress'),
+      /* TODO take below address from user input */
+      addressList.universe,
+      addressList.subscribe,
+      addressList.redeem,
+      addressList.riskMgmt,
+      addressList.managementFee,
+      addressList.performanceFee,
       { from: Session.get('clientManagerAccount') }
     )
     .then((result) => {

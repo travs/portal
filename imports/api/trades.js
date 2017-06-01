@@ -4,14 +4,14 @@ import { Mongo } from 'meteor/mongo';
 
 import contract from 'truffle-contract';
 
-import AddressList from '/imports/melon/interface/addressList';
+import addressList from '/imports/melon/interface/addressList';
 import specs from '/imports/melon/interface/helpers/specs.js';
 import ExchangeJson from '/imports/melon/contracts/Exchange.json';
 
 
 const Exchange = contract(ExchangeJson);
 Exchange.setProvider(web3.currentProvider);
-const exchangeContract = Exchange.at(AddressList.Exchange);
+const exchangeContract = Exchange.at(addressList.exchange);
 
 // CONSTANTS
 

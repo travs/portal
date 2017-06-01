@@ -6,7 +6,7 @@ import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
 import contract from 'truffle-contract';
-import AddressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList.js';
 // Collections
 import { Cores } from '/imports/api/cores';
 import { Orders } from '/imports/api/orders.js';
@@ -68,7 +68,7 @@ const prefillTakeOrder = (id) => {
         isActive: true,
         'sell.symbol': quoteTokenSymbol,
         'buy.symbol': baseTokenSymbol,
-        owner: AddressList.LiquidityProvider,
+        owner: addressList.liquidityProvider,
       }, { sort: { 'buy.price': -1, 'sell.howMuch': -1, createdAt: 1 } }).fetch();
     } else {
       cheaperOrders = Orders.find({
@@ -99,7 +99,7 @@ const prefillTakeOrder = (id) => {
         isActive: true,
         'sell.symbol': baseTokenSymbol,
         'buy.symbol': quoteTokenSymbol,
-        owner: AddressList.LiquidityProvider,
+        owner: addressList.liquidityProvider,
       }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
     } else {
       cheaperOrders = Orders.find({
@@ -248,7 +248,7 @@ Template.manage_holdings.events({
     //   return;
     // }
     const coreContract = Core.at(coreAddress);
-    const exchangeContract = Exchange.at(AddressList.Exchange);
+    const exchangeContract = Exchange.at(addressList.exchange);
 
     // BigNumber is always without decimal in it!
     // Good: '23452345'
@@ -293,7 +293,7 @@ Template.manage_holdings.events({
               takeOrder(
                 setOfOrders[i].id,
                 managerAddress,
-                AddressList.Exchange,
+                addressList.exchange,
                 sellHowMuchPrecise,
               )
               .then((result) => {
@@ -311,11 +311,11 @@ Template.manage_holdings.events({
             } else if (quantity.lt(sellHowMuchPrecise)) {
               // Select more than one order
               // TODO: Check if its works!
-              console.log(AddressList.Exchange, setOfOrders[i].id, quantity.toString(), { from: managerAddress });
+              console.log(addressList.exchange, setOfOrders[i].id, quantity.toString(), { from: managerAddress });
               takeOrder(
                 setOfOrders[i].id,
                 managerAddress,
-                AddressList.Exchange,
+                addressList.exchange,
                 quantity,
               )
               .then((result) => {

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-import AddressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList.js';
 
 // SMART-CONTRACT IMPORT
 
@@ -30,7 +30,7 @@ Meteor.methods({
     check(assetHolderAddress, String);
 
     // TODO get Universe address via Core.getUniverseAddress
-    const universeContract = Universe.at(AddressList.Universe); // Initialize contract instance
+    const universeContract = Universe.at(addressList.universe); // Initialize contract instance
 
     // TODO build function
     universeContract.numAssignedAssets().then((assignedAssets) => {
