@@ -6,8 +6,8 @@ import { Cores } from '/imports/api/cores';
 import { Universes } from '/imports/api/modules';
 // Smart Contracts
 import contract from 'truffle-contract';
-import VersionJson from '/imports/lib/assets/contracts/Version.json';
-import CoreJson from '/imports/lib/assets/contracts/Core.json';
+import VersionJson from '/imports/melon/contracts/Version.json';
+import CoreJson from '/imports/melon/contracts/Core.json';
 
 import './portal_new.html';
 

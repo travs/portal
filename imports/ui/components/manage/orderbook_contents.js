@@ -4,10 +4,11 @@ import { BigNumber } from 'meteor/ethereum:web3';
 // Collections
 import { Orders } from '/imports/api/orders.js';
 // Utils
-import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
+import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+
 // Corresponding html file
 import './orderbook_contents.html';
-import AddressList from '/imports/lib/ethereum/address_list.js';
+import AddressList from '/imports/melon/interface/addressList.js';
 
 Template.orderbook_contents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));

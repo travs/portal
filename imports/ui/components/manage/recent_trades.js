@@ -5,7 +5,8 @@ import moment from 'moment';
 // Collections
 import Trades from '/imports/api/trades.js';
 // Utils
-import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
+import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+
 
 // Corresponding html file
 import './recent_trades.html';

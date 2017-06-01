@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
 // Specs
-import specs from '/imports/lib/assets/utils/specs.js';
+import specs from '/imports/melon/interface/helpers/specs.js';
 
 // Check which accounts are available and if defaultAccount is still available,
 // Otherwise set it to localStorage, Session, or first element in accounts

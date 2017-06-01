@@ -7,7 +7,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Cores } from '/imports/api/cores';
 // Smart contracts
 import contract from 'truffle-contract';
-import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
+import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 
 
 // Corresponding html file

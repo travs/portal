@@ -10,7 +10,8 @@ import { Tracker } from 'meteor/tracker';
 import { Cores } from '/imports/api/cores';
 import { Orders } from '/imports/api/orders.js';
 // Utils
-import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
+import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+
 // Components
 import '/imports/ui/components/manage/manage_holdings.js';
 import '/imports/ui/components/manage/manage_overview.js';

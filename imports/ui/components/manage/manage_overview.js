@@ -6,9 +6,9 @@ import { bootstrapSwitch } from 'bootstrap-switch';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Specs
-import specs from '/imports/lib/assets/utils/specs.js';
+import specs from '/imports/melon/interface/helpers/specs.js';
 // Smart contracts
-import Core from '/imports/lib/assets/contracts/Core.json';
+import Core from '/imports/melon/contracts/Core.json';
 // Corresponding html file
 import './manage_overview.html';
 

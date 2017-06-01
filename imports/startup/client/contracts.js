@@ -5,16 +5,16 @@ import { Session } from 'meteor/session';
 import { Cores } from '/imports/api/cores';
 import { Universes } from '/imports/api/modules';
 
-import AddressList from '/imports/lib/ethereum/address_list.js';
-import EtherToken from '/imports/lib/assets/contracts/EtherToken.json';
-import BitcoinToken from '/imports/lib/assets/contracts/BitcoinToken.json';
-import RepToken from '/imports/lib/assets/contracts/RepToken.json';
-import EuroToken from '/imports/lib/assets/contracts/EuroToken.json';
-import PriceFeed from '/imports/lib/assets/contracts/PriceFeed.json';
-import Exchange from '/imports/lib/assets/contracts/Exchange.json';
-import Universe from '/imports/lib/assets/contracts/Universe.json';
-import Version from '/imports/lib/assets/contracts/Version.json';
-import Governance from '/imports/lib/assets/contracts/Governance.json';
+import AddressList from '/imports/melon/interface/addressList.js';
+import EtherToken from '/imports/melon/contracts/EtherToken.json';
+import BitcoinToken from '/imports/melon/contracts/BitcoinToken.json';
+import RepToken from '/imports/melon/contracts/RepToken.json';
+import EuroToken from '/imports/melon/contracts/EuroToken.json';
+import PriceFeed from '/imports/melon/contracts/PriceFeed.json';
+import Exchange from '/imports/melon/contracts/Exchange.json';
+import Universe from '/imports/melon/contracts/Universe.json';
+import Version from '/imports/melon/contracts/Version.json';
+import Governance from '/imports/melon/contracts/Governance.json';
 
 Meteor.startup(() => {
   Session.set('etherTokenContractAddress', AddressList.EtherToken);

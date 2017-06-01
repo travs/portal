@@ -1,9 +1,9 @@
 /* global web3 */
 import contract from 'truffle-contract';
 
-import AddressList from '/imports/lib/ethereum/address_list';
-import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json';
-import specs from '/imports/lib/assets/utils/specs.js';
+import AddressList from '/imports/melon/interface/addressList';
+import ExchangeJson from '/imports/melon/contracts/Exchange.json';
+import specs from '/imports/melon/interface/helpers/specs.js';
 
 
 const Exchange = contract(ExchangeJson);

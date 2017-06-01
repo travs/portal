@@ -2,8 +2,8 @@
 import { BigNumber } from 'meteor/ethereum:web3';
 import contract from 'truffle-contract';
 
-import AddressList from '/imports/lib/ethereum/address_list';
-import CoreJson from '/imports/lib/assets/contracts/Core.json';
+import AddressList from '/imports/melon/interface/addressList';
+import CoreJson from '/imports/melon/contracts/Core.json';
 import getOrder from './getOrder';
 
 

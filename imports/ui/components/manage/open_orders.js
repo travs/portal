@@ -4,8 +4,9 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 // NPM imports
 import moment from 'moment';
 // Utils
-import AddressList from '/imports/lib/ethereum/address_list.js';
-import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
+import AddressList from '/imports/melon/interface/addressList.js';
+import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+
 // Collections
 import { Orders } from '/imports/api/orders.js';
 
@@ -15,8 +16,8 @@ import './open_orders.html';
 
 // Contracts
 import contract from 'truffle-contract';
-import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
-import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
+import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
+import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';
 
 
 Template.open_orders.onCreated(() => {});

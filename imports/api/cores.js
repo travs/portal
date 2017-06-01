@@ -2,14 +2,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import AddressList from '/imports/lib/ethereum/address_list.js';
+import AddressList from '/imports/melon/interface/addressList.js';
 
 
 // SMART-CONTRACT IMPORT
 
 import contract from 'truffle-contract';
-import VersionJson from '/imports/lib/assets/contracts/Version.json';
-import CoreJson from '/imports/lib/assets/contracts/Core.json';
+import VersionJson from '/imports/melon/contracts/Version.json';
+import CoreJson from '/imports/melon/contracts/Core.json';
 
 const Version = contract(VersionJson);
 const Core = contract(CoreJson);

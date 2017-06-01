@@ -6,25 +6,25 @@ import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
 import contract from 'truffle-contract';
-import AddressList from '/imports/lib/ethereum/address_list.js';
-import constants from '/imports/lib/assets/utils/constants.js';
+import AddressList from '/imports/melon/interface/addressList.js';
 // Collections
 import { Cores } from '/imports/api/cores';
 import { Orders } from '/imports/api/orders.js';
 // Contracts
-import CoreJson from '/imports/lib/assets/contracts/Core.json'; // Get Smart Contract JSON
-import ExchangeJson from '/imports/lib/assets/contracts/ExchangeProtocol.json';
-import AssetJson from '/imports/lib/assets/contracts/AssetProtocol.json';
-import EtherTokenJson from '/imports/lib/assets/contracts/EtherToken.json';
-import ERC20Json from '/imports/lib/assets/contracts/ERC20.json';
+import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
+import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';
+import AssetJson from '/imports/melon/contracts/AssetProtocol.json';
+import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
+import ERC20Json from '/imports/melon/contracts/ERC20.json';
 // Utils
-import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
+import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+
 import './manage_holdings.html';
 // specs
-import specs from '/imports/lib/assets/utils/specs.js';
+import specs from '/imports/melon/interface/helpers/specs.js';
 // Interface
-import getOrder from '/imports/lib/interface/getOrder';
-import takeOrder from '/imports/lib/interface/takeOrder';
+import getOrder from '/imports/melon/interface/getOrder';
+import takeOrder from '/imports/melon/interface/takeOrder';
 
 window.getOrder = getOrder;
 window.takeOrder = takeOrder;

@@ -2,14 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-import AddressList from '/imports/lib/ethereum/address_list.js';
+import AddressList from '/imports/melon/interface/addressList.js';
 
 // SMART-CONTRACT IMPORT
 
 import contract from 'truffle-contract';
-import UniverseJson from '/imports/lib/assets/contracts/Universe.json'; // Get Smart Contract JSON
-import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json';
-import PriceFeedJson from '/imports/lib/assets/contracts/PriceFeed.json';
+import UniverseJson from '/imports/melon/contracts/Universe.json'; // Get Smart Contract JSON
+import PreminedAssetJson from '/imports/melon/contracts/PreminedAsset.json';
+import PriceFeedJson from '/imports/melon/contracts/PriceFeed.json';
 const Universe = contract(UniverseJson); // Set Provider
 Universe.setProvider(web3.currentProvider);
 const PreminedAsset = contract(PreminedAssetJson);

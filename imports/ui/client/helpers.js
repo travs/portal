@@ -5,7 +5,8 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Cores } from '/imports/api/cores';
 import { Universes } from '/imports/api/modules';
 
-import { convertFromTokenPrecision } from '/imports/lib/assets/utils/functions.js';
+import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+
 
 // Server network
 Template.registerHelper('isServerConnected', () => Session.get('isServerConnected'));
