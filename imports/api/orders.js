@@ -84,7 +84,10 @@ Orders.syncOrderById = (id) => {
 
 Meteor.methods({
   'orders.sync': () => {
-    Orders.sync();
+    // only sync orders on the server to avoid sync-race-conditions
+    if (Meteor.isServer) {
+      Orders.sync();
+    }
   },
   'orders.syncOrderById': (id) => {
     check(id, Number);
