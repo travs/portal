@@ -4,6 +4,7 @@
   "scripts": {
     "start": "meteor",
     "lint": "eslint .",
+    "flow": "flow",
     "jest": "jest",
     "jest:watch": "jest --watch",
     "pretest": "npm run lint --silent",
@@ -23,6 +24,7 @@
   },
   "babel": {
     "presets": [
+      "flow",
       "meteor",
       "es2015",
       "react"
@@ -39,15 +41,18 @@
     "jquery": "^3.1.1",
     "meteor-node-stubs": "~0.2.0",
     "moment": "^2.18.1",
+    "redux": "^3.6.0",
     "select2": "^4.0.3",
     "truffle-contract": "^2.0.0",
     "web3": "^0.19.0"
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",
+    "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-meteor": "^6.26.0",
     "babel-preset-react": "^6.24.1",
     "chimp": "^0.48.0",
@@ -59,6 +64,7 @@
     "eslint-plugin-meteor": "^4.0.1",
     "eslint-plugin-react": "^6.10.3",
     "ethereumjs-testrpc": "^3.0.5",
+    "flow-bin": "^0.47.0",
     "jest": "^20.0.4",
     "mup": "^1.2.8"
   }

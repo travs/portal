@@ -1,8 +1,18 @@
+// @flow
+import BigNumber from 'bignumber.js';
+
+type OrderTypes = "buy" | "sell";
+
 /*
   @pre: orders are only from the selected asset pair
   @pre: the orders are already BigNumberified
 */
-const matchOrders = (orderType, priceThreshold, quantity, orders) => {
+const matchOrders = (
+  orderType: OrderTypes,
+  priceThreshold: BigNumber,
+  quantity: BigNumber,
+  orders: Array<mixed>,
+) => {
   if (orderType === 'buy') {
     return orders.filter(order =>
       order.buy.priceBigNumber.gte(priceThreshold),
