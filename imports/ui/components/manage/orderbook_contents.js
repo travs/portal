@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { BigNumber } from 'meteor/ethereum:web3';
 // Collections
 import { Orders } from '/imports/api/orders.js';
 // Utils
@@ -15,6 +16,8 @@ Template.orderbook_contents.onCreated(() => {
 Template.orderbook_contents.helpers({
   convertFromTokenPrecision,
   more: false,
+  displayBigNumber: (numberPrecise, precision, decimals) =>
+    (new BigNumber(numberPrecise)).div(Math.pow(10, precision)).toFixed(decimals),
   currentAssetPair: () => Session.get('currentAssetPair'),
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
   quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],

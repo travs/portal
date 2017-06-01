@@ -34,7 +34,7 @@ Template.portfolio_overview.helpers({
       return coreContract.balanceOf(Session.get('clientManagerAccount'));
     }).then((result) => {
       template.personalShareAmount.set(result.toNumber());
-      return coreContract.getLastCalculations();
+      return coreContract.performCalculations();
     }).then((result) => {
       console.log('Core information: ', result);
     });
@@ -60,7 +60,7 @@ Template.portfolio_overview.events({
       return false;
     }
     Meteor.call('cores.removeById', doc._id);
-    //TODO replace toast
+    // TODO replace toast
     // Materialize.toast('Portfolio deleted!', 4000, 'blue');
     return true;
   },

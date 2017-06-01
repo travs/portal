@@ -14,30 +14,30 @@ exports.CryptoCompare = '0x442Fd95C32162F914364C5fEFf27A0Dc05214706';
 
 // Exchanges
 
-exports.Exchange = '0x6d46E96E8a9E2544611B4cC2c59f3919B11Df9b1';
+exports.Exchange = '0xbecf472bf654c75ba5916ee542bb878699895325';
 
 // Universe
 
-exports.Universe = '0x6c5bd6f3c6a34000b67153a42bfa8dd68dfa5a56';
+exports.Universe = '0xf5a69abbcd4a257b210fb4420e1b6d24c0f97c0c';
 
 // Participation
 
-exports.Subscribe = '0x5c98bb072020da5c57f3fe36f72af938f3a727ce';
-exports.Redeem = '0x0ea06cb32bc7fa6c710adf81ce9f4250d10e3cd0';
+exports.Subscribe = '0x41363981bffbd4139a0b260c24b0e021772e3ab5';
+exports.Redeem = '0xa629b92fc98075763fe116281798a544262ac8a6';
 
 // Risk Mgmt
 
-exports.RiskMgmt = '0x7301cc9abd71d7e29fc9d530d4db013c80f22f5d';
+exports.RiskMgmt = '0xc357b913fb3e3365ec4d9651ce6011289df47986';
 
 // Fees
 
-exports.ManagementFee = '0x6fe49affe059675010172cd149dc42acf108e3af';
-exports.PerformanceFee = '0xc2a003610a67b683e9b3d5f0740584eadcdf41f3';
+exports.ManagementFee = '0x9db26eea1af316abafa35d97694b5d36cd9576c8';
+exports.PerformanceFee = '0xf2e253227ca1485efccbfa62c13a3a0005ea2647';
 
 // Governance
 
-exports.Governance = '0xbc88bfabffb44b75baee41520659c290f1071c67';
-exports.Version = '0xf0ecbeb75fa0c3f8926c11930ab074885bf070b4';
+exports.Governance = '0x7bcc9bebbb0fad6a02e555331ffe8004bd7775eb';
+exports.Version = '0xcd38c5195f0fe43dbd3a8c8ffb2b836dd1578105';
 
 // Liquidity Provider
 
@@ -48,37 +48,39 @@ exports.LiquidityProvider = '0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf';
 //
 // Running migration: 1_initial_migration.js
 //   Deploying Migrations...
-//   Migrations: 0xabcb00a7f0a089513c9247889dd448ccac2648f6
+//   Migrations: 0xb788b22124d59a774272a4d4abc45be1b6803c6d
 // Saving successful migration to network...
 // Saving artifacts...
 // Running migration: 2_deploy_contracts.js
+//   Deploying Exchange...
+//   Exchange: 0xbecf472bf654c75ba5916ee542bb878699895325
 //   Deploying Universe...
-//   Universe: 0x6c5bd6f3c6a34000b67153a42bfa8dd68dfa5a56
+//   Universe: 0xf5a69abbcd4a257b210fb4420e1b6d24c0f97c0c
 // Saving successful migration to network...
 // Saving artifacts...
 // Running migration: 3_deploy_participation.js
 //   Deploying Subscribe...
 //   Deploying Redeem...
-//   Subscribe: 0x5c98bb072020da5c57f3fe36f72af938f3a727ce
-//   Redeem: 0x0ea06cb32bc7fa6c710adf81ce9f4250d10e3cd0
+//   Subscribe: 0x41363981bffbd4139a0b260c24b0e021772e3ab5
+//   Redeem: 0xa629b92fc98075763fe116281798a544262ac8a6
 // Saving successful migration to network...
 // Saving artifacts...
 // Running migration: 4_deploy_riskmgmt.js
-//   Deploying RiskMgmt...
-//   RiskMgmt: 0x7301cc9abd71d7e29fc9d530d4db013c80f22f5d
+//   Deploying RiskMgmtV1...
+//   RiskMgmtV1: 0xc357b913fb3e3365ec4d9651ce6011289df47986
 // Saving successful migration to network...
 // Saving artifacts...
 // Running migration: 5_deploy_fees.js
 //   Deploying ManagementFee...
 //   Deploying PerformanceFee...
-//   ManagementFee: 0x6fe49affe059675010172cd149dc42acf108e3af
-//   PerformanceFee: 0xc2a003610a67b683e9b3d5f0740584eadcdf41f3
+//   ManagementFee: 0x9db26eea1af316abafa35d97694b5d36cd9576c8
+//   PerformanceFee: 0xf2e253227ca1485efccbfa62c13a3a0005ea2647
 // Saving successful migration to network...
 // Saving artifacts...
 // Running migration: 6_deploy_gov.js
 //   Deploying Governance...
-//   Governance: 0xbc88bfabffb44b75baee41520659c290f1071c67
+//   Governance: 0x7bcc9bebbb0fad6a02e555331ffe8004bd7775eb
 //   Deploying Version...
-//   Version: 0x74d5639756291b20c12ef3783382e207bb24c383
+//   Version: 0xe3785201a9bfe585536144322576154c67c1e970
 // Saving successful migration to network...
 // Saving artifacts...

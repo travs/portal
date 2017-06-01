@@ -1,18 +1,16 @@
+/* global web3 */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 import AddressList from '/imports/lib/ethereum/address_list';
-import specs from '/imports/lib/assets/utils/specs.js';
+import getOrder from '/imports/lib/interface/getOrder';
 
 // SMART-CONTRACT IMPORT
-
-import constants from '/imports/lib/assets/utils/constants.js';
-import functions from '/imports/lib/assets/utils/functions.js';
-import collections from '/imports/lib/assets/utils/collections.js';
 import contract from 'truffle-contract';
 import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json';
+
 const PreminedAsset = contract(PreminedAssetJson); // Set Provider
 const Exchange = contract(ExchangeJson);
 PreminedAsset.setProvider(web3.currentProvider);
@@ -20,7 +18,7 @@ Exchange.setProvider(web3.currentProvider);
 const exchangeContract = Exchange.at(AddressList.Exchange); // Initialize contract instance
 
 // COLLECTIONS
-export const Orders = new Mongo.Collection('orders');
+export const Orders = global.Orders = new Mongo.Collection('orders');
 if (Meteor.isServer) {
   // Note: you need to specify an asset pair. There is no way to get all orders to the client.
   Meteor.publish('orders', (currentAssetPair = '---/---') => {
@@ -46,53 +44,39 @@ Orders.watch = () => {
   orders.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
+    console.log('Order updated', event.args, event.args.id.toNumber());
+
     Orders.syncOrderById(event.args.id.toNumber());
   }));
 };
 
-
 Orders.sync = () => {
   exchangeContract.getLastOrderId().then((lastId) => {
-    for (let id = 1; id < lastId.toNumber() + 1; id += 1) {
+    for (let id = lastId.toNumber(); id > 0; id -= 1) {
       Orders.syncOrderById(id);
     }
   });
 };
 
-
 Orders.syncOrderById = (id) => {
-  exchangeContract.orders(id).then((info) => {
-    const [sellHowMuch, sellWhichToken, buyHowMuch, buyWhichToken, /* TODO for new exchange version add _timestamp_!*/owner, isActive] = info;
-    const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
-    const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
-    const buySymbol = specs.getTokenSymbolByAddress(buyWhichToken);
-    const sellSymbol = specs.getTokenSymbolByAddress(sellWhichToken);
-    const sellPrice = buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision);
-    const buyPrice = sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision);
-    // Insert into Orders collection
-    Orders.upsert({
-      id,
-    }, {
-      id,
-      owner,
-      isActive,
-      buy: {
-        token: buyWhichToken,
-        symbol: buySymbol,
-        howMuch: buyHowMuch.toNumber(),
-        precision: buyPrecision,
-        price: buyPrice,
-      },
-      sell: {
-        token: sellWhichToken,
-        symbol: sellSymbol,
-        howMuch: sellHowMuch.toNumber(),
-        precision: sellPrecision,
-        price: sellPrice,
-      },
-      // blockTimestamp: new Date(timestamp * 1000),
-      createdAt: new Date(),
-    });
+  getOrder(id).then((order) => {
+    if (order.sell.token !== '0x0000000000000000000000000000000000000000') {
+      console.log('syncOrder with DB', order);
+    }
+
+    if (order.isActive) {
+      Orders.upsert({
+        id: order.id,
+      }, {
+        ...order,
+        createdAt: new Date(),
+      });
+    } else {
+      Orders.remove({ id: order.id });
+    }
+  })
+  .catch((err) => {
+    throw err;
   });
 };
 
@@ -100,7 +84,10 @@ Orders.syncOrderById = (id) => {
 
 Meteor.methods({
   'orders.sync': () => {
-    Orders.sync();
+    // only sync orders on the server to avoid sync-race-conditions
+    if (Meteor.isServer) {
+      Orders.sync();
+    }
   },
   'orders.syncOrderById': (id) => {
     check(id, Number);
