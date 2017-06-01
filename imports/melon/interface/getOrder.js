@@ -3,7 +3,7 @@ import contract from 'truffle-contract';
 
 import addressList from '/imports/melon/interface/addressList';
 import ExchangeJson from '/imports/melon/contracts/Exchange.json';
-import specs from '/imports/melon/interface/helpers/specs.js';
+import specs from '/imports/melon/interface/helpers/specs';
 
 
 const Exchange = contract(ExchangeJson);

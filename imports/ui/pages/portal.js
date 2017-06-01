@@ -4,8 +4,8 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Components
-import '/imports/ui/components/portal/portal_list.js';
-import '/imports/ui/components/portal/portalNew.js';
+import '/imports/ui/components/portal/portal_list';
+import '/imports/ui/components/portal/portalNew';
 // Corresponding html file
 import './portal.html';
 

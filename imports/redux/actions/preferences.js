@@ -1,4 +1,4 @@
-import specs from '/imports/melon/interface/helpers/specs.js';
+import specs from '/imports/melon/interface/helpers/specs';
 
 
 export const initialState = {

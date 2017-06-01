@@ -31,7 +31,7 @@ Template.portfolio_overview.helpers({
     const coreContract = Core.at(address);
     coreContract.totalSupply().then((result) => {
       template.totalShareAmount.set(result.toNumber());
-      return coreContract.balanceOf(Session.get('clientManagerAccount'));
+      return coreContract.balanceOf(Session.get('selectedAccount'));
     }).then((result) => {
       template.personalShareAmount.set(result.toNumber());
       return coreContract.performCalculations();

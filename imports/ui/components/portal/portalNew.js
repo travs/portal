@@ -1,14 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
-// Collections
-import { Cores } from '/imports/api/cores';
-import { Universes } from '/imports/api/modules';
 // Smart Contracts
 import contract from 'truffle-contract';
 import VersionJson from '/imports/melon/contracts/Version.json';
 import CoreJson from '/imports/melon/contracts/Core.json';
-import { etherToken, melonToken, bitcoinToken, repToken, euroToken, universe } from '/imports/melon/interface/addressList.js';
+import { etherToken, melonToken, bitcoinToken, repToken, euroToken, universe } from '/imports/melon/interface/addressList';
+import addressList from '/imports/melon/interface/addressList';
 
 import './portalNew.html';
 
@@ -40,7 +38,7 @@ Template.portalNew.onRendered(() => {});
 
 
 Template.portalNew.events({
-    'shown.bs.modal #myModal': (event, templateInstance) => {
+  'shown.bs.modal #myModal': (event) => {
     // Prevent default browser form submit
     event.preventDefault();
   },
@@ -77,7 +75,7 @@ Template.portalNew.events({
       addressList.riskMgmt,
       addressList.managementFee,
       addressList.performanceFee,
-      { from: Session.get('clientManagerAccount') }
+      { from: Session.get('selectedAccount') }
     )
     .then((result) => {
       let id;

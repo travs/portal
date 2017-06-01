@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating';
 // NPM imports
 import moment from 'moment';
 // Collections
-import Trades from '/imports/api/trades.js';
+import Trades from '/imports/api/trades';
 // Utils
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 

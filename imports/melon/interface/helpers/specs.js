@@ -1,5 +1,5 @@
 const constants = require('./constants.js');
-import addressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList';
 
 // Tokens
 

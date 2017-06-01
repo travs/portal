@@ -4,11 +4,11 @@
     <li>
       <p class="status">Wallet Balance</p>
       {{#if getAccountCount}}
-        {{#if clientManagerAccount}}
+        {{#if selectedAccount}}
           <p class="value">
-            {{# if clientManagerAccountBalance }}
-              <a href="/account/{{clientManagerAccount}}" class="truncate green-text text-lighten-2">
-                {{dapp_formatBalance clientManagerAccountBalance "0,0.0[00] UNIT"}}
+            {{# if selectedAccountBalance }}
+              <a href="/account/{{selectedAccount}}" class="truncate green-text text-lighten-2">
+                {{dapp_formatBalance selectedAccountBalance "0,0.0[00] UNIT"}}
               </a>
             {{else}}
               <a href="https://github.com/kovan-testnet/faucet" class="truncate blue-text text-lighten-2 new badge-hero" target="_blank">
@@ -17,11 +17,11 @@
             {{/if}}
           </p>
         {{else}}
-        <p class="value">No account selected</p>
+          <p class="value">No account selected</p>
         {{/if}}
-        {{else}}
+      {{else}}
         <p class="value">No account available</p>
-        {{/if}}
+      {{/if}}
     </li>
     <li>
       <p class="status">Portfolio</p>
@@ -30,27 +30,27 @@
           <a href="/portfolio/{{getManagerAddressOfCore}}" class="truncate green-text text-lighten-2">{{getManagerNameOfCore}}</a>
         </p>
       {{else}}
-      {{#if getAccountCount}}
-        <p class="value">
-          <a href="/" class="truncate blue-text text-lighten-2 new badge-hero">Create portfolio</a>
-        </p>
-      {{else}}
-        <p class="value">
-          N/A
-        </p>
+        {{#if getAccountCount}}
+          <p class="value">
+            <a href="/" class="truncate blue-text text-lighten-2 new badge-hero">Create portfolio</a>
+          </p>
+        {{else}}
+          <p class="value">
+            N/A
+          </p>
         {{/if}}
       {{/if}}
     </li>
     <li>
       <p class="status">Share Price</p>
       {{#if hasManagerCreatedCore}}
-      <p class="value">
-        <a href="/portfolio/{{getManagerAddressOfCore}}" class="truncate green-text text-lighten-2">{{dapp_formatBalance getSharePrice "0,0.0" "finney"}}</a>
-      </p>
+        <p class="value">
+          <a href="/portfolio/{{getManagerAddressOfCore}}" class="truncate green-text text-lighten-2">{{dapp_formatBalance getSharePrice "0,0.0" "finney"}}</a>
+        </p>
       {{else}}
-      <p class="value">
-        <a href="/" class="truncate blue-text text-lighten-2 badge-hero">Create portfolio</a>
-      </p>
+        <p class="value">
+          <a href="/" class="truncate blue-text text-lighten-2 badge-hero">Create portfolio</a>
+        </p>
       {{/if}}
     </li>
   </ul>

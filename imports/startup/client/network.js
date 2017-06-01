@@ -2,8 +2,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
-// Specs
-import specs from '/imports/melon/interface/helpers/specs.js';
 
 // Check which accounts are available and if defaultAccount is still available,
 // Otherwise set it to localStorage, Session, or first element in accounts
@@ -12,25 +10,25 @@ function checkAccounts() {
     if (error) Session.set('isClientConnected', false);
     else if (!error) {
       if (!_.contains(accounts, web3.eth.defaultAccount)) {
-        if (_.contains(accounts, localStorage.getItem('clientManagerAccount'))) {
-          web3.eth.defaultAccount = localStorage.getItem('clientManagerAccount');
-        } else if (_.contains(accounts, Session.get('clientManagerAccount'))) {
-          web3.eth.defaultAccount = Session.get('clientManagerAccount');
+        if (_.contains(accounts, localStorage.getItem('selectedAccount'))) {
+          web3.eth.defaultAccount = localStorage.getItem('selectedAccount');
+        } else if (_.contains(accounts, Session.get('selectedAccount'))) {
+          web3.eth.defaultAccount = Session.get('selectedAccount');
         } else if (accounts.length > 0) {
           web3.eth.defaultAccount = accounts[0];
         } else {
           web3.eth.defaultAccount = undefined;
         }
       }
-      localStorage.setItem('clientManagerAccount', web3.eth.defaultAccount);
+      localStorage.setItem('selectedAccount', web3.eth.defaultAccount);
       web3.eth.getBalance(web3.eth.defaultAccount, (error, result) => {
         if (!error) {
-          Session.set('clientManagerAccountBalance', result.toNumber());
+          Session.set('selectedAccountBalance', result.toNumber());
         } else {
-          Session.set('clientManagerAccountBalance', undefined);
+          Session.set('selectedAccountBalance', undefined);
         }
       });
-      Session.set('clientManagerAccount', web3.eth.defaultAccount);
+      Session.set('selectedAccount', web3.eth.defaultAccount);
       Session.set('getAccountCount', accounts.length);
       Session.set('clientAccountList', accounts);
       Session.set('isClientConnected', true);
@@ -114,7 +112,6 @@ function initSession() {
   Session.set('outOfSync', false);
   Session.set('syncing', false);
   Session.set('isClientConnected', false);
-  Session.set('isServerConnected', true);
   Session.set('latestBlock', 0);
   Session.set('fromPortfolio', true);
   Session.set('selectedOrderId', null);
@@ -143,22 +140,12 @@ function checkIfSynching() {
   });
 }
 
-function checkIfServerIsConncected() {
-  Meteor.call('isServerConnected', (err, result) => {
-    if (!err) {
-      Session.set('isServerConnected', result);
-    } else {
-      console.log(err);
-    }
-  });
-}
-
 // EXECUTION
 Meteor.startup(() => {
   initSession();
   checkNetwork();
   checkIfSynching();
-  checkIfServerIsConncected();
 
+  Session.set('isServerConnected', true); // TODO: check if server is connected
   Meteor.setInterval(checkNetwork, 1000);
 });

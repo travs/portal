@@ -2,8 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import addressList from '/imports/melon/interface/addressList.js';
-
+import addressList from '/imports/melon/interface/addressList';
 
 // SMART-CONTRACT IMPORT
 
@@ -88,8 +87,6 @@ Cores.syncCoreById = (id) => {
   })
   .then((result) => {
     currTotalSupply = result;
-    // TODO use NAV value
-    // sharePrice = (currTotalSupply.toNumber() === 0) ? 1.0 : currGav.toNumber() / currTotalSupply.toNumber();
     // sharePrice = convertToTokenPrecision(sharePrice, decimals);
     // Insert into Portfolio collection
     Cores.upsert({
@@ -105,7 +102,7 @@ Cores.syncCoreById = (id) => {
       universeAddress,
       referenceAsset,
       nav: nav.toNumber(),
-      sharePrice: sharePrice.toNumber(), // TODO sharePrice by NAV value
+      sharePrice: sharePrice.toNumber(),
       sharesSupply: currTotalSupply.toNumber(),
       // atTimestamp: atTimestamp.toNumber(), TODO ASK RETO
       createdAt: new Date(),

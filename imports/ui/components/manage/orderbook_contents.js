@@ -2,13 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { BigNumber } from 'meteor/ethereum:web3';
 // Collections
-import { Orders } from '/imports/api/orders.js';
+import { Orders } from '/imports/api/orders';
 // Utils
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
 // Corresponding html file
 import './orderbook_contents.html';
-import addressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList';
 
 Template.orderbook_contents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));

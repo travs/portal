@@ -6,7 +6,7 @@ import { bootstrapSwitch } from 'bootstrap-switch';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Specs
-import specs from '/imports/melon/interface/helpers/specs.js';
+import specs from '/imports/melon/interface/helpers/specs';
 // Smart contracts
 import Core from '/imports/melon/contracts/Core.json';
 // Corresponding html file
@@ -34,12 +34,12 @@ Tracker.autorun(() => {
   const fromPortfolio = Session.get('fromPortfolio');
 
   if (FlowRouter.getRouteName() === 'manage') {
-    const core = Cores.findOne({ owner: Session.get('clientManagerAccount') });
+    const core = Cores.findOne({ owner: Session.get('selectedAccount') });
 
     if (fromPortfolio && core) {
       FlowRouter.setParams({ address: core.address });
-    } else if (Session.get('clientManagerAccount')) {
-      FlowRouter.setParams({ address: Session.get('clientManagerAccount') });
+    } else if (Session.get('selectedAccount')) {
+      FlowRouter.setParams({ address: Session.get('selectedAccount') });
     }
   }
 });

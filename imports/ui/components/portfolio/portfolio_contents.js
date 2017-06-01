@@ -7,7 +7,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 // Collections
 import { Cores } from '/imports/api/cores';
 import { Assets } from '/imports/api/assets';
-import specs from '/imports/melon/interface/helpers/specs.js';
+import specs from '/imports/melon/interface/helpers/specs';
 
 // Corresponding html file
 import './portfolio_contents.html';
@@ -28,7 +28,7 @@ Template.portfolio_contents.helpers({
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
     if (doc === undefined || address === undefined) return false;
-    return doc.owner === Session.get('clientManagerAccount');
+    return doc.owner === Session.get('selectedAccount');
   },
   assets() {
     const assetHolderAddress = FlowRouter.getParam('address');

@@ -4,11 +4,11 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 // NPM imports
 import moment from 'moment';
 // Utils
-import addressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList';
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
 // Collections
-import { Orders } from '/imports/api/orders.js';
+import { Orders } from '/imports/api/orders';
 
 // Corresponding html file
 import './open_orders.html';
@@ -31,7 +31,7 @@ Template.open_orders.helpers({
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     const owner = Session.get('fromPortfolio')
       ? FlowRouter.getParam('address')
-      : Session.get('clientManagerAccount');
+      : Session.get('selectedAccount');
 
     return Orders.find({
       owner,
@@ -75,7 +75,7 @@ Template.open_orders.events({
     Exchange.setProvider(web3.currentProvider);
     const ExchangeAddress = FlowRouter.getParam('address');
     const exchangeContract = Exchange.at(ExchangeAddress);
-    const managerAddress = Session.get('clientManagerAccount');
+    const managerAddress = Session.get('selectedAccount');
 
     if (Session.get('fromPortfolio')) {
       coreContract.cancelOrder(addressList.exchange, event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {

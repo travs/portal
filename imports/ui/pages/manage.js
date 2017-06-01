@@ -8,16 +8,16 @@ import { Template } from 'meteor/templating';
 import { Tracker } from 'meteor/tracker';
 // Collections
 import { Cores } from '/imports/api/cores';
-import { Orders } from '/imports/api/orders.js';
+import { Orders } from '/imports/api/orders';
 // Utils
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
 // Components
-import '/imports/ui/components/manage/manage_holdings.js';
-import '/imports/ui/components/manage/manage_overview.js';
-import '/imports/ui/components/manage/open_orders.js';
-import '/imports/ui/components/manage/orderbook_contents.js';
-import '/imports/ui/components/manage/recent_trades.js';
+import '/imports/ui/components/manage/manage_holdings';
+import '/imports/ui/components/manage/manage_overview';
+import '/imports/ui/components/manage/open_orders';
+import '/imports/ui/components/manage/orderbook_contents';
+import '/imports/ui/components/manage/recent_trades';
 // Corresponding html file
 import './manage.html';
 
@@ -85,9 +85,9 @@ Template.manage.onRendered(function () {
   // Wait until all Session variables are set to ensure that #charts is in the DOM
   Tracker.autorun(() => {
     if (Session.get('isClientConnected')
-        && Session.get('clientManagerAccount') !== ''
+        && Session.get('selectedAccount') !== ''
         && Session.get('network') === 'Kovan'
-        && Cores.find({ owner: Session.get('clientManagerAccount') }).count() > 0) {
+        && Cores.find({ owner: Session.get('selectedAccount') }).count() > 0) {
       // Defer execution until next tick. I.e. after the DOM is updated
 
       const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');

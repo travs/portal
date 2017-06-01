@@ -1,4 +1,4 @@
-import orders from './fixtures/orderBook.js';
+import orders from './fixtures/orderBook';
 
 import matchOrders from './matchOrders';
 import orderBigNumberify from './helpers/orderBigNumberify';

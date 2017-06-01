@@ -32,9 +32,9 @@ Template.wallet_overview.events({
     // Refresh all wallets
     web3.eth.getBalance(web3.eth.defaultAccount, (err, res) => {
       if (!err) {
-        Session.set('clientManagerAccountBalance', res.toNumber());
+        Session.set('selectedAccountBalance', res.toNumber());
       } else {
-        Session.set('clientManagerAccountBalance', undefined);
+        Session.set('selectedAccountBalance', undefined);
       }
     });
 

@@ -26,11 +26,11 @@ Template.layout_header.events({
     event.preventDefault();
 
     // Update Portfolio collection
-    const numberOfCores = Cores.find({ owner: Session.get('clientManagerAccount') }).count();
+    const numberOfCores = Cores.find({ owner: Session.get('selectedAccount') }).count();
     if (numberOfCores === 0) {
       FlowRouter.go('/');
     } else {
-      const doc = Cores.findOne({ owner: Session.get('clientManagerAccount') });
+      const doc = Cores.findOne({ owner: Session.get('selectedAccount') });
       FlowRouter.go(`/portfolio/${doc.address}`);
     }
   },
@@ -39,11 +39,11 @@ Template.layout_header.events({
     event.preventDefault();
 
     // Update Portfolio collection
-    const numberOfCores = Cores.find({ owner: Session.get('clientManagerAccount') }).count();
+    const numberOfCores = Cores.find({ owner: Session.get('selectedAccount') }).count();
     if (numberOfCores === 0) {
       FlowRouter.go('/');
     } else {
-      const doc = Cores.findOne({ owner: Session.get('clientManagerAccount') });
+      const doc = Cores.findOne({ owner: Session.get('selectedAccount') });
       FlowRouter.go(`/manage/${doc.address}`);
     }
   },

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-import addressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList';
 
 // SMART-CONTRACT IMPORT
 

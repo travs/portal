@@ -6,10 +6,10 @@ import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BigNumber } from 'meteor/ethereum:web3';
 import contract from 'truffle-contract';
-import addressList from '/imports/melon/interface/addressList.js';
+import addressList from '/imports/melon/interface/addressList';
 // Collections
 import { Cores } from '/imports/api/cores';
-import { Orders } from '/imports/api/orders.js';
+import { Orders } from '/imports/api/orders';
 // Contracts
 import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';
@@ -21,7 +21,7 @@ import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertF
 
 import './manage_holdings.html';
 // specs
-import specs from '/imports/melon/interface/helpers/specs.js';
+import specs from '/imports/melon/interface/helpers/specs';
 // Interface
 import getOrder from '/imports/melon/interface/getOrder';
 import takeOrder from '/imports/melon/interface/takeOrder';
@@ -234,7 +234,7 @@ Template.manage_holdings.events({
 
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    const managerAddress = Session.get('clientManagerAccount');
+    const managerAddress = Session.get('selectedAccount');
     if (managerAddress === undefined) {
       // TODO replace toast
       // Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');

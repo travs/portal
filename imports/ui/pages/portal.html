@@ -6,9 +6,9 @@
   <!-- Server is connected -->
   {{#if isServerConnected}}
     {{#if isClientConnected}}
-      {{#if clientManagerAccount}}
+      {{#if selectedAccount}}
         {{#if isKovanNetwork}}
-          {{#if clientManagerAccountBalance}}
+          {{#if selectedAccountBalance}}
             {{#if hasManagerCreatedCore}}
               {{> portal_list}}
             {{else}}

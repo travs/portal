@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { assert } from 'meteor/practicalmeteor:chai';
 
-import { Cores } from './cores.js';
+import { Cores } from './cores';
 
 if (Meteor.isServer) {
   describe('Cores', () => {

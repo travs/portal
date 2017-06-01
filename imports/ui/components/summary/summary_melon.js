@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 // Components
-import '/imports/ui/components/ux/ux_spinner.js';
+import '/imports/ui/components/ux/ux_spinner';
 // Corresponding html file
 import './summary_melon.html';
 // Collections
@@ -16,8 +16,8 @@ Template.summary_melon.helpers({
     const numberOfCores = Cores.find().count();
     let coreAddress = FlowRouter.getParam('address');
 
-    if(Cores.find({ owner: Session.get('clientManagerAccount') }).count() !== 0) {
-      coreAddress = Cores.findOne({ owner: Session.get('clientManagerAccount') }).address;
+    if(Cores.find({ owner: Session.get('selectedAccount') }).count() !== 0) {
+      coreAddress = Cores.findOne({ owner: Session.get('selectedAccount') }).address;
       const sortedCores = Cores.find({}, { sort: { sharePrice: -1, createdAt: -1 } }).fetch();
       let ranking;
       for (let i = 0; i < sortedCores.length; i++) {
@@ -27,7 +27,7 @@ Template.summary_melon.helpers({
         }
       }
       return ranking + ' out of ' + numberOfCores;
-    } else if(Cores.find({ owner: Session.get('clientManagerAccount') }).count() == 0) {
+    } else if(Cores.find({ owner: Session.get('selectedAccount') }).count() == 0) {
         return 'No ranking available.'
     }
 

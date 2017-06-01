@@ -5,7 +5,7 @@ import { Mongo } from 'meteor/mongo';
 import contract from 'truffle-contract';
 
 import addressList from '/imports/melon/interface/addressList';
-import specs from '/imports/melon/interface/helpers/specs.js';
+import specs from '/imports/melon/interface/helpers/specs';
 import ExchangeJson from '/imports/melon/contracts/Exchange.json';
 
 
