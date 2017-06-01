@@ -18,7 +18,7 @@ const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
     const quantity = quantityAsked || new BigNumber(order.sell.howMuchPrecise);
     const coreContract = Core.at(coreAddress);
 
-    console.log('taking order', {
+    console.log('taking order', order, {
       exchange: AddressList.Exchange,
       id: order.id,
       quantity: quantity.toString(),

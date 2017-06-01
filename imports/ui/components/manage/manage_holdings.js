@@ -268,8 +268,6 @@ Template.manage_holdings.events({
 
       const isSell = prefillTakeOrder(Session.get('selectedOrderId')).orderType === 'Sell';
 
-      console.log({ isSell });
-
       let quantity = 0;
       let quantityToApprove = 0; // will be used in case 1.2
       if (isSell) {
@@ -292,17 +290,14 @@ Template.manage_holdings.events({
 
           if (quantity.toNumber()) {
             if (quantity.gte(sellHowMuchPrecise)) {
-              console.log('Desired quantity ', quantity.toString(), ' Available quantity ', sellHowMuchPrecise);
-              console.log(AddressList.Exchange, setOfOrders[i].id, sellHowMuchPrecise.toString(), { from: managerAddress });
-              console.log('setOfOrders[i].sell.howMuchPrecise', sellHowMuchPrecise);
-              coreContract.takeOrder(
-                AddressList.Exchange,
+              takeOrder(
                 setOfOrders[i].id,
+                managerAddress,
+                AddressList.Exchange,
                 sellHowMuchPrecise,
-                { from: managerAddress })
+              )
               .then((result) => {
-                console.log(result);
-                console.log('Transaction for order id ', setOfOrders[i].id, ' sent!');
+                console.log('Transaction for order id ', setOfOrders[i].id, ' sent!', result);
                 Meteor.call('orders.sync');
                 Session.get('selectedOrderId') !== null;
                 Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
@@ -317,9 +312,14 @@ Template.manage_holdings.events({
               // Select more than one order
               // TODO: Check if its works!
               console.log(AddressList.Exchange, setOfOrders[i].id, quantity.toString(), { from: managerAddress });
-              coreContract.takeOrder(AddressList.Exchange, setOfOrders[i].id, quantity, { from: managerAddress }).then((result) => {
-                console.log(result);
-                console.log('Transaction for order id ', setOfOrders[i].id, ' executed!');
+              takeOrder(
+                setOfOrders[i].id,
+                managerAddress,
+                AddressList.Exchange,
+                quantity,
+              )
+              .then((result) => {
+                console.log('Transaction for order id ', setOfOrders[i].id, ' executed!', result);
                 Meteor.call('orders.sync');
                 Session.set('selectedOrderId', null);
                 Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
