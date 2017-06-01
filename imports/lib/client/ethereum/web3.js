@@ -1,6 +1,7 @@
-import { Meteor } from 'meteor/meteor';
 import Web3 from 'web3';
 
+
+/*
 
 if (typeof web3 !== 'undefined') {
   window.web3 = new Web3(window.web3.currentProvider);
@@ -18,6 +19,27 @@ if (typeof web3 !== 'undefined') {
 } else {
   window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 }
+*/
 
+let web3Instance;
 
-export default window.web3;
+const initWeb3Instance = () => {
+  if (!web3Instance) console.trace('initWeb3Instance');
+  web3Instance = web3Instance || window.web3 === undefined
+    ? new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
+    : new Web3(window.web3.currentProvider);
+};
+
+const web3Proxy = new Proxy({}, {
+  get(target, property) {
+    initWeb3Instance();
+    return web3Instance[property];
+  },
+  set(target, property, value) {
+    initWeb3Instance();
+    web3Instance[property] = value;
+    return true;
+  },
+});
+
+export default web3Proxy;

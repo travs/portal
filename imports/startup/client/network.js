@@ -3,6 +3,11 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
 
+import web3 from '/imports/lib/client/ethereum/web3';
+import store from '/imports/startup/client/store';
+import { types } from '/imports/actions/network';
+
+
 // Check which accounts are available and if defaultAccount is still available,
 // Otherwise set it to localStorage, Session, or first element in accounts
 function checkAccounts() {
@@ -84,19 +89,44 @@ function checkIfSynching() {
         Session.set('highestBlock', r.highestBlock);
       } else {
         Session.set('isSynced', true);
-        checkNetwork()
+        checkNetwork();
       }
     } else {
-      console.error(`Error: ${e} \nIn web3.eth.isSyncing`)
+      console.error(`Error: ${e} \nIn web3.eth.isSyncing`);
     }
   });
 }
 
+function initWeb3() {
+  if (window.web3 === undefined) {
+    store.dispatch({
+      type: types.SET_PROVIDER,
+      provider: 'LocalNode',
+    });
+  } else {
+    store.dispatch({
+      type: types.SET_PROVIDER,
+      provider: (() => {
+        if (window.web3.currentProvider.isMetaMask) {
+          return 'MetaMask';
+        }
+        return 'Unknown';
+      })(),
+    });
+  }
+
+  // HACK: To prevent usage of window.web3
+  window.web3Initialised = true;
+}
+
 // EXECUTION
 Meteor.startup(() => {
+  console.log('Meteor Startup');
   initSession();
   checkNetwork();
   checkIfSynching();
 
   Session.set('isServerConnected', true); // TODO: check if server is connected
+
+  initWeb3();
 });

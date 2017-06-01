@@ -1,12 +1,14 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
-import { reducer as preferences } from '/imports/redux/actions/preferences';
+import preferences from '/imports/actions/preferences';
+import network from '/imports/actions/network';
 
 
 // http://redux.js.org/docs/api/createStore.html
 export default createStore(
   combineReducers({
     preferences,
+    network,
   }),
   {/* preloadedState */},
   compose(
