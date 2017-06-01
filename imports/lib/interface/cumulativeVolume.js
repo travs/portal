@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
   @pre: orders are retrieved from the matchOrders (sorted, and filtered)
         and BigNumberified
 */
-const calcCumulativeVolume = (orderType, orders) => {
+const cumulativeVolume = (orderType, orders) => {
   if (orderType === 'buy') {
     return orders.reduce((accumulator, current) =>
       accumulator.add(current.buy.howMuchBigNumber)
@@ -19,4 +19,4 @@ const calcCumulativeVolume = (orderType, orders) => {
 };
 
 
-export default calcCumulativeVolume;
+export default cumulativeVolume;
