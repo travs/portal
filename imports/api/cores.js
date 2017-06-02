@@ -122,25 +122,25 @@ Cores.syncCoreById = (id) => {
 Meteor.methods({
   'cores.setToUsed': (_id) => {
     check(_id, String);
-    Cores.update(_id, { $set: { isUsed: true } });
+    if (Meteor.isServer) Cores.update(_id, { $set: { isUsed: true } });
   },
   'cores.sync': () => {
-    Cores.sync();
+    if (Meteor.isServer) Cores.sync();
   },
   'cores.syncCoreByAddress': (ofCore) => {
     check(ofCore, String);
-    Cores.syncCoreByAddress(ofCore);
+    if (Meteor.isServer) Cores.syncCoreByAddress(ofCore);
   },
   'cores.syncCoreById': (id) => {
     check(id, Number);
-    Cores.syncCoreById(id);
+    if (Meteor.isServer) Cores.syncCoreById(id);
   },
   'cores.removeById': (id) => {
     check(id, Number);
     // TODO Only the owner can delete it
     // if (portfolio.owner !== Meteor.userId())
     //   throw new Meteor.Error('not-authorized');
-    Cores.remove(id);
+    if (Meteor.isServer) Cores.remove(id);
   },
 });
 

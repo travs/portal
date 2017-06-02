@@ -31,6 +31,9 @@ if (Meteor.isServer) {
 // COLLECTION METHODS
 
 Trades.watch = () => {
+  // only the server should update the database!
+  if (Meteor.isClient) return;
+
   const Exchange = contract(ExchangeJson);
   Exchange.setProvider(web3.currentProvider);
   const exchangeContract = Exchange.at(addressList.exchange);

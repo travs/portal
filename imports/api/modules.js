@@ -27,6 +27,9 @@ Meteor.methods({
     check(portfolioAddress, String);
     check(managerAddress, String);
 
+    // only the server should update the database!
+    if (Meteor.isClient) return;
+
     Universe.setProvider(web3.currentProvider);
     const universeContract = Universe.at(universeAddress);
     PreminedAsset.setProvider(web3.currentProvider);
