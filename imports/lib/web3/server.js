@@ -6,6 +6,8 @@ const kovanNode = 'https://kovan.melonport.com';
 
 
 export default (() => {
+  if (Meteor.isClient) return null;
+
   if ((new Web3(new Web3.providers.HttpProvider(localNode))).isConnected()) {
     return new Web3(new Web3.providers.HttpProvider(localNode));
   } else if ((new Web3(new Web3.providers.HttpProvider(kovanNode))).isConnected()) {

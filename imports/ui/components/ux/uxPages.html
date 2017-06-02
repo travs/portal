@@ -135,8 +135,22 @@
   </div>
 </template>
 
+<template name="uxNoConnection">
+  <!-- No connection on the client -->
+  <div class="container">
+    <div class="row">
+      <div id="results" class="col-md-12 text-center error-message">
+        <img src="/dist/img/ethereum_node_down.png">
+        <h2 class="about-title">No connection</h2>
+        <p>No connection to the Ethereum Network. Please check if your local node or Metamask is running. Since this is a test version, please select the Kovan Network. If the page takes too long to reload, please refresh.</p>
+        <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" class="btn btn-def btn-light-blue" target="blank">Dowload Metamask here</a>
+      </div>
+    </div>
+  </div>
+</template>
+
 <!-- No Account Selected -->
-<template name="ux_no_account_selected">
+<template name="uxNoAccountSelected">
   <div class="container">
     <div class="row">
       <div id="results" class="col-md-12 text-center error-message">

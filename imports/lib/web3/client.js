@@ -67,6 +67,6 @@ const web3Proxy = (Meteor.isClient) ?
       return true;
     },
   })
-  : undefined;
+  : null;
 
 export default web3Proxy;

@@ -6,6 +6,7 @@ import { _ } from 'meteor/underscore';
 import web3 from '/imports/lib/web3/client';
 import store from '/imports/startup/client/store';
 import { creators } from '/imports/redux/network';
+import { networkMapping } from '/imports/melon/interface/helpers/specs';
 
 
 // Check which accounts are available and if defaultAccount is still available,
@@ -41,29 +42,6 @@ function checkAccounts() {
   });
 }
 
-// CHECK FOR NETWORK
-function checkNetwork() {
-  let network;
-  switch (web3.version.network) {
-    case '4':
-      network = 'Rinkeby';
-      break;
-    case '3':
-      network = 'Ropsten';
-      break;
-    case '42':
-      network = 'Kovan';
-      break;
-    case '1':
-      network = 'Main';
-      break;
-    default:
-      network = 'Private';
-  }
-  Session.set('network', network);
-  checkAccounts();
-}
-
 function initSession() {
   Session.set('network', false);
   Session.set('isClientConnected', false);
@@ -89,7 +67,6 @@ function checkIfSynching() {
         Session.set('highestBlock', r.highestBlock);
       } else {
         Session.set('isSynced', true);
-        checkNetwork();
       }
     } else {
       console.error(`Error: ${e} \nIn web3.eth.isSyncing`);
@@ -98,8 +75,6 @@ function checkIfSynching() {
 }
 
 function initWeb3() {
-  console.log(web3.currentProvider, web3.isConnected());
-
   const provider = (() => {
     if (web3.currentProvider.isMetaMask) {
       return 'MetaMask';
@@ -109,10 +84,18 @@ function initWeb3() {
     return 'Unknown';
   })();
 
-  store.dispatch(creators.init({
+  const web3State = {
     isConnected: web3.isConnected(),
     provider,
-  }));
+  };
+
+  if (web3State.isConnected && web3.version.network) {
+    web3State.network = networkMapping[web3.version.network];
+  } else if (web3State.isConnected) {
+    throw new Error('Cannot determine network');
+  }
+
+  store.dispatch(creators.init(web3State));
 }
 
 // EXECUTION
@@ -124,11 +107,13 @@ Meteor.startup(() => {
 
   initWeb3();
 
-  initSession();
-  checkNetwork();
-  checkIfSynching();
-
   Session.set('isServerConnected', true); // TODO: check if server is connected
+
+  /*
+  initSession();
+  checkIfSynching();
+  checkAccounts();
+  */
 
   initWeb3();
 });
