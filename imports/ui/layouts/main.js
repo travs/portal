@@ -1,3 +1,3 @@
 import './main.html';
-import './header.js';
-import './footer.js';
+import './header';
+import './footer';

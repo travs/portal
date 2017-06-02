@@ -3,19 +3,19 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-import AddressList from '/imports/lib/ethereum/address_list';
-import getOrder from '/imports/lib/interface/getOrder';
+import addressList from '/imports/melon/interface/addressList';
+import getOrder from '/imports/melon/interface/getOrder';
 
 // SMART-CONTRACT IMPORT
 import contract from 'truffle-contract';
-import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json'; // Get Smart Contract JSON
-import ExchangeJson from '/imports/lib/assets/contracts/Exchange.json';
+import PreminedAssetJson from '/imports/melon/contracts/PreminedAsset.json'; // Get Smart Contract JSON
+import ExchangeJson from '/imports/melon/contracts/Exchange.json';
 
 const PreminedAsset = contract(PreminedAssetJson); // Set Provider
 const Exchange = contract(ExchangeJson);
 PreminedAsset.setProvider(web3.currentProvider);
 Exchange.setProvider(web3.currentProvider);
-const exchangeContract = Exchange.at(AddressList.Exchange); // Initialize contract instance
+const exchangeContract = Exchange.at(addressList.exchange); // Initialize contract instance
 
 // COLLECTIONS
 export const Orders = global.Orders = new Mongo.Collection('orders');

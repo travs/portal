@@ -1,18 +1,18 @@
 <template name="portal">
 
   <!-- Index-banner -->
-  {{> ux_index_portal}}
+  {{> uxIndexPortal}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
     {{#if isClientConnected}}
-      {{#if clientManagerAccount}}
+      {{#if selectedAccount}}
         {{#if isKovanNetwork}}
-          {{#if clientManagerAccountBalance}}
+          {{#if selectedAccountBalance}}
             {{#if hasManagerCreatedCore}}
-              {{> portal_list}}
+              {{> portalList}}
             {{else}}
-              {{> portal_new}}
+              {{> portalNew}}
             {{/if}}
           {{else}} <!-- Client balance zero -->
             {{> ux_insufficient_funds}}
@@ -27,6 +27,6 @@
       {{> ux_no_account_selected}}
     {{/if}}
   {{else}} <!-- Server not connected -->
-    {{> ux_server_connection}}
+    {{> uxServerConnection}}
   {{/if}}
 </template>

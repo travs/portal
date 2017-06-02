@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import select2 from 'select2';
-import specs from '/imports/lib/assets/utils/specs.js';
+import specs from '/imports/melon/interface/helpers/specs';
 import { $ } from 'meteor/jquery';
 // Collections
 import { Cores } from '/imports/api/cores';
@@ -58,7 +58,7 @@ Template.manage_settings.events({
   },
   'click .manage': (event, templateInstance) => {},
   'click button#delete': () => {
-    const managerAddress = Session.get('clientManagerAccount');
+    const managerAddress = Session.get('selectedAccount');
     const doc = Cores.findOne({ managerAddress });
     if ((doc === undefined || managerAddress === undefined)) {
       return false;

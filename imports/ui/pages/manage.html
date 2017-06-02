@@ -1,7 +1,7 @@
 <template name="manage">
 
   <!-- Index-banner -->
-  {{> ux_manage_overview}}
+  {{> ux_manageOverview}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
@@ -11,13 +11,13 @@
         <div class="row exchange-overview">
           <div class="col-md-6 col-sm-6 col-xs-12 asset-overview">
             <div class="asset-overview-wrapper">
-              {{> manage_overview}}
+              {{> manageOverview}}
             </div>
           </div>
 
           <div class="col-md-6 col-sm-6 col-xs-12 asset-overview">
             <div class="asset-overview-wrapper">
-              {{> manage_holdings}}
+              {{> manageHoldings}}
             </div>
           </div>
         </div>
@@ -25,7 +25,7 @@
           <div class="row exchange-order">
             <div class="col-md-12">
               <div class="exchange-order-wrapper">
-                {{> orderbook_contents}}
+                {{> orderBookContents}}
             </div>
             </div>
           </div>
@@ -33,7 +33,7 @@
           <div class="row exchange-order">
             <div class="col-md-12">
               <div class="exchange-order-wrapper">
-                {{> open_orders}}
+                {{> openOrders}}
               </div>
             </div>
           </div>
@@ -41,13 +41,13 @@
           <div class="row exchange-order">
             <div class="col-md-12">
               <div class="exchange-order-wrapper">
-                {{> recent_trades}}
+                {{> recentTrades}}
               </div>
             </div>
           </div>
         </div>
     </section>
   {{else}}
-    {{> ux_server_connection}}
+    {{> uxServerConnection}}
   {{/if}}
 </template>

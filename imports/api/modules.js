@@ -5,13 +5,13 @@ import { check } from 'meteor/check';
 // SMART-CONTRACT IMPORT
 
 import contract from 'truffle-contract';
-import UniverseJson from '/imports/lib/assets/contracts/Universe.json'; // Get Smart Contract JSON
+import UniverseJson from '/imports/melon/contracts/Universe.json'; // Get Smart Contract JSON
 const Universe = contract(UniverseJson); // Set Provider
 Universe.setProvider(web3.currentProvider);
-import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json'; // Get Smart Contract JSON
+import PreminedAssetJson from '/imports/melon/contracts/PreminedAsset.json'; // Get Smart Contract JSON
 const PreminedAsset = contract(PreminedAssetJson); // Set Provider
 PreminedAsset.setProvider(web3.currentProvider);
-import PriceFeedJson from '/imports/lib/assets/contracts/PriceFeed.json'; // Get Smart Contract JSON
+import PriceFeedJson from '/imports/melon/contracts/PriceFeed.json'; // Get Smart Contract JSON
 const PriceFeed = contract(PriceFeedJson); // Set Provider
 PriceFeed.setProvider(web3.currentProvider);
 

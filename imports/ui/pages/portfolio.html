@@ -1,6 +1,6 @@
 <template name="portfolio">
   <!-- Index-banner -->
-  {{> ux_portfolio_overview}}
+  {{> ux_portfolioOverview}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
@@ -10,13 +10,13 @@
       <div class="row exchange-overview">
         <div class="col-md-6 asset-overview">
           <div class="asset-overview-wrapper">
-            {{> portfolio_overview}}
+            {{> portfolioOverview}}
           </div>
         </div>
 
         <div class="col-md-6 asset-overview">
           <div class="asset-overview-wrapper">
-            {{> manage_participation}}
+            {{> manageParticipation}}
           </div>
         </div>
       </div>
@@ -24,13 +24,13 @@
       <div class="row exchange-order">
         <div class="col-md-12">
           <div class="exchange-order-wrapper">
-              {{> portfolio_contents}}
+              {{> portfolioContents}}
           </div>
         </div>
       </div>
     </div>
   </section>
 {{else}}
-  {{> ux_server_connection}}
+  {{> uxServerConnection}}
 {{/if}}
 </template>

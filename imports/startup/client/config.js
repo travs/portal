@@ -4,7 +4,7 @@ import { HTTP } from 'meteor/http';
 import { EthTools } from 'meteor/ethereum:tools';
 import cc from 'cryptocompare';
 
-import specs from '/imports/lib/assets/utils/specs.js';
+import specs from '/imports/melon/interface/helpers/specs';
 
 
 EthTools.ticker.start();

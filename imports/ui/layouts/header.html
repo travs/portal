@@ -14,9 +14,9 @@
       <div class="collapse navbar-collapse" id="default-header">
         <ul class="nav navbar-nav navbar-right">
           {{#if isClientConnected}}
-            {{#if clientManagerAccount}}
+            {{#if selectedAccount}}
               {{#if isKovanNetwork}}
-                <li><a href="/account/{{clientManagerAccount}}">My Account</a></li>
+                <li><a href="/account/{{selectedAccount}}">My Account</a></li>
                 <li class="has-badge">
                   <a class="portfolio" href="#">
                     {{#if hasManagerCreatedCore}}

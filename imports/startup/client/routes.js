@@ -2,13 +2,13 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
 // Import to load these templates
-import '/imports/ui/layouts/main.js';
-import '/imports/ui/layouts/header.js';
-import '/imports/ui/layouts/footer.js';
-import '/imports/ui/pages/portal.js';
-import '/imports/ui/pages/portfolio.js';
-import '/imports/ui/pages/manage.js';
-import '/imports/ui/pages/wallet.js';
+import '/imports/ui/layouts/main';
+import '/imports/ui/layouts/header';
+import '/imports/ui/layouts/footer';
+import '/imports/ui/pages/portal';
+import '/imports/ui/pages/portfolio';
+import '/imports/ui/pages/manage';
+import '/imports/ui/pages/wallet';
 
 
 // Default route

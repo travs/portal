@@ -2,21 +2,20 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import AddressList from '/imports/lib/ethereum/address_list.js';
-
+import addressList from '/imports/melon/interface/addressList';
 
 // SMART-CONTRACT IMPORT
 
 import contract from 'truffle-contract';
-import VersionJson from '/imports/lib/assets/contracts/Version.json';
-import CoreJson from '/imports/lib/assets/contracts/Core.json';
+import VersionJson from '/imports/melon/contracts/Version.json';
+import CoreJson from '/imports/melon/contracts/Core.json';
 
 const Version = contract(VersionJson);
 const Core = contract(CoreJson);
 // Creation of contract object
 Version.setProvider(web3.currentProvider);
 Core.setProvider(web3.currentProvider);
-const versionContract = Version.at(AddressList.Version);
+const versionContract = Version.at(addressList.version);
 
 // COLLECTIONS
 
@@ -88,8 +87,6 @@ Cores.syncCoreById = (id) => {
   })
   .then((result) => {
     currTotalSupply = result;
-    // TODO use NAV value
-    // sharePrice = (currTotalSupply.toNumber() === 0) ? 1.0 : currGav.toNumber() / currTotalSupply.toNumber();
     // sharePrice = convertToTokenPrecision(sharePrice, decimals);
     // Insert into Portfolio collection
     Cores.upsert({
@@ -105,7 +102,7 @@ Cores.syncCoreById = (id) => {
       universeAddress,
       referenceAsset,
       nav: nav.toNumber(),
-      sharePrice: sharePrice.toNumber(), // TODO sharePrice by NAV value
+      sharePrice: sharePrice.toNumber(),
       sharesSupply: currTotalSupply.toNumber(),
       // atTimestamp: atTimestamp.toNumber(), TODO ASK RETO
       createdAt: new Date(),

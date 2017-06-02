@@ -2,14 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-import AddressList from '/imports/lib/ethereum/address_list.js';
+import addressList from '/imports/melon/interface/addressList';
 
 // SMART-CONTRACT IMPORT
 
 import contract from 'truffle-contract';
-import UniverseJson from '/imports/lib/assets/contracts/Universe.json'; // Get Smart Contract JSON
-import PreminedAssetJson from '/imports/lib/assets/contracts/PreminedAsset.json';
-import PriceFeedJson from '/imports/lib/assets/contracts/PriceFeed.json';
+import UniverseJson from '/imports/melon/contracts/Universe.json'; // Get Smart Contract JSON
+import PreminedAssetJson from '/imports/melon/contracts/PreminedAsset.json';
+import PriceFeedJson from '/imports/melon/contracts/PriceFeed.json';
 const Universe = contract(UniverseJson); // Set Provider
 Universe.setProvider(web3.currentProvider);
 const PreminedAsset = contract(PreminedAssetJson);
@@ -30,7 +30,7 @@ Meteor.methods({
     check(assetHolderAddress, String);
 
     // TODO get Universe address via Core.getUniverseAddress
-    const universeContract = Universe.at(AddressList.Universe); // Initialize contract instance
+    const universeContract = Universe.at(addressList.universe); // Initialize contract instance
 
     // TODO build function
     universeContract.numAssignedAssets().then((assignedAssets) => {
