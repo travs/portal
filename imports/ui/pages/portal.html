@@ -1,7 +1,7 @@
 <template name="portal">
 
   <!-- Index-banner -->
-  {{> ux_index_portal}}
+  {{> uxIndexPortal}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
@@ -10,7 +10,7 @@
         {{#if isKovanNetwork}}
           {{#if selectedAccountBalance}}
             {{#if hasManagerCreatedCore}}
-              {{> portal_list}}
+              {{> portalList}}
             {{else}}
               {{> portalNew}}
             {{/if}}
@@ -27,6 +27,6 @@
       {{> ux_no_account_selected}}
     {{/if}}
   {{else}} <!-- Server not connected -->
-    {{> ux_server_connection}}
+    {{> uxServerConnection}}
   {{/if}}
 </template>

@@ -13,11 +13,11 @@ import { Orders } from '/imports/api/orders';
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
 // Components
-import '/imports/ui/components/manage/manage_holdings';
-import '/imports/ui/components/manage/manage_overview';
-import '/imports/ui/components/manage/open_orders';
-import '/imports/ui/components/manage/orderbook_contents';
-import '/imports/ui/components/manage/recent_trades';
+import '/imports/ui/components/manage/manageHoldings';
+import '/imports/ui/components/manage/manageOverview';
+import '/imports/ui/components/manage/openOrders';
+import '/imports/ui/components/manage/orderBookContents';
+import '/imports/ui/components/manage/recentTrades';
 // Corresponding html file
 import './manage.html';
 

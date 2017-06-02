@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber';
+import BigNumber from 'bignumber.js';
 
 /*
   @pre: orders are retrieved from the matchOrders (sorted, and filtered)

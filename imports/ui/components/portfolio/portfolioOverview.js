@@ -11,11 +11,11 @@ import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract
 
 
 // Corresponding html file
-import './portfolio_overview.html';
+import './portfolioOverview.html';
 
 const Core = contract(CoreJson); // Set Provider
 Core.setProvider(web3.currentProvider);
-Template.portfolio_overview.onCreated(() => {
+Template.portfolioOverview.onCreated(() => {
   Meteor.subscribe('cores');
   Template.instance().totalShareAmount = new ReactiveVar();
   Template.instance().personalShareAmount = new ReactiveVar();
@@ -23,7 +23,7 @@ Template.portfolio_overview.onCreated(() => {
 });
 
 
-Template.portfolio_overview.helpers({
+Template.portfolioOverview.helpers({
   // TODO implement cleaner
   getPersonalStake() {
     const template = Template.instance();
@@ -49,10 +49,10 @@ Template.portfolio_overview.helpers({
 });
 
 
-Template.portfolio_overview.onRendered(() => {});
+Template.portfolioOverview.onRendered(() => {});
 
 
-Template.portfolio_overview.events({
+Template.portfolioOverview.events({
   'click .delete': () => {
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });

@@ -4,9 +4,9 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
 import { Cores } from '/imports/api/cores';
 // Components
-import '/imports/ui/components/portfolio/portfolio_overview';
-import '/imports/ui/components/portfolio/portfolio_contents';
-import '/imports/ui/components/portfolio/manage_participation';
+import '/imports/ui/components/portfolio/portfolioOverview';
+import '/imports/ui/components/portfolio/portfolioContents';
+import '/imports/ui/components/portfolio/manageParticipation';
 // Corresponding html file
 import './portfolio.html';
 

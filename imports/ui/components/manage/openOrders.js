@@ -11,7 +11,7 @@ import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertF
 import { Orders } from '/imports/api/orders';
 
 // Corresponding html file
-import './open_orders.html';
+import './openOrders.html';
 
 
 // Contracts
@@ -20,9 +20,9 @@ import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract
 import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';
 
 
-Template.open_orders.onCreated(() => {});
+Template.openOrders.onCreated(() => {});
 
-Template.open_orders.helpers({
+Template.openOrders.helpers({
   more: false,
   currentAssetPair: () => Session.get('currentAssetPair'),
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
@@ -63,9 +63,9 @@ Template.open_orders.helpers({
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
 });
 
-Template.open_orders.onRendered(() => {});
+Template.openOrders.onRendered(() => {});
 
-Template.open_orders.events({
+Template.openOrders.events({
   'click .js-cancel': (event, order) => {
     const Core = contract(CoreJson);
     Core.setProvider(web3.currentProvider);

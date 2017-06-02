@@ -12,19 +12,19 @@ import contract from 'truffle-contract';
 import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
 
-import './manage_participation.html';
+import './manageParticipation.html';
 
 const Core = contract(CoreJson); // Set Provider
 // Creation of contract object
 Core.setProvider(web3.currentProvider);
 
-Template.manage_participation.onCreated(() => {
+Template.manageParticipation.onCreated(() => {
   // TODO update cores param
   Meteor.subscribe('cores');
   Template.instance().typeValue = new ReactiveVar(0);
 });
 
-Template.manage_participation.helpers({
+Template.manageParticipation.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
@@ -47,11 +47,11 @@ Template.manage_participation.helpers({
   },
 });
 
-Template.manage_participation.onRendered(() => {
+Template.manageParticipation.onRendered(() => {
   $('select').select2();
 });
 
-Template.manage_participation.events({
+Template.manageParticipation.events({
   'change select#type': (event, templateInstance) => {
     const currentlySelectedTypeValue = parseFloat(templateInstance.find('select#type').value, 10);
     Template.instance().typeValue.set(currentlySelectedTypeValue);

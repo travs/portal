@@ -9,11 +9,11 @@ import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertF
 
 
 // Corresponding html file
-import './recent_trades.html';
+import './recentTrades.html';
 
-Template.recent_trades.onCreated(() => {});
+Template.recentTrades.onCreated(() => {});
 
-Template.recent_trades.helpers({
+Template.recentTrades.helpers({
   more: false,
   currentAssetPair: () => Session.get('currentAssetPair'),
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
@@ -39,6 +39,6 @@ Template.recent_trades.helpers({
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
 });
 
-Template.recent_trades.onRendered(() => {});
+Template.recentTrades.onRendered(() => {});
 
-Template.recent_trades.events({});
+Template.recentTrades.events({});

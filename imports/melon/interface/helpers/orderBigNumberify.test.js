@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber';
+import BigNumber from 'bignumber.js';
 import orderBigNumberify from './orderBigNumberify';
 
 

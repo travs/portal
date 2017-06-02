@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber';
+import BigNumber from 'bignumber.js';
 
 import matchedOrders from './fixtures/matchedOrders.json';
 import orderBigNumberify from './helpers/orderBigNumberify';

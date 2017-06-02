@@ -1,17 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 // Components
-import '/imports/ui/components/ux/ux_spinner';
+import '/imports/ui/components/ux/uxSpinner';
 // Corresponding html file
-import './summary_melon.html';
+import './melonSummary.html';
 // Collections
 import { Cores } from '/imports/api/cores';
 
 
-Template.summary_melon.onCreated(() => {});
+Template.melonSummary.onCreated(() => {});
 
 
-Template.summary_melon.helpers({
+Template.melonSummary.helpers({
   getRanking() {
     const numberOfCores = Cores.find().count();
     let coreAddress = FlowRouter.getParam('address');
@@ -35,7 +35,7 @@ Template.summary_melon.helpers({
 });
 
 
-Template.summary_melon.onRendered(() => {});
+Template.melonSummary.onRendered(() => {});
 
 
-Template.summary_melon.events({});
+Template.melonSummary.events({});

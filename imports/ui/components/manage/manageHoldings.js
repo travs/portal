@@ -19,7 +19,7 @@ import ERC20Json from '/imports/melon/contracts/ERC20.json';
 // Utils
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
-import './manage_holdings.html';
+import './manageHoldings.html';
 // specs
 import specs from '/imports/melon/interface/helpers/specs';
 // Interface
@@ -45,7 +45,7 @@ const assetPairs =
   .sort();
 
 
-Template.manage_holdings.onCreated(() => {
+Template.manageHoldings.onCreated(() => {
   Meteor.subscribe('cores');
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ buyingSelected: true });
@@ -125,7 +125,7 @@ const prefillTakeOrder = (id) => {
   }
 };
 
-Template.manage_holdings.helpers({
+Template.manageHoldings.helpers({
   assetPairs,
   currentAssetPair: Session.get('currentAssetPair'),
   selected: assetPair => (assetPair === Session.get('currentAssetPair') ? 'selected' : ''),
@@ -176,7 +176,7 @@ Template.manage_holdings.helpers({
   },
 });
 
-Template.manage_holdings.onRendered(() => {
+Template.manageHoldings.onRendered(() => {
   if (Session.get('fromPortfolio')) {
     $('.js-price').attr('readonly', true);
     $('#select_type').attr('disabled', true);
@@ -192,7 +192,7 @@ Template.manage_holdings.onRendered(() => {
   });
 });
 
-Template.manage_holdings.events({
+Template.manageHoldings.events({
   'change .js-asset-pair-picker': (event) => {
     Session.set('currentAssetPair', event.currentTarget.value);
   },

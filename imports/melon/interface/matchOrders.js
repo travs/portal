@@ -1,5 +1,5 @@
 // @flow
-import BigNumber from 'bignumber';
+import BigNumber from 'bignumber.js';
 
 type OrderTypes = "buy" | "sell";
 

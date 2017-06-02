@@ -7,14 +7,14 @@ import { Orders } from '/imports/api/orders';
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
 // Corresponding html file
-import './orderbook_contents.html';
+import './orderBookContents.html';
 import addressList from '/imports/melon/interface/addressList';
 
-Template.orderbook_contents.onCreated(() => {
+Template.orderBookContents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));
 });
 
-Template.orderbook_contents.helpers({
+Template.orderBookContents.helpers({
   convertFromTokenPrecision,
   more: false,
   displayBigNumber: (numberPrecise, precision, decimals) =>
@@ -119,7 +119,7 @@ Template.orderbook_contents.helpers({
     return convertFromTokenPrecision(cumulativeDouble, precision);
   },
   percentageOfBuySum(buyPrice, precision, index) {
-    const currentCumVol = Template.orderbook_contents.__helpers.get('calcBuyCumulativeVolume').call(this, buyPrice, precision, index);
+    const currentCumVol = Template.orderBookContents.__helpers.get('calcBuyCumulativeVolume').call(this, buyPrice, precision, index);
 
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     const total = Orders.find({
@@ -132,7 +132,7 @@ Template.orderbook_contents.helpers({
     return (currentCumVol / convertFromTokenPrecision(total, precision)) * 100;
   },
   percentageOfSellSum(sellPrice, precision, index) {
-    const currentCumVol = Template.orderbook_contents.__helpers.get('calcSellCumulativeVolume').call(this, sellPrice, precision, index);
+    const currentCumVol = Template.orderBookContents.__helpers.get('calcSellCumulativeVolume').call(this, sellPrice, precision, index);
 
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
     const total = Orders.find({
@@ -147,11 +147,11 @@ Template.orderbook_contents.helpers({
   },
 });
 
-Template.orderbook_contents.onRendered(() => {
+Template.orderBookContents.onRendered(() => {
   Meteor.call('orders.sync');
 });
 
-Template.orderbook_contents.events({
+Template.orderBookContents.events({
   'click .js-takeorder': (event) => {
     Session.set('selectedOrderId', event.currentTarget.dataset.id);
     console.log(Session.get('selectedOrderId'));

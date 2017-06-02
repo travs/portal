@@ -2,9 +2,9 @@
 import web3 from '/imports/lib/client/ethereum/web3';
 
 // Load global components
-import '/imports/ui/components/ux/ux_pages';
-import '/imports/ui/components/summary/summary_melon';
-import '/imports/ui/components/summary/summary_executive';
+import '/imports/ui/components/ux/uxPages';
+import '/imports/ui/components/summary/melonSummary';
+import '/imports/ui/components/summary/executiveSummary';
 
 import '/imports/ui/client/helpers';
 

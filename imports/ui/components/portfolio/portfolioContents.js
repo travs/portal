@@ -10,15 +10,15 @@ import { Assets } from '/imports/api/assets';
 import specs from '/imports/melon/interface/helpers/specs';
 
 // Corresponding html file
-import './portfolio_contents.html';
+import './portfolioContents.html';
 
-Template.portfolio_contents.onCreated(() => {
+Template.portfolioContents.onCreated(() => {
   Meteor.subscribe('cores');
   Meteor.subscribe('assets');
   Template.instance().totalPortfolioValue = new ReactiveVar();
 });
 
-Template.portfolio_contents.helpers({
+Template.portfolioContents.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
@@ -80,6 +80,6 @@ Template.portfolio_contents.helpers({
   },
 });
 
-Template.portfolio_contents.onRendered(() => {});
+Template.portfolioContents.onRendered(() => {});
 
-Template.portfolio_contents.events({});
+Template.portfolioContents.events({});

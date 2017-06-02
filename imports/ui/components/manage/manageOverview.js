@@ -10,7 +10,7 @@ import specs from '/imports/melon/interface/helpers/specs';
 // Smart contracts
 import Core from '/imports/melon/contracts/Core.json';
 // Corresponding html file
-import './manage_overview.html';
+import './manageOverview.html';
 
 const numberOfQuoteTokens = specs.getQuoteTokens().length;
 const numberOfBaseTokens = specs.getBaseTokens().length;
@@ -44,12 +44,12 @@ Tracker.autorun(() => {
   }
 });
 
-Template.manage_overview.onCreated(() => {
+Template.manageOverview.onCreated(() => {
   Meteor.subscribe('cores');
   // TODO send command to server to update current coreContract
 });
 
-Template.manage_overview.helpers({
+Template.manageOverview.helpers({
   assetPairs,
   currentAssetPair: Session.get('currentAssetPair'),
   selected: assetPair => (assetPair === Session.get('currentAssetPair') ? 'selected' : ''),
@@ -65,7 +65,7 @@ Template.manage_overview.helpers({
   },
 });
 
-Template.manage_overview.events({
+Template.manageOverview.events({
   'change .js-asset-pair-picker': (event) => {
     Session.set('currentAssetPair', event.currentTarget.value);
   },
