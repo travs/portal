@@ -61,6 +61,7 @@ const prefillTakeOrder = (id) => {
   const orderType = selectedOffer[0] && selectedOffer[0].sell.symbol === 'ETH-T' ? 'Sell' : 'Buy';
 
   if (orderType === 'Sell') {
+    console.log('Clicked in left side; it is a sell order');
     Template.instance().state.set('buyingSelected', false);
     let cheaperOrders;
     if (Session.get('fromPortfolio')) {
@@ -78,20 +79,29 @@ const prefillTakeOrder = (id) => {
       }, { sort: { 'buy.price': -1, 'sell.howMuch': -1, createdAt: 1 } }).fetch();
     }
 
+    const buyTokenAddress = specs.getTokenAddress(baseTokenSymbol);
+    const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
+    const sellTokenAddress = specs.getTokenAddress(quoteTokenSymbol);
+    const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
+    console.log({ quoteTokenSymbol, sellTokenAddress, sellTokenPrecision });
+
     const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
     const setOfOrders = cheaperOrders.slice(0, index + 1);
     const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
       accumulator.add(currentValue.buy.howMuchPrecise), new BigNumber(0));
-    const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
-      (accumulator + currentValue.sell.howMuch), 0) / volumeTakeOrder;
-    const buyTokenAddress = specs.getTokenAddress(baseTokenSymbol);
-    const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
+
+    const pricesSum = setOfOrders.reduce((accumulator, currentValue) =>
+      accumulator.add(currentValue.sell.howMuchPrecise), new BigNumber(0));
+    console.log({ buyTokenPrecision, sellTokenPrecision });
+    const averagePrice = (pricesSum.div(volumeTakeOrder).div(Math.pow(10, sellTokenPrecision - buyTokenPrecision))).toString();
+
     const volume = volumeTakeOrder.div(Math.pow(10, buyTokenPrecision)).toString();
     const total = averagePrice * volume;
     const totalWantedBuyAmount = total;
 
     return { volume, averagePrice, total, setOfOrders, orderType, totalWantedBuyAmount };
   } else if (orderType === 'Buy') {
+    console.log('Clicked in right side; it is a buy order');
     Template.instance().state.set('buyingSelected', true);
     let cheaperOrders;
     if (Session.get('fromPortfolio')) {
@@ -109,14 +119,22 @@ const prefillTakeOrder = (id) => {
       }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
     }
 
+    const buyTokenAddress = specs.getTokenAddress(quoteTokenSymbol); // should be quote?
+    const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
+    const sellTokenAddress = specs.getTokenAddress(baseTokenSymbol); // should be base?
+    const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
+    console.log({ baseTokenSymbol, sellTokenAddress, sellTokenPrecision });
+    console.log({ quoteTokenSymbol, buyTokenAddress, buyTokenPrecision });
     const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
     const setOfOrders = cheaperOrders.slice(0, index + 1);
     const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
       accumulator.add(currentValue.sell.howMuchPrecise), new BigNumber(0));
-    const averagePrice = setOfOrders.reduce((accumulator, currentValue) =>
-      (accumulator + currentValue.buy.howMuch), 0) / volumeTakeOrder;
-    const sellTokenAddress = specs.getTokenAddress(quoteTokenSymbol);
-    const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
+
+    const pricesSum = setOfOrders.reduce((accumulator, currentValue) =>
+      accumulator.add(currentValue.buy.howMuchPrecise), new BigNumber(0));
+    const averagePrice = (pricesSum.div(volumeTakeOrder).div(Math.pow(10, buyTokenPrecision - sellTokenPrecision))).toString();
+
+
     const volume = volumeTakeOrder.div(Math.pow(10, sellTokenPrecision)).toString();
     const total = averagePrice * volume;
     const totalWantedBuyAmount = volume;
@@ -195,6 +213,7 @@ Template.manageHoldings.onRendered(() => {
 Template.manageHoldings.events({
   'change .js-asset-pair-picker': (event) => {
     Session.set('currentAssetPair', event.currentTarget.value);
+    Meteor.subscribe('orders', Session.get('currentAssetPair'));
   },
   'change select#select_type': (event, templateInstance) => {
     const currentlySelectedTypeValue = parseFloat(templateInstance.find('select#select_type').value, 10);

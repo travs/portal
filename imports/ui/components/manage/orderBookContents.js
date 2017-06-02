@@ -12,6 +12,7 @@ import addressList from '/imports/melon/interface/addressList';
 
 Template.orderBookContents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));
+  // Meteor.call('orders.sync');
 });
 
 Template.orderBookContents.helpers({
@@ -40,10 +41,20 @@ Template.orderBookContents.helpers({
     else if (!Session.get('fromPortfolio')) return allOrders;
   },
   calcBuyPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    return (convertFromTokenPrecision(sellHowMuch, sellPrecision) / convertFromTokenPrecision(buyHowMuch, buyPrecision)).toFixed(4);
+    console.log('input ', { sellHowMuch, sellPrecision, buyHowMuch, buyPrecision });
+    const sellBigNumber = new BigNumber(sellHowMuch);
+    const buyBigNumber = new BigNumber(buyHowMuch);
+    const price = sellBigNumber.div(buyBigNumber).div(Math.pow(10, sellPrecision - buyPrecision)).toFixed(4);
+    console.log({ sellBigNumber, buyBigNumber, price });
+    return price;
+    // return (convertFromTokenPrecision(sellHowMuch, sellPrecision) / convertFromTokenPrecision(buyHowMuch, buyPrecision)).toFixed(4);
   },
   calcSellPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    return (convertFromTokenPrecision(buyHowMuch, buyPrecision) / convertFromTokenPrecision(sellHowMuch, sellPrecision)).toFixed(4);
+    const sellBigNumber = new BigNumber(sellHowMuch);
+    const buyBigNumber = new BigNumber(buyHowMuch);
+    const price = buyBigNumber.div(sellBigNumber).div(Math.pow(10, buyPrecision - sellPrecision)).toFixed(4);
+    return price;
+    // return (convertFromTokenPrecision(buyHowMuch, buyPrecision) / convertFromTokenPrecision(sellHowMuch, sellPrecision)).toFixed(4);
   },
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
