@@ -5,13 +5,13 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { EthTools } from 'meteor/ethereum:tools';
 
 // Corresponding html file
-import './wallet_overview.html';
+import './walletOverview.html';
 
 
-Template.wallet_overview.onCreated(() => {});
+Template.walletOverview.onCreated(() => {});
 
 
-Template.wallet_overview.helpers({
+Template.walletOverview.helpers({
   wallets() {
     return Session.get('clientAccountList');
   },
@@ -21,10 +21,10 @@ Template.wallet_overview.helpers({
 });
 
 
-Template.wallet_overview.onRendered(() => {});
+Template.walletOverview.onRendered(() => {});
 
 
-Template.wallet_overview.events({
+Template.walletOverview.events({
   'click .refresh_wallet': (event) => {
     // Prevent default browser form submit
     event.preventDefault();
