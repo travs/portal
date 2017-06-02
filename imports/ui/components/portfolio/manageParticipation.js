@@ -4,19 +4,19 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import select2 from 'select2';
+import contract from 'truffle-contract';
+
+import web3 from '/imports/lib/web3/client';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
-import { Cores } from '/imports/api/cores';
+import Cores from '/imports/api/cores';
 // Contracts
-import contract from 'truffle-contract';
 import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
 
 import './manageParticipation.html';
 
 const Core = contract(CoreJson); // Set Provider
-// Creation of contract object
-Core.setProvider(web3.currentProvider);
 
 Template.manageParticipation.onCreated(() => {
   // TODO update cores param
@@ -66,7 +66,7 @@ Template.manageParticipation.events({
   'input input#volume': (event, templateInstance) => {
     const price = parseFloat(templateInstance.find('input#price').value || 0, 10);
     const volume = parseFloat(templateInstance.find('input#volume').value || 0, 10);
-    console.log('price: ', price, 'volume: ', volume );
+    console.log('price: ', price, 'volume: ', volume);
     /* eslint no-param-reassign: ["error", { "props": false }]*/
     templateInstance.find('input#total').value = price * volume;
   },
@@ -108,6 +108,7 @@ Template.manageParticipation.events({
     }
 
     const coreContract = Core.at(coreAddress);
+    Core.setProvider(web3.currentProvider);
 
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
@@ -124,7 +125,7 @@ Template.manageParticipation.events({
     switch (type) {
       // Invest case
       case 0:
-        EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then((result) => EtherTokenContract.approve(coreAddress, baseUnitVolume, {from: managerAddress})).then((result) => coreContract.createShares(baseUnitVolume, {from: managerAddress})).then((result) => {
+        EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then(result => EtherTokenContract.approve(coreAddress, baseUnitVolume, { from: managerAddress })).then(result => coreContract.createShares(baseUnitVolume, { from: managerAddress })).then((result) => {
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
           console.log(`Shares successfully created. Tx Hash: ${result}`);
           Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
@@ -141,16 +142,16 @@ Template.manageParticipation.events({
       // Redeem case
       case 1:
         coreContract.annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress }).then((result) => {
-        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-        console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
-        Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
-        Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
-        templateInstance.find('input#total').value = '';
-        templateInstance.find('input#volume').value = '';
-        return coreContract.totalSupply();
-      }).catch((error) => {
-        console.log(error);
-      });
+          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+          console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
+          Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
+          Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+          templateInstance.find('input#total').value = '';
+          templateInstance.find('input#volume').value = '';
+          return coreContract.totalSupply();
+        }).catch((error) => {
+          console.log(error);
+        });
       default: return 'Error';
     }
   },

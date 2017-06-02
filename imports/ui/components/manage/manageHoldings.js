@@ -4,12 +4,13 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { bootstrapSwitch } from 'bootstrap-switch';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
-import { BigNumber } from 'meteor/ethereum:web3';
+import BigNumber from 'bignumber.js';
 import contract from 'truffle-contract';
+import web3 from '/imports/lib/web3/client';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
-import { Cores } from '/imports/api/cores';
-import { Orders } from '/imports/api/orders';
+import Cores from '/imports/api/cores';
+import Orders from '/imports/api/orders';
 // Contracts
 import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';

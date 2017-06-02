@@ -12,9 +12,6 @@ Template.wallet_overview.onCreated(() => {});
 
 
 Template.wallet_overview.helpers({
-  wallets() {
-    return Session.get('clientAccountList');
-  },
   displayBalance(balance) {
     return EthTools.formatBalance(balance, '0,0.0[00] UNIT');
   },
@@ -39,7 +36,7 @@ Template.wallet_overview.events({
     });
 
     // Notification
-    //TODO replace toast
+    // TODO replace toast
     // Materialize.toast('Wallets refreshed', 4000, 'blue');
   },
 });

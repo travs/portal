@@ -1,12 +1,14 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
-import { reducer as preferences } from '/imports/redux/actions/preferences';
+import preferences from '/imports/redux/preferences';
+import web3 from '/imports/redux/web3';
 
 
 // http://redux.js.org/docs/api/createStore.html
 export default createStore(
   combineReducers({
     preferences,
+    web3,
   }),
   {/* preloadedState */},
   compose(

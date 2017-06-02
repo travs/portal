@@ -1,20 +1,14 @@
-/* global web3 */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 import contract from 'truffle-contract';
 
+import web3 from '/imports/lib/web3';
 import addressList from '/imports/melon/interface/addressList';
 import specs from '/imports/melon/interface/helpers/specs';
 import ExchangeJson from '/imports/melon/contracts/Exchange.json';
 
-
-const Exchange = contract(ExchangeJson);
-Exchange.setProvider(web3.currentProvider);
-const exchangeContract = Exchange.at(addressList.exchange);
-
 // CONSTANTS
-
 const blocksPerDay = 21600;
 
 // COLLECTIONS
@@ -30,13 +24,20 @@ if (Meteor.isServer) {
       },
       limit,
       skip,
-    }
+    },
   ));
 }
 
 // COLLECTION METHODS
 
 Trades.watch = () => {
+  // only the server should update the database!
+  if (Meteor.isClient) return;
+
+  const Exchange = contract(ExchangeJson);
+  Exchange.setProvider(web3.currentProvider);
+  const exchangeContract = Exchange.at(addressList.exchange);
+
   const trades = exchangeContract.Trade({}, { // eslint-disable-line new-cap
     fromBlock: web3.eth.blockNumber - blocksPerDay,
     toBlock: 'latest',
