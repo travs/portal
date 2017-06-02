@@ -15,6 +15,7 @@ Core.setProvider(web3.currentProvider);
 const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
   getOrder(id).then((order) => {
     const quantity = quantityAsked || new BigNumber(order.sell.howMuchPrecise);
+    const coreContract = Core.at(coreAddress);
 
     console.log('taking order', order, {
       exchange: addressList.exchange,
