@@ -36,7 +36,7 @@ Template.manageParticipation.helpers({
     if (doc !== undefined) {
       return web3.fromWei(doc.sharePrice, 'ether');
     }
-    return '';
+    return 1;
   },
   selectedTypeName() {
     switch (Template.instance().typeValue.get()) {
@@ -66,7 +66,7 @@ Template.manageParticipation.events({
   'input input#volume': (event, templateInstance) => {
     const price = parseFloat(templateInstance.find('input#price').value || 0, 10);
     const volume = parseFloat(templateInstance.find('input#volume').value || 0, 10);
-    console.log('price: ', price, 'volume: ', volume );
+    console.log('price: ', price, 'volume: ', volume);
     /* eslint no-param-reassign: ["error", { "props": false }]*/
     templateInstance.find('input#total').value = price * volume;
   },
@@ -124,7 +124,7 @@ Template.manageParticipation.events({
     switch (type) {
       // Invest case
       case 0:
-        EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then((result) => EtherTokenContract.approve(coreAddress, baseUnitVolume, {from: managerAddress})).then((result) => coreContract.createShares(baseUnitVolume, {from: managerAddress})).then((result) => {
+        EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then(result => EtherTokenContract.approve(coreAddress, baseUnitVolume, { from: managerAddress })).then(result => coreContract.createShares(baseUnitVolume, { from: managerAddress })).then((result) => {
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
           console.log(`Shares successfully created. Tx Hash: ${result}`);
           Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
@@ -141,16 +141,16 @@ Template.manageParticipation.events({
       // Redeem case
       case 1:
         coreContract.annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress }).then((result) => {
-        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-        console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
-        Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
-        Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
-        templateInstance.find('input#total').value = '';
-        templateInstance.find('input#volume').value = '';
-        return coreContract.totalSupply();
-      }).catch((error) => {
-        console.log(error);
-      });
+          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+          console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
+          Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
+          Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+          templateInstance.find('input#total').value = '';
+          templateInstance.find('input#volume').value = '';
+          return coreContract.totalSupply();
+        }).catch((error) => {
+          console.log(error);
+        });
       default: return 'Error';
     }
   },
