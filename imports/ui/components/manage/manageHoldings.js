@@ -119,9 +119,9 @@ const prefillTakeOrder = (id) => {
       }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
     }
 
-    const buyTokenAddress = specs.getTokenAddress(quoteTokenSymbol); // should be quote?
+    const buyTokenAddress = specs.getTokenAddress(quoteTokenSymbol);
     const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
-    const sellTokenAddress = specs.getTokenAddress(baseTokenSymbol); // should be base?
+    const sellTokenAddress = specs.getTokenAddress(baseTokenSymbol);
     const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
     console.log({ baseTokenSymbol, sellTokenAddress, sellTokenPrecision });
     console.log({ quoteTokenSymbol, buyTokenAddress, buyTokenPrecision });
