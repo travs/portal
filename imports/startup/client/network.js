@@ -59,15 +59,6 @@ function checkNetwork() {
   checkAccounts();
 }
 
-function initSession() {
-  Session.set('network', false);
-  Session.set('isClientConnected', false);
-  Session.set('highestBlock', 0);
-  Session.set('fromPortfolio', true);
-  Session.set('selectedOrderId', null);
-  Session.set('showModal', true);
-}
-
 function checkIfSynching() {
   web3.eth.isSyncing((e, r) => {
     if (!e) {
@@ -94,9 +85,15 @@ function checkIfSynching() {
 
 // EXECUTION
 Meteor.startup(() => {
-  initSession();
-  checkNetwork();
-  checkIfSynching();
-
+  Session.set('network', false);
+  Session.set('isClientConnected', false);
+  Session.set('highestBlock', 0);
+  Session.set('fromPortfolio', true);
+  Session.set('selectedOrderId', null);
+  Session.set('showModal', true);
   Session.set('isServerConnected', true); // TODO: check if server is connected
+
+  checkIfSynching(); // TODO Fix: web3.eth.isSyncing
+  Session.set('isSynced', true); // TODO init in checkIfSynching
+  checkNetwork(); // TODO init in checkIfSynching
 });

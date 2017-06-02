@@ -41,11 +41,12 @@
     {{else}}
 
     <li>
-      <p class="status">Current Block:</p>
       {{#if isSynced}}
-        <p class="value">{{highestBlock}}</p>
+        <p class="status">Current Block:</p>
+        <p class="value">Synced</p>
       {{else}}
-        <p class="value">Syncing</p>
+        <p class="status">Current Block:</p>
+        <p class="value">{{highestBlock}}</p>
       {{/if}}
     </li>
     <li>
