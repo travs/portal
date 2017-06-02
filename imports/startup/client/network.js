@@ -34,7 +34,7 @@ function updateWeb3() {
 
   pify(web3.version.getNetwork)()
   .then((network) => {
-    web3State.network = network;
+    web3State.network = networkMapping[network];
     return pify(web3.eth.getAccounts)();
   })
   .then((accounts) => {
@@ -64,7 +64,6 @@ function updateWeb3() {
 // this event.
 // Using Meteor.startup ... could fire before the meta-mask injection
 window.addEventListener('load', function() {
-  console.log('Init web3');
   /* eslint-disable no-underscore-dangle */
   window.__AppInitializedBeforeWeb3__ = true;
   /* eslint-enable */

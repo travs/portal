@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
-import { Cores } from '/imports/api/cores';
+import Cores from '/imports/api/cores';
 
 import './header.html';
 
@@ -49,7 +49,7 @@ Template.layout_header.events({
   },
   'click .newclick'() {
     if (Session.get('isNew'))
-      toastr.success("Well done! Now start by investing some K-ETH");
+      {toastr.success("Well done! Now start by investing some K-ETH");}
     Session.set('isNew', false);
-  }
+  },
 });

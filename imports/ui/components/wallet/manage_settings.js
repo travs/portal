@@ -6,7 +6,7 @@ import select2 from 'select2';
 import specs from '/imports/melon/interface/helpers/specs';
 import { $ } from 'meteor/jquery';
 // Collections
-import { Cores } from '/imports/api/cores';
+import Cores from '/imports/api/cores';
 // Corresponding html file
 import './manage_settings.html';
 

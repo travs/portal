@@ -2,11 +2,9 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
-import { Cores } from '/imports/api/cores';
-import { Universes } from '/imports/api/modules';
+import Cores from '/imports/api/cores';
 
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
-import addressList from '/imports/melon/interface/addressList';
 
 
 // Server network
@@ -23,8 +21,6 @@ Template.registerHelper('highestBlock', () => Session.get('highestBlock'));
 // Account
 Template.registerHelper('selectedAccount', () => Session.get('selectedAccount'));
 Template.registerHelper('selectedAccountBalance', () => Session.get('selectedAccountBalance'));
-Template.registerHelper('clientAccountList', () => Session.get('clientAccountList'));
-Template.registerHelper('getAccountCount', () => Session.get('getAccountCount'));
 // Cores
 Template.registerHelper('getCores', () => Cores.find({}, { sort: { notional: -1, sharePrice: -1 } }));
 Template.registerHelper('getCoreCount', () => Cores.find().count());

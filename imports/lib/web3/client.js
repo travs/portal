@@ -38,7 +38,7 @@ const initWeb3Instance = () => {
   }
   web3Instance = (injectedWeb3 === undefined)
     ? new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
-    : new Web3(window.web3.currentProvider);
+    : new Web3(injectedWeb3.currentProvider);
 
   window.web3 = new Proxy(web3Instance, {
     get(target, property) {

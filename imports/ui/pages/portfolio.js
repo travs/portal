@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
-import { Cores } from '/imports/api/cores';
+import Cores from '/imports/api/cores';
 // Components
 import '/imports/ui/components/portfolio/portfolioOverview';
 import '/imports/ui/components/portfolio/portfolioContents';

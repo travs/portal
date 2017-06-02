@@ -8,7 +8,7 @@ import contract from 'truffle-contract';
 
 import web3 from '/imports/lib/web3/client';
 // Collections
-import { Assets } from '/imports/api/assets';
+import Assets from '/imports/api/assets';
 import specs from '/imports/melon/interface/helpers/specs';
 // Smart Contracts
 import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';

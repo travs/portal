@@ -8,8 +8,8 @@ import BigNumber from 'bignumber.js';
 import contract from 'truffle-contract';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
-import { Cores } from '/imports/api/cores';
-import { Orders } from '/imports/api/orders';
+import Cores from '/imports/api/cores';
+import Orders from '/imports/api/orders';
 // Contracts
 import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';

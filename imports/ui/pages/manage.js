@@ -1,16 +1,9 @@
 // NPM
 // import d3 from 'd3';
 // import drawOrderbook from '@melonproject/orderbook-visualisation';
-// Meteor
-import { Meteor } from 'meteor/meteor';
-import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
-import { Tracker } from 'meteor/tracker';
 // Collections
-import { Cores } from '/imports/api/cores';
-import { Orders } from '/imports/api/orders';
-// Utils
-import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+import Orders from '/imports/api/orders';
 
 // Components
 import '/imports/ui/components/manage/manageHoldings';

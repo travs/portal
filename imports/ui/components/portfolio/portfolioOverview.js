@@ -7,7 +7,7 @@ import contract from 'truffle-contract';
 
 import web3 from '/imports/lib/web3/client';
 // Collections
-import { Cores } from '/imports/api/cores';
+import Cores from '/imports/api/cores';
 // Smart contracts
 import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 

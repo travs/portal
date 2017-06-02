@@ -9,7 +9,7 @@ import contract from 'truffle-contract';
 import web3 from '/imports/lib/web3/client';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
-import { Cores } from '/imports/api/cores';
+import Cores from '/imports/api/cores';
 // Contracts
 import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
@@ -150,8 +150,8 @@ Template.manageParticipation.events({
           templateInstance.find('input#volume').value = '';
           return coreContract.totalSupply();
         }).catch((error) => {
-        console.log(error);
-      });
+          console.log(error);
+        });
       default: return 'Error';
     }
   },
