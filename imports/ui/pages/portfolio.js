@@ -1,13 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-<<<<<<< HEAD
-// Collections
-import Cores from '/imports/api/cores';
-// Components
-=======
 import { Cores } from '/imports/api/cores';
->>>>>>> 964f2c69dfbe19a999d037a9b5f6ead00ba2dc78
 import '/imports/ui/components/portfolio/portfolioOverview';
 import '/imports/ui/components/portfolio/portfolioContents';
 import '/imports/ui/components/portfolio/manageParticipation';
