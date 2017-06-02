@@ -7,7 +7,7 @@
       <p class="value">
         {{# if selectedAccountBalance }}
           <a href="/account/{{selectedAccount}}" class="truncate green-text text-lighten-2">
-            {{dapp_formatBalance selectedAccountBalance "0,0.0[00] UNIT"}}
+            {{displayBigNumber selectedAccountBalance 4}} ETH
           </a>
         {{else}}
           <a href="https://github.com/kovan-testnet/faucet" class="truncate blue-text text-lighten-2 new badge-hero" target="_blank">

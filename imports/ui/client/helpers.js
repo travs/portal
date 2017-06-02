@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js';
+
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
@@ -44,3 +46,5 @@ Template.registerHelper('isMinedNetworkStatus', () => Session.get('NetworkStatus
 // Reference currency
 Template.registerHelper('refCurrency', () => Session.get('referenceCurrency'));
 Template.registerHelper('showModal', () => Session.get('showModal'));
+Template.registerHelper('displayBigNumber', (bigNumber, precision) =>
+  new BigNumber(bigNumber).toFixed(parseInt(precision, 10)));
