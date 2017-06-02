@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // NPM
 // import d3 from 'd3';
 // import drawOrderbook from '@melonproject/orderbook-visualisation';
@@ -6,12 +7,20 @@ import { Template } from 'meteor/templating';
 import Orders from '/imports/api/orders';
 
 // Components
+=======
+import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
+import { Template } from 'meteor/templating';
+import { Tracker } from 'meteor/tracker';
+import { Cores } from '/imports/api/cores';
+import { Orders } from '/imports/api/orders';
+import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+>>>>>>> 964f2c69dfbe19a999d037a9b5f6ead00ba2dc78
 import '/imports/ui/components/manage/manageHoldings';
 import '/imports/ui/components/manage/manageOverview';
 import '/imports/ui/components/manage/openOrders';
 import '/imports/ui/components/manage/orderBookContents';
 import '/imports/ui/components/manage/recentTrades';
-// Corresponding html file
 import './manage.html';
 
 
@@ -130,4 +139,3 @@ Template.manage.onRendered(function () {
   });
   */
 });
-
