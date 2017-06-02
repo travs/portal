@@ -24,7 +24,6 @@ Template.orderBookContents.helpers({
   quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   buyOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    console.log({ 'buy.symbol': baseTokenSymbol, 'sell.symbol': quoteTokenSymbol });
     const liquidityProviderOrders = Orders.find({
       isActive: true,
       'buy.symbol': baseTokenSymbol,
@@ -40,10 +39,14 @@ Template.orderBookContents.helpers({
     else if (!Session.get('fromPortfolio')) return allOrders;
   },
   calcBuyPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    return (convertFromTokenPrecision(sellHowMuch, sellPrecision) / convertFromTokenPrecision(buyHowMuch, buyPrecision)).toFixed(4);
+    const sellBigNumber = new BigNumber(sellHowMuch);
+    const buyBigNumber = new BigNumber(buyHowMuch);
+    return sellBigNumber.div(buyBigNumber).div(Math.pow(10, sellPrecision - buyPrecision)).toFixed(4);
   },
   calcSellPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    return (convertFromTokenPrecision(buyHowMuch, buyPrecision) / convertFromTokenPrecision(sellHowMuch, sellPrecision)).toFixed(4);
+    const sellBigNumber = new BigNumber(sellHowMuch);
+    const buyBigNumber = new BigNumber(buyHowMuch);
+    return buyBigNumber.div(sellBigNumber).div(Math.pow(10, buyPrecision - sellPrecision)).toFixed(4);
   },
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
