@@ -1,17 +1,17 @@
 import contract from 'truffle-contract';
 
+import web3 from '/imports/lib/web3';
 import addressList from '/imports/melon/interface/addressList';
 import ExchangeJson from '/imports/melon/contracts/Exchange.json';
 import specs from '/imports/melon/interface/helpers/specs';
 
 
-const Exchange = contract(ExchangeJson);
-Exchange.setProvider(web3.currentProvider);
-const exchangeContract = Exchange.at(addressList.exchange); // Initialize contract instance
+const getOrder = (id) => {
+  const Exchange = contract(ExchangeJson);
+  Exchange.setProvider(web3.currentProvider);
+  const exchangeContract = Exchange.at(addressList.exchange); // Initialize contract instance
 
-
-const getOrder = id =>
-  exchangeContract.orders(id).then((order) => {
+  return exchangeContract.orders(id).then((order) => {
     const [sellHowMuch,
       sellWhichToken,
       buyHowMuch,
@@ -50,6 +50,7 @@ const getOrder = id =>
       timestamp,
     };
   });
+};
 
 
 export default getOrder;

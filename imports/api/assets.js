@@ -1,26 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import contract from 'truffle-contract';
 
+import web3 from '/imports/lib/web3';
 import addressList from '/imports/melon/interface/addressList';
 
 // SMART-CONTRACT IMPORT
 
-import contract from 'truffle-contract';
 import UniverseJson from '/imports/melon/contracts/Universe.json'; // Get Smart Contract JSON
 import PreminedAssetJson from '/imports/melon/contracts/PreminedAsset.json';
 import PriceFeedJson from '/imports/melon/contracts/PriceFeed.json';
 const Universe = contract(UniverseJson); // Set Provider
-Universe.setProvider(web3.currentProvider);
 const PreminedAsset = contract(PreminedAssetJson);
-PreminedAsset.setProvider(web3.currentProvider);
 const PriceFeed = contract(PriceFeedJson);
-PriceFeed.setProvider(web3.currentProvider);
-
 
 // COLLECTIONS
 
-export const Assets = new Mongo.Collection('assets');
+const Assets = new Mongo.Collection('assets');
 if (Meteor.isServer) { Meteor.publish('assets', () => Assets.find({}, { sort: { price: -1 } })); } // Publish Collection
 
 // METHODS
@@ -30,6 +27,9 @@ Meteor.methods({
     check(assetHolderAddress, String);
 
     // TODO get Universe address via Core.getUniverseAddress
+    PreminedAsset.setProvider(web3.currentProvider);
+    PriceFeed.setProvider(web3.currentProvider);
+    Universe.setProvider(web3.currentProvider);
     const universeContract = Universe.at(addressList.universe); // Initialize contract instance
 
     // TODO build function
@@ -97,3 +97,6 @@ Meteor.methods({
     });
   },
 });
+
+
+export default Assets;

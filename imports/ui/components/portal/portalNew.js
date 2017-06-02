@@ -4,17 +4,11 @@ import { Session } from 'meteor/session';
 // Smart Contracts
 import contract from 'truffle-contract';
 import VersionJson from '/imports/melon/contracts/Version.json';
-import CoreJson from '/imports/melon/contracts/Core.json';
-import { etherToken, melonToken, bitcoinToken, repToken, euroToken, universe } from '/imports/melon/interface/addressList';
 import addressList from '/imports/melon/interface/addressList';
 
 import './portalNew.html';
 
 const Version = contract(VersionJson);
-const Core = contract(CoreJson);
-// Creation of contract object
-Version.setProvider(web3.currentProvider);
-Core.setProvider(web3.currentProvider);
 
 
 Template.portalNew.onCreated(() => {
@@ -23,19 +17,11 @@ Template.portalNew.onCreated(() => {
   Meteor.subscribe('universes');
 });
 
-
 Template.portalNew.helpers({
-  etherToken,
-  melonToken,
-  bitcoinToken,
-  repToken,
-  euroToken,
-  universe,
+  ...addressList,
 });
 
-
 Template.portalNew.onRendered(() => {});
-
 
 Template.portalNew.events({
   'shown.bs.modal #myModal': (event) => {
@@ -53,6 +39,8 @@ Template.portalNew.events({
   'submit form#new_portfolio': (event, templateInstance) => {
     // Prevent default browser form submit
     event.preventDefault();
+    Version.setProvider(web3.currentProvider);
+
     if (!templateInstance.find('input#portfolio_name').value) {
       alert('Please enter a portfolio name.');
       return;
@@ -75,7 +63,7 @@ Template.portalNew.events({
       addressList.riskMgmt,
       addressList.managementFee,
       addressList.performanceFee,
-      { from: Session.get('selectedAccount') }
+      { from: Session.get('selectedAccount') },
     )
     .then((result) => {
       let id;
@@ -92,14 +80,14 @@ Template.portalNew.events({
       return versionContract.getCore(id);
     })
     .then((info) => {
-      const [address, owner, , , , ] = info;
+      const [address, owner, , , ,] = info;
       Meteor.call('universes.insert',
         Session.get('universeContractAddress'),
         address,
-        owner
+        owner,
       );
       Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-      FlowRouter.go('/portfolio/'+address);
+      FlowRouter.go(`/portfolio/${address}`);
     }).catch((err) => {
       toastr.error('Oops, an error has occured. Please verify your fund informations.');
       Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });

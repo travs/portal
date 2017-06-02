@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import { Meteor } from 'meteor/meteor';
 import Web3 from 'web3';
 
 
@@ -22,10 +23,9 @@ if (typeof web3 !== 'undefined') {
 }
 */
 
+if (Meteor.isClient) window.__AppInitializedBeforeWeb3__ = false;
 
-window.__AppInitializedBeforeWeb3__ = false;
-
-const injectedWeb3 = window.web3;
+const injectedWeb3 = global.web3;
 let web3Instance = new Web3();
 let initialized = false;
 
@@ -55,16 +55,18 @@ const initWeb3Instance = () => {
   initialized = true;
 };
 
-const web3Proxy = new Proxy(web3Instance, {
-  get(target, property) {
-    initWeb3Instance();
-    return web3Instance[property];
-  },
-  set(target, property, value) {
-    initWeb3Instance();
-    web3Instance[property] = value;
-    return true;
-  },
-});
+const web3Proxy = (Meteor.isClient) ?
+  new Proxy(web3Instance, {
+    get(target, property) {
+      initWeb3Instance();
+      return web3Instance[property];
+    },
+    set(target, property, value) {
+      initWeb3Instance();
+      web3Instance[property] = value;
+      return true;
+    },
+  })
+  : undefined;
 
 export default web3Proxy;

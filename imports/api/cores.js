@@ -3,27 +3,28 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import contract from 'truffle-contract';
 
-// SMART-CONTRACT IMPORT
+import web3 from '/imports/lib/web3';
 
+// SMART-CONTRACT IMPORT
 import addressList from '/imports/melon/interface/addressList';
 import VersionJson from '/imports/melon/contracts/Version.json';
 import CoreJson from '/imports/melon/contracts/Core.json';
 
 const Version = contract(VersionJson);
 const Core = contract(CoreJson);
-// Creation of contract object
-Version.setProvider(web3.currentProvider);
-Core.setProvider(web3.currentProvider);
-const versionContract = Version.at(addressList.version);
 
 // COLLECTIONS
 
-export const Cores = new Mongo.Collection('cores');
+const Cores = new Mongo.Collection('cores');
 if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish Collection
 
 // COLLECTION METHODS
 
 Cores.watch = () => {
+  // Creation of contract object
+  Version.setProvider(web3.currentProvider);
+  const versionContract = Version.at(addressList.version);
+
   const cores = versionContract.CoreUpdate({}, {
     fromBlock: web3.eth.blockNumber,
     toBlock: 'latest',
@@ -38,6 +39,9 @@ Cores.watch = () => {
 };
 
 Cores.sync = () => {
+  Version.setProvider(web3.currentProvider);
+  const versionContract = Version.at(addressList.version);
+
   versionContract.getLastCoreId().then((lastId) => {
     for (let id = 1; id < lastId.toNumber() + 1; id += 1) {
       Cores.syncCoreById(id);
@@ -46,6 +50,10 @@ Cores.sync = () => {
 };
 
 Cores.syncCoreById = (id) => {
+  Core.setProvider(web3.currentProvider);
+  Version.setProvider(web3.currentProvider);
+  const versionContract = Version.at(addressList.version);
+
   let coreContract;
   // Description of Core
   let address;
@@ -135,3 +143,6 @@ Meteor.methods({
     Cores.remove(id);
   },
 });
+
+
+export default Cores;

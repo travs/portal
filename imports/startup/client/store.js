@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
-import preferences from '/imports/actions/preferences';
-import network from '/imports/actions/network';
+import preferences from '/imports/redux/preferences';
+import network from '/imports/redux/network';
 
 
 // http://redux.js.org/docs/api/createStore.html

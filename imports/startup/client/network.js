@@ -3,9 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
 
-import web3 from '/imports/lib/client/ethereum/web3';
+import web3 from '/imports/lib/web3/client';
 import store from '/imports/startup/client/store';
-import { types } from '/imports/actions/network';
+import { creators } from '/imports/redux/network';
 
 
 // Check which accounts are available and if defaultAccount is still available,
@@ -98,21 +98,22 @@ function checkIfSynching() {
 }
 
 function initWeb3() {
-  console.log(web3.currentProvider);
+  console.log(web3.currentProvider, web3.isConnected());
 
-  store.dispatch({
-    type: types.SET_PROVIDER,
-    provider: (() => {
-      if (web3.currentProvider.isMetaMask) {
-        return 'MetaMask';
-      } else if (typeof (web3.currentProvider.host) === 'string') {
-        return 'LocalNode';
-      }
-      return 'Unknown';
-    })(),
-  });
+  const provider = (() => {
+    if (web3.currentProvider.isMetaMask) {
+      return 'MetaMask';
+    } else if (typeof (web3.currentProvider.host) === 'string') {
+      return 'LocalNode';
+    }
+    return 'Unknown';
+  })();
+
+  store.dispatch(creators.init({
+    isConnected: web3.isConnected(),
+    provider,
+  }));
 }
-
 
 // EXECUTION
 Meteor.startup(() => {
@@ -123,7 +124,6 @@ Meteor.startup(() => {
 
   initWeb3();
 
-  /*
   initSession();
   checkNetwork();
   checkIfSynching();
@@ -131,5 +131,4 @@ Meteor.startup(() => {
   Session.set('isServerConnected', true); // TODO: check if server is connected
 
   initWeb3();
-  */
 });

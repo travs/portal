@@ -4,7 +4,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { bootstrapSwitch } from 'bootstrap-switch';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
-import { BigNumber } from 'meteor/ethereum:web3';
+import BigNumber from 'bignumber.js';
 import contract from 'truffle-contract';
 import addressList from '/imports/melon/interface/addressList';
 // Collections

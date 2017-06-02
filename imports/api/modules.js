@@ -1,23 +1,22 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import contract from 'truffle-contract';
+
+import web3 from '/imports/lib/web3';
 
 // SMART-CONTRACT IMPORT
-
-import contract from 'truffle-contract';
 import UniverseJson from '/imports/melon/contracts/Universe.json'; // Get Smart Contract JSON
-const Universe = contract(UniverseJson); // Set Provider
-Universe.setProvider(web3.currentProvider);
 import PreminedAssetJson from '/imports/melon/contracts/PreminedAsset.json'; // Get Smart Contract JSON
-const PreminedAsset = contract(PreminedAssetJson); // Set Provider
-PreminedAsset.setProvider(web3.currentProvider);
 import PriceFeedJson from '/imports/melon/contracts/PriceFeed.json'; // Get Smart Contract JSON
+
+const Universe = contract(UniverseJson); // Set Provider
+const PreminedAsset = contract(PreminedAssetJson); // Set Provider
 const PriceFeed = contract(PriceFeedJson); // Set Provider
-PriceFeed.setProvider(web3.currentProvider);
 
 // COLLECTIONS
 
-export const Universes = new Mongo.Collection('universes');
+const Universes = new Mongo.Collection('universes');
 if (Meteor.isServer) { Meteor.publish('universes', () => Universes.find({}, { sort: { createdAt: -1 } })); }
 
 // METHODS
@@ -88,7 +87,7 @@ Meteor.methods({
             },
             }, {
               upsert: true,
-            }
+            },
           );
           if (resUniverseUpsert === false) {
             console.log(`Error in Universe upsert: ${resUniverseUpsert}`);
@@ -98,3 +97,6 @@ Meteor.methods({
     });
   },
 });
+
+
+export default Universes;
