@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 // Smart Contracts
+import web3 from '/imports/lib/web3/client';
 import contract from 'truffle-contract';
 import VersionJson from '/imports/melon/contracts/Version.json';
 import addressList from '/imports/melon/interface/addressList';
@@ -80,7 +81,7 @@ Template.portalNew.events({
       return versionContract.getCore(id);
     })
     .then((info) => {
-      const [address, owner, , , ,] = info;
+      const [address, owner, , , , ] = info;
       Meteor.call('universes.insert',
         Session.get('universeContractAddress'),
         address,
