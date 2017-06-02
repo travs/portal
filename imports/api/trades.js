@@ -1,4 +1,3 @@
-/* global web3 */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
@@ -30,7 +29,7 @@ if (Meteor.isServer) {
       },
       limit,
       skip,
-    }
+    },
   ));
 }
 

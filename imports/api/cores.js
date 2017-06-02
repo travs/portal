@@ -1,12 +1,11 @@
-/* global web3 */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import addressList from '/imports/melon/interface/addressList';
+import contract from 'truffle-contract';
 
 // SMART-CONTRACT IMPORT
 
-import contract from 'truffle-contract';
+import addressList from '/imports/melon/interface/addressList';
 import VersionJson from '/imports/melon/contracts/Version.json';
 import CoreJson from '/imports/melon/contracts/Core.json';
 

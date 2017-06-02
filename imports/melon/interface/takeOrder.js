@@ -1,4 +1,3 @@
-/* global web3 */
 import { BigNumber } from 'meteor/ethereum:web3';
 import contract from 'truffle-contract';
 

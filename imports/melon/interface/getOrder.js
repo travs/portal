@@ -1,4 +1,3 @@
-/* global web3 */
 import contract from 'truffle-contract';
 
 import addressList from '/imports/melon/interface/addressList';
