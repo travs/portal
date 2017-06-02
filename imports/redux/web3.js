@@ -19,29 +19,13 @@ export const initialState: State = {
 };
 
 export const types = {
-  INIT: 'INIT:network:portal.melonport.com',
-  SET_NETWORK: 'SET_NETWORK:network:portal.melonport.com',
-  SET_ACCOUNT: 'SET_ACCOUNT:network:portal.melonport.com',
-  SET_BALANCE: 'SET_BALANCE:network:portal.melonport.com',
+  UPDATE: 'UPDATE:network:portal.melonport.com',
 };
 
 export const creators = {
-  init: ({ provider, isConnected }) => ({
-    type: types.INIT,
-    provider,
-    isConnected,
-  }),
-  setNetwork: (network: Networks) => ({
-    type: types.SET_NETWORK,
-    network,
-  }),
-  setAccount: (account: string) => ({
-    type: types.SET_ACCOUNT,
-    account,
-  }),
-  setBalance: (balance: string) => ({
-    type: types.SET_BALANCE,
-    balance,
+  update: newState => ({
+    type: types.UPDATE,
+    ...newState,
   }),
 };
 
@@ -50,10 +34,7 @@ export const reducer = (state: State = initialState, action: string) => {
 
   switch (type) {
     // simple state updaters
-    case types.INIT:
-    case types.SET_NETWORK:
-    case types.SET_ACCOUNT:
-    case types.SET_BALANCE:
+    case types.UPDATE:
       return {
         ...state,
         ...params,
