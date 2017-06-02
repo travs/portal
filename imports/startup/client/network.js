@@ -114,14 +114,16 @@ function initWeb3() {
       })(),
     });
   }
-
-  // HACK: To prevent usage of window.web3
-  window.web3Initialised = true;
 }
+
 
 // EXECUTION
 Meteor.startup(() => {
   console.log('Meteor Startup');
+  /* eslint-disable no-underscore-dangle */
+  window.__AppInitializedBeforeWeb3__ = true;
+  /* eslint-enable */
+
   initSession();
   checkNetwork();
   checkIfSynching();
