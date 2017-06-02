@@ -1,7 +1,5 @@
 // / Remark: Code mostly taken from: https://github.com/makerdao/maker-market
-import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
-import { _ } from 'meteor/underscore';
 import pify from 'pify';
 
 import web3 from '/imports/lib/web3/client';
@@ -71,5 +69,8 @@ window.addEventListener('load', function() {
   updateWeb3();
   window.setInterval(updateWeb3, 4000);
 
+  initSession();
+
   Session.set('isServerConnected', true); // TODO: check if server is connected
+  Session.set('isSynced', true); // TODO init in checkIfSynching
 });
