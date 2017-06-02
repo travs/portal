@@ -11,17 +11,17 @@ import contract from 'truffle-contract';
 import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
 
 // Corresponding html file
-import './wallet_contents.html';
+import './walletContents.html';
 
 const EtherToken = contract(EtherTokenJson);
 // Creation of contract object
 EtherToken.setProvider(web3.currentProvider);
 
-Template.wallet_contents.onCreated(() => {
+Template.walletContents.onCreated(() => {
   Meteor.subscribe('assets');
 });
 
-Template.wallet_contents.helpers({
+Template.walletContents.helpers({
   assets() {
     const assetHolderAddress = FlowRouter.getParam('address');
     return Assets.find({ holder: assetHolderAddress }, { sort: { name: 1 } });
@@ -60,12 +60,12 @@ Template.wallet_contents.helpers({
   },
 });
 
-Template.wallet_contents.onRendered(() => {
+Template.walletContents.onRendered(() => {
   const address = FlowRouter.getParam('address');
   Meteor.call('assets.sync', address);
 });
 
-Template.wallet_contents.events({
+Template.walletContents.events({
   'click .convert_to_eth': (event) => {
     // Prevent default browser form submit
     event.preventDefault();

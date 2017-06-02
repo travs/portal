@@ -1,7 +1,7 @@
 <template name="wallet">
 
   <!-- Index-banner -->
-  {{>ux_wallet_overview}}
+  {{>ux_walletOverview}}
 
   <!-- Server is connected -->
   {{#if isServerConnected}}
@@ -11,15 +11,15 @@
       <div class="row exchange-overview wallet">
         <!-- Wallets exist for this user -->
           <div class="col-md-6 asset-overview">
-            {{> wallet_overview}}
+            {{> walletOverview}}
           </div>
           <div class="col-md-6 asset-overview">
-            {{> manage_settings}}
+            {{> manageSettings}}
           </div>
       </div>
       <div class="row exchange-order">
           <div class="col-md-12">
-            {{> wallet_contents}}
+            {{> walletContents}}
           </div>
       </div>
       {{/if}}

@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating';
-import '/imports/ui/components/wallet/wallet_overview';
-import '/imports/ui/components/wallet/wallet_contents';
-import '/imports/ui/components/wallet/manage_settings';
+import '/imports/ui/components/wallet/walletOverview';
+import '/imports/ui/components/wallet/walletContents';
+import '/imports/ui/components/wallet/manageSettings';
 import './wallet.html';
 
 
