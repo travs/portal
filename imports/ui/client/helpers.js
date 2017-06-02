@@ -18,8 +18,8 @@ Template.registerHelper('isRopstenNetwork', () => Session.get('network') === 'Ro
 Template.registerHelper('isPrivateNetwork', () => Session.get('network') === 'Private');
 Template.registerHelper('isKovanNetwork', () => Session.get('network') === 'Kovan');
 Template.registerHelper('getNetwork', () => Session.get('network'));
-Template.registerHelper('isSynced', () => Session.get('syncing') === false);
-Template.registerHelper('latestBlock', () => Session.get('latestBlock'));
+Template.registerHelper('isSynced', () => Session.get('isSynced'));
+Template.registerHelper('highestBlock', () => Session.get('highestBlock'));
 // Account
 Template.registerHelper('selectedAccount', () => Session.get('selectedAccount'));
 Template.registerHelper('selectedAccountBalance', () => Session.get('selectedAccountBalance'));
