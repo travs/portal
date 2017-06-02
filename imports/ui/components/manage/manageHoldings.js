@@ -293,7 +293,7 @@ Template.manageHoldings.events({
               takeOrder(
                 setOfOrders[i].id,
                 managerAddress,
-                addressList.exchange,
+                coreAddress,
                 sellHowMuchPrecise,
               )
               .then((result) => {
@@ -315,7 +315,7 @@ Template.manageHoldings.events({
               takeOrder(
                 setOfOrders[i].id,
                 managerAddress,
-                addressList.exchange,
+                coreAddress,
                 quantity,
               )
               .then((result) => {
