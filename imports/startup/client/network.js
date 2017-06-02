@@ -98,22 +98,19 @@ function checkIfSynching() {
 }
 
 function initWeb3() {
-  if (window.web3 === undefined) {
-    store.dispatch({
-      type: types.SET_PROVIDER,
-      provider: 'LocalNode',
-    });
-  } else {
-    store.dispatch({
-      type: types.SET_PROVIDER,
-      provider: (() => {
-        if (window.web3.currentProvider.isMetaMask) {
-          return 'MetaMask';
-        }
-        return 'Unknown';
-      })(),
-    });
-  }
+  console.log(web3.currentProvider);
+
+  store.dispatch({
+    type: types.SET_PROVIDER,
+    provider: (() => {
+      if (web3.currentProvider.isMetaMask) {
+        return 'MetaMask';
+      } else if (typeof (web3.currentProvider.host) === 'string') {
+        return 'LocalNode';
+      }
+      return 'Unknown';
+    })(),
+  });
 }
 
 
@@ -124,6 +121,9 @@ Meteor.startup(() => {
   window.__AppInitializedBeforeWeb3__ = true;
   /* eslint-enable */
 
+  initWeb3();
+
+  /*
   initSession();
   checkNetwork();
   checkIfSynching();
@@ -131,4 +131,5 @@ Meteor.startup(() => {
   Session.set('isServerConnected', true); // TODO: check if server is connected
 
   initWeb3();
+  */
 });
