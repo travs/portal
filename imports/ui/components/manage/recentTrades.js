@@ -11,14 +11,21 @@ import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertF
 // Corresponding html file
 import './recentTrades.html';
 
-Template.recentTrades.onCreated(() => {});
+Template.recentTrades.onCreated(() => {
+    Meteor.subscribe('trades');
+});
 
 Template.recentTrades.helpers({
   more: false,
   currentAssetPair: () => Session.get('currentAssetPair'),
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
   quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
-  getRecentTrades: () => Trades.find(),
+  getRecentTrades: () => {
+    const baseTokenSymbol = Session.get('currentAssetPair').split('/')[0];
+    return Trades.find({
+      $or: [ {'buy.symbol': baseTokenSymbol}, {'sell.symbol': baseTokenSymbol}]
+    }).fetch();
+  },
   buyOrSell: buyTokenSymbol =>
     (buyTokenSymbol === (Session.get('currentAssetPair') || '---/---').split('/')[1]
     ? 'buy' : 'sell'
