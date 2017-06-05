@@ -28,7 +28,7 @@ store.subscribe(() => {
 Tracker.autorun(() => {
   const currentState = store.getState();
 
-  if (Session.get('currentAssetPair') !== currentState.preferences.currentAssetPair) {
-    store.dispatch(preferencesActionCreators.selectAssetPair(Session.get('currentAssetPair')));
-  }
+  // if (Session.get('currentAssetPair') !== currentState.preferences.currentAssetPair) {
+  //   store.dispatch(preferencesActionCreators.selectAssetPair(Session.get('currentAssetPair')));
+  // }
 });
