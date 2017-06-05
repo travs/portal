@@ -1,9 +1,9 @@
-const constants = require('./constants.js');
 import addressList from '/imports/melon/interface/addressList';
+import constants from './constants.js';
 
 // Tokens
 
-exports.getTokenPrecisionByAddress = (address) => {
+export const getTokenPrecisionByAddress = (address) => {
   if (address === addressList.etherToken) return constants.ETHERTOKEN_PRECISION;
   if (address === addressList.melonToken) return constants.MELONTOKEN_PRECISION;
   if (address === addressList.bitcoinToken) return constants.BITCOINTOKEN_PRECISION;
@@ -12,7 +12,7 @@ exports.getTokenPrecisionByAddress = (address) => {
   return false;
 };
 
-exports.getTokenSymbolByAddress = (address) => {
+export const getTokenSymbolByAddress = (address) => {
   if (address === addressList.etherToken) return 'ETH-T';
   if (address === addressList.melonToken) return 'MLN-T';
   if (address === addressList.bitcoinToken) return 'BTC-T';
@@ -21,7 +21,7 @@ exports.getTokenSymbolByAddress = (address) => {
   return false;
 };
 
-exports.getTokenAddress = (symbol) => {
+export const getTokenAddress = (symbol) => {
   if (symbol === 'ETH-T') return addressList.etherToken;
   if (symbol === 'MLN-T') return addressList.melonToken;
   if (symbol === 'BTC-T') return addressList.bitcoinToken;
@@ -30,8 +30,16 @@ exports.getTokenAddress = (symbol) => {
   return false;
 };
 
-exports.getQuoteTokens = () => ['ETH-T'];
+export const networkMapping = {
+  4: 'Rinkeby',
+  3: 'Ropsten',
+  42: 'Kovan',
+  1: 'Main',
+  null: 'Private',
+};
 
-exports.getBaseTokens = () => ['MLN-T', 'BTC-T', 'EUR-T', 'REP-T'];
+export const getQuoteTokens = () => ['ETH-T'];
 
-exports.getTokens = () => ['ETH-T', 'MLN-T', 'BTC-T', 'EUR-T', 'REP-T'];
+export const getBaseTokens = () => ['MLN-T', 'BTC-T', 'EUR-T', 'REP-T'];
+
+export const getTokens = () => ['ETH-T', 'MLN-T', 'BTC-T', 'EUR-T', 'REP-T'];

@@ -8,7 +8,7 @@ import addressList from '/imports/melon/interface/addressList';
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
 // Collections
-import { Orders } from '/imports/api/orders';
+import Orders from '/imports/api/orders';
 
 // Corresponding html file
 import './openOrders.html';
@@ -45,19 +45,18 @@ Template.openOrders.helpers({
   buyOrSell(order) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    if(order.buy.symbol === baseTokenSymbol) return  'Buy'
-    return 'Sell'
-},
+    if (order.buy.symbol === baseTokenSymbol) return 'Buy';
+    return 'Sell';
+  },
   getPrice(order) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
-    if(order.buy.symbol === baseTokenSymbol) return (convertFromTokenPrecision(order.sell.howMuch, order.sell.precision) / convertFromTokenPrecision(order.buy.howMuch, order.buy.precision)).toFixed(4);
+    if (order.buy.symbol === baseTokenSymbol) return (convertFromTokenPrecision(order.sell.howMuch, order.sell.precision) / convertFromTokenPrecision(order.buy.howMuch, order.buy.precision)).toFixed(4);
     return (convertFromTokenPrecision(order.buy.howMuch, order.buy.precision) / convertFromTokenPrecision(order.sell.howMuch, order.sell.precision)).toFixed(4);
-
   },
   getVolume(order) {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    if(order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
+    if (order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
     return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
   },
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),

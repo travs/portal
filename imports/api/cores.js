@@ -1,30 +1,30 @@
-/* global web3 */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import addressList from '/imports/melon/interface/addressList';
+import contract from 'truffle-contract';
+
+import web3 from '/imports/lib/web3';
 
 // SMART-CONTRACT IMPORT
-
-import contract from 'truffle-contract';
+import addressList from '/imports/melon/interface/addressList';
 import VersionJson from '/imports/melon/contracts/Version.json';
 import CoreJson from '/imports/melon/contracts/Core.json';
 
 const Version = contract(VersionJson);
 const Core = contract(CoreJson);
-// Creation of contract object
-Version.setProvider(web3.currentProvider);
-Core.setProvider(web3.currentProvider);
-const versionContract = Version.at(addressList.version);
 
 // COLLECTIONS
 
-export const Cores = new Mongo.Collection('cores');
+const Cores = new Mongo.Collection('cores');
 if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish Collection
 
 // COLLECTION METHODS
 
 Cores.watch = () => {
+  // Creation of contract object
+  Version.setProvider(web3.currentProvider);
+  const versionContract = Version.at(addressList.version);
+
   const cores = versionContract.CoreUpdate({}, {
     fromBlock: web3.eth.blockNumber,
     toBlock: 'latest',
@@ -39,6 +39,9 @@ Cores.watch = () => {
 };
 
 Cores.sync = () => {
+  Version.setProvider(web3.currentProvider);
+  const versionContract = Version.at(addressList.version);
+
   versionContract.getLastCoreId().then((lastId) => {
     for (let id = 1; id < lastId.toNumber() + 1; id += 1) {
       Cores.syncCoreById(id);
@@ -47,6 +50,10 @@ Cores.sync = () => {
 };
 
 Cores.syncCoreById = (id) => {
+  Core.setProvider(web3.currentProvider);
+  Version.setProvider(web3.currentProvider);
+  const versionContract = Version.at(addressList.version);
+
   let coreContract;
   // Description of Core
   let address;
@@ -115,24 +122,27 @@ Cores.syncCoreById = (id) => {
 Meteor.methods({
   'cores.setToUsed': (_id) => {
     check(_id, String);
-    Cores.update(_id, { $set: { isUsed: true } });
+    if (Meteor.isServer) Cores.update(_id, { $set: { isUsed: true } });
   },
   'cores.sync': () => {
-    Cores.sync();
+    if (Meteor.isServer) Cores.sync();
   },
   'cores.syncCoreByAddress': (ofCore) => {
     check(ofCore, String);
-    Cores.syncCoreByAddress(ofCore);
+    if (Meteor.isServer) Cores.syncCoreByAddress(ofCore);
   },
   'cores.syncCoreById': (id) => {
     check(id, Number);
-    Cores.syncCoreById(id);
+    if (Meteor.isServer) Cores.syncCoreById(id);
   },
   'cores.removeById': (id) => {
     check(id, Number);
     // TODO Only the owner can delete it
     // if (portfolio.owner !== Meteor.userId())
     //   throw new Meteor.Error('not-authorized');
-    Cores.remove(id);
+    if (Meteor.isServer) Cores.remove(id);
   },
 });
+
+
+export default Cores;

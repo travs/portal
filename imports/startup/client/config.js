@@ -1,15 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
-import { HTTP } from 'meteor/http';
 import { EthTools } from 'meteor/ethereum:tools';
 import cc from 'cryptocompare';
 
-import specs from '/imports/melon/interface/helpers/specs';
-
-
 EthTools.ticker.start();
 EthTools.setUnit('ether');
-Session.set('referenceCurrency', 'ETH')
+Session.set('referenceCurrency', 'ETH');
 
 // CONSTANTS
 
@@ -22,7 +18,6 @@ const CCMARKET = 'Kraken';
 const invertNumber = number => 1.0 / number;
 
 const setIntradayChange = (referenceCurrency) => {
-
   // By definition
   Session.set('ethChange24h', '±0.0');
 
@@ -45,7 +40,7 @@ const setIntradayChange = (referenceCurrency) => {
   cc.generateAvg('REP', CCREFERENCECURRENCY, CCMARKET)
   .then(data => Session.set('repChange24h', invertNumber(data.CHANGEPCT24HOUR).toFixed(PRECISION)))
   .catch(console.error);
-}
+};
 
 // ON STARTUP
 

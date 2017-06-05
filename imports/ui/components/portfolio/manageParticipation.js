@@ -4,19 +4,19 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import select2 from 'select2';
+import contract from 'truffle-contract';
+
+import web3 from '/imports/lib/web3/client';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
-import { Cores } from '/imports/api/cores';
+import Cores from '/imports/api/cores';
 // Contracts
-import contract from 'truffle-contract';
 import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
 
 import './manageParticipation.html';
 
 const Core = contract(CoreJson); // Set Provider
-// Creation of contract object
-Core.setProvider(web3.currentProvider);
 
 Template.manageParticipation.onCreated(() => {
   // TODO update cores param
@@ -108,6 +108,7 @@ Template.manageParticipation.events({
     }
 
     const coreContract = Core.at(coreAddress);
+    Core.setProvider(web3.currentProvider);
 
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });

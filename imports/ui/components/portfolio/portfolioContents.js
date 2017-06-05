@@ -5,9 +5,8 @@ import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 // Collections
-import { Cores } from '/imports/api/cores';
-import { Assets } from '/imports/api/assets';
-import specs from '/imports/melon/interface/helpers/specs';
+import Cores from '/imports/api/cores';
+import Assets from '/imports/api/assets';
 
 // Corresponding html file
 import './portfolioContents.html';

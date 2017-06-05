@@ -3,24 +3,20 @@
   <ul>
     <li>
       <p class="status">Wallet Balance</p>
-      {{#if getAccountCount}}
-        {{#if selectedAccount}}
-          <p class="value">
-            {{# if selectedAccountBalance }}
-              <a href="/account/{{selectedAccount}}" class="truncate green-text text-lighten-2">
-                {{dapp_formatBalance selectedAccountBalance "0,0.0[00] UNIT"}}
-              </a>
-            {{else}}
-              <a href="https://github.com/kovan-testnet/faucet" class="truncate blue-text text-lighten-2 new badge-hero" target="_blank">
-                Get Kovan Test Ether
-              </a>
-            {{/if}}
-          </p>
+      {{#if selectedAccount}}
+      <p class="value">
+        {{# if selectedAccountBalance }}
+          <a href="/account/{{selectedAccount}}" class="truncate green-text text-lighten-2">
+            {{displayBigNumber selectedAccountBalance 4}} ETH
+          </a>
         {{else}}
-          <p class="value">No account selected</p>
+          <a href="https://github.com/kovan-testnet/faucet" class="truncate blue-text text-lighten-2 new badge-hero" target="_blank">
+            Get Kovan Test Ether
+          </a>
         {{/if}}
+      </p>
       {{else}}
-        <p class="value">No account available</p>
+        <p class="value">No account selected</p>
       {{/if}}
     </li>
     <li>
@@ -30,7 +26,7 @@
           <a href="/portfolio/{{getManagerAddressOfCore}}" class="truncate green-text text-lighten-2">{{getManagerNameOfCore}}</a>
         </p>
       {{else}}
-        {{#if getAccountCount}}
+        {{#if selectedAccount}}
           <p class="value">
             <a href="/" class="truncate blue-text text-lighten-2 new badge-hero">Create portfolio</a>
           </p>

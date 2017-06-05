@@ -3,10 +3,12 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { ReactiveVar } from 'meteor/reactive-var';
-// Collections
-import { Cores } from '/imports/api/cores';
-// Smart contracts
 import contract from 'truffle-contract';
+
+import web3 from '/imports/lib/web3/client';
+// Collections
+import Cores from '/imports/api/cores';
+// Smart contracts
 import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
 
 
@@ -14,7 +16,6 @@ import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract
 import './portfolioOverview.html';
 
 const Core = contract(CoreJson); // Set Provider
-Core.setProvider(web3.currentProvider);
 Template.portfolioOverview.onCreated(() => {
   Meteor.subscribe('cores');
   Template.instance().totalShareAmount = new ReactiveVar();
@@ -28,6 +29,7 @@ Template.portfolioOverview.helpers({
   getPersonalStake() {
     const template = Template.instance();
     const address = FlowRouter.getParam('address');
+    Core.setProvider(web3.currentProvider);
     const coreContract = Core.at(address);
     coreContract.totalSupply().then((result) => {
       template.totalShareAmount.set(result.toNumber());

@@ -3,25 +3,25 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
+
+import contract from 'truffle-contract';
+
+import web3 from '/imports/lib/web3/client';
 // Collections
-import { Assets } from '/imports/api/assets';
+import Assets from '/imports/api/assets';
 import specs from '/imports/melon/interface/helpers/specs';
 // Smart Contracts
-import contract from 'truffle-contract';
 import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
 
 // Corresponding html file
-import './wallet_contents.html';
+import './walletContents.html';
 
-const EtherToken = contract(EtherTokenJson);
-// Creation of contract object
-EtherToken.setProvider(web3.currentProvider);
 
-Template.wallet_contents.onCreated(() => {
+Template.walletContents.onCreated(() => {
   Meteor.subscribe('assets');
 });
 
-Template.wallet_contents.helpers({
+Template.walletContents.helpers({
   assets() {
     const assetHolderAddress = FlowRouter.getParam('address');
     return Assets.find({ holder: assetHolderAddress }, { sort: { name: 1 } });
@@ -60,15 +60,18 @@ Template.wallet_contents.helpers({
   },
 });
 
-Template.wallet_contents.onRendered(() => {
+Template.walletContents.onRendered(() => {
   const address = FlowRouter.getParam('address');
   Meteor.call('assets.sync', address);
 });
 
-Template.wallet_contents.events({
+Template.walletContents.events({
   'click .convert_to_eth': (event) => {
     // Prevent default browser form submit
     event.preventDefault();
+
+    const EtherToken = contract(EtherTokenJson);
+    EtherToken.setProvider(web3.currentProvider);
 
     // Convert Eth Token
     const assetAddress = specs.getTokenAddress('ETH-T');

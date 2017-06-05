@@ -1,24 +1,19 @@
-/* global web3 */
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
+import web3 from '/imports/lib/web3';
 import addressList from '/imports/melon/interface/addressList';
 import getOrder from '/imports/melon/interface/getOrder';
 
 // SMART-CONTRACT IMPORT
 import contract from 'truffle-contract';
-import PreminedAssetJson from '/imports/melon/contracts/PreminedAsset.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/melon/contracts/Exchange.json';
 
-const PreminedAsset = contract(PreminedAssetJson); // Set Provider
-const Exchange = contract(ExchangeJson);
-PreminedAsset.setProvider(web3.currentProvider);
-Exchange.setProvider(web3.currentProvider);
-const exchangeContract = Exchange.at(addressList.exchange); // Initialize contract instance
 
 // COLLECTIONS
-export const Orders = global.Orders = new Mongo.Collection('orders');
+const Orders = global.Orders = new Mongo.Collection('orders');
+
 if (Meteor.isServer) {
   // Note: you need to specify an asset pair. There is no way to get all orders to the client.
   Meteor.publish('orders', (currentAssetPair = '---/---') => {
@@ -36,6 +31,10 @@ if (Meteor.isServer) {
 // COLLECTION METHODS
 
 Orders.watch = () => {
+  const Exchange = contract(ExchangeJson);
+  Exchange.setProvider(web3.currentProvider);
+  const exchangeContract = Exchange.at(addressList.exchange); // Initialize contract instance
+
   const orders = exchangeContract.OrderUpdate({}, {
     fromBlock: web3.eth.blockNumber,
     toBlock: 'latest',
@@ -51,6 +50,10 @@ Orders.watch = () => {
 };
 
 Orders.sync = () => {
+  const Exchange = contract(ExchangeJson);
+  Exchange.setProvider(web3.currentProvider);
+  const exchangeContract = Exchange.at(addressList.exchange);
+
   exchangeContract.getLastOrderId().then((lastId) => {
     for (let id = lastId.toNumber(); id > 0; id -= 1) {
       Orders.syncOrderById(id);
@@ -85,12 +88,13 @@ Orders.syncOrderById = (id) => {
 Meteor.methods({
   'orders.sync': () => {
     // only sync orders on the server to avoid sync-race-conditions
-    if (Meteor.isServer) {
-      Orders.sync();
-    }
+    if (Meteor.isServer) Orders.sync();
   },
   'orders.syncOrderById': (id) => {
     check(id, Number);
-    Orders.syncOrderById(id);
+    if (Meteor.isServer) Orders.syncOrderById(id);
   },
 });
+
+
+export default Orders;

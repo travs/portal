@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import { BigNumber } from 'meteor/ethereum:web3';
+import BigNumber from 'bignumber.js';
 // Collections
-import { Orders } from '/imports/api/orders';
+import Orders from '/imports/api/orders';
 // Utils
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 

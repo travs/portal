@@ -1,4 +1,4 @@
-<template name="wallet_overview">
+<template name="walletOverview">
   <div class="asset-overview-wrapper">
     <div class="exchange-overview-header asset">
       <h2 class="exchange-title">Account Overview</h2>
@@ -25,7 +25,7 @@
             <div class="col-md-8 col-sm-8 col-xs-12">
               <p class="wallet-link">
                 <a class="table-link" href="https://kovan.etherscan.io/address/{{selectedAccount}}" target="_blank">
-                  {{dapp_formatBalance selectedAccountBalance "0,0.0[00] UNIT"}}
+                  {{displayBigNumber selectedAccountBalance 4}} ETH
                 </a>
               </p>
             </div>

@@ -6,29 +6,29 @@ import select2 from 'select2';
 import specs from '/imports/melon/interface/helpers/specs';
 import { $ } from 'meteor/jquery';
 // Collections
-import { Cores } from '/imports/api/cores';
+import Cores from '/imports/api/cores';
 // Corresponding html file
-import './manage_settings.html';
+import './manageSettings.html';
 
 
-Template.manage_settings.onCreated(() => {
+Template.manageSettings.onCreated(() => {
   Meteor.subscribe('cores');
 });
 
 
-Template.manage_settings.helpers({
+Template.manageSettings.helpers({
    'currencies' : () => {
     return ["ETH", "BTC", "EUR", "USD"];
   }
 });
 
 
-Template.manage_settings.onRendered(() => {
+Template.manageSettings.onRendered(() => {
   $('select').select2();
 });
 
 
-Template.manage_settings.events({
+Template.manageSettings.events({
   'shown.bs.modal #myModal': (event, templateInstance) => {
     // Prevent default browser form submit
     event.preventDefault();
