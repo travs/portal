@@ -34,9 +34,9 @@ Template.manageParticipation.helpers({
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
     if (doc !== undefined) {
+      if(!doc.sharePrice) return 1;
       return web3.fromWei(doc.sharePrice, 'ether');
     }
-    return 1;
   },
   selectedTypeName() {
     switch (Template.instance().typeValue.get()) {
