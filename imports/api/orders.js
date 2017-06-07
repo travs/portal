@@ -10,6 +10,7 @@ import getOrder from '/imports/melon/interface/getOrder';
 import contract from 'truffle-contract';
 import ExchangeJson from '/imports/melon/contracts/Exchange.json';
 
+const NUMBERS_OF_ORDERS_TO_SYNC_ON_STARTUP = 96;
 
 // COLLECTIONS
 const Orders = global.Orders = new Mongo.Collection('orders');
@@ -43,7 +44,7 @@ Orders.watch = () => {
   orders.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
-    console.log('Order updated', event.args, event.args.id.toNumber());
+    console.log('Order updated', event.args.id.toNumber());
 
     Orders.syncOrderById(event.args.id.toNumber());
   }));
@@ -55,7 +56,9 @@ Orders.sync = () => {
   const exchangeContract = Exchange.at(addressList.exchange);
 
   exchangeContract.getLastOrderId().then((lastId) => {
-    for (let id = lastId.toNumber(); id > 0; id -= 1) {
+    const endIndex = lastId.minus(NUMBERS_OF_ORDERS_TO_SYNC_ON_STARTUP).toNumber();
+
+    for (let id = lastId.toNumber(); id > endIndex; id -= 1) {
       Orders.syncOrderById(id);
     }
   });
