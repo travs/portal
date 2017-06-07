@@ -11,10 +11,12 @@ type State = {
   // balance in ETH is stored as a string with precision
   // '1.234' and not '1231'
   balance?: string,
+  isServerConnected: boolean,
 }
 
 export const initialState: State = {
   isConnected: false,
+  isServerConnected: false,
   latestBlock: 0,
 };
 

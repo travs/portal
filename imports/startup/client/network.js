@@ -30,8 +30,6 @@ function updateWeb3() {
     provider,
   };
 
-  Meteor.call('isServerConnected', console.log);
-
   pify(web3.version.getNetwork)()
   .then((network) => {
     web3State.network = networkMapping[network];
@@ -47,6 +45,11 @@ function updateWeb3() {
   })
   .then((balance) => {
     web3State.balance = balance ? balance.div(10 ** 18).toString() : null;
+
+    return pify(Meteor.call)('isServerConnected');
+  })
+  .then((isServerConnected) => {
+    web3State.isServerConnected = isServerConnected;
 
     const previousState = store.getState().web3;
     const needsUpdate = Object.keys(web3State).reduce((accumulator, currentKey) =>
