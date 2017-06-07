@@ -11,10 +11,11 @@ Meteor.startup(() => {
   Cores.sync();
   // Cores.watch();
 
-  // Orders.remove({});
-  Orders.sync();
+  // TODO
+  // // Orders.remove({});
+  // Orders.sync();
   Orders.watch();
-
+  //
   Trades.remove({});
   Trades.watch();
 });
