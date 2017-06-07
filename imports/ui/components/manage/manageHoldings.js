@@ -207,7 +207,7 @@ Template.manageHoldings.events({
   'change .js-asset-pair-picker': (event) => {
     // Session.set('currentAssetPair', event.currentTarget.value);
     store.dispatch(creators.selectAssetPair(event.currentTarget.value));
-    Meteor.subscribe('orders', Session.get('currentAssetPair'));
+    Meteor.subscribe('orders', event.currentTarget.value);
   },
   'change select#select_type': (event, templateInstance) => {
     const currentlySelectedTypeValue = parseFloat(templateInstance.find('select#select_type').value, 10);
