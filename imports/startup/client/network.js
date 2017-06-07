@@ -30,6 +30,8 @@ function updateWeb3() {
     provider,
   };
 
+  Meteor.call('isServerConnected', console.log);
+
   pify(web3.version.getNetwork)()
   .then((network) => {
     web3State.network = networkMapping[network];
