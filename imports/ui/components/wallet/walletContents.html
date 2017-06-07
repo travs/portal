@@ -15,7 +15,6 @@
                 <th>Asset <p>(Name)</p></th>
                 <th>Quantity<p>(#)</p></th>
                 <th>Price<p>({{refCurrency}})</p></th>
-                <th>Portfolio <p>(%)</p></th>
                 <th>Change 24h<p>(%)</p></th>
               </tr>
             </thead>
@@ -32,7 +31,6 @@
                   {{dapp_formatBalance this.priceFeed.price "0,0.0000"}}
                   </a>
                 </td>
-                <td>{{portfolioPercentrage}}</td>
                 <td>{{change24h}}</td>
               </tr>
               {{/each}}
