@@ -41,8 +41,8 @@
     "pify": "^3.0.0",
     "redux": "^3.6.0",
     "select2": "^4.0.3",
-    "truffle-contract": "^2.0.0",
-    "web3": "^0.19.0"
+    "truffle-contract": "^2.0.1",
+    "web3": "^0.18.4"
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",
