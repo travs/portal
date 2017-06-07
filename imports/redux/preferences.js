@@ -23,7 +23,7 @@ export const reducer = (state = initialState, action) => {
     case types.SELECT_ASSET_PAIR:
       return {
         ...state,
-        assetPair: params.assetPair,
+        currentAssetPair: params.assetPair,
       };
     default:
       return state;

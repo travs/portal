@@ -27,6 +27,9 @@ import specs from '/imports/melon/interface/helpers/specs';
 import getOrder from '/imports/melon/interface/getOrder';
 import takeOrder from '/imports/melon/interface/takeOrder';
 
+import store from '/imports/startup/client/store';
+import { creators } from '/imports/redux/preferences';
+
 window.getOrder = getOrder;
 window.takeOrder = takeOrder;
 window.BigNumber = BigNumber;
@@ -202,8 +205,9 @@ Template.manageHoldings.onRendered(() => {
 
 Template.manageHoldings.events({
   'change .js-asset-pair-picker': (event) => {
-    Session.set('currentAssetPair', event.currentTarget.value);
-    Meteor.subscribe('orders', Session.get('currentAssetPair'));
+    // Session.set('currentAssetPair', event.currentTarget.value);
+    store.dispatch(creators.selectAssetPair(event.currentTarget.value));
+    Meteor.subscribe('orders', event.currentTarget.value);
   },
   'change select#select_type': (event, templateInstance) => {
     const currentlySelectedTypeValue = parseFloat(templateInstance.find('select#select_type').value, 10);
