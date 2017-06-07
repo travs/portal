@@ -12,7 +12,7 @@ Meteor.startup(() => {
   // Cores.watch();
 
   // TODO
-  // // Orders.remove({});
+  Orders.remove({});
   // Orders.sync();
   Orders.watch();
   //
