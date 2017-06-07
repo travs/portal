@@ -16,6 +16,7 @@ store.subscribe(() => {
   const currentState = store.getState();
   Session.set('currentAssetPair', currentState.preferences.currentAssetPair);
   Session.set('isClientConnected', currentState.web3.isConnected);
+  Session.set('isServerConnected', currentState.web3.isServerConnected);
   Session.set('selectedAccount', currentState.web3.account);
   Session.set('selectedAccountBalance', currentState.web3.balance);
   Session.set('network', currentState.web3.network);

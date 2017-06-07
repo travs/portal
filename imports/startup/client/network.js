@@ -76,6 +76,5 @@ window.addEventListener('load', function() {
 
   initSession();
 
-  Session.set('isServerConnected', true); // TODO: check if server is connected
   Session.set('isSynced', true); // TODO init in checkIfSynching
 });
