@@ -78,7 +78,11 @@ window.addEventListener('load', function() {
   updateWeb3();
   window.setInterval(updateWeb3, 4000);
 
+
   initSession();
 
-  Session.set('isSynced', true); // TODO init in checkIfSynching
+  // TODO: this callback is never called. we need to find another way to
+  // know if isSyncing
+  web3.eth.isSyncing((err, sync) => console.log('isSyncing', { err, sync}));
+  Session.set('isSynced', true);
 });
