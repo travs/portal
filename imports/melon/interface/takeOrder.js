@@ -6,6 +6,7 @@ import addressList from '/imports/melon/interface/addressList';
 import CoreJson from '/imports/melon/contracts/Core.json';
 import getOrder from './getOrder';
 
+
 const Core = contract(CoreJson);
 
 /*
@@ -13,7 +14,12 @@ const Core = contract(CoreJson);
 */
 const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
   getOrder(id).then((order) => {
-    const quantity = quantityAsked || new BigNumber(order.sell.howMuchPrecise);
+    const sellHowMuchPrecise = new BigNumber(order.sell.howMuchPrecise);
+    const quantity =
+      !quantityAsked || quantityAsked.gte(sellHowMuchPrecise)
+      ? sellHowMuchPrecise
+      : quantityAsked;
+
     Core.setProvider(web3.currentProvider);
     const coreContract = Core.at(coreAddress);
 
@@ -28,7 +34,8 @@ const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
       addressList.exchange,
       order.id,
       quantity,
-      { from: managerAddress });
+      { from: managerAddress },
+    );
   });
 
 
