@@ -40,12 +40,7 @@ async function updateWeb3() {
   if (needsUpdate) store.dispatch(creators.update(web3State));
 }
 
-// EXECUTION
-// The onload event is fired way after the meteor startup event
-// But if MetaMask gets ever injected, then it will be injected before
-// this event.
-// Using Meteor.startup ... could fire before the meta-mask injection
-window.addEventListener('load', function() {
+Meteor.startup(() => {
   /* eslint-disable no-underscore-dangle */
   window.__AppInitializedBeforeWeb3__ = true;
   /* eslint-enable */
