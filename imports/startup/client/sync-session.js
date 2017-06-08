@@ -5,9 +5,6 @@
 // the transition
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
-import { Tracker } from 'meteor/tracker';
-
-import { creators as preferencesActionCreators } from '/imports/redux/preferences';
 
 import store from '/imports/startup/client/store';
 
@@ -30,4 +27,4 @@ Meteor.startup(() => {
   Session.set('fromPortfolio', true);
   Session.set('selectedOrderId', null);
   Session.set('showModal', true);
-})
+});

@@ -4,7 +4,7 @@ type Networks = 'Rinkeby' | 'Ropsten' | 'Kovan' | 'Main' | 'Private';
 
 type State = {
   isConnected: boolean,
-  isSynced: boolen,
+  isSynced: boolean,
   network?: Networks,
   currentBlock: number,
   account?: string,

@@ -1,5 +1,4 @@
 // / Remark: Code mostly taken from: https://github.com/makerdao/maker-market
-import { Session } from 'meteor/session';
 import pify from 'pify';
 
 import web3 from '/imports/lib/web3/client';
@@ -30,7 +29,7 @@ async function updateWeb3() {
     balance: balance ? balance.div(10 ** 18).toString() : null,
     isServerConnected: await pify(Meteor.call)('isServerConnected'),
     currentBlock: await pify(web3.eth.getBlockNumber)(),
-    isSynced: await pify(web3.eth.getSyncing)() ? false : true,
+    isSynced: !await pify(web3.eth.getSyncing)(),
   };
 
   const previousState = store.getState().web3;
