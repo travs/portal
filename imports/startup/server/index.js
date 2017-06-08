@@ -6,4 +6,4 @@ import '/imports/startup/server/register-apis';
 import '/imports/startup/server/sync-collections';
 
 // Helper Method to determine if server is connected
-import '/imports/lib/web3/isServerConnected';
+import '/imports/api/methods/isServerConnected';

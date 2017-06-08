@@ -9,7 +9,6 @@ import { networkMapping } from '/imports/melon/interface/helpers/specs';
 
 
 function initSession() {
-  Session.set('highestBlock', 0);
   Session.set('fromPortfolio', true);
   Session.set('selectedOrderId', null);
   Session.set('showModal', true);
@@ -50,6 +49,11 @@ function updateWeb3() {
   })
   .then((isServerConnected) => {
     web3State.isServerConnected = isServerConnected;
+
+    return pify(web3.eth.getBlockNumber)();
+  })
+  .then((currentBlock) => {
+    web3State.currentBlock = currentBlock;
 
     const previousState = store.getState().web3;
     const needsUpdate = Object.keys(web3State).reduce((accumulator, currentKey) =>

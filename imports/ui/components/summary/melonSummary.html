@@ -43,10 +43,10 @@
     <li>
       {{#if isSynced}}
         <p class="status">Current Block:</p>
-        <p class="value">Synced</p>
+        <p class="value">{{currentBlock}} (Synced)</p>
       {{else}}
         <p class="status">Current Block:</p>
-        <p class="value">{{highestBlock}}</p>
+        <p class="value">{{currentBlock}}</p>
       {{/if}}
     </li>
     <li>

@@ -20,4 +20,5 @@ store.subscribe(() => {
   Session.set('selectedAccount', currentState.web3.account);
   Session.set('selectedAccountBalance', currentState.web3.balance);
   Session.set('network', currentState.web3.network);
+  Session.set('currentBlock', currentState.web3.currentBlock);
 });
