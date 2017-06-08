@@ -2,8 +2,9 @@ import BigNumber from 'bignumber.js';
 import contract from 'truffle-contract';
 
 import web3 from '/imports/lib/web3';
-import addressList from '/imports/melon/interface/addressList';
-import CoreJson from '/imports/melon/contracts/Core.json';
+import addressList from './addressList';
+import CoreJson from '../contracts/Core.json';
+
 import getOrder from './getOrder';
 
 

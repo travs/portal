@@ -1,9 +1,9 @@
 import contract from 'truffle-contract';
 
 import web3 from '/imports/lib/web3';
-import addressList from '/imports/melon/interface/addressList';
-import ExchangeJson from '/imports/melon/contracts/Exchange.json';
-import specs from '/imports/melon/interface/helpers/specs';
+import addressList from './addressList';
+import ExchangeJson from '../contracts/Exchange.json';
+import { getTokenPrecisionByAddress, getTokenSymbolByAddress } from './helpers/specs';
 
 
 const getOrder = (id) => {
@@ -20,10 +20,10 @@ const getOrder = (id) => {
       owner,
       isActive,
     ] = order;
-    const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
-    const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
-    const buySymbol = specs.getTokenSymbolByAddress(buyWhichToken);
-    const sellSymbol = specs.getTokenSymbolByAddress(sellWhichToken);
+    const buyPrecision = getTokenPrecisionByAddress(buyWhichToken);
+    const sellPrecision = getTokenPrecisionByAddress(sellWhichToken);
+    const buySymbol = getTokenSymbolByAddress(buyWhichToken);
+    const sellSymbol = getTokenSymbolByAddress(sellWhichToken);
     const sellPrice = buyHowMuch / (sellHowMuch * Math.pow(10, sellPrecision - buyPrecision));
     const buyPrice = sellHowMuch / (buyHowMuch * Math.pow(10, buyPrecision - sellPrecision));
 

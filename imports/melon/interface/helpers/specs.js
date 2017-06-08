@@ -1,4 +1,4 @@
-import addressList from '/imports/melon/interface/addressList';
+import addressList from '../addressList';
 import constants from './constants.js';
 
 // Tokens

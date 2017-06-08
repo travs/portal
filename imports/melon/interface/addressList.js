@@ -1,12 +1,12 @@
-import ExchangeJson from '/imports/melon/contracts/Exchange.json';
-import UniverseJson from '/imports/melon/contracts/Universe.json';
-import SubscribeJson from '/imports/melon/contracts/Subscribe.json';
-import RedeemJson from '/imports/melon/contracts/Redeem.json';
-import RiskMgmtV1Json from '/imports/melon/contracts/RiskMgmtV1.json';
-import ManagementFeeJson from '/imports/melon/contracts/ManagementFee.json';
-import PerformanceFeeJson from '/imports/melon/contracts/PerformanceFee.json';
-import GovernanceJson from '/imports/melon/contracts/Governance.json';
-import VersionJson from '/imports/melon/contracts/Version.json';
+import ExchangeJson from '../contracts/Exchange.json';
+import UniverseJson from '../contracts/Universe.json';
+import SubscribeJson from '../contracts/Subscribe.json';
+import RedeemJson from '../contracts/Redeem.json';
+import RiskMgmtV1Json from '../contracts/RiskMgmtV1.json';
+import ManagementFeeJson from '../contracts/ManagementFee.json';
+import PerformanceFeeJson from '../contracts/PerformanceFee.json';
+import GovernanceJson from '../contracts/Governance.json';
+import VersionJson from '../contracts/Version.json';
 
 
 const KOVAN_NETWORK_ID = 42;
