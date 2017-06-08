@@ -8,7 +8,7 @@ import { creators } from '/imports/redux/web3';
 import { networkMapping } from '/imports/melon/interface/helpers/specs';
 
 
-function updateWeb3() {
+async function updateWeb3() {
   const provider = (() => {
     if (web3.currentProvider.isMetaMask) {
       return 'MetaMask';
@@ -18,50 +18,27 @@ function updateWeb3() {
     return 'Unknown';
   })();
 
+  const accounts = await pify(web3.eth.getAccounts)();
+  const account = accounts[0];
+  const balance = await pify(web3.eth.getBalance)(account);
+
   const web3State = {
     isConnected: web3.isConnected(),
     provider,
+    account,
+    network: networkMapping[await pify(web3.version.getNetwork)()],
+    balance: balance ? balance.div(10 ** 18).toString() : null,
+    isServerConnected: await pify(Meteor.call)('isServerConnected'),
+    currentBlock: await pify(web3.eth.getBlockNumber)(),
+    isSynced: await pify(web3.eth.getSyncing)() ? false : true,
   };
 
-  pify(web3.version.getNetwork)()
-  .then((network) => {
-    web3State.network = networkMapping[network];
-    return pify(web3.eth.getAccounts)();
-  })
-  .then((accounts) => {
-    web3State.account = accounts[0];
-    if (accounts.length) {
-      return pify(web3.eth.getBalance)(accounts[0]);
-    }
-    console.error('No account selected');
-    return null;
-  })
-  .then((balance) => {
-    web3State.balance = balance ? balance.div(10 ** 18).toString() : null;
+  const previousState = store.getState().web3;
+  const needsUpdate = Object.keys(web3State).reduce((accumulator, currentKey) =>
+    accumulator || (web3State[currentKey] !== previousState[currentKey])
+  , false);
 
-    return pify(Meteor.call)('isServerConnected');
-  })
-  .then((isServerConnected) => {
-    web3State.isServerConnected = isServerConnected;
-
-    return pify(web3.eth.getBlockNumber)();
-  })
-  .then((currentBlock) => {
-    web3State.currentBlock = currentBlock;
-
-    return pify(web3.eth.getSyncing)();
-  })
-  .then((syncing) => {
-    web3State.isSynced = syncing ? false : true;
-
-    const previousState = store.getState().web3;
-    const needsUpdate = Object.keys(web3State).reduce((accumulator, currentKey) =>
-      accumulator || (web3State[currentKey] !== previousState[currentKey])
-    , false);
-
-    if (needsUpdate) store.dispatch(creators.update(web3State));
-  })
-  .catch((err) => { throw err; });
+  if (needsUpdate) store.dispatch(creators.update(web3State));
 }
 
 // EXECUTION
