@@ -17,20 +17,24 @@ async function updateWeb3() {
     return 'Unknown';
   })();
 
-  const accounts = await pify(web3.eth.getAccounts)();
-  const account = accounts[0];
-  const balance = await pify(web3.eth.getBalance)(account);
-
   const web3State = {
     isConnected: web3.isConnected(),
     provider,
-    account,
-    network: networkMapping[await pify(web3.version.getNetwork)()],
-    balance: balance ? balance.div(10 ** 18).toString() : null,
-    isServerConnected: await pify(Meteor.call)('isServerConnected'),
-    currentBlock: await pify(web3.eth.getBlockNumber)(),
-    isSynced: !await pify(web3.eth.getSyncing)(),
   };
+
+  try {
+    web3State.isServerConnected = await pify(Meteor.call)('isServerConnected');
+
+    const accounts = await pify(web3.eth.getAccounts)();
+    const balance = await pify(web3.eth.getBalance)(accounts[0]);
+    web3State.account = accounts[0];
+    web3State.network = networkMapping[await pify(web3.version.getNetwork)()];
+    web3State.balance = balance ? balance.div(10 ** 18).toString() : null;
+    web3State.currentBlock = await pify(web3.eth.getBlockNumber)();
+    web3State.isSynced = !await pify(web3.eth.getSyncing)();
+  } catch (e) {
+    console.error(e);
+  }
 
   const previousState = store.getState().web3;
   const needsUpdate = Object.keys(web3State).reduce((accumulator, currentKey) =>
