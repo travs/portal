@@ -3,6 +3,7 @@ import contract from 'truffle-contract';
 
 import web3 from '/imports/lib/web3';
 import addressList from './addressList';
+import orderBigNumberify from './helpers/orderBigNumberify';
 import CoreJson from '../contracts/Core.json';
 
 import getOrder from './getOrder';
@@ -15,7 +16,10 @@ const Core = contract(CoreJson);
 */
 const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
   getOrder(id).then((order) => {
-    const sellHowMuchPrecise = new BigNumber(order.sell.howMuchPrecise);
+    const orderBigNumberified = orderBigNumberify(order);
+    const sellHowMuchPrecise = orderBigNumberified.sell.howMuchBigNumber;
+
+    console.log(sellHowMuchPrecise);
     const quantity =
       !quantityAsked || quantityAsked.gte(sellHowMuchPrecise)
       ? sellHowMuchPrecise
