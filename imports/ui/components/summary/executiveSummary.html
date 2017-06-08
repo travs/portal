@@ -20,7 +20,7 @@
       {{/if}}
     </li>
     <li>
-      <p class="status">Portfolio</p>
+      <p class="status">Fund</p>
       {{#if hasManagerCreatedCore}}
         <p class="value">
           <a href="/portfolio/{{getManagerAddressOfCore}}" class="truncate green-text text-lighten-2">{{getManagerNameOfCore}}</a>
@@ -28,7 +28,7 @@
       {{else}}
         {{#if selectedAccount}}
           <p class="value">
-            <a href="/" class="truncate blue-text text-lighten-2 new badge-hero">Create portfolio</a>
+            <a href="/" class="truncate blue-text text-lighten-2 new badge-hero">Create fund</a>
           </p>
         {{else}}
           <p class="value">

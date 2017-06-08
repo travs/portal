@@ -75,7 +75,7 @@ Template.portalNew.events({
           console.log(`Core id: ${id}`);
           Meteor.call('cores.syncCoreById', id);
           Session.set('isNew', true);
-          toastr.success('Fund successfully created!');
+          toastr.success('Fund successfully created! You can now invest in your fund!');
         }
       }
       return versionContract.getCore(id);

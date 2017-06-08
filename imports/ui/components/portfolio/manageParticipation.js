@@ -34,7 +34,7 @@ Template.manageParticipation.helpers({
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
     if (doc !== undefined) {
-      if(!doc.sharePrice) return 1;
+      if (!doc.sharePrice) return 1;
       return web3.fromWei(doc.sharePrice, 'ether');
     }
   },
@@ -127,12 +127,14 @@ Template.manageParticipation.events({
       case 0:
         EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then(result => EtherTokenContract.approve(coreAddress, baseUnitVolume, { from: managerAddress })).then(result => coreContract.createShares(baseUnitVolume, { from: managerAddress })).then((result) => {
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+          toastr.success('Shares successfully created!');
           console.log(`Shares successfully created. Tx Hash: ${result}`);
           Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
           Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
           return coreContract.totalSupply();
         }).catch((error) => {
           console.log(error);
+          toastr.error('Oops, an error has occured. Please verify that your holdings allow you to invest in this fund!');
         });
         templateInstance.find('input#total').value = '';
         templateInstance.find('input#volume').value = '';
@@ -143,6 +145,7 @@ Template.manageParticipation.events({
       case 1:
         coreContract.annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress }).then((result) => {
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+          toastr.success('Shares successfully redeemed!');
           console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
           Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
           Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
@@ -151,6 +154,7 @@ Template.manageParticipation.events({
           return coreContract.totalSupply();
         }).catch((error) => {
           console.log(error);
+          toastr.error('Oops, an error has occured. Please try again.');
         });
       default: return 'Error';
     }
