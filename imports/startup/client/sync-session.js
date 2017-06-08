@@ -21,4 +21,13 @@ store.subscribe(() => {
   Session.set('selectedAccountBalance', currentState.web3.balance);
   Session.set('network', currentState.web3.network);
   Session.set('currentBlock', currentState.web3.currentBlock);
+  Session.set('isSynced', currentState.web3.isSynced);
 });
+
+// initialize the other session vars
+// TODO: Remove this
+Meteor.startup(() => {
+  Session.set('fromPortfolio', true);
+  Session.set('selectedOrderId', null);
+  Session.set('showModal', true);
+})

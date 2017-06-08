@@ -8,12 +8,6 @@ import { creators } from '/imports/redux/web3';
 import { networkMapping } from '/imports/melon/interface/helpers/specs';
 
 
-function initSession() {
-  Session.set('fromPortfolio', true);
-  Session.set('selectedOrderId', null);
-  Session.set('showModal', true);
-}
-
 function updateWeb3() {
   const provider = (() => {
     if (web3.currentProvider.isMetaMask) {
@@ -55,6 +49,11 @@ function updateWeb3() {
   .then((currentBlock) => {
     web3State.currentBlock = currentBlock;
 
+    return pify(web3.eth.getSyncing)();
+  })
+  .then((syncing) => {
+    web3State.isSynced = syncing ? false : true;
+
     const previousState = store.getState().web3;
     const needsUpdate = Object.keys(web3State).reduce((accumulator, currentKey) =>
       accumulator || (web3State[currentKey] !== previousState[currentKey])
@@ -77,12 +76,4 @@ window.addEventListener('load', function() {
 
   updateWeb3();
   window.setInterval(updateWeb3, 4000);
-
-
-  initSession();
-
-  // TODO: this callback is never called. we need to find another way to
-  // know if isSyncing
-  web3.eth.isSyncing((err, sync) => console.log('isSyncing', { err, sync}));
-  Session.set('isSynced', true);
 });

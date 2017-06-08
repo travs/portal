@@ -4,6 +4,7 @@ type Networks = 'Rinkeby' | 'Ropsten' | 'Kovan' | 'Main' | 'Private';
 
 type State = {
   isConnected: boolean,
+  isSynced: boolen,
   network?: Networks,
   currentBlock: number,
   account?: string,
@@ -15,6 +16,7 @@ type State = {
 }
 
 export const initialState: State = {
+  isSynced: false,
   isConnected: false,
   isServerConnected: false,
   currentBlock: 0,
