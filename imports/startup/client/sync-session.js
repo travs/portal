@@ -5,9 +5,6 @@
 // the transition
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
-import { Tracker } from 'meteor/tracker';
-
-import { creators as preferencesActionCreators } from '/imports/redux/preferences';
 
 import store from '/imports/startup/client/store';
 
@@ -16,7 +13,18 @@ store.subscribe(() => {
   const currentState = store.getState();
   Session.set('currentAssetPair', currentState.preferences.currentAssetPair);
   Session.set('isClientConnected', currentState.web3.isConnected);
+  Session.set('isServerConnected', currentState.web3.isServerConnected);
   Session.set('selectedAccount', currentState.web3.account);
   Session.set('selectedAccountBalance', currentState.web3.balance);
   Session.set('network', currentState.web3.network);
+  Session.set('currentBlock', currentState.web3.currentBlock);
+  Session.set('isSynced', currentState.web3.isSynced);
+});
+
+// initialize the other session vars
+// TODO: Remove this
+Meteor.startup(() => {
+  Session.set('fromPortfolio', true);
+  Session.set('selectedOrderId', null);
+  Session.set('showModal', true);
 });

@@ -4,18 +4,22 @@ type Networks = 'Rinkeby' | 'Ropsten' | 'Kovan' | 'Main' | 'Private';
 
 type State = {
   isConnected: boolean,
+  isSynced: boolean,
   network?: Networks,
-  latestBlock: number,
+  currentBlock: number,
   account?: string,
   provider?: Providers,
   // balance in ETH is stored as a string with precision
   // '1.234' and not '1231'
   balance?: string,
+  isServerConnected: boolean,
 }
 
 export const initialState: State = {
+  isSynced: false,
   isConnected: false,
-  latestBlock: 0,
+  isServerConnected: false,
+  currentBlock: 0,
 };
 
 export const types = {

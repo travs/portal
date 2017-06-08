@@ -19,7 +19,7 @@ Template.registerHelper('isPrivateNetwork', () => Session.get('network') === 'Pr
 Template.registerHelper('isKovanNetwork', () => Session.get('network') === 'Kovan');
 Template.registerHelper('getNetwork', () => Session.get('network'));
 Template.registerHelper('isSynced', () => Session.get('isSynced'));
-Template.registerHelper('highestBlock', () => Session.get('highestBlock'));
+Template.registerHelper('currentBlock', () => Session.get('currentBlock'));
 // Account
 Template.registerHelper('selectedAccount', () => Session.get('selectedAccount'));
 Template.registerHelper('selectedAccountBalance', () => Session.get('selectedAccountBalance'));
