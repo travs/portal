@@ -12,5 +12,6 @@ test('getOrder', async () => {
   expect(order.sell.howMuchPrecise).toBe('855505176');
   expect(contract).toHaveBeenCalledTimes(1);
   expect(contract().setProvider).toHaveBeenCalledTimes(1);
+  expect(contract().at).toHaveBeenCalled();
   expect(contract.mockInspect.instance.orders).toHaveBeenCalledWith(6870);
 });

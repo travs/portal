@@ -9,7 +9,7 @@ import CoreJson from '../contracts/Core.json';
 import getOrder from './getOrder';
 
 /*
-  @param quantityAsked: BigNumber
+  @param quantityAsked: BigNumber with Precision (i.e. '1.234' NOT '1234')
 */
 const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
   getOrder(id).then((order) => {
@@ -17,21 +17,24 @@ const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
     const orderBigNumberified = orderBigNumberify(order);
     const sellHowMuchPrecise = orderBigNumberified.sell.howMuchBigNumber;
 
-    console.log(sellHowMuchPrecise);
-    const quantity =
+    const quantityWithPrecision =
       !quantityAsked || quantityAsked.gte(sellHowMuchPrecise)
       ? sellHowMuchPrecise
       : quantityAsked;
 
+    const quantity = quantityWithPrecision.times(Math.pow(10, orderBigNumberified.sell.precision));
+
     Core.setProvider(web3.currentProvider);
     const coreContract = Core.at(coreAddress);
 
-    console.log('taking order', order, {
-      exchange: addressList.exchange,
-      id: order.id,
-      quantity: quantity.toString(),
-      from: managerAddress,
-    });
+    if (!jest) {
+      console.log('taking order', order, {
+        exchange: addressList.exchange,
+        id: order.id,
+        quantity: quantity.toString(),
+        from: managerAddress,
+      });
+    }
 
     return coreContract.takeOrder(
       addressList.exchange,

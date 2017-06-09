@@ -7,7 +7,6 @@ const instance = {
   )),
   takeOrder: jest.fn((exchange, id, quantity, objects) =>
     new Promise((resolve) => {
-      console.log(quantity);
       resolve(true);
     },
   )),
