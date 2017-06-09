@@ -19,9 +19,9 @@
                 <li><a href="/account/{{selectedAccount}}">My Account</a></li>
                 <li class="has-badge">
                   <a class="portfolio" href="#">
-                    {{#if hasManagerCreatedCore}}
+                    {{#if hasManagerCreatedVault}}
                       My Fund
-                      {{#if getIsNewOfCore}}
+                      {{#if getIsNewOfVault}}
                         {{#if isNew}}
                         <span class="badge btn-outline-green newclick" data-badge-caption="New">New</span>
                         {{/if}}
@@ -31,7 +31,7 @@
                     {{/if}}
                   </a>
                 </li>
-                {{#if getIsFundedCore}}
+                {{#if getIsFundedVault}}
                 <li class="manage btn-request"><a href="#" class="btn outline-white">Manage</a></li>
                 {{/if}}
               {{/if}}

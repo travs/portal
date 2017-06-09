@@ -5,7 +5,7 @@ import contract from 'truffle-contract';
 import web3 from '/imports/lib/web3';
 import addressList from './addressList';
 import orderBigNumberify from './helpers/orderBigNumberify';
-import CoreJson from '../contracts/Core.json';
+import VaultJson from '../contracts/Vault.json';
 
 import getOrder from './getOrder';
 
@@ -19,7 +19,7 @@ const takeOrder = (
   quantityAsked: BigNumber,
 ) =>
   getOrder(id).then(async (rawOrder) => {
-    const Core = contract(CoreJson);
+    const Vault = contract(VaultJson);
     const order = orderBigNumberify(rawOrder);
     const sellHowMuchPrecise = order.sell.howMuchBigNumber;
 
@@ -30,8 +30,8 @@ const takeOrder = (
 
     const quantity = quantityWithPrecision.times(Math.pow(10, order.sell.precision));
 
-    Core.setProvider(web3.currentProvider);
-    const coreContract = Core.at(coreAddress);
+    Vault.setProvider(web3.currentProvider);
+    const coreContract = Vault.at(coreAddress);
 
     if (!jest) {
       console.log('taking order', order, {

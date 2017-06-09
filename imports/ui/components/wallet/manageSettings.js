@@ -6,20 +6,18 @@ import select2 from 'select2';
 import specs from '/imports/melon/interface/helpers/specs';
 import { $ } from 'meteor/jquery';
 // Collections
-import Cores from '/imports/api/cores';
+import Vaults from '/imports/api/vaults';
 // Corresponding html file
 import './manageSettings.html';
 
 
 Template.manageSettings.onCreated(() => {
-  Meteor.subscribe('cores');
+  Meteor.subscribe('vaults');
 });
 
 
 Template.manageSettings.helpers({
-   'currencies' : () => {
-    return ["ETH", "BTC", "EUR", "USD"];
-  }
+  currencies: () => ["ETH", "BTC", "EUR", "USD"],
 });
 
 
@@ -34,22 +32,22 @@ Template.manageSettings.events({
     event.preventDefault();
   },
   'change select#referencecurrency': (event, templateInstance) => {
-    Session.set('referenceCurrency', templateInstance.find('select#referencecurrency').value)
+    Session.set('referenceCurrency', templateInstance.find('select#referencecurrency').value);
     console.log(Session.get('referenceCurrency'));
-    switch(Session.get('referenceCurrency')) {
-      case "ETH": {
+    switch (Session.get('referenceCurrency')) {
+      case 'ETH': {
         EthTools.setUnit('ether');
         break;
       }
-      case "BTC": {
+      case 'BTC': {
         EthTools.setUnit('btc');
         break;
       }
-      case "EUR": {
+      case 'EUR': {
         EthTools.setUnit('eur');
         break;
       }
-      case "USD": {
+      case 'USD': {
         EthTools.setUnit('usd');
         break;
       }
@@ -59,12 +57,12 @@ Template.manageSettings.events({
   'click .manage': (event, templateInstance) => {},
   'click button#delete': () => {
     const managerAddress = Session.get('selectedAccount');
-    const doc = Cores.findOne({ managerAddress });
+    const doc = Vaults.findOne({ managerAddress });
     if ((doc === undefined || managerAddress === undefined)) {
       return false;
     }
-    Meteor.call('cores.removeById', doc._id);
-    //TODO close modal
+    Meteor.call('vaults.removeById', doc._id);
+    // TODO close modal
     return true;
   },
 });

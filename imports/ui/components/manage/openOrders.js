@@ -16,7 +16,7 @@ import './openOrders.html';
 
 // Contracts
 import contract from 'truffle-contract';
-import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
+import VaultJson from '/imports/melon/contracts/Vault.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';
 
 
@@ -66,10 +66,10 @@ Template.openOrders.onRendered(() => {});
 
 Template.openOrders.events({
   'click .js-cancel': (event, order) => {
-    const Core = contract(CoreJson);
-    Core.setProvider(web3.currentProvider);
+    const Vault = contract(VaultJson);
+    Vault.setProvider(web3.currentProvider);
     const coreAddress = FlowRouter.getParam('address');
-    const coreContract = Core.at(coreAddress);
+    const coreContract = Vault.at(coreAddress);
     const Exchange = contract(ExchangeJson);
     Exchange.setProvider(web3.currentProvider);
     const ExchangeAddress = FlowRouter.getParam('address');

@@ -4,12 +4,12 @@ import { Template } from 'meteor/templating';
 import './uxPages.html';
 
 Template.uxIndexPortal.onCreated(() => {
-  Session.set('searchCores', '');
+  Session.set('searchVaults', '');
 });
 
 Template.uxIndexPortal.events({
-  'input #searchCores': (event, template) => {
-    Session.set('searchCores', event.currentTarget.value);
+  'input #searchVaults': (event, template) => {
+    Session.set('searchVaults', event.currentTarget.value);
   },
 });
 

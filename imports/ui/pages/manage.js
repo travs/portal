@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 import { Tracker } from 'meteor/tracker';
-import { Cores } from '/imports/api/cores';
+import { Vaults } from '/imports/api/vaults';
 import { Orders } from '/imports/api/orders';
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 import '/imports/ui/components/manage/manageHoldings';

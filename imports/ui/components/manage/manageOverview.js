@@ -4,11 +4,11 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { bootstrapSwitch } from 'bootstrap-switch';
 // Collections
-import Cores from '/imports/api/cores';
+import Vaults from '/imports/api/vaults';
 // Specs
 import specs from '/imports/melon/interface/helpers/specs';
 // Smart contracts
-import Core from '/imports/melon/contracts/Core.json';
+import Vault from '/imports/melon/contracts/Vault.json';
 // Corresponding html file
 import './manageOverview.html';
 
@@ -25,7 +25,7 @@ const assetPairs =
   .sort();
 
 FlowRouter.triggers.enter([(context) => {
-  const doc = Cores.findOne({ address: context.params.address });
+  const doc = Vaults.findOne({ address: context.params.address });
   // TODO: Reactivate this, when we reactivate from portfolio trading
   // Session.set('fromPortfolio', doc !== undefined);
 }], { only: ['manage'] });
@@ -34,7 +34,7 @@ Tracker.autorun(() => {
   const fromPortfolio = Session.get('fromPortfolio');
 
   if (FlowRouter.getRouteName() === 'manage') {
-    const core = Cores.findOne({ owner: Session.get('selectedAccount') });
+    const core = Vaults.findOne({ owner: Session.get('selectedAccount') });
 
     if (fromPortfolio && core) {
       FlowRouter.setParams({ address: core.address });
@@ -45,7 +45,7 @@ Tracker.autorun(() => {
 });
 
 Template.manageOverview.onCreated(() => {
-  Meteor.subscribe('cores');
+  Meteor.subscribe('vaults');
   // TODO send command to server to update current coreContract
 });
 
@@ -56,7 +56,7 @@ Template.manageOverview.helpers({
   isFromPortfolio: () => (Session.get('fromPortfolio') ? 'checked' : ''),
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
+    const doc = Vaults.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   getStatus() {

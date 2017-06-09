@@ -6,7 +6,7 @@
           <h1>The Future of Asset Management</h1>
           <form>
             <div class="input-group input-newsletter">
-              <input id="searchCores" type="text" value="" class="form-control" placeholder="Search for Managers and Funds" required>
+              <input id="searchVaults" type="text" value="" class="form-control" placeholder="Search for Managers and Funds" required>
               <span class="input-group-link">
                 <button type="submit" value="Subscribe" name="subscribe" class="button"><i class="ion-ios-search-strong"></i></button>
               </span>
@@ -27,11 +27,11 @@
           {{#if isClientConnected}}
             {{#if selectedAccount}}
               {{#if isKovanNetwork}}
-                {{#if hasManagerCreatedCore}}
+                {{#if hasManagerCreatedVault}}
                   <div class="hero-charts">
                     <svg class="js-charts charts" height="250"></svg>
                   </div>
-                {{else}} <!-- hasManagerCreatedCore -->
+                {{else}} <!-- hasManagerCreatedVault -->
                   <h1>You are good to go!</h1>
                   <p>Explore the future of finance with Melon</p>
                 {{/if}}

@@ -11,6 +11,7 @@ import addressList from '/imports/melon/interface/addressList';
 import UniverseJson from '/imports/melon/contracts/Universe.json'; // Get Smart Contract JSON
 import PreminedAssetJson from '/imports/melon/contracts/PreminedAsset.json';
 import PriceFeedJson from '/imports/melon/contracts/PriceFeed.json';
+
 const Universe = contract(UniverseJson); // Set Provider
 const PreminedAsset = contract(PreminedAssetJson);
 const PriceFeed = contract(PriceFeedJson);
@@ -23,7 +24,7 @@ if (Meteor.isServer) { Meteor.publish('assets', () => Assets.find({}, { sort: { 
 // METHODS
 
 Assets.sync = (assetHolderAddress) => {
-  // TODO get Universe address via Core.getUniverseAddress
+  // TODO get Universe address via Vault.getUniverseAddress
   PreminedAsset.setProvider(web3.currentProvider);
   PriceFeed.setProvider(web3.currentProvider);
   Universe.setProvider(web3.currentProvider);

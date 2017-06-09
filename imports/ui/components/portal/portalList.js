@@ -1,18 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 // Collections
-import Cores from '/imports/api/cores';
+import Vaults from '/imports/api/vaults';
 
 import './portalList.html';
 
 
 Template.portalList.onCreated(() => {
-  Meteor.subscribe('cores');
+  Meteor.subscribe('vaults');
 });
 
 
 Template.portalList.helpers({
-  searchedCores: () => Cores.find({ name: { $regex: `.*${Session.get('searchCores')}.*`, $options: 'i' } }, { sort: { sharePrice: -1, createdAt: -1 } }),
+  searchedVaults: () => Vaults.find({ name: { $regex: `.*${Session.get('searchVaults')}.*`, $options: 'i' } }, { sort: { sharePrice: -1, createdAt: -1 } }),
 });
 
 

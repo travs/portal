@@ -4,17 +4,15 @@ import '/imports/ui/components/portal/portalList';
 import '/imports/ui/components/portal/portalNew';
 import './portal.html';
 
-Template.portal.onCreated(() => {
-  Meteor.subscribe('cores');
-});
 
+Template.portal.onCreated(() => {
+  Meteor.subscribe('vaults');
+});
 
 Template.portal.helpers({});
 
-
 Template.portal.onRendered(() => {
-  Meteor.call('cores.sync');
+  Meteor.call('vaults.sync');
 });
-
 
 Template.portal.events({});

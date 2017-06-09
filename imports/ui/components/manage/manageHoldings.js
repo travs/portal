@@ -9,10 +9,10 @@ import contract from 'truffle-contract';
 import web3 from '/imports/lib/web3/client';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
-import Cores from '/imports/api/cores';
+import Vaults from '/imports/api/vaults';
 import Orders from '/imports/api/orders';
 // Contracts
-import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
+import VaultJson from '/imports/melon/contracts/Vault.json'; // Get Smart Contract JSON
 import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';
 import AssetJson from '/imports/melon/contracts/AssetProtocol.json';
 import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
@@ -34,7 +34,7 @@ window.getOrder = getOrder;
 window.takeOrder = takeOrder;
 window.BigNumber = BigNumber;
 
-const Core = contract(CoreJson);
+const Vault = contract(VaultJson);
 const Exchange = contract(ExchangeJson);
 
 const numberOfQuoteTokens = specs.getQuoteTokens().length;
@@ -50,11 +50,11 @@ const assetPairs =
 
 
 Template.manageHoldings.onCreated(() => {
-  Meteor.subscribe('cores');
+  Meteor.subscribe('vaults');
   Template.instance().state = new ReactiveDict();
   Template.instance().state.set({ buyingSelected: true });
   // Creation of contract object
-  Core.setProvider(web3.currentProvider);
+  Vault.setProvider(web3.currentProvider);
   Exchange.setProvider(web3.currentProvider);
 });
 
@@ -142,7 +142,7 @@ Template.manageHoldings.helpers({
   selected: assetPair => (assetPair === Session.get('currentAssetPair') ? 'selected' : ''),
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
+    const doc = Vaults.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   buyOrSell() {
@@ -254,13 +254,13 @@ Template.manageHoldings.events({
       return;
     }
     const coreAddress = FlowRouter.getParam('address');
-    // const doc = Cores.findOne({ address: coreAddress });
+    // const doc = Vaults.findOne({ address: coreAddress });
     // if (doc === undefined) {
     //   // TODO replace toast
     //   // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
     //   return;
     // }
-    const coreContract = Core.at(coreAddress);
+    const coreContract = Vault.at(coreAddress);
     const exchangeContract = Exchange.at(addressList.exchange);
 
     // BigNumber is always without decimal in it!

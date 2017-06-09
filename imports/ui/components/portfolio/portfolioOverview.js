@@ -7,17 +7,17 @@ import contract from 'truffle-contract';
 
 import web3 from '/imports/lib/web3/client';
 // Collections
-import Cores from '/imports/api/cores';
+import Vaults from '/imports/api/vaults';
 // Smart contracts
-import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
+import VaultJson from '/imports/melon/contracts/Vault.json'; // Get Smart Contract JSON
 
 
 // Corresponding html file
 import './portfolioOverview.html';
 
-const Core = contract(CoreJson); // Set Provider
+const Vault = contract(VaultJson); // Set Provider
 Template.portfolioOverview.onCreated(() => {
-  Meteor.subscribe('cores');
+  Meteor.subscribe('vaults');
   Template.instance().totalShareAmount = new ReactiveVar();
   Template.instance().personalShareAmount = new ReactiveVar();
   // TODO send command to server to update current coreContract
@@ -29,8 +29,8 @@ Template.portfolioOverview.helpers({
   getPersonalStake() {
     const template = Template.instance();
     const address = FlowRouter.getParam('address');
-    Core.setProvider(web3.currentProvider);
-    const coreContract = Core.at(address);
+    Vault.setProvider(web3.currentProvider);
+    const coreContract = Vault.at(address);
     coreContract.totalSupply().then((result) => {
       template.totalShareAmount.set(result.toNumber());
       return coreContract.balanceOf(Session.get('selectedAccount'));
@@ -54,11 +54,11 @@ Template.portfolioOverview.onRendered(() => {});
 Template.portfolioOverview.events({
   'click .delete': () => {
     const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
+    const doc = Vaults.findOne({ address });
     if ((doc === undefined || address === undefined)) {
       return false;
     }
-    Meteor.call('cores.removeById', doc._id);
+    Meteor.call('vaults.removeById', doc._id);
     // TODO replace toast
     // Materialize.toast('Portfolio deleted!', 4000, 'blue');
     return true;

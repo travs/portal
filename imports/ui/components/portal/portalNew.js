@@ -14,7 +14,7 @@ const Version = contract(VersionJson);
 
 Template.portalNew.onCreated(() => {
   Session.set('showModal', true);
-  Meteor.subscribe('cores');
+  Meteor.subscribe('vaults');
   Meteor.subscribe('universes');
 });
 
@@ -53,7 +53,7 @@ Template.portalNew.events({
     // Deploy
     const versionContract = Version.at(addressList.version);
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
-    versionContract.createCore(
+    versionContract.createVault(
       PORTFOLIO_NAME,
       PORTFOLIO_SYMBOL,
       PORTFOLIO_DECIMALS,
@@ -69,19 +69,19 @@ Template.portalNew.events({
     .then((result) => {
       let id;
       for (let i = 0; i < result.logs.length; i += 1) {
-        if (result.logs[i].event === 'CoreUpdate') {
+        if (result.logs[i].event === 'VaultUpdate') {
           id = result.logs[i].args.id.toNumber();
-          console.log('Core has been created');
-          console.log(`Core id: ${id}`);
-          Meteor.call('cores.syncCoreById', id);
+          console.log('Vault has been created');
+          console.log(`Vault id: ${id}`);
+          Meteor.call('vaults.syncVaultById', id);
           Session.set('isNew', true);
           toastr.success('Fund successfully created! You can now invest in your fund!');
         }
       }
-      return versionContract.getCore(id);
+      return versionContract.getVault(id);
     })
     .then((info) => {
-      const [address, owner, , , , ] = info;
+      const [address, owner, , , ,] = info;
       Meteor.call('universes.insert',
         Session.get('universeContractAddress'),
         address,
