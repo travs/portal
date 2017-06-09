@@ -1,17 +1,20 @@
 import orderBook from '../__fixtures__/blockChainOrders';
 
 
-export default () => ({
-  setProvider: f => f,
-  at: () => ({
-    orders: id =>
-      new Promise(resolve =>
-        resolve(orderBook.find(o => o.id === id).data),
-      ),
-    takeOrder: (exchange, id, quantity, objects) =>
+const contract = jest.fn(() => ({
+  setProvider: jest.fn(),
+  at: jest.fn(() => ({
+    orders: jest.fn(id => new Promise(resolve =>
+      resolve(orderBook.find(o => o.id === id).data),
+    )),
+    takeOrder: jest.fn((exchange, id, quantity, objects) =>
       new Promise((resolve) => {
         console.log(quantity);
         resolve(true);
-      }),
-  }),
-});
+      },
+    )),
+  })),
+}));
+
+
+export default contract;

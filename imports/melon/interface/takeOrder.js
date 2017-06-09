@@ -8,14 +8,12 @@ import CoreJson from '../contracts/Core.json';
 
 import getOrder from './getOrder';
 
-
-const Core = contract(CoreJson);
-
 /*
   @param quantityAsked: BigNumber
 */
 const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
   getOrder(id).then((order) => {
+    const Core = contract(CoreJson);
     const orderBigNumberified = orderBigNumberify(order);
     const sellHowMuchPrecise = orderBigNumberified.sell.howMuchBigNumber;
 
