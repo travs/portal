@@ -7,8 +7,6 @@ import { bootstrapSwitch } from 'bootstrap-switch';
 import Vaults from '/imports/api/vaults';
 // Specs
 import specs from '/imports/melon/interface/helpers/specs';
-// Smart contracts
-import Vault from '/imports/melon/contracts/Vault.json';
 // Corresponding html file
 import './manageOverview.html';
 
@@ -34,10 +32,10 @@ Tracker.autorun(() => {
   const fromPortfolio = Session.get('fromPortfolio');
 
   if (FlowRouter.getRouteName() === 'manage') {
-    const core = Vaults.findOne({ owner: Session.get('selectedAccount') });
+    const vault = Vaults.findOne({ owner: Session.get('selectedAccount') });
 
-    if (fromPortfolio && core) {
-      FlowRouter.setParams({ address: core.address });
+    if (fromPortfolio && vault) {
+      FlowRouter.setParams({ address: vault.address });
     } else if (Session.get('selectedAccount')) {
       FlowRouter.setParams({ address: Session.get('selectedAccount') });
     }
@@ -46,7 +44,7 @@ Tracker.autorun(() => {
 
 Template.manageOverview.onCreated(() => {
   Meteor.subscribe('vaults');
-  // TODO send command to server to update current coreContract
+  // TODO send command to server to update current vaultContract
 });
 
 Template.manageOverview.helpers({

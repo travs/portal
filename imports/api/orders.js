@@ -1,14 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+// SMART-CONTRACT IMPORT
+import contract from 'truffle-contract';
+import ExchangeJson from '@melonproject/protocol/build/contracts/Exchange.json';
 
 import web3 from '/imports/lib/web3';
 import addressList from '/imports/melon/interface/addressList';
 import getOrder from '/imports/melon/interface/getOrder';
 
-// SMART-CONTRACT IMPORT
-import contract from 'truffle-contract';
-import ExchangeJson from '/imports/melon/contracts/Exchange.json';
 
 const NUMBERS_OF_ORDERS_TO_SYNC_ON_STARTUP = 96;
 

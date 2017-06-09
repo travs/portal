@@ -1,8 +1,8 @@
 /* global web3 */
 import contract from 'truffle-contract';
+import SubscribeJson from '@melonproject/protocol/build/contracts/Subscribe.json';
 
 import addressList from '/imports/melon/interface/addressList';
-import SubscribeJson from '/imports/melon/contracts/Subscribe.json';
 import depositAndApproveEther from './depositAndApproveEther';
 
 

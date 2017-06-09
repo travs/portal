@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
+import contract from 'truffle-contract';
+import VersionJson from '@melonproject/protocol/build/contracts/Version.json';
 // Smart Contracts
 import web3 from '/imports/lib/web3/client';
-import contract from 'truffle-contract';
-import VersionJson from '/imports/melon/contracts/Version.json';
 import addressList from '/imports/melon/interface/addressList';
 
 import './portalNew.html';
@@ -81,7 +81,7 @@ Template.portalNew.events({
       return versionContract.getVault(id);
     })
     .then((info) => {
-      const [address, owner, , , ,] = info;
+      const [address, owner, , , , ] = info;
       Meteor.call('universes.insert',
         Session.get('universeContractAddress'),
         address,

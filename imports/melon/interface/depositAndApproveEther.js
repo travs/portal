@@ -1,8 +1,8 @@
 /* global web3 */
 import contract from 'truffle-contract';
+import EtherTokenJson from '@melonproject/protocol/build/contracts/EtherToken.json';
 
 import addressList from '/imports/melon/interface/addressList';
-import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
 
 const EtherToken = contract(EtherTokenJson);
 EtherToken.setProvider(web3.currentProvider);

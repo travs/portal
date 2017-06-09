@@ -1,11 +1,11 @@
 // @flow
 import BigNumber from 'bignumber.js';
 import contract from 'truffle-contract';
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json';
 
 import web3 from '/imports/lib/web3';
 import addressList from './addressList';
 import orderBigNumberify from './helpers/orderBigNumberify';
-import VaultJson from '../contracts/Vault.json';
 
 import getOrder from './getOrder';
 
@@ -33,7 +33,7 @@ const takeOrder = (
     Vault.setProvider(web3.currentProvider);
     const coreContract = Vault.at(coreAddress);
 
-    if (!jest) {
+    if (!global.jest) {
       console.log('taking order', order, {
         exchange: addressList.exchange,
         id: order.id,

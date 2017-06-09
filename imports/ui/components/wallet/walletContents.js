@@ -4,14 +4,14 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 
+// Smart Contracts
 import contract from 'truffle-contract';
+import EtherTokenJson from '@melonproject/protocol/build/contracts/EtherToken.json';
 
 import web3 from '/imports/lib/web3/client';
 // Collections
 import Assets from '/imports/api/assets';
 import specs from '/imports/melon/interface/helpers/specs';
-// Smart Contracts
-import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
 
 // Corresponding html file
 import './walletContents.html';

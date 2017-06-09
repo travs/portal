@@ -3,6 +3,11 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // NPM imports
 import moment from 'moment';
+// Contracts
+import contract from 'truffle-contract';
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json';
+import ExchangeJson from '@melonproject/protocol/build/contracts/ExchangeProtocol.json';
+
 // Utils
 import addressList from '/imports/melon/interface/addressList';
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
@@ -12,12 +17,6 @@ import Orders from '/imports/api/orders';
 
 // Corresponding html file
 import './openOrders.html';
-
-
-// Contracts
-import contract from 'truffle-contract';
-import VaultJson from '/imports/melon/contracts/Vault.json'; // Get Smart Contract JSON
-import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';
 
 
 Template.openOrders.onCreated(() => {});

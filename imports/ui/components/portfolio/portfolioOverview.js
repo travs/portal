@@ -3,13 +3,13 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { ReactiveVar } from 'meteor/reactive-var';
+// Smart contracts
 import contract from 'truffle-contract';
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json'; // Get Smart Contract JSON
 
 import web3 from '/imports/lib/web3/client';
 // Collections
 import Vaults from '/imports/api/vaults';
-// Smart contracts
-import VaultJson from '/imports/melon/contracts/Vault.json'; // Get Smart Contract JSON
 
 
 // Corresponding html file

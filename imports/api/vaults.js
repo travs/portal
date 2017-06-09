@@ -1,14 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+// SMART-CONTRACT IMPORT
 import contract from 'truffle-contract';
+import VersionJson from '@melonproject/protocol/build/contracts/Version.json';
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json';
 
 import web3 from '/imports/lib/web3';
-
-// SMART-CONTRACT IMPORT
 import addressList from '/imports/melon/interface/addressList';
-import VersionJson from '/imports/melon/contracts/Version.json';
-import VaultJson from '/imports/melon/contracts/Vault.json';
 
 const Version = contract(VersionJson);
 const Vault = contract(VaultJson);

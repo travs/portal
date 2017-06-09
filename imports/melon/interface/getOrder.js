@@ -1,8 +1,8 @@
 import contract from 'truffle-contract';
+import ExchangeJson from '@melonproject/protocol/build/contracts/Exchange.json';
 
 import web3 from '/imports/lib/web3';
 import addressList from './addressList';
-import ExchangeJson from '../contracts/Exchange.json';
 import { getTokenPrecisionByAddress, getTokenSymbolByAddress } from './helpers/specs';
 
 

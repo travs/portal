@@ -5,22 +5,16 @@ import { bootstrapSwitch } from 'bootstrap-switch';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import BigNumber from 'bignumber.js';
+// Contracts
 import contract from 'truffle-contract';
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json'; // Get Smart Contract JSON
+import ExchangeJson from '@melonproject/protocol/build/contracts/ExchangeProtocol.json';
+
 import web3 from '/imports/lib/web3/client';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
 import Vaults from '/imports/api/vaults';
 import Orders from '/imports/api/orders';
-// Contracts
-import VaultJson from '/imports/melon/contracts/Vault.json'; // Get Smart Contract JSON
-import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';
-import AssetJson from '/imports/melon/contracts/AssetProtocol.json';
-import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
-import ERC20Json from '/imports/melon/contracts/ERC20.json';
-// Utils
-import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
-
-import './manageHoldings.html';
 // specs
 import specs from '/imports/melon/interface/helpers/specs';
 // Interface
@@ -29,6 +23,8 @@ import takeOrder from '/imports/melon/interface/takeOrder';
 
 import store from '/imports/startup/client/store';
 import { creators } from '/imports/redux/preferences';
+import './manageHoldings.html';
+
 
 window.getOrder = getOrder;
 window.takeOrder = takeOrder;

@@ -2,11 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 import contract from 'truffle-contract';
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json';
 
 import web3 from '/imports/lib/web3';
 import addressList from '/imports/melon/interface/addressList';
 import specs from '/imports/melon/interface/helpers/specs';
-import VaultJson from '/imports/melon/contracts/Vault.json';
 
 //CONSTANTS
 const blocksPerDay = 21600;

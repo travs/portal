@@ -5,14 +5,14 @@ import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import select2 from 'select2';
 import contract from 'truffle-contract';
+// Contracts
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json'; // Get Smart Contract JSON
+import EtherTokenJson from '@melonproject/protocol/build/contracts/EtherToken.json';
 
 import web3 from '/imports/lib/web3/client';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
 import Vaults from '/imports/api/vaults';
-// Contracts
-import VaultJson from '/imports/melon/contracts/Vault.json'; // Get Smart Contract JSON
-import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
 
 import './manageParticipation.html';
 
