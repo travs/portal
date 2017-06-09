@@ -12,6 +12,7 @@ test('without quantity (-> max) & basic calling testing', async () => {
   const result = await takeOrder(6870, '0xMANAGER', '0xCORE');
 
   expect(result).toBeTruthy();
+  expect(result.executedQuantity.eq('8.55505176')).toBeTruthy();
   expect(contract).toHaveBeenCalled();
   expect(contract.mockInspect.contract.setProvider).toHaveBeenCalled();
   expect(contract.mockInspect.contract.at).toHaveBeenCalled();
@@ -28,6 +29,7 @@ test('with higher quantity -> take max', async () => {
   const result = await takeOrder(6870, '0xMANAGER', '0xCORE', new BigNumber('9.55505176'));
 
   expect(result).toBeTruthy();
+  expect(result.executedQuantity.eq('8.55505176')).toBeTruthy();
   expect(contract.mockInspect.instance.takeOrder).toHaveBeenCalledWith(
     addressList.exchange,
     6870,
@@ -40,6 +42,7 @@ test('with lower quantity -> take as specified', async () => {
   const result = await takeOrder(6870, '0xMANAGER', '0xCORE', new BigNumber('1.00000000'));
 
   expect(result).toBeTruthy();
+  expect(result.executedQuantity.eq('1.00000000')).toBeTruthy();
   expect(contract.mockInspect.instance.takeOrder).toHaveBeenCalledWith(
     addressList.exchange,
     6870,

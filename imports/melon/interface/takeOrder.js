@@ -1,3 +1,4 @@
+// @flow
 import BigNumber from 'bignumber.js';
 import contract from 'truffle-contract';
 
@@ -11,18 +12,23 @@ import getOrder from './getOrder';
 /*
   @param quantityAsked: BigNumber with Precision (i.e. '1.234' NOT '1234')
 */
-const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
-  getOrder(id).then((order) => {
+const takeOrder = (
+  id: number,
+  managerAddress: string,
+  coreAddress: string,
+  quantityAsked: BigNumber,
+) =>
+  getOrder(id).then(async (rawOrder) => {
     const Core = contract(CoreJson);
-    const orderBigNumberified = orderBigNumberify(order);
-    const sellHowMuchPrecise = orderBigNumberified.sell.howMuchBigNumber;
+    const order = orderBigNumberify(rawOrder);
+    const sellHowMuchPrecise = order.sell.howMuchBigNumber;
 
     const quantityWithPrecision =
       !quantityAsked || quantityAsked.gte(sellHowMuchPrecise)
       ? sellHowMuchPrecise
       : quantityAsked;
 
-    const quantity = quantityWithPrecision.times(Math.pow(10, orderBigNumberified.sell.precision));
+    const quantity = quantityWithPrecision.times(Math.pow(10, order.sell.precision));
 
     Core.setProvider(web3.currentProvider);
     const coreContract = Core.at(coreAddress);
@@ -36,12 +42,17 @@ const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
       });
     }
 
-    return coreContract.takeOrder(
+    const result = await coreContract.takeOrder(
       addressList.exchange,
       order.id,
       quantity,
       { from: managerAddress },
     );
+
+    return result ? {
+      executedQuantity: quantityWithPrecision,
+      result,
+    } : null;
   });
 
 
