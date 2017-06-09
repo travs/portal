@@ -1,4 +1,4 @@
-import getOrder from './getOrder';
+import getOrder from '../getOrder';
 
 
 jest.mock('/imports/lib/web3', () => jest.fn(() => 42), { virtual: true });

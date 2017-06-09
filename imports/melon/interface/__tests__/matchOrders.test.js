@@ -1,7 +1,7 @@
-import orders from './fixtures/orderBook';
+import orders from '../__fixtures__/orderBook';
 
-import matchOrders from './matchOrders';
-import orderBigNumberify from './helpers/orderBigNumberify';
+import matchOrders from '../matchOrders';
+import orderBigNumberify from '../helpers/orderBigNumberify';
 
 
 test('matchOrders', () => {

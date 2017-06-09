@@ -1,4 +1,4 @@
-import orderBook from '../fixtures/blockChainOrders';
+import orderBook from '../__fixtures__/blockChainOrders';
 
 
 export default () => ({

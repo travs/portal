@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 // import contractMock from './__mocks__/truffle-contract';
-import takeOrder from './takeOrder';
+import takeOrder from '../takeOrder';
 
 
 jest.mock('/imports/lib/web3', () => jest.fn(() => 42), { virtual: true });
