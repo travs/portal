@@ -6,7 +6,8 @@ import '/imports/ui/layouts/main';
 import '/imports/ui/layouts/header';
 import '/imports/ui/layouts/footer';
 import '/imports/ui/pages/portal';
-import '/imports/ui/pages/portfolio';
+import '/imports/ui/pages/visit';
+import '/imports/ui/pages/fund';
 import '/imports/ui/pages/manage';
 import '/imports/ui/pages/wallet';
 
@@ -23,12 +24,23 @@ FlowRouter.route('/', {
   },
 });
 
-FlowRouter.route('/portfolio/:address', {
-  name: 'portfolio',
+FlowRouter.route('/visit', {
+  name: 'visit',
   action() {
     BlazeLayout.render('layout_main', {
       nav: 'layout_header',
-      main: 'portfolio',
+      main: 'visit',
+      footer: 'layout_footer',
+    });
+  },
+});
+
+FlowRouter.route('/fund/:address', {
+  name: 'fund',
+  action() {
+    BlazeLayout.render('layout_main', {
+      nav: 'layout_header',
+      main: 'fund',
       footer: 'layout_footer',
     });
   },

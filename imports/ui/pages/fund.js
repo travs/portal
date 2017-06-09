@@ -5,16 +5,16 @@ import { Cores } from '/imports/api/cores';
 import '/imports/ui/components/portfolio/portfolioOverview';
 import '/imports/ui/components/portfolio/portfolioContents';
 import '/imports/ui/components/portfolio/manageParticipation';
-import './portfolio.html';
+import './fund.html';
 
 
-Template.portfolio.onCreated(() => {
+Template.fund.onCreated(() => {
   Meteor.subscribe('cores');
   Meteor.subscribe('assets');
 });
 
 
-Template.portfolio.helpers({
+Template.fund.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Cores.findOne({ address });
@@ -23,7 +23,7 @@ Template.portfolio.helpers({
 });
 
 
-Template.portfolio.onRendered(() => {
+Template.fund.onRendered(() => {
   const address = FlowRouter.getParam('address'); // Address of Core
   Meteor.call('assets.sync', address);
 });

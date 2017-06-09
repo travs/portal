@@ -1,0 +1,12 @@
+<template name="visit">
+
+  <!-- Index-banner -->
+  {{> uxIndexPortal}}
+
+  <!-- Server is connected -->
+  {{#if isServerConnected}}
+    {{> portalList}}
+  {{else}} <!-- Server not connected -->
+    {{> uxServerConnection}}
+  {{/if}}
+</template>
