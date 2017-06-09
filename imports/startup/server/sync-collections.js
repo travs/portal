@@ -7,15 +7,15 @@ import Trades from '/imports/api/trades';
 
 // EXECUTION
 Meteor.startup(() => {
-  // // Cores.remove({});
-  // Cores.sync();
+  Cores.remove({});
+  Cores.sync();
   // Cores.watch();
-  //
-  // // TODO
-  // Orders.remove({});
-  // // Orders.sync();
-  // Orders.watch();
-  // //
-  // Trades.remove({});
-  // Trades.watch();
+
+  // TODO
+  Orders.remove({});
+  // Orders.sync();
+  Orders.watch();
+
+  Trades.remove({});
+  Trades.watch();
 });
