@@ -31,7 +31,7 @@ Template.layout_header.events({
       FlowRouter.go('/');
     } else {
       const doc = Cores.findOne({ owner: Session.get('selectedAccount') });
-      FlowRouter.go(`/portfolio/${doc.address}`);
+      FlowRouter.go(`/fund/${doc.address}`);
     }
   },
   'click .manage'(event) {
