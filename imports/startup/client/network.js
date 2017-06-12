@@ -44,14 +44,11 @@ async function updateWeb3() {
   if (needsUpdate) store.dispatch(creators.update(web3State));
 }
 
-function isLoaded() { Session.set('isLoaded', true); }
-
-Meteor.startup(() => {
+// We need to wait for the page load instead of meteor startup to be certain that metamask is injected.
+window.addEventListener('load', function() {
   /* eslint-disable no-underscore-dangle */
   window.__AppInitializedBeforeWeb3__ = true;
   /* eslint-enable */
-
   updateWeb3();
   window.setInterval(updateWeb3, 4000);
-  window.setInterval(isLoaded, 5000);
 });

@@ -1,6 +1,4 @@
 <template name="wallet">
-  <!-- Server is connected -->
-  {{#if isServerConnected}}
   <section class="mp-portal portal-exchange">
     <div class="container">
       {{#if selectedAccount}}
@@ -21,7 +19,4 @@
       {{/if}}
     </div>
   </section>
-  {{else}}
-    {{> uxServerConnection}}
-  {{/if}}
 </template>
