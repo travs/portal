@@ -74,7 +74,11 @@ Try install [Watchman](https://facebook.github.io/watchman/docs/install.html) wi
 
 ## Deploy
 
-Deployment is made with the awesome [zodern/meteor-up](https://github.com/zodern/meteor-up)
+Deployment is on [Meteors Galaxy](https://www.meteor.com/hosting)
 
-If meteor-up is configured, deploy with
-```npm run deploy```
+Deploy with:
+    
+    npm run deploy
+
+Everyone is free to host & run this portal elsewhere. All the important data is
+synced from the blockchain.
