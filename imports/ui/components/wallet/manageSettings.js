@@ -17,7 +17,7 @@ Template.manageSettings.onCreated(() => {
 
 
 Template.manageSettings.helpers({
-  currencies: () => ["ETH", "BTC", "EUR", "USD"],
+  currencies: () => ['ETH', 'BTC', 'EUR', 'USD'],
 });
 
 
@@ -61,7 +61,6 @@ Template.manageSettings.events({
     if ((doc === undefined || managerAddress === undefined)) {
       return false;
     }
-    Meteor.call('vaults.removeById', doc._id);
     // TODO close modal
     return true;
   },

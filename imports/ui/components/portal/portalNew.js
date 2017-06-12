@@ -73,7 +73,6 @@ Template.portalNew.events({
           id = result.logs[i].args.id.toNumber();
           console.log('Vault has been created');
           console.log(`Vault id: ${id}`);
-          Meteor.call('vaults.syncVaultById', id);
           Session.set('isNew', true);
           toastr.success('Fund successfully created! You can now invest in your fund!');
         }

@@ -307,7 +307,6 @@ Template.manageHoldings.events({
               )
               .then((result) => {
                 console.log('Transaction for order id ', setOfOrders[i].id, ' sent!', result);
-                Meteor.call('orders.sync');
                 Session.get('selectedOrderId') !== null;
                 Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                 toastr.success('Order successfully executed!');
@@ -329,7 +328,6 @@ Template.manageHoldings.events({
               )
               .then((result) => {
                 console.log('Transaction for order id ', setOfOrders[i].id, ' executed!', result);
-                Meteor.call('orders.sync');
                 Session.set('selectedOrderId', null);
                 Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
                 toastr.success('Order successfully executed!');
