@@ -13,7 +13,7 @@ import './portfolioContents.html';
 
 Template.portfolioContents.onCreated(() => {
   Meteor.subscribe('vaults');
-  Meteor.subscribe('assets');
+  Meteor.subscribe('assets', FlowRouter.getParam('address'));
   Template.instance().totalPortfolioValue = new ReactiveVar();
 });
 
