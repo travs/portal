@@ -44,6 +44,8 @@ async function updateWeb3() {
   if (needsUpdate) store.dispatch(creators.update(web3State));
 }
 
+function isLoaded() { Session.set('isLoaded', true); }
+
 Meteor.startup(() => {
   /* eslint-disable no-underscore-dangle */
   window.__AppInitializedBeforeWeb3__ = true;
@@ -51,4 +53,5 @@ Meteor.startup(() => {
 
   updateWeb3();
   window.setInterval(updateWeb3, 4000);
+  window.setInterval(isLoaded, 5000);
 });

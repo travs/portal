@@ -27,4 +27,5 @@ Meteor.startup(() => {
   Session.set('fromPortfolio', true);
   Session.set('selectedOrderId', null);
   Session.set('showModal', true);
+  Session.set('isLoaded', false);
 });

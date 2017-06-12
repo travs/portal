@@ -134,6 +134,7 @@ Template.manageParticipation.events({
           return coreContract.totalSupply();
         }).catch((error) => {
           console.log(error);
+          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
           toastr.error('Oops, an error has occured. Please verify that your holdings allow you to invest in this fund!');
         });
         templateInstance.find('input#total').value = '';
@@ -154,6 +155,7 @@ Template.manageParticipation.events({
           return coreContract.totalSupply();
         }).catch((error) => {
           console.log(error);
+          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
           toastr.error('Oops, an error has occured. Please try again.');
         });
       default: return 'Error';

@@ -4,29 +4,33 @@
   {{> uxIndexPortal}}
 
   <!-- Server is connected -->
-  {{#if isServerConnected}}
-    {{#if isClientConnected}}
-      {{#if selectedAccount}}
-        {{#if isKovanNetwork}}
-          {{#if selectedAccountBalance}}
-            {{#if hasManagerCreatedVault}}
-              {{> portalList}}
-            {{else}}
-              {{> portalNew}}
+  {{#if isLoaded}}
+    {{#if isServerConnected}}
+      {{#if isClientConnected}}
+        {{#if selectedAccount}}
+          {{#if isKovanNetwork}}
+            {{#if selectedAccountBalance}}
+              {{#if hasManagerCreatedVault}}
+                {{> portalList}}
+              {{else}}
+                {{> portalNew}}
+              {{/if}}
+            {{else}} <!-- Client balance zero -->
+              {{> ux_insufficient_funds}}
             {{/if}}
-          {{else}} <!-- Client balance zero -->
-            {{> ux_insufficient_funds}}
+          {{else}} <!-- Client not on Kovan -->
+            {{> ux_ethereum_testnet}}
           {{/if}}
-        {{else}} <!-- Client not on Kovan -->
-          {{> ux_ethereum_testnet}}
+        {{else}} <!-- Client has no account selected -->
+          {{> uxNoAccountSelected}}
         {{/if}}
-      {{else}} <!-- Client has no account selected -->
-        {{> uxNoAccountSelected}}
+      {{else}} <!-- Client not connected -->
+        {{> uxNoConnection}}
       {{/if}}
-    {{else}} <!-- Client not connected -->
-      {{> uxNoConnection}}
+    {{else}} <!-- Server not connected -->
+      {{> uxServerConnection}}
     {{/if}}
-  {{else}} <!-- Server not connected -->
-    {{> uxServerConnection}}
+  {{else}} <!-- Loading -->
+    {{> uxLoading}}
   {{/if}}
 </template>
