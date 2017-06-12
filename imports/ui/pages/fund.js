@@ -10,7 +10,7 @@ import './fund.html';
 
 Template.fund.onCreated(() => {
   Meteor.subscribe('vaults');
-  Meteor.subscribe('assets');
+  Meteor.subscribe('assets', FlowRouter.getParam('address'));
 });
 
 

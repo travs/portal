@@ -19,7 +19,20 @@ const PriceFeed = contract(PriceFeedJson);
 // COLLECTIONS
 
 const Assets = new Mongo.Collection('assets');
-if (Meteor.isServer) { Meteor.publish('assets', () => Assets.find({}, { sort: { price: -1 } })); } // Publish Collection
+
+if (Meteor.isServer) {
+  Meteor.publish('assets', (holder) => {
+    check(holder, String);
+    return Assets.find({
+      holder,
+    }, {
+      sort: {
+        price: -1,
+      },
+    });
+  });
+}
+
 
 // METHODS
 
@@ -73,9 +86,8 @@ Assets.sync = (assetHolderAddress) => {
       .then((result) => {
         const timestampOfLastUpdate = result[0].toNumber();
         const currentPrice = (assetSymbol === 'ETH-T') ? Math.pow(10, assetPrecision) : result[1].toNumber();
-        Assets.update(
-          { address: assetAddress, holder: assetHolderAddress },
-          { $set: {
+        Assets.update({ address: assetAddress, holder: assetHolderAddress }, {
+          $set: {
             name: assetName,
             symbol: assetSymbol,
             precision: assetPrecision,
@@ -87,9 +99,9 @@ Assets.sync = (assetHolderAddress) => {
             },
             createdAt: new Date(),
           },
-          }, {
-            upsert: true,
-          });
+        }, {
+          upsert: true,
+        });
       });
     }
   });

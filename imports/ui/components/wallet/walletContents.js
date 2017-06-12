@@ -18,7 +18,7 @@ import './walletContents.html';
 
 
 Template.walletContents.onCreated(() => {
-  Meteor.subscribe('assets');
+  Meteor.subscribe('assets', FlowRouter.getParam('address'));
 });
 
 Template.walletContents.helpers({
