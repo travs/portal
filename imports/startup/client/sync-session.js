@@ -24,6 +24,7 @@ store.subscribe(() => {
 // initialize the other session vars
 // TODO: Remove this
 Meteor.startup(() => {
+  console.log('METEOR STARTUP');
   Session.set('fromPortfolio', true);
   Session.set('selectedOrderId', null);
   Session.set('showModal', true);

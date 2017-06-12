@@ -18,6 +18,7 @@ FlowRouter.route('/', {
   action() {
     BlazeLayout.render('layout_main', {
       nav: 'layout_header',
+      header: 'uxIndexPortal',
       main: 'portal',
       footer: 'layout_footer',
     });
@@ -29,6 +30,7 @@ FlowRouter.route('/visit', {
   action() {
     BlazeLayout.render('layout_main', {
       nav: 'layout_header',
+      header: 'uxIndexPortal',
       main: 'visit',
       footer: 'layout_footer',
     });
@@ -40,6 +42,7 @@ FlowRouter.route('/fund/:address', {
   action() {
     BlazeLayout.render('layout_main', {
       nav: 'layout_header',
+      header: 'ux_portfolioOverview',
       main: 'fund',
       footer: 'layout_footer',
     });
@@ -51,6 +54,7 @@ FlowRouter.route('/manage/:address', {
   action() {
     BlazeLayout.render('layout_main', {
       nav: 'layout_header',
+      header: 'ux_manageOverview',
       main: 'manage',
       footer: 'layout_footer',
     });
@@ -64,6 +68,7 @@ FlowRouter.route('/account/:address', {
   action() {
     BlazeLayout.render('layout_main', {
       nav: 'layout_header',
+      header: 'ux_walletOverview',
       main: 'wallet',
       footer: 'layout_footer',
     });
