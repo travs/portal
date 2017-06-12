@@ -33,9 +33,7 @@ if (Meteor.isServer) {
   });
 }
 
-
 // METHODS
-
 Assets.sync = (assetHolderAddress) => {
   // TODO get Universe address via Vault.getUniverseAddress
   PreminedAsset.setProvider(web3.currentProvider);
