@@ -84,6 +84,9 @@ Assets.sync = (assetHolderAddress) => {
       .then((result) => {
         const timestampOfLastUpdate = result[0].toNumber();
         const currentPrice = (assetSymbol === 'ETH-T') ? Math.pow(10, assetPrecision) : result[1].toNumber();
+
+        console.log('Assets.update', assetSymbol, assetHolderAddress);
+
         Assets.update({ address: assetAddress, holder: assetHolderAddress }, {
           $set: {
             name: assetName,
