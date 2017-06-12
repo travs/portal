@@ -1,81 +1,80 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+// SMART-CONTRACT IMPORT
 import contract from 'truffle-contract';
+import VersionJson from '@melonproject/protocol/build/contracts/Version.json';
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json';
 
 import web3 from '/imports/lib/web3';
-
-// SMART-CONTRACT IMPORT
 import addressList from '/imports/melon/interface/addressList';
-import VersionJson from '/imports/melon/contracts/Version.json';
-import CoreJson from '/imports/melon/contracts/Core.json';
 
 const Version = contract(VersionJson);
-const Core = contract(CoreJson);
+const Vault = contract(VaultJson);
 
 // COLLECTIONS
 
-const Cores = new Mongo.Collection('cores');
-if (Meteor.isServer) { Meteor.publish('cores', () => Cores.find()); } // Publish Collection
+const Vaults = new Mongo.Collection('vaults');
+if (Meteor.isServer) { Meteor.publish('vaults', () => Vaults.find()); } // Publish Collection
 
 // COLLECTION METHODS
 
-Cores.watch = () => {
+Vaults.watch = () => {
   // Creation of contract object
   Version.setProvider(web3.currentProvider);
   const versionContract = Version.at(addressList.version);
 
-  const cores = versionContract.CoreUpdate({}, {
+  const vaults = versionContract.VaultUpdate({}, {
     fromBlock: web3.eth.blockNumber,
     toBlock: 'latest',
   });
 
-  cores.watch(Meteor.bindEnvironment((err, event) => {
+  vaults.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
-    console.log(`Cores.watch ${event.args.id}`);
-    Cores.syncCoreById(event.args.id.toNumber()); // see event object, doesnt have .id
+    console.log(`Vaults.watch ${event.args.id}`);
+    Vaults.syncVaultById(event.args.id.toNumber()); // see event object, doesnt have .id
   }));
 };
 
-Cores.sync = () => {
+Vaults.sync = () => {
   Version.setProvider(web3.currentProvider);
   const versionContract = Version.at(addressList.version);
 
-  versionContract.getLastCoreId().then((lastId) => {
+  versionContract.getLastVaultId().then((lastId) => {
     for (let id = 1; id < lastId.toNumber() + 1; id += 1) {
-      Cores.syncCoreById(id);
+      Vaults.syncVaultById(id);
     }
   });
 };
 
-Cores.syncCoreById = (id) => {
-  Core.setProvider(web3.currentProvider);
+Vaults.syncVaultById = (id) => {
+  Vault.setProvider(web3.currentProvider);
   Version.setProvider(web3.currentProvider);
   const versionContract = Version.at(addressList.version);
 
   let coreContract;
-  // Description of Core
+  // Description of Vault
   let address;
   let owner;
   let name;
   let symbol;
   let decimals;
   let isActive;
-  // Properties of Core
+  // Properties of Vault
   let universeAddress;
   let referenceAsset;
-  // Calculation of Core
+  // Calculation of Vault
   let nav;
   let sharePrice;
 
   // Temp
   let currTotalSupply;
 
-  // Get description values of Core
-  versionContract.cores(id).then((info) => {
+  // Get description values of Vault
+  versionContract.vaults(id).then((info) => {
     [address, owner, name, symbol, decimals, isActive] = info;
-    coreContract = Core.at(address);
+    coreContract = Vault.at(address);
     return coreContract.getUniverseAddress();
   })
   .then((result) => {
@@ -96,7 +95,7 @@ Cores.syncCoreById = (id) => {
     currTotalSupply = result;
     // sharePrice = convertToTokenPrecision(sharePrice, decimals);
     // Insert into Portfolio collection
-    Cores.upsert({
+    Vaults.upsert({
       id,
     }, {
       id,
@@ -120,29 +119,29 @@ Cores.syncCoreById = (id) => {
 // METEOR METHODS
 
 Meteor.methods({
-  'cores.setToUsed': (_id) => {
+  'vaults.setToUsed': (_id) => {
     check(_id, String);
-    if (Meteor.isServer) Cores.update(_id, { $set: { isUsed: true } });
+    if (Meteor.isServer) Vaults.update(_id, { $set: { isUsed: true } });
   },
-  'cores.sync': () => {
-    if (Meteor.isServer) Cores.sync();
+  'vaults.sync': () => {
+    if (Meteor.isServer) Vaults.sync();
   },
-  'cores.syncCoreByAddress': (ofCore) => {
-    check(ofCore, String);
-    if (Meteor.isServer) Cores.syncCoreByAddress(ofCore);
+  'vaults.syncVaultByAddress': (ofVault) => {
+    check(ofVault, String);
+    if (Meteor.isServer) Vaults.syncVaultByAddress(ofVault);
   },
-  'cores.syncCoreById': (id) => {
+  'vaults.syncVaultById': (id) => {
     check(id, Number);
-    if (Meteor.isServer) Cores.syncCoreById(id);
+    if (Meteor.isServer) Vaults.syncVaultById(id);
   },
-  'cores.removeById': (id) => {
+  'vaults.removeById': (id) => {
     check(id, Number);
     // TODO Only the owner can delete it
     // if (portfolio.owner !== Meteor.userId())
     //   throw new Meteor.Error('not-authorized');
-    if (Meteor.isServer) Cores.remove(id);
+    if (Meteor.isServer) Vaults.remove(id);
   },
 });
 
 
-export default Cores;
+export default Vaults;

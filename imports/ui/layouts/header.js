@@ -3,12 +3,12 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
-import Cores from '/imports/api/cores';
+import Vaults from '/imports/api/vaults';
 
 import './header.html';
 
 Template.layout_header.onCreated(() => {
-  Meteor.subscribe('cores');
+  Meteor.subscribe('vaults');
 });
 
 Template.layout_header.onRendered(() => {
@@ -26,11 +26,11 @@ Template.layout_header.events({
     event.preventDefault();
 
     // Update Portfolio collection
-    const numberOfCores = Cores.find({ owner: Session.get('selectedAccount') }).count();
-    if (numberOfCores === 0) {
+    const numberOfVaults = Vaults.find({ owner: Session.get('selectedAccount') }).count();
+    if (numberOfVaults === 0) {
       FlowRouter.go('/');
     } else {
-      const doc = Cores.findOne({ owner: Session.get('selectedAccount') });
+      const doc = Vaults.findOne({ owner: Session.get('selectedAccount') });
       FlowRouter.go(`/fund/${doc.address}`);
     }
   },
@@ -39,17 +39,16 @@ Template.layout_header.events({
     event.preventDefault();
 
     // Update Portfolio collection
-    const numberOfCores = Cores.find({ owner: Session.get('selectedAccount') }).count();
-    if (numberOfCores === 0) {
+    const numberOfVaults = Vaults.find({ owner: Session.get('selectedAccount') }).count();
+    if (numberOfVaults === 0) {
       FlowRouter.go('/');
     } else {
-      const doc = Cores.findOne({ owner: Session.get('selectedAccount') });
+      const doc = Vaults.findOne({ owner: Session.get('selectedAccount') });
       FlowRouter.go(`/manage/${doc.address}`);
     }
   },
   'click .newclick'() {
-    if (Session.get('isNew'))
-      {toastr.success("Well done! Now start by investing some K-ETH");}
+    if (Session.get('isNew'))      { toastr.success('Well done! Now start by investing some K-ETH'); }
     Session.set('isNew', false);
   },
 });

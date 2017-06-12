@@ -1,8 +1,8 @@
 /* global web3 */
 import contract from 'truffle-contract';
+import RedeemJson from '@melonproject/protocol/build/contracts/Redeem.json';
 
 import addressList from '/imports/melon/interface/addressList';
-import RedeemJson from '/imports/melon/contracts/Redeem.json';
 
 
 const Redeem = contract(RedeemJson);

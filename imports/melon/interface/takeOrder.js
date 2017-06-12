@@ -1,34 +1,58 @@
+// @flow
 import BigNumber from 'bignumber.js';
 import contract from 'truffle-contract';
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json';
 
 import web3 from '/imports/lib/web3';
-import addressList from '/imports/melon/interface/addressList';
-import CoreJson from '/imports/melon/contracts/Core.json';
+import addressList from './addressList';
+import orderBigNumberify from './helpers/orderBigNumberify';
+
 import getOrder from './getOrder';
 
-const Core = contract(CoreJson);
-
 /*
-  @param quantityAsked: BigNumber
+  @param quantityAsked: BigNumber with Precision (i.e. '1.234' NOT '1234')
 */
-const takeOrder = (id, managerAddress, coreAddress, quantityAsked) =>
-  getOrder(id).then((order) => {
-    const quantity = quantityAsked || new BigNumber(order.sell.howMuchPrecise);
-    Core.setProvider(web3.currentProvider);
-    const coreContract = Core.at(coreAddress);
+const takeOrder = (
+  id: number,
+  managerAddress: string,
+  coreAddress: string,
+  quantityAsked: BigNumber,
+) =>
+  getOrder(id).then(async (rawOrder) => {
+    const Vault = contract(VaultJson);
+    const order = orderBigNumberify(rawOrder);
+    const sellHowMuchPrecise = order.sell.howMuchBigNumber;
 
-    console.log('taking order', order, {
-      exchange: addressList.exchange,
-      id: order.id,
-      quantity: quantity.toString(),
-      from: managerAddress,
-    });
+    const quantityWithPrecision =
+      !quantityAsked || quantityAsked.gte(sellHowMuchPrecise)
+      ? sellHowMuchPrecise
+      : quantityAsked;
 
-    return coreContract.takeOrder(
+    const quantity = quantityWithPrecision.times(Math.pow(10, order.sell.precision));
+
+    Vault.setProvider(web3.currentProvider);
+    const coreContract = Vault.at(coreAddress);
+
+    if (!global.jest) {
+      console.log('taking order', order, {
+        exchange: addressList.exchange,
+        id: order.id,
+        quantity: quantity.toString(),
+        from: managerAddress,
+      });
+    }
+
+    const result = await coreContract.takeOrder(
       addressList.exchange,
       order.id,
       quantity,
-      { from: managerAddress });
+      { from: managerAddress },
+    );
+
+    return result ? {
+      executedQuantity: quantityWithPrecision,
+      result,
+    } : null;
   });
 
 

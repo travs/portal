@@ -5,34 +5,34 @@ import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import select2 from 'select2';
 import contract from 'truffle-contract';
+// Contracts
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json'; // Get Smart Contract JSON
+import EtherTokenJson from '@melonproject/protocol/build/contracts/EtherToken.json';
 
 import web3 from '/imports/lib/web3/client';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
-import Cores from '/imports/api/cores';
-// Contracts
-import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
-import EtherTokenJson from '/imports/melon/contracts/EtherToken.json';
+import Vaults from '/imports/api/vaults';
 
 import './manageParticipation.html';
 
-const Core = contract(CoreJson); // Set Provider
+const Vault = contract(VaultJson); // Set Provider
 
 Template.manageParticipation.onCreated(() => {
-  // TODO update cores param
-  Meteor.subscribe('cores');
+  // TODO update vaults param
+  Meteor.subscribe('vaults');
   Template.instance().typeValue = new ReactiveVar(0);
 });
 
 Template.manageParticipation.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
+    const doc = Vaults.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   formattedSharePrice() {
     const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
+    const doc = Vaults.findOne({ address });
     if (doc !== undefined) {
       if (!doc.sharePrice) return 1;
       return web3.fromWei(doc.sharePrice, 'ether');
@@ -99,7 +99,7 @@ Template.manageParticipation.events({
       return;
     }
     const coreAddress = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address: coreAddress });
+    const doc = Vaults.findOne({ address: coreAddress });
     // Check if core is stored in database
     if (doc === undefined) {
       // TODO replace toast
@@ -107,8 +107,8 @@ Template.manageParticipation.events({
       return;
     }
 
-    const coreContract = Core.at(coreAddress);
-    Core.setProvider(web3.currentProvider);
+    const coreContract = Vault.at(coreAddress);
+    Vault.setProvider(web3.currentProvider);
 
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
@@ -129,7 +129,7 @@ Template.manageParticipation.events({
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
           toastr.success('Shares successfully created!');
           console.log(`Shares successfully created. Tx Hash: ${result}`);
-          Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
+          Meteor.call('vaults.sync', coreAddress); // Upsert vaults Collection
           Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
           return coreContract.totalSupply();
         }).catch((error) => {
@@ -147,7 +147,7 @@ Template.manageParticipation.events({
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
           toastr.success('Shares successfully redeemed!');
           console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
-          Meteor.call('cores.sync', coreAddress); // Upsert cores Collection
+          Meteor.call('vaults.sync', coreAddress); // Upsert vaults Collection
           Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
           templateInstance.find('input#total').value = '';
           templateInstance.find('input#volume').value = '';

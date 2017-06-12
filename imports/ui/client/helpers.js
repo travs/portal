@@ -4,7 +4,7 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // Collections
-import Cores from '/imports/api/cores';
+import Vaults from '/imports/api/vaults';
 
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
@@ -23,19 +23,19 @@ Template.registerHelper('currentBlock', () => Session.get('currentBlock'));
 // Account
 Template.registerHelper('selectedAccount', () => Session.get('selectedAccount'));
 Template.registerHelper('selectedAccountBalance', () => Session.get('selectedAccountBalance'));
-// Cores
-Template.registerHelper('getCores', () => Cores.find({}, { sort: { notional: -1, sharePrice: -1 } }));
-Template.registerHelper('getCoreCount', () => Cores.find().count());
-Template.registerHelper('hasManagerCreatedCore', () => Cores.find({ owner: Session.get('selectedAccount') }).count() !== 0);
-Template.registerHelper('getManagerAddressOfCore', () => (Cores.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('selectedAccount') }).address : false));
-Template.registerHelper('getManagerNameOfCore', () => (Cores.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('selectedAccount') }).name : false));
-Template.registerHelper('getManagerDeltaOfCore', () => (Cores.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? convertFromTokenPrecision(Cores.findOne({ owner: Session.get('selectedAccount') }).delta, 18) : false));
-Template.registerHelper('getSharePrice', () => (Cores.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? Cores.findOne({ owner: Session.get('selectedAccount') }).sharePrice : false));
-Template.registerHelper('getIsNewOfCore', () => (Cores.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? !Cores.findOne({ owner: Session.get('selectedAccount') }).isUsed : false));
-Template.registerHelper('getIsFundedCore', () => ((Cores.find({ owner: Session.get('selectedAccount') }).fetch()[0] || { sharesSupply: 0 }).sharesSupply !== 0));
+// Vaults
+Template.registerHelper('getVaults', () => Vaults.find({}, { sort: { notional: -1, sharePrice: -1 } }));
+Template.registerHelper('getVaultCount', () => Vaults.find().count());
+Template.registerHelper('hasManagerCreatedVault', () => Vaults.find({ owner: Session.get('selectedAccount') }).count() !== 0);
+Template.registerHelper('getManagerAddressOfVault', () => (Vaults.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? Vaults.findOne({ owner: Session.get('selectedAccount') }).address : false));
+Template.registerHelper('getManagerNameOfVault', () => (Vaults.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? Vaults.findOne({ owner: Session.get('selectedAccount') }).name : false));
+Template.registerHelper('getManagerDeltaOfVault', () => (Vaults.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? convertFromTokenPrecision(Vaults.findOne({ owner: Session.get('selectedAccount') }).delta, 18) : false));
+Template.registerHelper('getSharePrice', () => (Vaults.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? Vaults.findOne({ owner: Session.get('selectedAccount') }).sharePrice : false));
+Template.registerHelper('getIsNewOfVault', () => (Vaults.find({ owner: Session.get('selectedAccount') }).count() !== 0 ? !Vaults.findOne({ owner: Session.get('selectedAccount') }).isUsed : false));
+Template.registerHelper('getIsFundedVault', () => ((Vaults.find({ owner: Session.get('selectedAccount') }).fetch()[0] || { sharesSupply: 0 }).sharesSupply !== 0));
 Template.registerHelper('getPortfolioDoc', () => {
   const address = FlowRouter.getParam('address');
-  const doc = Cores.findOne({ address });
+  const doc = Vaults.findOne({ address });
   return (doc === undefined || address === undefined) ? '' : doc;
 });
 // UX

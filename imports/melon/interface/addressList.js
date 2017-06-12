@@ -1,12 +1,12 @@
-import ExchangeJson from '/imports/melon/contracts/Exchange.json';
-import UniverseJson from '/imports/melon/contracts/Universe.json';
-import SubscribeJson from '/imports/melon/contracts/Subscribe.json';
-import RedeemJson from '/imports/melon/contracts/Redeem.json';
-import RiskMgmtV1Json from '/imports/melon/contracts/RiskMgmtV1.json';
-import ManagementFeeJson from '/imports/melon/contracts/ManagementFee.json';
-import PerformanceFeeJson from '/imports/melon/contracts/PerformanceFee.json';
-import GovernanceJson from '/imports/melon/contracts/Governance.json';
-import VersionJson from '/imports/melon/contracts/Version.json';
+import ExchangeJson from '@melonproject/protocol/build/contracts/Exchange.json';
+import UniverseJson from '@melonproject/protocol/build/contracts/Universe.json';
+import SubscribeJson from '@melonproject/protocol/build/contracts/Subscribe.json';
+import RedeemJson from '@melonproject/protocol/build/contracts/Redeem.json';
+import RiskMgmtV1Json from '@melonproject/protocol/build/contracts/RiskMgmtV1.json';
+import ManagementFeeJson from '@melonproject/protocol/build/contracts/ManagementFee.json';
+import PerformanceFeeJson from '@melonproject/protocol/build/contracts/PerformanceFee.json';
+import GovernanceJson from '@melonproject/protocol/build/contracts/Governance.json';
+import VersionJson from '@melonproject/protocol/build/contracts/Version.json';
 
 
 const KOVAN_NETWORK_ID = 42;

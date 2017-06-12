@@ -3,6 +3,11 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 // NPM imports
 import moment from 'moment';
+// Contracts
+import contract from 'truffle-contract';
+import VaultJson from '@melonproject/protocol/build/contracts/Vault.json';
+import ExchangeJson from '@melonproject/protocol/build/contracts/ExchangeProtocol.json';
+
 // Utils
 import addressList from '/imports/melon/interface/addressList';
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
@@ -12,12 +17,6 @@ import Orders from '/imports/api/orders';
 
 // Corresponding html file
 import './openOrders.html';
-
-
-// Contracts
-import contract from 'truffle-contract';
-import CoreJson from '/imports/melon/contracts/Core.json'; // Get Smart Contract JSON
-import ExchangeJson from '/imports/melon/contracts/ExchangeProtocol.json';
 
 
 Template.openOrders.onCreated(() => {});
@@ -66,10 +65,10 @@ Template.openOrders.onRendered(() => {});
 
 Template.openOrders.events({
   'click .js-cancel': (event, order) => {
-    const Core = contract(CoreJson);
-    Core.setProvider(web3.currentProvider);
+    const Vault = contract(VaultJson);
+    Vault.setProvider(web3.currentProvider);
     const coreAddress = FlowRouter.getParam('address');
-    const coreContract = Core.at(coreAddress);
+    const coreContract = Vault.at(coreAddress);
     const Exchange = contract(ExchangeJson);
     Exchange.setProvider(web3.currentProvider);
     const ExchangeAddress = FlowRouter.getParam('address');

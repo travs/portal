@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
 
-import matchedOrders from './fixtures/matchedOrders.json';
-import orderBigNumberify from './helpers/orderBigNumberify';
+import matchedOrders from '../__fixtures__/matchedOrders.json';
+import orderBigNumberify from '../helpers/orderBigNumberify';
 
 // MUT (Module under test)
-import averagePrice from './averagePrice';
+import averagePrice from '../averagePrice';
 
 
 test('average price', () => {

@@ -5,14 +5,14 @@ import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 // Collections
-import Cores from '/imports/api/cores';
+import Vaults from '/imports/api/vaults';
 import Assets from '/imports/api/assets';
 
 // Corresponding html file
 import './portfolioContents.html';
 
 Template.portfolioContents.onCreated(() => {
-  Meteor.subscribe('cores');
+  Meteor.subscribe('vaults');
   Meteor.subscribe('assets');
   Template.instance().totalPortfolioValue = new ReactiveVar();
 });
@@ -20,12 +20,12 @@ Template.portfolioContents.onCreated(() => {
 Template.portfolioContents.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
+    const doc = Vaults.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
   isPortfolioOwner() {
     const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
+    const doc = Vaults.findOne({ address });
     if (doc === undefined || address === undefined) return false;
     return doc.owner === Session.get('selectedAccount');
   },
@@ -59,7 +59,7 @@ Template.portfolioContents.helpers({
     const divisor = Math.pow(10, precision);
     const value = holdings * (price / divisor);
     const address = FlowRouter.getParam('address');
-    const doc = Cores.findOne({ address });
+    const doc = Vaults.findOne({ address });
     if (doc === undefined) {
       return 'N/A';
     }
