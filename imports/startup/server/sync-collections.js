@@ -1,12 +1,15 @@
 // / Remark: Code mostly taken from: https://github.com/makerdao/maker-market
 import { Meteor } from 'meteor/meteor';
 // Collections
+import Assets from '/imports/api/assets';
 import Vaults from '/imports/api/vaults';
 import Orders from '/imports/api/orders';
 import Trades from '/imports/api/trades';
 
 // EXECUTION
 Meteor.startup(() => {
+  Assets.remove({});
+
   Vaults.remove({});
   Vaults.sync();
   Vaults.watch();
