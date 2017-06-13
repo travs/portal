@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { Vaults } from '/imports/api/vaults';
+import Vaults from '/imports/api/vaults';
 import '/imports/ui/components/portfolio/portfolioOverview';
 import '/imports/ui/components/portfolio/portfolioContents';
 import '/imports/ui/components/portfolio/manageParticipation';
@@ -26,4 +26,6 @@ Template.fund.helpers({
 Template.fund.onRendered(() => {
   const address = FlowRouter.getParam('address'); // Address of Vault
   Meteor.call('assets.sync', address);
+  const doc = Vaults.findOne({ address: FlowRouter.getParam('address') }); // loading delay
+  Meteor.call('vaults.syncVaultById', doc.id);
 });
