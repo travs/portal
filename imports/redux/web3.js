@@ -18,7 +18,7 @@ type State = {
 export const initialState: State = {
   isSynced: false,
   isConnected: false,
-  isServerConnected: false,
+  isServerConnected: null,
   currentBlock: 0,
 };
 

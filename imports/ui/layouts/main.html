@@ -4,7 +4,34 @@
   </header>
 
   <div class="site-content">
-    {{> Template.dynamic template=main}}
+  {{> Template.dynamic template=header}}
+
+  {{#if isLoaded}}
+    {{#if isServerConnected}}
+      {{#if isClientConnected}}
+        {{#if selectedAccount}}
+          {{#if isKovanNetwork}}
+            {{#if selectedAccountBalance}}
+              {{> Template.dynamic template=main}}
+            {{else}} <!-- Client balance zero -->
+              {{> ux_insufficient_funds}}
+            {{/if}}
+          {{else}} <!-- Client not on Kovan -->
+            {{> ux_ethereum_testnet}}
+          {{/if}}
+        {{else}} <!-- Client has no account selected -->
+          {{> uxNoAccountSelected}}
+        {{/if}}
+      {{else}} <!-- Client not connected -->
+        {{> uxNoConnection}}
+      {{/if}}
+    {{else}} <!-- Server not connected -->
+      {{> uxServerConnection}}
+    {{/if}}
+  {{else}} <!-- Loading -->
+    {{> uxLoading}}
+  {{/if}}
+
   </div>
 
   <footer class="page-footer">

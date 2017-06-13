@@ -19,11 +19,13 @@ store.subscribe(() => {
   Session.set('network', currentState.web3.network);
   Session.set('currentBlock', currentState.web3.currentBlock);
   Session.set('isSynced', currentState.web3.isSynced);
+  Session.set('isLoaded', currentState.web3.isServerConnected !== null);
 });
 
 // initialize the other session vars
 // TODO: Remove this
 Meteor.startup(() => {
+  console.log('METEOR STARTUP');
   Session.set('fromPortfolio', true);
   Session.set('selectedOrderId', null);
   Session.set('showModal', true);

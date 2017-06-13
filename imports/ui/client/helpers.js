@@ -10,6 +10,7 @@ import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertF
 
 
 // Server network
+Template.registerHelper('isLoaded', () => Session.get('isLoaded'));
 Template.registerHelper('isServerConnected', () => Session.get('isServerConnected'));
 // Client network
 Template.registerHelper('isClientConnected', () => Session.get('isClientConnected'));
