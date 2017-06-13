@@ -4,7 +4,12 @@
 
 Application of the melon protocol portal. 
 
-[![Slack Status](http://chat.melonport.com/badge.svg)](http://chat.melonport.com) [![Gitter](https://badges.gitter.im/melonproject/general.svg)](https://gitter.im/melonproject/general?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Slack Status][slack-badge]][slack-url]
+[![Gitter][gitter-badge]][gitter-url]
+[![License: GPL v3][license-badge]][license-badge-url]
+[![Dependencies][dependencies-badge]][dependencies-badge-url]
+[![Dev Dependencies][devDependencies-badge]][devDependencies-badge-url]
+
 
 ## Installation
 
@@ -89,3 +94,19 @@ Deploy with:
 
 Everyone is free to host & run this portal elsewhere. All the important data is
 synced from the blockchain.
+
+
+
+
+
+
+[slack-badge]: http://chat.melonport.com/badge.svg
+[slack-url]: http://chat.melonport.com
+[gitter-badge]: https://badges.gitter.im/melonproject/general.svg
+[gitter-url]: https://gitter.im/melonproject/general?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[license-badge]: https://img.shields.io/badge/License-GPL%20v3-blue.svg
+[license-badge-url]: ./LICENSE
+[dependencies-badge]: https://img.shields.io/david/melonproject/portal.svg
+[dependencies-badge-url]: https://david-dm.org/melonproject/portal
+[devDependencies-badge]: https://img.shields.io/david/dev/melonproject/portal.svg
+[devDependencies-badge-url]: https://david-dm.org/melonproject/portal#info=devDependencies
