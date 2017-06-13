@@ -13,6 +13,9 @@ import web3 from '/imports/lib/web3/client';
 import addressList from '/imports/melon/interface/addressList';
 // Collections
 import Vaults from '/imports/api/vaults';
+// Interface
+import subscribe from '/imports/melon/interface/subscribe';
+import redeem from '/imports/melon/interface/redeem';
 
 import './manageParticipation.html';
 
@@ -125,22 +128,34 @@ Template.manageParticipation.events({
     switch (type) {
       // Invest case
       case 0:
-        EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then(result => EtherTokenContract.approve(coreAddress, baseUnitVolume, { from: managerAddress })).then(result => coreContract.createShares(baseUnitVolume, { from: managerAddress })).then((result) => {
-          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-          toastr.success('Shares successfully created!');
-          console.log(`Shares successfully created. Tx Hash: ${result}`);
-          Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
-          Meteor.call('vaults.syncVaultById', doc.id);
-          return coreContract.totalSupply();
-        }).catch((error) => {
+        // Interface/subscribe = (id, managerAddress, coreAddress, quantityAsked, quantityOffered)
+        const quantityAsked = new BigNumber(templateInstance.find('input#volume').value).times(Math.pow(10, 18));
+        const quantityOffered = new BigNumber(templateInstance.find('input#total').value).times(Math.pow(10, 18));
+        console.log({ quantityAsked, quantityOffered });
+        subscribe(doc.id, managerAddress, coreAddress, quantityAsked, quantityOffered)
+        .then(result => console.log(result))
+        .catch((error) => {
           console.log(error);
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
           toastr.error('Oops, an error has occured. Please verify that your holdings allow you to invest in this fund!');
         });
-        templateInstance.find('input#total').value = '';
-        templateInstance.find('input#volume').value = '';
+        // EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then(result => EtherTokenContract.approve(coreAddress, baseUnitVolume, { from: managerAddress })).then(result => coreContract.createShares(baseUnitVolume, { from: managerAddress })).then((result) => {
+        //   Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+        //   toastr.success('Shares successfully created!');
+        //   console.log(`Shares successfully created. Tx Hash: ${result}`);
+        //   Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+        //   Meteor.call('vaults.syncVaultById', doc.id);
+        //   return coreContract.totalSupply();
+        // }).catch((error) => {
+        //   console.log(error);
+        //   Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
+        //   toastr.error('Oops, an error has occured. Please verify that your holdings allow you to invest in this fund!');
+        // });
+        // templateInstance.find('input#total').value = '';
+        // templateInstance.find('input#volume').value = '';
         window.scrollTo(0, 0);
         break;
+
 
       // Redeem case
       case 1:
