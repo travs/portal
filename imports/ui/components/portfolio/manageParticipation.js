@@ -130,6 +130,7 @@ Template.manageParticipation.events({
           toastr.success('Shares successfully created!');
           console.log(`Shares successfully created. Tx Hash: ${result}`);
           Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+          Meteor.call('vaults.syncVaultById', doc.id);
           return coreContract.totalSupply();
         }).catch((error) => {
           console.log(error);
