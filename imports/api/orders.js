@@ -67,7 +67,7 @@ Orders.sync = () => {
 Orders.syncOrderById = (id) => {
   getOrder(id).then((order) => {
     if (order.sell.token !== '0x0000000000000000000000000000000000000000') {
-      console.log('syncOrder with DB', order);
+      console.log('syncOrder with DB', order.id);
     }
 
     if (order.isActive) {

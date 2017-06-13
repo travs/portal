@@ -73,7 +73,6 @@ Template.portalNew.events({
           id = result.logs[i].args.id.toNumber();
           console.log('Vault has been created');
           console.log(`Vault id: ${id}`);
-          Meteor.call('vaults.syncVaultById', id);
           Session.set('isNew', true);
           toastr.success('Fund successfully created! You can now invest in your fund!');
         }
@@ -81,12 +80,7 @@ Template.portalNew.events({
       return versionContract.getVault(id);
     })
     .then((info) => {
-      const [address, owner, , , , ] = info;
-      Meteor.call('universes.insert',
-        Session.get('universeContractAddress'),
-        address,
-        owner,
-      );
+      const address = info[0];
       Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
       FlowRouter.go(`/fund/${address}`);
     }).catch((err) => {

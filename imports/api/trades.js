@@ -56,6 +56,8 @@ Trades.watch = () => {
     const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
     const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
 
+    console.log('Trades.upsert', event.transactionHash);
+
     Trades.upsert({
       transactionHash: event.transactionHash,
     }, {

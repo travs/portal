@@ -151,7 +151,6 @@ Template.orderBookContents.helpers({
 });
 
 Template.orderBookContents.onRendered(() => {
-  Meteor.call('orders.sync');
 });
 
 Template.orderBookContents.events({

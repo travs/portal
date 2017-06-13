@@ -95,6 +95,9 @@ Vaults.syncVaultById = (id) => {
     currTotalSupply = result;
     // sharePrice = convertToTokenPrecision(sharePrice, decimals);
     // Insert into Portfolio collection
+
+    console.log('Vaults.upsert', id);
+
     Vaults.upsert({
       id,
     }, {

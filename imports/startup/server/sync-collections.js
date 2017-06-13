@@ -8,16 +8,20 @@ import Trades from '/imports/api/trades';
 
 // EXECUTION
 Meteor.startup(() => {
-  Assets.remove({});
+  console.log(Meteor.settings);
 
-  Vaults.remove({});
-  Vaults.sync();
-  Vaults.watch();
+  if (!Meteor.settings.public.disableSync) {
+    Assets.remove({});
 
-  Orders.remove({});
-  Orders.sync();
-  Orders.watch();
+    Vaults.remove({});
+    Vaults.sync();
+    Vaults.watch();
 
-  Trades.remove({});
-  Trades.watch();
+    Orders.remove({});
+    Orders.sync();
+    Orders.watch();
+
+    Trades.remove({});
+    Trades.watch();
+  }
 });

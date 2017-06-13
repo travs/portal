@@ -129,7 +129,6 @@ Template.manageParticipation.events({
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
           toastr.success('Shares successfully created!');
           console.log(`Shares successfully created. Tx Hash: ${result}`);
-          Meteor.call('vaults.sync', coreAddress); // Upsert vaults Collection
           Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
           return coreContract.totalSupply();
         }).catch((error) => {
@@ -147,7 +146,6 @@ Template.manageParticipation.events({
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
           toastr.success('Shares successfully redeemed!');
           console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
-          Meteor.call('vaults.sync', coreAddress); // Upsert vaults Collection
           Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
           templateInstance.find('input#total').value = '';
           templateInstance.find('input#volume').value = '';

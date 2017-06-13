@@ -58,7 +58,6 @@ Template.portfolioOverview.events({
     if ((doc === undefined || address === undefined)) {
       return false;
     }
-    Meteor.call('vaults.removeById', doc._id);
     // TODO replace toast
     // Materialize.toast('Portfolio deleted!', 4000, 'blue');
     return true;
