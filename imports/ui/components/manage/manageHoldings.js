@@ -312,7 +312,7 @@ Template.manageHoldings.events({
                 toastr.success('Order successfully executed!');
               }).catch((err) => {
                 Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
-                toastr.error('Oops, an error has occured. Please verify the transaction informations');
+                toastr.error('Oops, an error has occurred. Please verify the transaction informations');
                 throw err;
               });
               quantity = quantity.minus(sellHowMuchPrecise);
@@ -333,7 +333,7 @@ Template.manageHoldings.events({
                 toastr.success('Order successfully executed!');
               }).catch((err) => {
                 Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
-                toastr.error('Oops, an error has occured. Please verify the transaction informations');
+                toastr.error('Oops, an error has occurred. Please verify the transaction informations');
                 throw err;
               });
               quantity = new BigNumber(0);

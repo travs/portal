@@ -84,7 +84,7 @@ Template.portalNew.events({
       Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
       FlowRouter.go(`/fund/${address}`);
     }).catch((err) => {
-      toastr.error('Oops, an error has occured. Please verify your fund informations.');
+      toastr.error('Oops, an error has occurred. Please verify your fund informations.');
       Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
       throw err;
     });
