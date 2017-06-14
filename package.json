@@ -32,7 +32,7 @@
     ]
   },
   "dependencies": {
-    "@melonproject/protocol": "^0.1.2",
+    "@melonproject/protocol": "0.1.3",
     "async": "^2.1.4",
     "babel-runtime": "^6.23.0",
     "bootstrap-switch": "^3.3.3",

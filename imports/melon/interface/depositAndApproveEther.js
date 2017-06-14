@@ -14,6 +14,8 @@ const etherTokenContract = EtherToken.at(addressList.etherToken);
 const depositAndApproveEther = (fromAddress, toBeApprovedAddress, quantity) =>
   etherTokenContract.deposit({ from: fromAddress, value: quantity })
   .then(() => etherTokenContract.approve(
-      toBeApprovedAddress, quantity, { from: fromAddress }));
+      toBeApprovedAddress, quantity, { from: fromAddress }))
+  .then(() => etherTokenContract.approve(
+      addressList.subscribe, quantity, { from: fromAddress }));
 
 export default depositAndApproveEther;

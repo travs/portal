@@ -24,11 +24,11 @@ const initWeb3Instance = () => {
 
   window.web3 = new Proxy(web3Instance, {
     get(target, property) {
-      console.warn('Do not use window.web3. Import it from "/imports/lib/client/ethereum/web3.js"');
+      // console.warn('Do not use window.web3. Import it from "/imports/lib/client/ethereum/web3.js"');
       return web3Instance[property];
     },
     set(target, property, value) {
-      console.warn('Do not use window.web3. Import it from "/imports/lib/client/ethereum/web3.js"');
+      // console.warn('Do not use window.web3. Import it from "/imports/lib/client/ethereum/web3.js"');
       web3Instance[property] = value;
       return true;
     },

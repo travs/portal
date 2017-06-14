@@ -128,12 +128,18 @@ Template.manageParticipation.events({
     switch (type) {
       // Invest case
       case 0:
-        // Interface/subscribe = (id, managerAddress, coreAddress, quantityAsked, quantityOffered)
         const quantityAsked = new BigNumber(templateInstance.find('input#volume').value).times(Math.pow(10, 18));
         const quantityOffered = new BigNumber(templateInstance.find('input#total').value).times(Math.pow(10, 18));
         console.log({ quantityAsked, quantityOffered });
-        subscribe(doc.id, managerAddress, coreAddress, quantityAsked, quantityOffered)
-        .then(result => console.log(result))
+        subscribe(doc.id, managerAddress, coreAddress, baseUnitVolume, weiTotal)
+        .then((result) => {
+          console.log(result);
+          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+          toastr.success('Shares successfully created!');
+          console.log(`Shares successfully created. Tx Hash: ${result}`);
+          Meteor.call('assets.sync', coreAddress);
+          Meteor.call('vaults.syncVaultById', doc.id);
+        })
         .catch((error) => {
           console.log(error);
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
