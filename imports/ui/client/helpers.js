@@ -24,6 +24,7 @@ Template.registerHelper('currentBlock', () => Session.get('currentBlock'));
 // Account
 Template.registerHelper('selectedAccount', () => Session.get('selectedAccount'));
 Template.registerHelper('selectedAccountBalance', () => Session.get('selectedAccountBalance'));
+Template.registerHelper('sufficientFund', () => Session.get('selectedAccountBalance') !== '0');
 // Vaults
 Template.registerHelper('getVaults', () => Vaults.find({}, { sort: { notional: -1, sharePrice: -1 } }));
 Template.registerHelper('getVaultCount', () => Vaults.find().count());

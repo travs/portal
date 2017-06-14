@@ -11,7 +11,7 @@
       {{#if isClientConnected}}
         {{#if selectedAccount}}
           {{#if isKovanNetwork}}
-            {{#if selectedAccountBalance}}
+            {{#if sufficientFund}}
               {{> Template.dynamic template=main}}
             {{else}} <!-- Client balance zero -->
               {{> ux_insufficient_funds}}
