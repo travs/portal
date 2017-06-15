@@ -27,5 +27,5 @@ Template.fund.onRendered(() => {
   const address = FlowRouter.getParam('address'); // Address of Vault
   Meteor.call('assets.sync', address);
   const doc = Vaults.findOne({ address: FlowRouter.getParam('address') }); // loading delay
-  Meteor.call('vaults.syncVaultById', doc.id);
+  if (doc) Meteor.call('vaults.syncVaultById', doc.id);
 });
