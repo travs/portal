@@ -18,6 +18,20 @@ const instance = {
   approve: jest.fn(() => new Promise(resolve =>
       resolve(true)),
   ),
+  // Vault functions
+  getRefPriceForNumShares: jest.fn((quantityAsked) => {
+    expect(quantityAsked).toBeInstanceOf(BigNumber);
+    return new Promise(resolve => resolve(new BigNumber(1)));
+  }),
+  // Subscribe functions
+  createSharesWithReferenceAsset: jest.fn(
+    (coreAddress, quantityAsked, quantityOffered, { from: managerAddress }) => {
+      expect(typeof coreAddress).toBe('string');
+      expect(typeof managerAddress).toBe('string');
+      expect(quantityAsked).toBeInstanceOf(BigNumber);
+      expect(quantityOffered).toBeInstanceOf(BigNumber);
+      return new Promise(resolve => resolve(true));
+    }),
 };
 
 const contract = {
