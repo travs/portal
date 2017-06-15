@@ -5,6 +5,7 @@ import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import select2 from 'select2';
 import contract from 'truffle-contract';
+import BigNumber from 'bignumber.js';
 // Contracts
 import VaultJson from '@melonproject/protocol/build/contracts/Vault.json'; // Get Smart Contract JSON
 import EtherTokenJson from '@melonproject/protocol/build/contracts/EtherToken.json';
@@ -116,11 +117,6 @@ Template.manageParticipation.events({
     // Is mining
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
-    // From price to volume of shares
-    const weiPrice = web3.toWei(price, 'ether');
-    const baseUnitVolume = web3.toWei(volume, 'ether');
-    const weiTotal = web3.toWei(total, 'ether');
-
     const EtherToken = contract(EtherTokenJson);
     EtherToken.setProvider(web3.currentProvider);
     const EtherTokenContract = EtherToken.at(addressList.etherToken);
@@ -130,13 +126,13 @@ Template.manageParticipation.events({
       case 0:
         const quantityAsked = new BigNumber(templateInstance.find('input#volume').value).times(Math.pow(10, 18));
         const quantityOffered = new BigNumber(templateInstance.find('input#total').value).times(Math.pow(10, 18));
-        console.log({ quantityAsked, quantityOffered });
-        subscribe(doc.id, managerAddress, coreAddress, baseUnitVolume, weiTotal)
+
+        subscribe(doc.id, managerAddress, coreAddress, quantityAsked, quantityOffered)
         .then((result) => {
           console.log(result);
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
           toastr.success('Shares successfully created!');
-          console.log(`Shares successfully created. Tx Hash: ${result}`);
+          console.log('Shares successfully created.');
           Meteor.call('assets.sync', coreAddress);
           Meteor.call('vaults.syncVaultById', doc.id);
         })
@@ -145,7 +141,7 @@ Template.manageParticipation.events({
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
           toastr.error('Oops, an error has occured. Please verify that your holdings allow you to invest in this fund!');
         });
-        // EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then(result => EtherTokenContract.approve(coreAddress, baseUnitVolume, { from: managerAddress })).then(result => coreContract.createShares(baseUnitVolume, { from: managerAddress })).then((result) => {
+        // EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then(result => EtherTokenContract.approve(coreAddress, weiVolume, { from: managerAddress })).then(result => coreContract.createShares(weiVolume, { from: managerAddress })).then((result) => {
         //   Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         //   toastr.success('Shares successfully created!');
         //   console.log(`Shares successfully created. Tx Hash: ${result}`);
@@ -165,7 +161,7 @@ Template.manageParticipation.events({
 
       // Redeem case
       case 1:
-        coreContract.annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress }).then((result) => {
+        coreContract.annihilateShares(weiVolume, weiTotal, { from: managerAddress }).then((result) => {
           Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
           toastr.success('Shares successfully redeemed!');
           console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
