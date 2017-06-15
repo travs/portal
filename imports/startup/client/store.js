@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
 import preferences from '/imports/redux/preferences';
 import web3 from '/imports/redux/web3';
+import melonInterface from '/imports/redux/melonInterface';
 
 
 // http://redux.js.org/docs/api/createStore.html
@@ -9,6 +10,7 @@ export default createStore(
   combineReducers({
     preferences,
     web3,
+    melonInterface,
   }),
   {/* preloadedState */},
   compose(

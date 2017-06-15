@@ -19,6 +19,9 @@ import subscribe from '/imports/melon/interface/subscribe';
 import redeem from '/imports/melon/interface/redeem';
 
 import './manageParticipation.html';
+// Redux
+import { creators } from '/imports/redux/melonInterface';
+import store from '/imports/startup/client/store';
 
 const Vault = contract(VaultJson); // Set Provider
 
@@ -127,6 +130,9 @@ Template.manageParticipation.events({
         const quantityOffered = new BigNumber(templateInstance.find('input#total').value).times(Math.pow(10, 18));
 
         console.log(doc.id, managerAddress, coreAddress, quantityAsked.toString(), quantityOffered.toString());
+
+        store.dispatch(creators.subscribeToFund(doc.id, managerAddress, coreAddress, quantityAsked, quantityOffered));
+
         subscribe(doc.id, managerAddress, coreAddress, quantityAsked, quantityOffered)
         .then((result) => {
           console.log(result);
