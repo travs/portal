@@ -70,7 +70,6 @@ Template.manageParticipation.events({
   'input input#volume': (event, templateInstance) => {
     const price = parseFloat(templateInstance.find('input#price').value || 0, 10);
     const volume = parseFloat(templateInstance.find('input#volume').value || 0, 10);
-    console.log('price: ', price, 'volume: ', volume);
     /* eslint no-param-reassign: ["error", { "props": false }]*/
     templateInstance.find('input#total').value = price * volume;
   },
@@ -127,6 +126,7 @@ Template.manageParticipation.events({
         const quantityAsked = new BigNumber(templateInstance.find('input#volume').value).times(Math.pow(10, 18));
         const quantityOffered = new BigNumber(templateInstance.find('input#total').value).times(Math.pow(10, 18));
 
+        console.log(doc.id, managerAddress, coreAddress, quantityAsked.toString(), quantityOffered.toString());
         subscribe(doc.id, managerAddress, coreAddress, quantityAsked, quantityOffered)
         .then((result) => {
           console.log(result);

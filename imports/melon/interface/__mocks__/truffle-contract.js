@@ -1,5 +1,6 @@
 import orderBook from '../__fixtures__/blockChainOrders';
 import BigNumber from 'bignumber.js';
+import subscribeResult from '../__fixtures__/subscribeResult';
 
 const instance = {
   // Exchange functions
@@ -30,7 +31,7 @@ const instance = {
       expect(typeof managerAddress).toBe('string');
       expect(quantityAsked).toBeInstanceOf(BigNumber);
       expect(quantityOffered).toBeInstanceOf(BigNumber);
-      return new Promise(resolve => resolve(true));
+      return new Promise(resolve => resolve(subscribeResult));
     }),
 };
 
