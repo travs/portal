@@ -133,20 +133,20 @@ Template.manageParticipation.events({
 
         store.dispatch(creators.subscribeToFund(doc.id, managerAddress, coreAddress, quantityAsked, quantityOffered));
 
-        subscribe(doc.id, managerAddress, coreAddress, quantityAsked, quantityOffered)
-        .then((result) => {
-          console.log(result);
-          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-          toastr.success('Shares successfully created!');
-          console.log('Shares successfully created.');
-          Meteor.call('assets.sync', coreAddress);
-          Meteor.call('vaults.syncVaultById', doc.id);
-        })
-        .catch((error) => {
-          console.log(error);
-          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
-          toastr.error('Oops, an error has occured. Please verify that your holdings allow you to invest in this fund!');
-        });
+        // subscribe(doc.id, managerAddress, coreAddress, quantityAsked, quantityOffered)
+        // .then((result) => {
+        //   console.log(result);
+          // Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+          // toastr.success('Shares successfully created!');
+        //   console.log('Shares successfully created.');
+        //   Meteor.call('assets.sync', coreAddress);
+        //   Meteor.call('vaults.syncVaultById', doc.id);
+        // })
+        // .catch((error) => {
+        //   console.log(error);
+        //   Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
+        //   toastr.error('Oops, an error has occured. Please verify that your holdings allow you to invest in this fund!');
+        // });
         // EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then(result => EtherTokenContract.approve(coreAddress, weiVolume, { from: managerAddress })).then(result => coreContract.createShares(weiVolume, { from: managerAddress })).then((result) => {
         //   Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
         //   toastr.success('Shares successfully created!');
