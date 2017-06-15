@@ -60,5 +60,20 @@ const subscribe = (
   });
 };
 
+// const subscribe = async (
+//   id, managerAddress, coreAddress, quantityAsked, quantityOffered,
+// ) => {
+//   const vaultContract = Vault.at(coreAddress);
+//   const price = await vaultContract.getRefPriceForNumShares(quantityAsked);
+
+//   await depositAndApproveEther(managerAddress, coreAddress, price);
+//   console.log('deposit and approve done');
+//   const result = await subscribeContract.createSharesWithReferenceAsset(
+//       coreAddress, quantityAsked, quantityOffered, { from: managerAddress },
+//   );
+//   console.log('result from createSharesWithReferenceAsset ', result);
+//   return result;
+// };
+
 
 export default subscribe;
