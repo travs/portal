@@ -236,7 +236,6 @@ Template.manageHoldings.events({
     event.preventDefault();
 
     window.scrollTo(0, 0);
-    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
     const buy = Template.instance().state.get('buyingSelected');
 
@@ -264,6 +263,7 @@ Template.manageHoldings.events({
 
     // Case 1: form pre-filled w order book information (when user selects an order book)
     if (Session.get('selectedOrderId') !== null) {
+      Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
       const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
 
       // Get token address, precision and base unit volume for buy token and sell token
@@ -337,6 +337,8 @@ Template.manageHoldings.events({
         // TODO: Implement this
         console.warn('Not implemented yet');
       }
+    } else {
+      toastr.error('Oops, you need to select an order for the order book!');
     }
   },
 });
