@@ -265,7 +265,6 @@ Template.manageHoldings.events({
     // Case 1: form pre-filled w order book information (when user selects an order book)
     if (Session.get('selectedOrderId') !== null) {
       const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
-      // const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).totalWantedBuyAmount;
 
       // Get token address, precision and base unit volume for buy token and sell token
       const buyTokenAddress = specs.getTokenAddress(setOfOrders[0].sell.symbol);
