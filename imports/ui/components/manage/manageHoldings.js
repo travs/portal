@@ -313,7 +313,6 @@ Template.manageHoldings.events({
               });
               quantity = quantity.minus(sellHowMuchPrecise);
             } else if (quantity.lt(sellHowMuchPrecise)) {
-              // quantity = quantity.div(Math.pow(10, setOfOrders[i].sell.precision));
               takeOrder(
                 setOfOrders[i].id,
                 managerAddress,
