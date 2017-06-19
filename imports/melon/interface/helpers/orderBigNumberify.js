@@ -2,10 +2,8 @@ import BigNumber from 'bignumber.js';
 
 
 const orderBigNumberify = (order) => {
-  const buyHowMuchBigNumber = new BigNumber(order.buy.howMuchPrecise)
-      .div(Math.pow(10, order.buy.precision));
-  const sellHowMuchBigNumber = new BigNumber(order.sell.howMuchPrecise)
-      .div(Math.pow(10, order.sell.precision));
+  const buyHowMuchBigNumber = new BigNumber(order.buy.howMuchPrecise);
+  const sellHowMuchBigNumber = new BigNumber(order.sell.howMuchPrecise);
 
   return {
     ...order,

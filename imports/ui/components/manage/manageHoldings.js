@@ -233,11 +233,9 @@ Template.manageHoldings.events({
     templateInstance.find('input.js-volume').value = total / price;
   },
   'click .js-placeorder': (event, templateInstance) => {
-    console.log('click .js-placeorder', event, templateInstance);
     event.preventDefault();
 
     window.scrollTo(0, 0);
-    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
 
     const buy = Template.instance().state.get('buyingSelected');
 
@@ -265,8 +263,8 @@ Template.manageHoldings.events({
 
     // Case 1: form pre-filled w order book information (when user selects an order book)
     if (Session.get('selectedOrderId') !== null) {
+      Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
       const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
-      // const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).totalWantedBuyAmount;
 
       // Get token address, precision and base unit volume for buy token and sell token
       const buyTokenAddress = specs.getTokenAddress(setOfOrders[0].sell.symbol);
@@ -286,17 +284,14 @@ Template.manageHoldings.events({
           .times(Math.pow(10, sellTokenPrecision));
       } else {
         quantity = new BigNumber(templateInstance.find('input.js-volume').value)
-          .times(Math.pow(10, sellTokenPrecision));
-        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value)
           .times(Math.pow(10, buyTokenPrecision));
+        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value)
+          .times(Math.pow(10, sellTokenPrecision));
       }
       // Case 1.1 : Take offer -> Trade through fund
       if (Session.get('fromPortfolio')) {
         for (let i = 0; i < setOfOrders.length; i += 1) {
-          // const sellPrecision = setOfOrders[i].sell.precision;
           const sellHowMuchPrecise = new BigNumber(setOfOrders[i].sell.howMuchPrecise);
-          // const buyHowMuchPrecise = new BigNumber(setOfOrders[i].buy.howMuchPrecise);
-
           if (quantity.toNumber()) {
             if (quantity.gte(sellHowMuchPrecise)) {
               takeOrder(
@@ -317,9 +312,6 @@ Template.manageHoldings.events({
               });
               quantity = quantity.minus(sellHowMuchPrecise);
             } else if (quantity.lt(sellHowMuchPrecise)) {
-              // Select more than one order
-              // TODO: Check if its works!
-              console.log(addressList.exchange, setOfOrders[i].id, quantity.toString(), { from: managerAddress });
               takeOrder(
                 setOfOrders[i].id,
                 managerAddress,
@@ -345,6 +337,8 @@ Template.manageHoldings.events({
         // TODO: Implement this
         console.warn('Not implemented yet');
       }
+    } else {
+      toastr.error('Oops, you need to select an order for the order book!');
     }
   },
 });
