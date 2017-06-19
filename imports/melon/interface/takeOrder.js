@@ -22,7 +22,6 @@ const takeOrder = (
     const Vault = contract(VaultJson);
     const order = orderBigNumberify(rawOrder);
     const sellHowMuchPrecise = order.sell.howMuchBigNumber;
-
     const quantity =
       !quantityAsked || quantityAsked.gte(sellHowMuchPrecise)
       ? sellHowMuchPrecise

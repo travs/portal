@@ -284,15 +284,14 @@ Template.manageHoldings.events({
           .times(Math.pow(10, sellTokenPrecision));
       } else {
         quantity = new BigNumber(templateInstance.find('input.js-volume').value)
-          .times(Math.pow(10, sellTokenPrecision));
-        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value)
           .times(Math.pow(10, buyTokenPrecision));
+        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value)
+          .times(Math.pow(10, sellTokenPrecision));
       }
       // Case 1.1 : Take offer -> Trade through fund
       if (Session.get('fromPortfolio')) {
         for (let i = 0; i < setOfOrders.length; i += 1) {
           const sellHowMuchPrecise = new BigNumber(setOfOrders[i].sell.howMuchPrecise);
-
           if (quantity.toNumber()) {
             if (quantity.gte(sellHowMuchPrecise)) {
               takeOrder(
