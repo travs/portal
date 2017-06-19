@@ -233,7 +233,6 @@ Template.manageHoldings.events({
     templateInstance.find('input.js-volume').value = total / price;
   },
   'click .js-placeorder': (event, templateInstance) => {
-    console.log('click .js-placeorder', event, templateInstance);
     event.preventDefault();
 
     window.scrollTo(0, 0);
@@ -293,9 +292,7 @@ Template.manageHoldings.events({
       // Case 1.1 : Take offer -> Trade through fund
       if (Session.get('fromPortfolio')) {
         for (let i = 0; i < setOfOrders.length; i += 1) {
-          // const sellPrecision = setOfOrders[i].sell.precision;
           const sellHowMuchPrecise = new BigNumber(setOfOrders[i].sell.howMuchPrecise);
-          // const buyHowMuchPrecise = new BigNumber(setOfOrders[i].buy.howMuchPrecise);
 
           if (quantity.toNumber()) {
             if (quantity.gte(sellHowMuchPrecise)) {
@@ -317,9 +314,7 @@ Template.manageHoldings.events({
               });
               quantity = quantity.minus(sellHowMuchPrecise);
             } else if (quantity.lt(sellHowMuchPrecise)) {
-              // Select more than one order
-              // TODO: Check if its works!
-              console.log(addressList.exchange, setOfOrders[i].id, quantity.toString(), { from: managerAddress });
+              // quantity = quantity.div(Math.pow(10, setOfOrders[i].sell.precision));
               takeOrder(
                 setOfOrders[i].id,
                 managerAddress,

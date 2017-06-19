@@ -10,7 +10,7 @@ import orderBigNumberify from './helpers/orderBigNumberify';
 import getOrder from './getOrder';
 
 /*
-  @param quantityAsked: BigNumber with Precision (i.e. '1.234' NOT '1234')
+  @param quantityAsked: BigNumber without Precision (i.e. '1234' NOT '1.234')
 */
 const takeOrder = (
   id: number,
@@ -23,12 +23,10 @@ const takeOrder = (
     const order = orderBigNumberify(rawOrder);
     const sellHowMuchPrecise = order.sell.howMuchBigNumber;
 
-    const quantityWithPrecision =
+    const quantity =
       !quantityAsked || quantityAsked.gte(sellHowMuchPrecise)
       ? sellHowMuchPrecise
       : quantityAsked;
-
-    const quantity = quantityWithPrecision.times(Math.pow(10, order.sell.precision));
 
     Vault.setProvider(web3.currentProvider);
     const coreContract = Vault.at(coreAddress);
@@ -50,7 +48,7 @@ const takeOrder = (
     );
 
     return result ? {
-      executedQuantity: quantityWithPrecision,
+      executedQuantity: quantity,
       result,
     } : null;
   });
