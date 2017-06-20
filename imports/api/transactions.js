@@ -47,7 +47,7 @@ Transactions.watch = (vaults) => {
     });
 
     transactions.watch(Meteor.bindEnvironment((err, event) => {
-      console.log(event);
+      console.log('TRANSACTION --------------------------------', event);
       // if(err) throw err;
 
       // const {
