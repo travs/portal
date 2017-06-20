@@ -10,9 +10,6 @@ import specs from '/imports/melon/interface/helpers/specs';
 
 import Vaults from '/imports/api/vaults';
 
-// CONSTANTS
-const blocksPerDay = 21600;
-
 // COLLECTIONS
 
 const Transactions = new Mongo.Collection('transactions');
@@ -30,16 +27,15 @@ if (Meteor.isServer) {
   });
 }
 
-// COLLECTION METHODS
 const vaults = Vaults.find().fetch();
-// console.log('VAULTS --------------- ', vaults);
 
+// COLLECTION METHODS
 Transactions.watch = () => {
   if (Meteor.isClient) return;
 
   const Vault = contract(VaultJson);
   Vault.setProvider(web3.currentProvider);
-  for (let i = 0; i < vaults.length; i++) {
+  for (let i = 0; i < vaults.length; i += 1) {
     const coreContract = Vault.at(vaults[i].address);
 
     // Share Creation Event
