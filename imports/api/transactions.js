@@ -49,48 +49,51 @@ Transactions.watch = () => {
 
     transactions.watch(Meteor.bindEnvironment((err, event) => {
       if (err) throw err;
-      console.log('********', vaults[i].address);
-      console.log('TRANSACTION --------------------------------', event);
+      const {
+        byParticipant: manager,
+        atTimestamp: timeStamp,
+        numShares: numCreatedShares,
+      } = event.args;
+
+      console.log('Share Creation Transaction Upsert ', event.transactionHash);
+      Transactions.upsert({
+        transactionHash: event.transactionHash,
+      }, {
+        address: event.address,
+        blockHash: event.blockHash,
+        blockNumber: event.blockNumber,
+        transactionHash: event.transactionHash,
+        eventType: event.event,
+        manager,
+        timeStamp,
+        numCreatedShares,
+      });
     }));
-
-      // const {
-      //   byParticipant: manager,
-      //   atTimestamp: timeStamp,
-      //   numShares: numCreatedShares,
-      // } = event.args;
-
-      // Transactions.upsert({
-      //   //TODO: check sharesCreated event shape
-      //   id}, {
-      //     manager,
-      //     timeStamp,
-      //     numShares,
-      //     FUNDADDRESS
-      //   });
   }
 };
 
 
-// TRANSACTION LOG
-// {
-//   address: '0x3f5b3d05d9ead705f706fc60285b6c8e9d415258',
-//   blockHash: '0xb58af2eaf90b29c3f6cbc410c48864e5b2bfca29fd69cb82724f280d384810e1',
-//   blockNumber: 2190317,
-//   logIndex: 2,
-//   transactionHash: '0x9019e921dadaf2ddf0ac4d32302a3012c2d9580fab672952f2d291cbd1c7cdec',
-//   transactionIndex: 1,
-//   transactionLogIndex: '0x1',
-//   type: 'mined',
-//   event: 'SharesCreated',
-//   args: {
-//     byParticipant: '0xee2bb8598725445b532bdb14f522a99e04e84b38',
-//     atTimestamp: { [String: '1497949587'] s: 1, e: 9, c: [Object]
-//     },
-//     numShares: {
-//       [String: '10000000000000000000'] s: 1, e: 19, c: [Object]
-//     }
-//   }
-// }
+/* Share Created Shape
+{
+  address: '0x3f5b3d05d9ead705f706fc60285b6c8e9d415258',
+  blockHash: '0xb58af2eaf90b29c3f6cbc410c48864e5b2bfca29fd69cb82724f280d384810e1',
+  blockNumber: 2190317,
+  logIndex: 2,
+  transactionHash: '0x9019e921dadaf2ddf0ac4d32302a3012c2d9580fab672952f2d291cbd1c7cdec',
+  transactionIndex: 1,
+  transactionLogIndex: '0x1',
+  type: 'mined',
+  event: 'SharesCreated',
+  args: {
+    byParticipant: '0xee2bb8598725445b532bdb14f522a99e04e84b38',
+    atTimestamp: { [String: '1497949587'] s: 1, e: 9, c: [Object]
+    },
+    numShares: {
+      [String: '10000000000000000000'] s: 1, e: 19, c: [Object]
+    }
+  }
+}
+*/
 
 export default Transactions;
 
