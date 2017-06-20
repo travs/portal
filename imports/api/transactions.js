@@ -42,13 +42,15 @@ Transactions.watch = () => {
   for (let i = 0; i < vaults.length; i++) {
     const coreContract = Vault.at(vaults[i].address);
 
-    const transactions = coreContract.SharesCreated({}, {
+    // Share Creation Event
+    const sharesCreated = coreContract.SharesCreated({}, {
       fromBlock: 0,
       toBlock: 'latest',
     });
 
-    transactions.watch(Meteor.bindEnvironment((err, event) => {
+    sharesCreated.watch(Meteor.bindEnvironment((err, event) => {
       if (err) throw err;
+
       const {
         byParticipant: manager,
         atTimestamp: timeStamp,
@@ -59,7 +61,37 @@ Transactions.watch = () => {
       Transactions.upsert({
         transactionHash: event.transactionHash,
       }, {
-        address: event.address,
+        coreAddress: event.address,
+        blockHash: event.blockHash,
+        blockNumber: event.blockNumber,
+        transactionHash: event.transactionHash,
+        eventType: event.event,
+        manager,
+        timeStamp,
+        numCreatedShares,
+      });
+    }));
+
+    // Share Annihilation Event
+    const sharesAnnihilated = coreContract.SharesAnnihilated({}, {
+      fromBlock: 0,
+      toBlock: 'latest',
+    });
+
+    sharesAnnihilated.watch(Meteor.bindEnvironment((err, event) => {
+      if (err) throw err;
+
+      const {
+        byParticipant: manager,
+        atTimestamp: timeStamp,
+        numShares: numCreatedShares,
+      } = event.args;
+
+      console.log('Share Annihilation Transaction Upsert ', event.transactionHash);
+      Transactions.upsert({
+        transactionHash: event.transactionHash,
+      }, {
+        coreAddress: event.address,
         blockHash: event.blockHash,
         blockNumber: event.blockNumber,
         transactionHash: event.transactionHash,
@@ -90,6 +122,27 @@ Transactions.watch = () => {
     },
     numShares: {
       [String: '10000000000000000000'] s: 1, e: 19, c: [Object]
+    }
+  }
+}
+*/
+
+/* Share Annihilated Shape
+{
+  address: '0x947b7ac11e1e5d13d360bdf61cc4384ebcc389a3',
+  blockHash: '0x82854916fe7dfa25c1c9324234cac28911a4a666f7723ef64807109420c6c4de',
+  blockNumber: 2038670,
+  logIndex: 4,
+  transactionHash: '0xda153c689ecb95b26c14d0808dd704a595547e2a0383e935ac930cfad6ac1ad5',
+  transactionIndex: 1,
+  transactionLogIndex: '0x3',
+  type: 'mined',
+  event: 'SharesAnnihilated',
+  args: {
+    byParticipant: '0xc9982cd5a53b0e171813993109b7c8ea2690a67d',
+    atTimestamp: { [String: '1497266980'] s: 1, e: 9, c: [Object] },
+    numShares: {
+      [String: '5000000000000000000'] s: 1, e: 18, c: [Object]
     }
   }
 }
