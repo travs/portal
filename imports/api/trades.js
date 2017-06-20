@@ -42,7 +42,6 @@ Trades.watch = () => {
     fromBlock: web3.eth.blockNumber - blocksPerDay,
     toBlock: 'latest',
   });
-
   trades.watch(Meteor.bindEnvironment((err, event) => {
     if (err) throw err;
 
