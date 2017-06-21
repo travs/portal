@@ -15,18 +15,24 @@ const takeMultipleOrders = async (
   coreAddress: string,
   totalQuantityAsked: BigNumber,
 ) =>
-  orders.reduce(async (remainingQuantity: BigNumber, currentOrder: any) => {
+  orders.reduce(async (accumulatorPromise: Promise, currentOrder: any) => {
+    const accumulator = await accumulatorPromise;
+    const remainingQuantity = accumulator.remainingQuantity;
+
     if (remainingQuantity.gt(0)) {
-      await takeOrder(
+      const result = await takeOrder(
         currentOrder.id,
         managerAddress,
         coreAddress,
         remainingQuantity,
       );
-      return remainingQuantity.minus(currentOrder.sell.howMuch);
+      accumulator.remainingQuantity = remainingQuantity.minus(
+        result.executedQuantity,
+      );
+      accumulator.transactions.push(result.transaction);
     }
 
-    return remainingQuantity;
-  }, totalQuantityAsked);
+    return accumulator;
+  }, Promise.resolve({ remainingQuantity: totalQuantityAsked, transactions: [] }));
 
 export default takeMultipleOrders;

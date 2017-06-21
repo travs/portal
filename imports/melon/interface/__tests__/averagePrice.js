@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-import matchedOrders from '../__fixtures__/matchedOrders.json';
+import matchedOrders from '../__fixtures__/matchedOrders';
 
 // MUT (Module under test)
 import averagePrice from '../averagePrice';
