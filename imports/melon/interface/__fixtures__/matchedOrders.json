@@ -4,12 +4,10 @@
     "owner": "0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf",
     "isActive": true,
     "buy": {
-      "token": "0x7506c7bfed179254265d443856ef9bda19221cd7",
       "symbol": "ETH-T",
       "howMuch": "0.3"
     },
     "sell": {
-      "token": "0x4dffea52b0b4b48c71385ae25de41ce6ad0dd5a7",
       "symbol": "MLN-T",
       "howMuch": "1"
     },
@@ -21,12 +19,10 @@
     "owner": "0x00e0b33cdb3af8b55cd8467d6d13bc0ba8035acf",
     "isActive": true,
     "buy": {
-      "token": "0x7506c7bfed179254265d443856ef9bda19221cd7",
       "symbol": "ETH-T",
       "howMuch": "0.4"
     },
     "sell": {
-      "token": "0x4dffea52b0b4b48c71385ae25de41ce6ad0dd5a7",
       "symbol": "MLN-T",
       "howMuch": "1"
     },
