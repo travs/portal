@@ -9,6 +9,8 @@ import addressList from './addressList';
 import getOrder from './getOrder';
 
 /*
+
+
   @param quantityAsked: BigNumber with Precision (i.e. '1.234' NOT '1234')
 */
 const takeOrder = (
@@ -27,17 +29,17 @@ const takeOrder = (
     Vault.setProvider(web3.currentProvider);
     const coreContract = Vault.at(coreAddress);
 
-    const result = await coreContract.takeOrder(
+    const transaction = await coreContract.takeOrder(
       addressList.exchange,
       order.id,
       removePrecision(quantity, order.sell.symbol),
       { from: managerAddress },
     );
 
-    return result
+    return transaction
       ? {
         executedQuantity: quantity,
-        result,
+        transaction,
       }
       : null;
   });
