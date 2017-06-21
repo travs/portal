@@ -9,11 +9,12 @@ import web3 from '/imports/lib/web3';
 import addressList from '/imports/melon/interface/addressList';
 import getOrder from '/imports/melon/interface/getOrder';
 import serializeOrder from '/imports/melon/interface/helpers/serializeOrder';
+import deserializeOrder from '/imports/melon/interface/helpers/deserializeOrder';
 
 const NUMBERS_OF_ORDERS_TO_SYNC_ON_STARTUP = 96;
 
 // COLLECTIONS
-const Orders = (global.Orders = new Mongo.Collection('orders'));
+const Orders = new Mongo.Collection('orders', { transform: deserializeOrder });
 
 if (Meteor.isServer) {
   // Note: you need to specify an asset pair. There is no way to get all orders to the client.

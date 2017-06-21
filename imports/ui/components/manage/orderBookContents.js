@@ -38,11 +38,7 @@ Template.orderBookContents.helpers({
     if (Session.get('fromPortfolio')) return liquidityProviderOrders;
     else if (!Session.get('fromPortfolio')) return allOrders;
   },
-  calcBuyPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    const sellBigNumber = new BigNumber(sellHowMuch);
-    const buyBigNumber = new BigNumber(buyHowMuch);
-    return sellBigNumber.div(buyBigNumber).div(Math.pow(10, sellPrecision - buyPrecision)).toFixed(4);
-  },
+  calcBuyPrice: order => order.sell.howMuch.div(order.buy.howMuch),
   calcSellPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
     const sellBigNumber = new BigNumber(sellHowMuch);
     const buyBigNumber = new BigNumber(buyHowMuch);
