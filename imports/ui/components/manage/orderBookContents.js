@@ -49,15 +49,9 @@ Template.orderBookContents.helpers({
     if (Session.get('fromPortfolio')) return liquidityProviderOrders;
     else if (!Session.get('fromPortfolio')) return allOrders;
   },
-  calcBuyPrice: order => order.sell.howMuch.div(order.buy.howMuch),
-  calcSellPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    const sellBigNumber = new BigNumber(sellHowMuch);
-    const buyBigNumber = new BigNumber(buyHowMuch);
-    return buyBigNumber
-      .div(sellBigNumber)
-      .div(Math.pow(10, buyPrecision - sellPrecision))
-      .toFixed(4);
-  },
+  calcBuyPrice: order => order.sell.howMuch.div(order.buy.howMuch).toFixed(4),
+  calcSellPrice: order => order.buy.howMuch.div(order.sell.howMuch).toFixed(4),
+  displayVolume: (howMuch, dec) => howMuch.toFixed(dec),
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
       'currentAssetPair',
