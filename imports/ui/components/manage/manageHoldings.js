@@ -250,18 +250,6 @@ Template.manageHoldings.events({
       return;
     }
     const coreAddress = FlowRouter.getParam('address');
-    // const doc = Vaults.findOne({ address: coreAddress });
-    // if (doc === undefined) {
-    //   // TODO replace toast
-    //   // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
-    //   return;
-    // }
-    const coreContract = Vault.at(coreAddress);
-    const exchangeContract = Exchange.at(addressList.exchange);
-
-    // BigNumber is always without decimal in it!
-    // Good: '23452345'
-    // Bad: '2.234235'
 
     // Case 1: form pre-filled w order book information (when user selects an order book)
     if (Session.get('selectedOrderId') !== null) {
@@ -286,9 +274,9 @@ Template.manageHoldings.events({
           .times(Math.pow(10, sellTokenPrecision));
       } else {
         quantity = new BigNumber(templateInstance.find('input.js-volume').value)
-          .times(Math.pow(10, sellTokenPrecision));
-        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value)
           .times(Math.pow(10, buyTokenPrecision));
+        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value)
+          .times(Math.pow(10, sellTokenPrecision));
       }
       // Case 1.1 : Take offer -> Trade through fund
       if (Session.get('fromPortfolio')) {
@@ -296,7 +284,8 @@ Template.manageHoldings.events({
           // const sellPrecision = setOfOrders[i].sell.precision;
           const sellHowMuchPrecise = new BigNumber(setOfOrders[i].sell.howMuchPrecise);
           // const buyHowMuchPrecise = new BigNumber(setOfOrders[i].buy.howMuchPrecise);
-
+          console.log('quantity ', quantity.toNumber());
+          console.log('sellHowMuchPrecise ', sellHowMuchPrecise.toNumber());
           if (quantity.toNumber()) {
             if (quantity.gte(sellHowMuchPrecise)) {
               takeOrder(
