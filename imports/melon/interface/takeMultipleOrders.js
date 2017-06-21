@@ -14,14 +14,19 @@ const takeMultipleOrders = async (
   managerAddress: string,
   coreAddress: string,
   totalQuantityAsked: BigNumber,
-) => orders.reduce(async (remainingQuantity: BigNumber, currentOrder: any) => {
-  if (remainingQuantity.gt(0)) {
-    await takeOrder(currentOrder.id, managerAddress, coreAddress, remainingQuantity);
-    return remainingQuantity.minus(currentOrder.sell.howMuchBigNumber);
-  }
+) =>
+  orders.reduce(async (remainingQuantity: BigNumber, currentOrder: any) => {
+    if (remainingQuantity.gt(0)) {
+      await takeOrder(
+        currentOrder.id,
+        managerAddress,
+        coreAddress,
+        remainingQuantity,
+      );
+      return remainingQuantity.minus(currentOrder.sell.howMuch);
+    }
 
-  return remainingQuantity;
-}, totalQuantityAsked);
-
+    return remainingQuantity;
+  }, totalQuantityAsked);
 
 export default takeMultipleOrders;
