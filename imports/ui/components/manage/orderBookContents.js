@@ -75,8 +75,6 @@ Template.orderBookContents.helpers({
       { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } },
     );
 
-    console.log('sellOrders', liquidityProviderOrders.fetch());
-
     if (Session.get('fromPortfolio')) return liquidityProviderOrders;
     else if (!Session.get('fromPortfolio')) return allOrders;
   },
