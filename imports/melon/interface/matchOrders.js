@@ -6,6 +6,7 @@ type OrderTypes = "buy" | "sell";
 /*
   @pre: orders are only from the selected asset pair
   @pre: the orders are already BigNumberified
+  @returns: filtered and sorted set of orders
 */
 const matchOrders = (
   orderType: OrderTypes,
@@ -14,23 +15,20 @@ const matchOrders = (
   orders: Array<mixed>,
 ) => {
   if (orderType === 'buy') {
-    return orders.filter(order =>
-      order.buy.priceBigNumber.gte(priceThreshold),
-    )
-    .sort((a, b) => (
-      a.buy.priceBigNumber.gt(b.sell.priceBigNumber) ? -1 : 1),
-    );
+    return orders
+      .filter(order => order.buy.priceBigNumber.gte(priceThreshold))
+      .sort(
+        (a, b) => (a.buy.priceBigNumber.gt(b.sell.priceBigNumber) ? -1 : 1),
+      );
   } else if (orderType === 'sell') {
-    return orders.filter(order =>
-      order.sell.priceBigNumber.lte(priceThreshold),
-    )
-    .sort((a, b) => (
-      a.sell.priceBigNumber.gt(b.buy.priceBigNumber) ? 1 : -1),
-    );
+    return orders
+      .filter(order => order.sell.priceBigNumber.lte(priceThreshold))
+      .sort(
+        (a, b) => (a.sell.priceBigNumber.gt(b.buy.priceBigNumber) ? 1 : -1),
+      );
   }
 
   throw new Error('You need to specify orderType to be either "sell" or "buy"');
 };
-
 
 export default matchOrders;
