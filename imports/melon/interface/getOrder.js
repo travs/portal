@@ -3,7 +3,10 @@ import ExchangeJson from '@melonproject/protocol/build/contracts/Exchange.json';
 
 import web3 from '/imports/lib/web3';
 import addressList from './addressList';
-import { getTokenPrecisionByAddress, getTokenSymbolByAddress } from './helpers/specs';
+import {
+  getTokenPrecisionByAddress,
+  getTokenSymbolByAddress,
+} from './helpers/specs';
 
 /*
   @ returns the order with volume as a big number with precision
@@ -14,7 +17,8 @@ const getOrder = (id) => {
   const exchangeContract = Exchange.at(addressList.exchange); // Initialize contract instance
 
   return exchangeContract.orders(id).then((order) => {
-    const [sellHowMuch,
+    const [
+      sellHowMuch,
       sellWhichToken,
       buyHowMuch,
       buyWhichToken,
@@ -32,12 +36,10 @@ const getOrder = (id) => {
       owner,
       isActive,
       buy: {
-        token: buyWhichToken,
         symbol: buySymbol,
         howMuch: buyHowMuch.div(Math.pow(10, buyPrecision)),
       },
       sell: {
-        token: sellWhichToken,
         symbol: sellSymbol,
         howMuch: sellHowMuch.div(Math.pow(10, sellPrecision)),
       },
@@ -45,6 +47,5 @@ const getOrder = (id) => {
     };
   });
 };
-
 
 export default getOrder;

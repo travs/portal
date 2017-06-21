@@ -78,7 +78,7 @@ Orders.sync = () => {
 Orders.syncOrderById = (id) => {
   getOrder(id)
     .then((order) => {
-      if (order.sell.token !== '0x0000000000000000000000000000000000000000') {
+      if (order.isActive) {
         console.log('syncOrder with DB', order.id);
       }
 
@@ -87,10 +87,7 @@ Orders.syncOrderById = (id) => {
           {
             id: order.id,
           },
-          {
-            ...serializeOrder(order),
-            createdAt: new Date(),
-          },
+          serializeOrder(order),
         );
       } else {
         Orders.remove({ id: order.id });

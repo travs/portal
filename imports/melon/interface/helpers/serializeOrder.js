@@ -6,6 +6,7 @@ const serializeOrder = (order) => {
   const result = order;
   result.buy.howMuch = order.buy.howMuch.toString();
   result.sell.howMuch = order.sell.howMuch.toString();
+  result.timestamp = new Date(order.timestamp.times(1000).toNumber());
   return result;
 };
 
