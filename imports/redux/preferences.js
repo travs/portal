@@ -1,8 +1,10 @@
-import specs from '/imports/melon/interface/helpers/specs';
-
+import { getBaseTokens, getQuoteTokens } from '/imports/melon/interface/helpers/specs';
 
 export const initialState = {
-  currentAssetPair: `${specs.getBaseTokens()[0]}/${specs.getQuoteTokens()[0]}`,
+  currentAssetPair: {
+    baseTokenSymbol: getBaseTokens()[0],
+    quoteTokenSymbol: getQuoteTokens()[0],
+  },
 };
 
 export const types = {
@@ -20,11 +22,16 @@ export const reducer = (state = initialState, action) => {
   const { type, ...params } = action;
 
   switch (type) {
-    case types.SELECT_ASSET_PAIR:
+    case types.SELECT_ASSET_PAIR: {
+      const [baseTokenSymbol, quoteTokenSymbol] = params.assetPair.split('/');
       return {
         ...state,
-        currentAssetPair: params.assetPair,
+        currentAssetPair: {
+          baseTokenSymbol,
+          quoteTokenSymbol,
+        },
       };
+    }
     default:
       return state;
   }

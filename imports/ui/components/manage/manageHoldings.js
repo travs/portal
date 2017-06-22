@@ -25,11 +25,6 @@ import store from '/imports/startup/client/store';
 import { creators } from '/imports/redux/preferences';
 import './manageHoldings.html';
 
-
-window.getOrder = getOrder;
-window.takeOrder = takeOrder;
-window.BigNumber = BigNumber;
-
 const Vault = contract(VaultJson);
 const Exchange = contract(ExchangeJson);
 

@@ -79,7 +79,6 @@ Template.orderBookContents.onRendered(() => {});
 Template.orderBookContents.events({
   'click .js-takeorder': (event) => {
     Session.set('selectedOrderId', event.currentTarget.dataset.id);
-    console.log(Session.get('selectedOrderId'));
     location.hash = 'manage-holdings';
     history.replaceState(null, null, location.pathname);
   },
