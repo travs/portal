@@ -5,6 +5,7 @@ import cumulativeVolume from '/imports/melon/interface/cumulativeVolume';
 import matchOrders from '/imports/melon/interface/matchOrders';
 import getPrices from '/imports/melon/interface/helpers/getPrices';
 import { getTokenPrecisionBySymbol } from '/imports/melon/interface/helpers/specs';
+import { types as preferenceTypes } from './preferences';
 
 export const initialState = {
   selectedOrderId: undefined,
@@ -55,6 +56,16 @@ export const middleware = store => next => (action) => {
   const { type, ...params } = action;
 
   switch (type) {
+    case preferenceTypes.SELECT_ASSET_PAIR:
+      store.dispatch(
+        creators.adjustOrder({
+          orderType: 'buy',
+          volume: undefined,
+          averagePrice: undefined,
+          total: undefined,
+        }),
+      );
+      break;
     case types.SELECT_ORDER: {
       const {
         baseTokenSymbol,
@@ -92,6 +103,7 @@ export const middleware = store => next => (action) => {
           ),
         0,
       );
+      break;
     }
     default:
   }
