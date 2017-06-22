@@ -4,6 +4,7 @@ import { default as calcAveragePrice } from '/imports/melon/interface/averagePri
 import cumulativeVolume from '/imports/melon/interface/cumulativeVolume';
 import matchOrders from '/imports/melon/interface/matchOrders';
 import getPrices from '/imports/melon/interface/helpers/getPrices';
+import { getTokenPrecisionBySymbol } from '/imports/melon/interface/helpers/specs';
 
 export const initialState = {
   selectedOrderId: undefined,
@@ -78,9 +79,15 @@ export const middleware = store => next => (action) => {
           store.dispatch(
             creators.adjustOrder({
               orderType,
-              volume: volume.toString(),
-              averagePrice: averagePrice.toString(),
-              total: total.toString(),
+              volume: volume.toPrecision(
+                getTokenPrecisionBySymbol(baseTokenSymbol),
+              ),
+              averagePrice: averagePrice.toPrecision(
+                getTokenPrecisionBySymbol(quoteTokenSymbol),
+              ),
+              total: total.toPrecision(
+                getTokenPrecisionBySymbol(baseTokenSymbol),
+              ),
             }),
           ),
         0,

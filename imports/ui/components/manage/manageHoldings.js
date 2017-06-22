@@ -42,90 +42,20 @@ const assetPairs =
 
 Template.manageHoldings.onCreated(() => {
   Meteor.subscribe('vaults');
-  Template.instance().state = new ReactiveDict();
-  Template.instance().state.set({ buyingSelected: true });
+  const instance = Template.instance();
+  instance.state = new ReactiveDict();
+  instance.state.set({ buyingSelected: true });
   // Creation of contract object
   Vault.setProvider(web3.currentProvider);
   Exchange.setProvider(web3.currentProvider);
+
+  store.subscribe(() => {
+    const currentState = store.getState().manageHoldings;
+    instance.state.set({
+      ...currentState,
+    });
+  });
 });
-
-const prefillTakeOrder = (id) => {
-  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-  const selectedOrderId = Number(Session.get('selectedOrderId'));
-  const selectedOffer = Orders.find({ id: selectedOrderId }).fetch();
-  const orderType = selectedOffer[0] && selectedOffer[0].sell.symbol === 'ETH-T' ? 'Sell' : 'Buy';
-
-  if (orderType === 'Sell') {
-    // Template.instance().state.set('buyingSelected', false);
-    let cheaperOrders;
-    if (Session.get('fromPortfolio')) {
-      cheaperOrders = Orders.find({
-        isActive: true,
-        'sell.symbol': quoteTokenSymbol,
-        'buy.symbol': baseTokenSymbol,
-        owner: addressList.liquidityProvider,
-      }, { sort: { 'buy.price': -1, 'sell.howMuch': -1, createdAt: 1 } }).fetch();
-    } else {
-      cheaperOrders = Orders.find({
-        isActive: true,
-        'sell.symbol': quoteTokenSymbol,
-        'buy.symbol': baseTokenSymbol,
-      }, { sort: { 'buy.price': -1, 'sell.howMuch': -1, createdAt: 1 } }).fetch();
-    }
-
-    const buyTokenAddress = specs.getTokenAddress(baseTokenSymbol);
-    const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
-    const sellTokenAddress = specs.getTokenAddress(quoteTokenSymbol);
-    const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
-
-    const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
-    const setOfOrders = cheaperOrders.slice(0, index + 1);
-    const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
-      accumulator.add(currentValue.buy.howMuchPrecise), new BigNumber(0));
-    const pricesSum = setOfOrders.reduce((accumulator, currentValue) =>
-      accumulator.add(currentValue.sell.howMuchPrecise), new BigNumber(0));
-    const averagePrice = (pricesSum.div(volumeTakeOrder).div(Math.pow(10, sellTokenPrecision - buyTokenPrecision))).toString();
-    const volume = volumeTakeOrder.div(Math.pow(10, buyTokenPrecision)).toString();
-    const total = averagePrice * volume;
-    const totalWantedBuyAmount = total;
-
-    return { volume, averagePrice, total, setOfOrders, orderType, totalWantedBuyAmount };
-  } else if (orderType === 'Buy') {
-    Template.instance().state.set('buyingSelected', true);
-    let cheaperOrders;
-    if (Session.get('fromPortfolio')) {
-      cheaperOrders = Orders.find({
-        isActive: true,
-        'sell.symbol': baseTokenSymbol,
-        'buy.symbol': quoteTokenSymbol,
-        owner: addressList.liquidityProvider,
-      }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
-    } else {
-      cheaperOrders = Orders.find({
-        isActive: true,
-        'sell.symbol': baseTokenSymbol,
-        'buy.symbol': quoteTokenSymbol,
-      }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
-    }
-
-    const buyTokenAddress = specs.getTokenAddress(quoteTokenSymbol);
-    const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
-    const sellTokenAddress = specs.getTokenAddress(baseTokenSymbol);
-    const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
-    const index = cheaperOrders.findIndex(element => element.id === parseInt(id, 10));
-    const setOfOrders = cheaperOrders.slice(0, index + 1);
-    const volumeTakeOrder = setOfOrders.reduce((accumulator, currentValue) =>
-      accumulator.add(currentValue.sell.howMuchPrecise), new BigNumber(0));
-    const pricesSum = setOfOrders.reduce((accumulator, currentValue) =>
-      accumulator.add(currentValue.buy.howMuchPrecise), new BigNumber(0));
-    const averagePrice = (pricesSum.div(volumeTakeOrder).div(Math.pow(10, buyTokenPrecision - sellTokenPrecision))).toString();
-    const volume = volumeTakeOrder.div(Math.pow(10, sellTokenPrecision)).toString();
-    const total = averagePrice * volume;
-    const totalWantedBuyAmount = volume;
-
-    return { volume, averagePrice, total, setOfOrders, orderType, totalWantedBuyAmount };
-  }
-};
 
 Template.manageHoldings.helpers({
   assetPairs,
@@ -136,13 +66,8 @@ Template.manageHoldings.helpers({
     const doc = Vaults.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
-  buyOrSell() {
-    if (Template.instance().state.get('buyingSelected')) {
-      return 'Buy';
-    }
-    return 'Sell';
-  },
-  isBuyingSelected: () => Template.instance().state.get('buyingSelected'),
+  orderType: () => Template.instance().state.get('orderType'),
+  isBuyingSelected: () => Template.instance().state.get('orderType') === 'sell',
   currentAssetPair: () => {
     if (Template.instance().state.get('buyingSelected')) {
       return Session.get('currentAssetPair');
@@ -156,26 +81,9 @@ Template.manageHoldings.helpers({
   },
   volumeAsset: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
   totalAsset: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
-  preFillType: () =>
-    Session.get('selectedOrderId') !== null
-    ? prefillTakeOrder(Session.get('selectedOrderId')).symbol
-    : '',
-  preFillPrice: () =>
-    Session.get('selectedOrderId') !== null
-    ? prefillTakeOrder(Session.get('selectedOrderId')).averagePrice
-    : '',
-  preFillVolume: () =>
-    Session.get('selectedOrderId') !== null
-    ? prefillTakeOrder(Session.get('selectedOrderId')).volume
-    : '',
-  preFillTotal: () =>
-    Session.get('selectedOrderId') !== null
-    ? prefillTakeOrder(Session.get('selectedOrderId')).total
-    : '',
-  getStatus() {
-    if (Session.get('fromPortfolio')) return 'Manage fund';
-    return 'Manage account';
-  },
+  preFillPrice: () => Template.instance().state.get('averagePrice'),
+  preFillVolume: () => Template.instance().state.get('volume'),
+  preFillTotal: () => Template.instance().state.get('total'),
 });
 
 Template.manageHoldings.onRendered(() => {
