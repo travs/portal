@@ -1,6 +1,8 @@
+import ensureBigNumber from './ensureBigNumber';
+
 const getPrices = order => ({
-  buy: order.sell.howMuch.div(order.buy.howMuch),
-  sell: order.buy.howMuch.div(order.sell.howMuch),
+  buy: ensureBigNumber(order.sell.howMuch).div(order.buy.howMuch),
+  sell: ensureBigNumber(order.buy.howMuch).div(order.sell.howMuch),
 });
 
 export default getPrices;
