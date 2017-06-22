@@ -13,28 +13,32 @@ import matchOrders from '/imports/melon/interface/matchOrders';
 import getPrices from '/imports/melon/interface/helpers/getPrices';
 import filterByAssetPair from '/imports/melon/interface/query/filterByAssetPair';
 import sortByPrice from '/imports/melon/interface/query/sortByPrice';
+// Redux
+import store from '/imports/startup/client/store';
+import { creators } from '/imports/redux/manageHoldings';
 
 // Corresponding html file
 import './orderBookContents.html';
 import addressList from '/imports/melon/interface/addressList';
 
 const getOrders = (orderType) => {
-  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') ||
-  '---/---').split('/');
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
+    'currentAssetPair',
+  ) || '---/---')
+    .split('/');
   return Orders.find(
-      filterByAssetPair(
-        baseTokenSymbol,
-        quoteTokenSymbol,
-        orderType,
-        true),
-      { sort: sortByPrice('buy') },
-    ).fetch();
+    filterByAssetPair(baseTokenSymbol, quoteTokenSymbol, orderType, true),
+    { sort: sortByPrice('buy') },
+  ).fetch();
 };
 
 Template.orderBookContents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));
   Template.instance().state = new ReactiveDict();
-  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
+    'currentAssetPair',
+  ) || '---/---')
+    .split('/');
   Template.instance().state.set({ baseTokenSymbol, quoteTokenSymbol });
 });
 
@@ -78,7 +82,9 @@ Template.orderBookContents.onRendered(() => {});
 
 Template.orderBookContents.events({
   'click .js-takeorder': (event) => {
-    Session.set('selectedOrderId', event.currentTarget.dataset.id);
+    // Session.set('selectedOrderId', event.currentTarget.dataset.id);
+    store.dispatch(creators.selectOrder(event.currentTarget.dataset.id));
+
     location.hash = 'manage-holdings';
     history.replaceState(null, null, location.pathname);
   },

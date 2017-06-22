@@ -56,7 +56,7 @@ const prefillTakeOrder = (id) => {
   const orderType = selectedOffer[0] && selectedOffer[0].sell.symbol === 'ETH-T' ? 'Sell' : 'Buy';
 
   if (orderType === 'Sell') {
-    Template.instance().state.set('buyingSelected', false);
+    // Template.instance().state.set('buyingSelected', false);
     let cheaperOrders;
     if (Session.get('fromPortfolio')) {
       cheaperOrders = Orders.find({
