@@ -54,56 +54,15 @@ Template.orderBookContents.helpers({
     const matchedOrders = matchOrders(orderType, priceThreshold, orders);
     return cumulativeVolume(orderType, matchedOrders).toNumber().toFixed(4);
   },
-  percentageOfBuySum(buyPrice, precision, index) {
-    const currentCumVol = Template.orderBookContents.__helpers
-      .get('calcBuyCumulativeVolume')
-      .call(this, buyPrice, precision, index);
+  percentageOfTotalVolume(order, orderType) {
+    const orders = getOrders(orderType, Session.get('currentAssetPair'));
+    const priceThreshold = getPrices(order)[orderType];
+    const matchedOrders = matchOrders(orderType, priceThreshold, orders);
+    const currentCumulativeVolume = cumulativeVolume(orderType, matchedOrders);
+    const totalCumulativeVolume = cumulativeVolume(orderType, orders);
 
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
-      'currentAssetPair',
-    ) || '---/---')
-      .split('/');
-    const total = Orders.find(
-      {
-        isActive: true,
-        'sell.symbol': quoteTokenSymbol,
-        'buy.symbol': baseTokenSymbol,
-      },
-      { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } },
-    )
-      .fetch()
-      .reduce(
-        (accumulator, currentValue) => accumulator + currentValue.buy.howMuch,
-        0,
-      );
-    return currentCumVol / convertFromTokenPrecision(total, precision) * 100;
+    return currentCumulativeVolume.div(totalCumulativeVolume).times(100);
   },
-  percentageOfSellSum(sellPrice, precision, index) {
-    const currentCumVol = Template.orderBookContents.__helpers
-      .get('calcSellCumulativeVolume')
-      .call(this, sellPrice, precision, index);
-
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
-      'currentAssetPair',
-    ) || '---/---')
-      .split('/');
-    const total = Orders.find(
-      {
-        isActive: true,
-        'sell.symbol': baseTokenSymbol,
-        'buy.symbol': quoteTokenSymbol,
-      },
-      { sort: { 'buy.price': 1, 'sell.howMuch': 1, createdAt: 1 } },
-    )
-      .fetch()
-      .reduce(
-        (accumulator, currentValue) => accumulator + currentValue.sell.howMuch,
-        0,
-      );
-
-    return currentCumVol / convertFromTokenPrecision(total, precision) * 100;
-  },
-
 });
 
 Template.orderBookContents.onRendered(() => {});

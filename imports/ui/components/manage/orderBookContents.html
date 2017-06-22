@@ -28,8 +28,8 @@
             {{#each order in buyOrders}}
             <tr style="position: relative">
               <td colspan="3" style="position: relative; color: transparent;">
-                {{percentageOfBuySum order.buy.price order.buy.precision @index}}
-                <div style="position: absolute; background-color:rgba(40, 193, 44, 0.3); height: 100%; width: {{percentageOfBuySum order.buy.price order.buy.precision @index}}%; right: 0; top: 0; "></div>
+                {{percentageOfTotalVolume order "buy"}}
+                <div style="position: absolute; background-color:rgba(40, 193, 44, 0.3); height: 100%; width: {{percentageOfTotalVolume order "buy"}}%; right: 0; top: 0; "></div>
               </td>
             </tr>
             {{/each}}
@@ -86,8 +86,8 @@
             {{#each order in sellOrders}}
             <tr style="position: relative">
               <td colspan="3" style="position: relative; color: transparent;">
-                {{percentageOfSellSum order.sell.price order.sell.precision @index}}
-                <div style="position: absolute; background-color:rgba(255, 0, 0, 0.4); height: 100%; width: {{percentageOfSellSum order.sell.price order.sell.precision @index}}%; left: 0; top: 0; "></div>
+                {{percentageOfTotalVolume order "sell"}}
+                <div style="position: absolute; background-color:rgba(255, 0, 0, 0.4); height: 100%; width: {{percentageOfTotalVolume order "sell"}}%; left: 0; top: 0; "></div>
               </td>
             </tr>
             {{/each}}
