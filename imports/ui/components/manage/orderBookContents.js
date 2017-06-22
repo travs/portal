@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
+import { Tracker } from 'meteor/tracker';
 import BigNumber from 'bignumber.js';
 // Collections
 import Orders from '/imports/api/orders';
@@ -9,7 +10,6 @@ import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertF
 // Melon interface
 import cumulativeVolume from '/imports/melon/interface/cumulativeVolume';
 import matchOrders from '/imports/melon/interface/matchOrders';
-import getOrders from '/imports/melon/interface/getOrders';
 import getPrices from '/imports/melon/interface/helpers/getPrices';
 import filterByAssetPair from '/imports/melon/interface/query/filterByAssetPair';
 import sortByPrice from '/imports/melon/interface/query/sortByPrice';
@@ -18,10 +18,23 @@ import sortByPrice from '/imports/melon/interface/query/sortByPrice';
 import './orderBookContents.html';
 import addressList from '/imports/melon/interface/addressList';
 
+const getOrders = (orderType) => {
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') ||
+  '---/---').split('/');
+  return Orders.find(
+      filterByAssetPair(
+        baseTokenSymbol,
+        quoteTokenSymbol,
+        orderType,
+        true),
+      { sort: sortByPrice('buy') },
+    ).fetch();
+};
+
 Template.orderBookContents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));
-  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
   Template.instance().state = new ReactiveDict();
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
   Template.instance().state.set({ baseTokenSymbol, quoteTokenSymbol });
 });
 
@@ -36,43 +49,22 @@ Template.orderBookContents.helpers({
   quoteTokenSymbol: () =>
     (Session.get('currentAssetPair') || '---/---').split('/')[1],
   buyOrders() {
-    return Orders.find(
-      filterByAssetPair(
-        Template.instance().state.get('baseTokenSymbol'),
-        Template.instance().state.get('quoteTokenSymbol'),
-        'buy',
-        true),
-      { sort: sortByPrice('buy') },
-    );
+    return getOrders('buy');
   },
   sellOrders() {
-    return Orders.find(
-      filterByAssetPair(
-        Template.instance().state.get('baseTokenSymbol'),
-        Template.instance().state.get('quoteTokenSymbol'),
-        'sell',
-        true),
-      { sort: sortByPrice('sell') },
-    );
+    return getOrders('sell');
   },
   calcBuyPrice: order => getPrices(order).buy.toFixed(4),
   calcSellPrice: order => getPrices(order).sell.toFixed(4),
   displayVolume: (howMuch, dec) => howMuch.toFixed(dec),
   cumulativeVolume(order, orderType) {
-    // const orders = Orders.find(
-    //   filterByAssetPair(
-    //     Template.instance().state.get('baseTokenSymbol'),
-    //     Template.instance().state.get('quoteTokenSymbol'),
-    //     orderType,
-    //     true),
-    // ).fetch();
-    const orders = getOrders(orderType, Session.get('currentAssetPair'));
+    const orders = getOrders(orderType);
     const priceThreshold = getPrices(order)[orderType];
     const matchedOrders = matchOrders(orderType, priceThreshold, orders);
     return cumulativeVolume(orderType, matchedOrders).toNumber().toFixed(4);
   },
   percentageOfTotalVolume(order, orderType) {
-    const orders = getOrders(orderType, Session.get('currentAssetPair'));
+    const orders = getOrders(orderType);
     const priceThreshold = getPrices(order)[orderType];
     const matchedOrders = matchOrders(orderType, priceThreshold, orders);
     const currentCumulativeVolume = cumulativeVolume(orderType, matchedOrders);
