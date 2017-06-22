@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { ReactiveDict } from 'meteor/reactive-dict';
 import BigNumber from 'bignumber.js';
 // Collections
 import Orders from '/imports/api/orders';
@@ -19,6 +20,9 @@ import addressList from '/imports/melon/interface/addressList';
 
 Template.orderBookContents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+  Template.instance().state = new ReactiveDict();
+  Template.instance().state.set({ baseTokenSymbol, quoteTokenSymbol });
 });
 
 Template.orderBookContents.helpers({
@@ -32,23 +36,36 @@ Template.orderBookContents.helpers({
   quoteTokenSymbol: () =>
     (Session.get('currentAssetPair') || '---/---').split('/')[1],
   buyOrders() {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
-      'currentAssetPair',
-    ) || '---/---')
-      .split('/');
-    return Orders.find(filterByAssetPair(baseTokenSymbol, quoteTokenSymbol, 'buy', true), { sort: sortByPrice('buy') });
+    return Orders.find(
+      filterByAssetPair(
+        Template.instance().state.get('baseTokenSymbol'),
+        Template.instance().state.get('quoteTokenSymbol'),
+        'buy',
+        true),
+      { sort: sortByPrice('buy') },
+    );
   },
   sellOrders() {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
-      'currentAssetPair',
-    ) || '---/---')
-      .split('/');
-    return Orders.find(filterByAssetPair(baseTokenSymbol, quoteTokenSymbol, 'sell', true), { sort: sortByPrice('sell') });
+    return Orders.find(
+      filterByAssetPair(
+        Template.instance().state.get('baseTokenSymbol'),
+        Template.instance().state.get('quoteTokenSymbol'),
+        'sell',
+        true),
+      { sort: sortByPrice('sell') },
+    );
   },
   calcBuyPrice: order => getPrices(order).buy.toFixed(4),
   calcSellPrice: order => getPrices(order).sell.toFixed(4),
   displayVolume: (howMuch, dec) => howMuch.toFixed(dec),
   cumulativeVolume(order, orderType) {
+    // const orders = Orders.find(
+    //   filterByAssetPair(
+    //     Template.instance().state.get('baseTokenSymbol'),
+    //     Template.instance().state.get('quoteTokenSymbol'),
+    //     orderType,
+    //     true),
+    // ).fetch();
     const orders = getOrders(orderType, Session.get('currentAssetPair'));
     const priceThreshold = getPrices(order)[orderType];
     const matchedOrders = matchOrders(orderType, priceThreshold, orders);
