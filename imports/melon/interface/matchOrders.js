@@ -15,11 +15,11 @@ const matchOrders = (
   priceThreshold: BigNumber,
   orders: Array<mixed>,
 ) => {
-  if (orderType === 'buy') {
+  if (orderType === 'sell') {
     return orders
       .filter(order => getPrices(order).sell.lte(priceThreshold))
       .sort((a, b) => (getPrices(a).sell.gt(getPrices(b).sell) ? -1 : 1));
-  } else if (orderType === 'sell') {
+  } else if (orderType === 'buy') {
     return orders
       .filter(order => getPrices(order).buy.gte(priceThreshold))
       .sort((a, b) => (getPrices(a).buy.gt(getPrices(b).buy) ? -1 : 1));

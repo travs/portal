@@ -54,7 +54,7 @@
           <tbody>
             {{#each order in buyOrders}}
             <tr class="js-takeorder interactive" data-id="{{order.id}}">
-              <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision @index}}</td>
+              <td>{{cumulativeVolume order "buy"}}</td>
               <td>{{displayVolume order.buy.howMuch 4}}</td>
               <td>{{calcBuyPrice order}}</td>
             </tr>
@@ -115,7 +115,7 @@
             <tr class="js-takeorder interactive" data-id="{{order.id}}">
               <td>{{calcSellPrice order}}</td>
               <td>{{displayVolume order.sell.howMuch 4}}</td>
-              <td>{{calcSellCumulativeVolume order.sell.price order.sell.precision @index}}</td>
+              <td>{{cumulativeVolume order "sell"}}</td>
             </tr>
             {{/each}}
           </tbody>

@@ -5,6 +5,11 @@ import BigNumber from 'bignumber.js';
 import Orders from '/imports/api/orders';
 // Utils
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+// Melon interface
+import cumulativeVolume from '/imports/melon/interface/cumulativeVolume';
+import matchOrders from '/imports/melon/interface/matchOrders';
+import getOrders from '/imports/melon/interface/getOrders';
+import getPrices from '/imports/melon/interface/helpers/getPrices';
 
 // Corresponding html file
 import './orderBookContents.html';
@@ -49,8 +54,8 @@ Template.orderBookContents.helpers({
     if (Session.get('fromPortfolio')) return liquidityProviderOrders;
     else if (!Session.get('fromPortfolio')) return allOrders;
   },
-  calcBuyPrice: order => order.sell.howMuch.div(order.buy.howMuch).toFixed(4),
-  calcSellPrice: order => order.buy.howMuch.div(order.sell.howMuch).toFixed(4),
+  calcBuyPrice: order => getPrices(order).buy.toFixed(4),
+  calcSellPrice: order => getPrices(order).sell.toFixed(4),
   displayVolume: (howMuch, dec) => howMuch.toFixed(dec),
   sellOrders() {
     const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
@@ -201,6 +206,13 @@ Template.orderBookContents.helpers({
 
     return currentCumVol / convertFromTokenPrecision(total, precision) * 100;
   },
+  cumulativeVolume(order, orderType) {
+    const orders = getOrders(orderType, Session.get('currentAssetPair'));
+    const priceThreshold = getPrices(order)[orderType];
+    const matchedOrders = matchOrders(orderType, priceThreshold, orders);
+    return cumulativeVolume(orderType, matchedOrders).toNumber();
+  },
+
 });
 
 Template.orderBookContents.onRendered(() => {});
