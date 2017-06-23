@@ -12,6 +12,6 @@ test('matchOrders', () => {
     sellMelonOrders,
   );
 
-  expect(matchedOrders.length).toBe(3);
-  expect(matchedOrders.map(o => o.id)).toEqual([1, 2, 3]);
+  expect(matchedOrders.length).toBe(2);
+  expect(matchedOrders.map(o => o.id)).toEqual([2, 1]);
 });
