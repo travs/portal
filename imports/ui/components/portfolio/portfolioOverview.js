@@ -11,7 +11,6 @@ import web3 from '/imports/lib/web3/client';
 // Collections
 import Vaults from '/imports/api/vaults';
 
-
 // Corresponding html file
 import './portfolioOverview.html';
 
@@ -23,7 +22,6 @@ Template.portfolioOverview.onCreated(() => {
   // TODO send command to server to update current coreContract
 });
 
-
 Template.portfolioOverview.helpers({
   // TODO implement cleaner
   getPersonalStake() {
@@ -31,12 +29,15 @@ Template.portfolioOverview.helpers({
     const address = FlowRouter.getParam('address');
     Vault.setProvider(web3.currentProvider);
     const coreContract = Vault.at(address);
-    coreContract.totalSupply().then((result) => {
-      template.totalShareAmount.set(result.toNumber());
-      return coreContract.balanceOf(Session.get('selectedAccount'));
-    }).then((result) => {
-      template.personalShareAmount.set(result.toNumber());
-    });
+    coreContract
+      .totalSupply()
+      .then((result) => {
+        template.totalShareAmount.set(result.toNumber());
+        return coreContract.balanceOf(Session.get('selectedAccount'));
+      })
+      .then((result) => {
+        template.personalShareAmount.set(result.toNumber());
+      });
     return `${web3.fromWei(template.personalShareAmount.get(), 'ether')} of
       ${web3.fromWei(template.totalShareAmount.get(), 'ether')}`;
   },
@@ -47,15 +48,13 @@ Template.portfolioOverview.helpers({
   },
 });
 
-
 Template.portfolioOverview.onRendered(() => {});
-
 
 Template.portfolioOverview.events({
   'click .delete': () => {
     const address = FlowRouter.getParam('address');
     const doc = Vaults.findOne({ address });
-    if ((doc === undefined || address === undefined)) {
+    if (doc === undefined || address === undefined) {
       return false;
     }
     // TODO replace toast

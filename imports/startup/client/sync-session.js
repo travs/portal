@@ -11,7 +11,10 @@ import store from '/imports/startup/client/store';
 // sync from redux store to session
 store.subscribe(() => {
   const currentState = store.getState();
-  Session.set('currentAssetPair', Object.values(currentState.manageHoldings.currentAssetPair).join('/'));
+  Session.set(
+    'currentAssetPair',
+    Object.values(currentState.manageHoldings.currentAssetPair).join('/'),
+  );
   Session.set('isClientConnected', currentState.web3.isConnected);
   Session.set('isServerConnected', currentState.web3.isServerConnected);
   Session.set('selectedAccount', currentState.web3.account);

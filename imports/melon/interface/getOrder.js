@@ -3,10 +3,7 @@ import ExchangeJson from '@melonproject/protocol/build/contracts/Exchange.json';
 
 import web3 from '/imports/lib/web3';
 import addressList from './addressList';
-import {
-  getTokenPrecisionByAddress,
-  getTokenSymbolByAddress,
-} from './helpers/specs';
+import { getTokenPrecisionByAddress, getTokenSymbolByAddress } from './helpers/specs';
 
 /*
   @ returns the order with volume as a big number with precision

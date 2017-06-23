@@ -4,7 +4,6 @@ import RedeemJson from '@melonproject/protocol/build/contracts/Redeem.json';
 
 import addressList from '/imports/melon/interface/addressList';
 
-
 const Redeem = contract(RedeemJson);
 Redeem.setProvider(web3.currentProvider);
 const redeemContract = Redeem.at(addressList.redeem);

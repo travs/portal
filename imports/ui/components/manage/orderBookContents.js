@@ -22,22 +22,17 @@ import './orderBookContents.html';
 import addressList from '/imports/melon/interface/addressList';
 
 const getOrders = (orderType) => {
-  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
-    'currentAssetPair',
-  ) || '---/---')
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
     .split('/');
-  return Orders.find(
-    filterByAssetPair(baseTokenSymbol, quoteTokenSymbol, orderType, true),
-    { sort: sortByPrice('buy') },
-  ).fetch();
+  return Orders.find(filterByAssetPair(baseTokenSymbol, quoteTokenSymbol, orderType, true), {
+    sort: sortByPrice('buy'),
+  }).fetch();
 };
 
 Template.orderBookContents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));
   Template.instance().state = new ReactiveDict();
-  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get(
-    'currentAssetPair',
-  ) || '---/---')
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
     .split('/');
   Template.instance().state.set({ baseTokenSymbol, quoteTokenSymbol });
 });
@@ -48,10 +43,8 @@ Template.orderBookContents.helpers({
   displayBigNumber: (numberPrecise, precision, decimals) =>
     new BigNumber(numberPrecise).div(Math.pow(10, precision)).toFixed(decimals),
   currentAssetPair: () => Session.get('currentAssetPair'),
-  baseTokenSymbol: () =>
-    (Session.get('currentAssetPair') || '---/---').split('/')[0],
-  quoteTokenSymbol: () =>
-    (Session.get('currentAssetPair') || '---/---').split('/')[1],
+  baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
+  quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   buyOrders() {
     return getOrders('buy');
   },

@@ -10,7 +10,5 @@ test('cumulativeVolume', () => {
   expect(cumulativeVolume('buy', matchedOrders).toNumber()).toEqual(0.7);
 
   expect(cumulativeVolume('sell', matchedOrders).toNumber()).toEqual(2);
-  expect(
-    cumulativeVolume('sell', matchedOrders.slice(0, 1)).toNumber(),
-  ).toEqual(1);
+  expect(cumulativeVolume('sell', matchedOrders.slice(0, 1)).toNumber()).toEqual(1);
 });

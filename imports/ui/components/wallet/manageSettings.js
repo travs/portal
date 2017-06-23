@@ -10,21 +10,17 @@ import Vaults from '/imports/api/vaults';
 // Corresponding html file
 import './manageSettings.html';
 
-
 Template.manageSettings.onCreated(() => {
   Meteor.subscribe('vaults');
 });
-
 
 Template.manageSettings.helpers({
   currencies: () => ['ETH', 'BTC', 'EUR', 'USD'],
 });
 
-
 Template.manageSettings.onRendered(() => {
   $('select').select2();
 });
-
 
 Template.manageSettings.events({
   'shown.bs.modal #myModal': (event, templateInstance) => {
@@ -51,14 +47,15 @@ Template.manageSettings.events({
         EthTools.setUnit('usd');
         break;
       }
-      default: return 'Error';
+      default:
+        return 'Error';
     }
   },
   'click .manage': (event, templateInstance) => {},
   'click button#delete': () => {
     const managerAddress = Session.get('selectedAccount');
     const doc = Vaults.findOne({ managerAddress });
-    if ((doc === undefined || managerAddress === undefined)) {
+    if (doc === undefined || managerAddress === undefined) {
       return false;
     }
     // TODO close modal

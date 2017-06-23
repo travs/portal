@@ -13,20 +13,26 @@ import './manageOverview.html';
 const numberOfQuoteTokens = specs.getQuoteTokens().length;
 const numberOfBaseTokens = specs.getBaseTokens().length;
 
-const assetPairs =
-  [...Array(numberOfQuoteTokens * numberOfBaseTokens).keys()]
-  .map((value, index) => [
-    specs.getBaseTokens()[index % numberOfBaseTokens],
-    '/',
-    specs.getQuoteTokens()[index % numberOfQuoteTokens],
-  ].join(''))
+const assetPairs = [...Array(numberOfQuoteTokens * numberOfBaseTokens).keys()]
+  .map((value, index) =>
+    [
+      specs.getBaseTokens()[index % numberOfBaseTokens],
+      '/',
+      specs.getQuoteTokens()[index % numberOfQuoteTokens],
+    ].join(''),
+  )
   .sort();
 
-FlowRouter.triggers.enter([(context) => {
-  const doc = Vaults.findOne({ address: context.params.address });
-  // TODO: Reactivate this, when we reactivate from portfolio trading
-  // Session.set('fromPortfolio', doc !== undefined);
-}], { only: ['manage'] });
+FlowRouter.triggers.enter(
+  [
+    (context) => {
+      const doc = Vaults.findOne({ address: context.params.address });
+      // TODO: Reactivate this, when we reactivate from portfolio trading
+      // Session.set('fromPortfolio', doc !== undefined);
+    },
+  ],
+  { only: ['manage'] },
+);
 
 Tracker.autorun(() => {
   const fromPortfolio = Session.get('fromPortfolio');
@@ -55,7 +61,7 @@ Template.manageOverview.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Vaults.findOne({ address });
-    return (doc === undefined || address === undefined) ? '' : doc;
+    return doc === undefined || address === undefined ? '' : doc;
   },
   getStatus() {
     if (Session.get('fromPortfolio')) return 'Manage fund';

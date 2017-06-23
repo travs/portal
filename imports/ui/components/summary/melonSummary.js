@@ -7,9 +7,7 @@ import './melonSummary.html';
 // Collections
 import Vaults from '/imports/api/vaults';
 
-
 Template.melonSummary.onCreated(() => {});
-
 
 Template.melonSummary.helpers({
   getRanking() {
@@ -33,8 +31,6 @@ Template.melonSummary.helpers({
   },
 });
 
-
 Template.melonSummary.onRendered(() => {});
-
 
 Template.melonSummary.events({});

@@ -28,7 +28,7 @@ Template.manageParticipation.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Vaults.findOne({ address });
-    return (doc === undefined || address === undefined) ? '' : doc;
+    return doc === undefined || address === undefined ? '' : doc;
   },
   formattedSharePrice() {
     const address = FlowRouter.getParam('address');
@@ -40,9 +40,12 @@ Template.manageParticipation.helpers({
   },
   selectedTypeName() {
     switch (Template.instance().typeValue.get()) {
-      case 0: return 'Invest';
-      case 1: return 'Redeem';
-      default: return 'Error';
+      case 0:
+        return 'Invest';
+      case 1:
+        return 'Redeem';
+      default:
+        return 'Error';
     }
   },
 });
@@ -111,7 +114,12 @@ Template.manageParticipation.events({
     Vault.setProvider(web3.currentProvider);
 
     // Is mining
-    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
+    Session.set('NetworkStatus', {
+      isInactive: false,
+      isMining: true,
+      isError: false,
+      isMined: false,
+    });
 
     // From price to volume of shares
     const weiPrice = web3.toWei(price, 'ether');
@@ -125,18 +133,36 @@ Template.manageParticipation.events({
     switch (type) {
       // Invest case
       case 0:
-        EtherTokenContract.deposit({ from: managerAddress, value: weiTotal }).then(result => EtherTokenContract.approve(coreAddress, baseUnitVolume, { from: managerAddress })).then(result => coreContract.createShares(baseUnitVolume, { from: managerAddress })).then((result) => {
-          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-          toastr.success('Shares successfully created!');
-          console.log(`Shares successfully created. Tx Hash: ${result}`);
-          Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
-          Meteor.call('vaults.syncVaultById', doc.id);
-          return coreContract.totalSupply();
-        }).catch((error) => {
-          console.log(error);
-          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
-          toastr.error('Oops, an error has occurred. Please verify that your holdings allow you to invest in this fund!');
-        });
+        EtherTokenContract.deposit({ from: managerAddress, value: weiTotal })
+          .then(result =>
+            EtherTokenContract.approve(coreAddress, baseUnitVolume, { from: managerAddress }),
+          )
+          .then(result => coreContract.createShares(baseUnitVolume, { from: managerAddress }))
+          .then((result) => {
+            Session.set('NetworkStatus', {
+              isInactive: false,
+              isMining: false,
+              isError: false,
+              isMined: true,
+            });
+            toastr.success('Shares successfully created!');
+            console.log(`Shares successfully created. Tx Hash: ${result}`);
+            Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+            Meteor.call('vaults.syncVaultById', doc.id);
+            return coreContract.totalSupply();
+          })
+          .catch((error) => {
+            console.log(error);
+            Session.set('NetworkStatus', {
+              isInactive: false,
+              isMining: false,
+              isError: true,
+              isMined: false,
+            });
+            toastr.error(
+              'Oops, an error has occurred. Please verify that your holdings allow you to invest in this fund!',
+            );
+          });
         templateInstance.find('input#total').value = '';
         templateInstance.find('input#volume').value = '';
         window.scrollTo(0, 0);
@@ -144,20 +170,34 @@ Template.manageParticipation.events({
 
       // Redeem case
       case 1:
-        coreContract.annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress }).then((result) => {
-          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-          toastr.success('Shares successfully redeemed!');
-          console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
-          Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
-          templateInstance.find('input#total').value = '';
-          templateInstance.find('input#volume').value = '';
-          return coreContract.totalSupply();
-        }).catch((error) => {
-          console.log(error);
-          Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
-          toastr.error('Oops, an error has occurred. Please try again.');
-        });
-      default: return 'Error';
+        coreContract
+          .annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress })
+          .then((result) => {
+            Session.set('NetworkStatus', {
+              isInactive: false,
+              isMining: false,
+              isError: false,
+              isMined: true,
+            });
+            toastr.success('Shares successfully redeemed!');
+            console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
+            Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+            templateInstance.find('input#total').value = '';
+            templateInstance.find('input#volume').value = '';
+            return coreContract.totalSupply();
+          })
+          .catch((error) => {
+            console.log(error);
+            Session.set('NetworkStatus', {
+              isInactive: false,
+              isMining: false,
+              isError: true,
+              isMined: false,
+            });
+            toastr.error('Oops, an error has occurred. Please try again.');
+          });
+      default:
+        return 'Error';
     }
   },
 });

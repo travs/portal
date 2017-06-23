@@ -34,15 +34,15 @@ const Exchange = contract(ExchangeJson);
 
 const numberOfQuoteTokens = specs.getQuoteTokens().length;
 const numberOfBaseTokens = specs.getBaseTokens().length;
-const assetPairs =
-  [...Array(numberOfQuoteTokens * numberOfBaseTokens).keys()]
-  .map((value, index) => [
-    specs.getBaseTokens()[index % numberOfBaseTokens],
-    '/',
-    specs.getQuoteTokens()[index % numberOfQuoteTokens],
-  ].join(''))
+const assetPairs = [...Array(numberOfQuoteTokens * numberOfBaseTokens).keys()]
+  .map((value, index) =>
+    [
+      specs.getBaseTokens()[index % numberOfBaseTokens],
+      '/',
+      specs.getQuoteTokens()[index % numberOfQuoteTokens],
+    ].join(''),
+  )
   .sort();
-
 
 Template.manageHoldings.onCreated(() => {
   Meteor.subscribe('vaults');
@@ -68,19 +68,21 @@ Template.manageHoldings.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Vaults.findOne({ address });
-    return (doc === undefined || address === undefined) ? '' : doc;
+    return doc === undefined || address === undefined ? '' : doc;
   },
-  orderType: () => Template.instance().state.get('theirOrderType') === 'buy' ? 'sell' : 'buy',
+  orderType: () => (Template.instance().state.get('theirOrderType') === 'buy' ? 'sell' : 'buy'),
   isBuyingSelected: () => Template.instance().state.get('theirOrderType') !== 'buy',
   currentAssetPair: () => {
     if (Template.instance().state.get('buyingSelected')) {
       return Session.get('currentAssetPair');
     }
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
+      .split('/');
     return `${quoteTokenSymbol}/${baseTokenSymbol}`;
   },
   priceAssetPair: () => {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
+      .split('/');
     return `${quoteTokenSymbol}/${baseTokenSymbol}`;
   },
   volumeAsset: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
@@ -102,8 +104,12 @@ Template.manageHoldings.onRendered(() => {
     onSwitchChange(event, state) {
       Session.set('fromPortfolio', state);
       console.log(Session.get('fromPortfolio'));
-      $('.js-price').attr('readonly') ? $('.js-price').removeAttr('readonly', false) : $('.js-price').attr('readonly', true);
-      $('#select_type').attr('disabled') ? $('#select_type').removeAttr('disabled', false) : $('#select_type').attr('disabled', true);
+      $('.js-price').attr('readonly')
+        ? $('.js-price').removeAttr('readonly', false)
+        : $('.js-price').attr('readonly', true);
+      $('#select_type').attr('disabled')
+        ? $('#select_type').removeAttr('disabled', false)
+        : $('#select_type').attr('disabled', true);
     },
   });
 });
@@ -115,7 +121,10 @@ Template.manageHoldings.events({
     Meteor.subscribe('orders', event.currentTarget.value);
   },
   'change select#select_type': (event, templateInstance) => {
-    const currentlySelectedTypeValue = parseFloat(templateInstance.find('select#select_type').value, 10);
+    const currentlySelectedTypeValue = parseFloat(
+      templateInstance.find('select#select_type').value,
+      10,
+    );
     if (currentlySelectedTypeValue) Template.instance().state.set({ buyingSelected: false });
     else Template.instance().state.set({ buyingSelected: true });
   },
@@ -137,7 +146,12 @@ Template.manageHoldings.events({
     event.preventDefault();
 
     window.scrollTo(0, 0);
-    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
+    Session.set('NetworkStatus', {
+      isInactive: false,
+      isMining: true,
+      isError: false,
+      isMined: false,
+    });
 
     const managerAddress = Session.get('selectedAccount');
     if (managerAddress === undefined) {
@@ -148,28 +162,46 @@ Template.manageHoldings.events({
     const coreAddress = FlowRouter.getParam('address');
 
     const theirOrderType = Template.instance().state.get('theirOrderType');
-    const ourOrderType = Template.instance().state.get('theirOrderType') === 'sell' ? 'buy' : 'sell';
+    const ourOrderType = Template.instance().state.get('theirOrderType') === 'sell'
+      ? 'buy'
+      : 'sell';
     const selectedOrderId = Template.instance().state.get('selectedOrderId');
     const selectedOrder = Orders.findOne({ id: selectedOrderId });
     const priceTreshold = getPrices(selectedOrder)[theirOrderType];
     const currentAssetPair = Template.instance().state.get('currentAssetPair');
-    const orders = Orders.find(filterByAssetPair(currentAssetPair.baseTokenSymbol, currentAssetPair.quoteTokenSymbol, theirOrderType, true)).fetch();
-
+    const orders = Orders.find(
+      filterByAssetPair(
+        currentAssetPair.baseTokenSymbol,
+        currentAssetPair.quoteTokenSymbol,
+        theirOrderType,
+        true,
+      ),
+    ).fetch();
 
     const matchedOrders = matchOrders(theirOrderType, priceTreshold, orders);
 
     const quantityAsked = ourOrderType === 'buy'
-    ? Template.instance().state.get('volume')
-    : Template.instance().state.get('total');
+      ? Template.instance().state.get('volume')
+      : Template.instance().state.get('total');
 
     try {
       await takeMultipleOrders(matchedOrders, managerAddress, coreAddress, quantityAsked);
       Session.get('selectedOrderId') !== null;
-      Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+      Session.set('NetworkStatus', {
+        isInactive: false,
+        isMining: false,
+        isError: false,
+        isMined: true,
+      });
       toastr.success('Order successfully executed!');
     } catch (e) {
       console.error(e);
-      Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
+      Session.set('NetworkStatus', {
+        isInactive: false,
+        isMining: false,
+        isError: true,
+        isMined: false,
+      });
       toastr.error('Oops, an error has occurred. Please verify the transaction informations');
     }
   },

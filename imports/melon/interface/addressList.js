@@ -8,7 +8,6 @@ import PerformanceFeeJson from '@melonproject/protocol/build/contracts/Performan
 import GovernanceJson from '@melonproject/protocol/build/contracts/Governance.json';
 import VersionJson from '@melonproject/protocol/build/contracts/Version.json';
 
-
 const KOVAN_NETWORK_ID = 42;
 
 // Assets

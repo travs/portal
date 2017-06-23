@@ -21,25 +21,34 @@ const setIntradayChange = (referenceCurrency) => {
   // By definition
   Session.set('ethChange24h', '±0.0');
 
-  cc.generateAvg(CCREFERENCECURRENCY, 'EUR', CCMARKET)
-  .then(data => Session.set('eurChange24h', data.CHANGEPCT24HOUR.toFixed(PRECISION)))
-  .catch(console.error);
+  cc
+    .generateAvg(CCREFERENCECURRENCY, 'EUR', CCMARKET)
+    .then(data => Session.set('eurChange24h', data.CHANGEPCT24HOUR.toFixed(PRECISION)))
+    .catch(console.error);
 
-  cc.generateAvg(CCREFERENCECURRENCY, 'EUR', CCMARKET)
-  .then(data => Session.set('eurChange24h', data.CHANGEPCT24HOUR.toFixed(PRECISION)))
-  .catch(console.error);
+  cc
+    .generateAvg(CCREFERENCECURRENCY, 'EUR', CCMARKET)
+    .then(data => Session.set('eurChange24h', data.CHANGEPCT24HOUR.toFixed(PRECISION)))
+    .catch(console.error);
 
-  cc.generateAvg(CCREFERENCECURRENCY, 'BTC', CCMARKET)
-  .then(data => Session.set('btcChange24h', data.CHANGEPCT24HOUR.toFixed(PRECISION)))
-  .catch(console.error);
+  cc
+    .generateAvg(CCREFERENCECURRENCY, 'BTC', CCMARKET)
+    .then(data => Session.set('btcChange24h', data.CHANGEPCT24HOUR.toFixed(PRECISION)))
+    .catch(console.error);
 
-  cc.generateAvg('MLN', CCREFERENCECURRENCY, CCMARKET)
-  .then(data => Session.set('mlnChange24h', invertNumber(data.CHANGEPCT24HOUR).toFixed(PRECISION)))
-  .catch(console.error);
+  cc
+    .generateAvg('MLN', CCREFERENCECURRENCY, CCMARKET)
+    .then(data =>
+      Session.set('mlnChange24h', invertNumber(data.CHANGEPCT24HOUR).toFixed(PRECISION)),
+    )
+    .catch(console.error);
 
-  cc.generateAvg('REP', CCREFERENCECURRENCY, CCMARKET)
-  .then(data => Session.set('repChange24h', invertNumber(data.CHANGEPCT24HOUR).toFixed(PRECISION)))
-  .catch(console.error);
+  cc
+    .generateAvg('REP', CCREFERENCECURRENCY, CCMARKET)
+    .then(data =>
+      Session.set('repChange24h', invertNumber(data.CHANGEPCT24HOUR).toFixed(PRECISION)),
+    )
+    .catch(console.error);
 };
 
 // ON STARTUP

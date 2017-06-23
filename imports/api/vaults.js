@@ -15,7 +15,9 @@ const Vault = contract(VaultJson);
 // COLLECTIONS
 
 const Vaults = new Mongo.Collection('vaults');
-if (Meteor.isServer) { Meteor.publish('vaults', () => Vaults.find()); } // Publish Collection
+if (Meteor.isServer) {
+  Meteor.publish('vaults', () => Vaults.find());
+} // Publish Collection
 
 // COLLECTION METHODS
 
@@ -24,17 +26,22 @@ Vaults.watch = () => {
   Version.setProvider(web3.currentProvider);
   const versionContract = Version.at(addressList.version);
 
-  const vaults = versionContract.VaultUpdate({}, {
-    fromBlock: web3.eth.blockNumber,
-    toBlock: 'latest',
-  });
+  const vaults = versionContract.VaultUpdate(
+    {},
+    {
+      fromBlock: web3.eth.blockNumber,
+      toBlock: 'latest',
+    },
+  );
 
-  vaults.watch(Meteor.bindEnvironment((err, event) => {
-    if (err) throw err;
+  vaults.watch(
+    Meteor.bindEnvironment((err, event) => {
+      if (err) throw err;
 
-    console.log(`Vaults.watch ${event.args.id}`);
-    Vaults.syncVaultById(event.args.id.toNumber()); // see event object, doesnt have .id
-  }));
+      console.log(`Vaults.watch ${event.args.id}`);
+      Vaults.syncVaultById(event.args.id.toNumber()); // see event object, doesnt have .id
+    }),
+  );
 };
 
 Vaults.sync = () => {
@@ -72,51 +79,56 @@ Vaults.syncVaultById = (id) => {
   let currTotalSupply;
 
   // Get description values of Vault
-  versionContract.vaults(id).then((info) => {
-    [address, owner, name, symbol, decimals, isActive] = info;
-    coreContract = Vault.at(address);
-    return coreContract.getUniverseAddress();
-  })
-  .then((result) => {
-    universeAddress = result;
-    return coreContract.getReferenceAsset();
-  })
-  .then((result) => {
-    referenceAsset = result;
-    return coreContract.performCalculations();
-  })
-  .then((calculations) => {
-    // [gav, managementFee, performanceFee, unclaimedFees, nav, sharePrice] = calculations;
-    nav = calculations[4];
-    sharePrice = calculations[5];
-    return coreContract.totalSupply();
-  })
-  .then((result) => {
-    currTotalSupply = result;
-    // sharePrice = convertToTokenPrecision(sharePrice, decimals);
-    // Insert into Portfolio collection
+  versionContract
+    .vaults(id)
+    .then((info) => {
+      [address, owner, name, symbol, decimals, isActive] = info;
+      coreContract = Vault.at(address);
+      return coreContract.getUniverseAddress();
+    })
+    .then((result) => {
+      universeAddress = result;
+      return coreContract.getReferenceAsset();
+    })
+    .then((result) => {
+      referenceAsset = result;
+      return coreContract.performCalculations();
+    })
+    .then((calculations) => {
+      // [gav, managementFee, performanceFee, unclaimedFees, nav, sharePrice] = calculations;
+      nav = calculations[4];
+      sharePrice = calculations[5];
+      return coreContract.totalSupply();
+    })
+    .then((result) => {
+      currTotalSupply = result;
+      // sharePrice = convertToTokenPrecision(sharePrice, decimals);
+      // Insert into Portfolio collection
 
-    console.log('Vaults.upsert', id);
+      console.log('Vaults.upsert', id);
 
-    Vaults.upsert({
-      id,
-    }, {
-      id,
-      address,
-      owner,
-      name,
-      symbol,
-      decimals: decimals.toNumber(),
-      isActive,
-      universeAddress,
-      referenceAsset,
-      nav: nav.toNumber(),
-      sharePrice: sharePrice.toNumber(),
-      sharesSupply: currTotalSupply.toNumber(),
-      // atTimestamp: atTimestamp.toNumber(), TODO ASK RETO
-      createdAt: new Date(),
+      Vaults.upsert(
+        {
+          id,
+        },
+        {
+          id,
+          address,
+          owner,
+          name,
+          symbol,
+          decimals: decimals.toNumber(),
+          isActive,
+          universeAddress,
+          referenceAsset,
+          nav: nav.toNumber(),
+          sharePrice: sharePrice.toNumber(),
+          sharesSupply: currTotalSupply.toNumber(),
+          // atTimestamp: atTimestamp.toNumber(), TODO ASK RETO
+          createdAt: new Date(),
+        },
+      );
     });
-  });
 };
 
 // METEOR METHODS
@@ -145,6 +157,5 @@ Meteor.methods({
     if (Meteor.isServer) Vaults.remove(id);
   },
 });
-
 
 export default Vaults;

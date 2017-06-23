@@ -7,9 +7,7 @@ import { EthTools } from 'meteor/ethereum:tools';
 // Corresponding html file
 import './walletOverview.html';
 
-
 Template.walletOverview.onCreated(() => {});
-
 
 Template.walletOverview.helpers({
   wallets() {
@@ -20,9 +18,7 @@ Template.walletOverview.helpers({
   },
 });
 
-
 Template.walletOverview.onRendered(() => {});
-
 
 Template.walletOverview.events({
   'click .refresh_wallet': (event) => {

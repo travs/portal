@@ -16,7 +16,6 @@ import specs from '/imports/melon/interface/helpers/specs';
 // Corresponding html file
 import './walletContents.html';
 
-
 Template.walletContents.onCreated(() => {
   Meteor.subscribe('assets', FlowRouter.getParam('address'));
 });
@@ -50,12 +49,18 @@ Template.walletContents.helpers({
   },
   change24h() {
     switch (this.name) {
-      case 'Ether Token': return Session.get('ethChange24h');
-      case 'Melon Token': return Session.get('mlnChange24h');
-      case 'Bitcoin Token': return Session.get('btcChange24h');
-      case 'Rep Token': return Session.get('repChange24h');
-      case 'Euro Token': return Session.get('eurChange24h');
-      default: return '';
+      case 'Ether Token':
+        return Session.get('ethChange24h');
+      case 'Melon Token':
+        return Session.get('mlnChange24h');
+      case 'Bitcoin Token':
+        return Session.get('btcChange24h');
+      case 'Rep Token':
+        return Session.get('repChange24h');
+      case 'Euro Token':
+        return Session.get('eurChange24h');
+      default:
+        return '';
     }
   },
 });
@@ -76,7 +81,10 @@ Template.walletContents.events({
     // Convert Eth Token
     const assetAddress = specs.getTokenAddress('ETH-T');
     const assetHolderAddress = FlowRouter.getParam('address');
-    const doc = Assets.findOne({ address: assetAddress, holder: assetHolderAddress }, { sort: { createdAt: -1 } });
+    const doc = Assets.findOne(
+      { address: assetAddress, holder: assetHolderAddress },
+      { sort: { createdAt: -1 } },
+    );
     if (doc === undefined) return '';
     const holdings = parseInt(doc.holdings, 10);
     if (holdings === 0) {
@@ -85,7 +93,12 @@ Template.walletContents.events({
     } else {
       console.log(`Holdings: ${holdings}`);
       EtherToken.at(assetAddress).withdraw(holdings, { from: assetHolderAddress }).then((result) => {
-        Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+        Session.set('NetworkStatus', {
+          isInactive: false,
+          isMining: false,
+          isError: false,
+          isMined: true,
+        });
         // TODO insert txHash into appropriate collection
         console.log(`Tx Hash: ${result}`);
         Meteor.call('assets.sync', assetHolderAddress); // Upsert Assets Collection

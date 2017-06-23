@@ -65,9 +65,7 @@ Orders.sync = () => {
   const exchangeContract = Exchange.at(addressList.exchange);
 
   exchangeContract.getLastOrderId().then((lastId) => {
-    const endIndex = lastId
-      .minus(NUMBERS_OF_ORDERS_TO_SYNC_ON_STARTUP)
-      .toNumber();
+    const endIndex = lastId.minus(NUMBERS_OF_ORDERS_TO_SYNC_ON_STARTUP).toNumber();
 
     for (let id = lastId.toNumber(); id > endIndex; id -= 1) {
       Orders.syncOrderById(id);

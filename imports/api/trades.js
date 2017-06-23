@@ -15,17 +15,19 @@ const blocksPerDay = 21600;
 
 const Trades = new Mongo.Collection('Trades');
 if (Meteor.isServer) {
-  Meteor.publish('trades', (limit = 50, skip = 0) => Trades.find(
-    {},
-    {
-      sort: {
-        blockTimestamp: -1,
-        transactionIndex: -1,
+  Meteor.publish('trades', (limit = 50, skip = 0) =>
+    Trades.find(
+      {},
+      {
+        sort: {
+          blockTimestamp: -1,
+          transactionIndex: -1,
+        },
+        limit,
+        skip,
       },
-      limit,
-      skip,
-    },
-  ));
+    ),
+  );
 }
 
 // COLLECTION METHODS
@@ -38,50 +40,58 @@ Trades.watch = () => {
   Exchange.setProvider(web3.currentProvider);
   const exchangeContract = Exchange.at(addressList.exchange);
 
-  const trades = exchangeContract.Trade({}, { // eslint-disable-line new-cap
-    fromBlock: web3.eth.blockNumber - blocksPerDay,
-    toBlock: 'latest',
-  });
+  const trades = exchangeContract.Trade(
+    {},
+    {
+      // eslint-disable-line new-cap
+      fromBlock: web3.eth.blockNumber - blocksPerDay,
+      toBlock: 'latest',
+    },
+  );
 
-  trades.watch(Meteor.bindEnvironment((err, event) => {
-    if (err) throw err;
+  trades.watch(
+    Meteor.bindEnvironment((err, event) => {
+      if (err) throw err;
 
-    const {
-      buy_which_token: buyWhichToken,
-      buy_how_much: buyHowMuch,
-      sell_which_token: sellWhichToken,
-      sell_how_much: sellHowMuch,
-    } = event.args;
+      const {
+        buy_which_token: buyWhichToken,
+        buy_how_much: buyHowMuch,
+        sell_which_token: sellWhichToken,
+        sell_how_much: sellHowMuch,
+      } = event.args;
 
-    const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
-    const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
+      const buyPrecision = specs.getTokenPrecisionByAddress(buyWhichToken);
+      const sellPrecision = specs.getTokenPrecisionByAddress(sellWhichToken);
 
-    console.log('Trades.upsert', event.transactionHash);
+      console.log('Trades.upsert', event.transactionHash);
 
-    Trades.upsert({
-      transactionHash: event.transactionHash,
-    }, {
-      transactionHash: event.transactionHash,
-      transactionIndex: event.transactionIndex,
-      blockTimestamp: new Date(web3.eth.getBlock(event.blockNumber).timestamp * 1000),
-      buy: {
-        howMuch: buyHowMuch.toNumber(),
-        token: buyWhichToken,
-        symbol: specs.getTokenSymbolByAddress(buyWhichToken),
-        precision: buyPrecision,
-        price: (buyHowMuch / sellHowMuch) * Math.pow(10, sellPrecision - buyPrecision),
-      },
-      sell: {
-        howMuch: sellHowMuch.toNumber(),
-        token: sellWhichToken,
-        symbol: specs.getTokenSymbolByAddress(sellWhichToken),
-        precision: sellPrecision,
-        price: (sellHowMuch / buyHowMuch) * Math.pow(10, buyPrecision - sellPrecision),
-      },
-    });
-  }));
+      Trades.upsert(
+        {
+          transactionHash: event.transactionHash,
+        },
+        {
+          transactionHash: event.transactionHash,
+          transactionIndex: event.transactionIndex,
+          blockTimestamp: new Date(web3.eth.getBlock(event.blockNumber).timestamp * 1000),
+          buy: {
+            howMuch: buyHowMuch.toNumber(),
+            token: buyWhichToken,
+            symbol: specs.getTokenSymbolByAddress(buyWhichToken),
+            precision: buyPrecision,
+            price: buyHowMuch / sellHowMuch * Math.pow(10, sellPrecision - buyPrecision),
+          },
+          sell: {
+            howMuch: sellHowMuch.toNumber(),
+            token: sellWhichToken,
+            symbol: specs.getTokenSymbolByAddress(sellWhichToken),
+            precision: sellPrecision,
+            price: sellHowMuch / buyHowMuch * Math.pow(10, buyPrecision - sellPrecision),
+          },
+        },
+      );
+    }),
+  );
 };
-
 
 export default Trades;
 

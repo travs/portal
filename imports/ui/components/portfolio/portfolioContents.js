@@ -21,7 +21,7 @@ Template.portfolioContents.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Vaults.findOne({ address });
-    return (doc === undefined || address === undefined) ? '' : doc;
+    return doc === undefined || address === undefined ? '' : doc;
   },
   isPortfolioOwner() {
     const address = FlowRouter.getParam('address');
@@ -65,16 +65,22 @@ Template.portfolioContents.helpers({
     }
     const nav = doc.nav;
 
-    return ((value * 100) / nav).toFixed(2);
+    return (value * 100 / nav).toFixed(2);
   },
   change24h() {
     switch (this.name) {
-      case 'Ether Token': return Session.get('ethChange24h');
-      case 'Melon Token': return Session.get('mlnChange24h');
-      case 'Bitcoin Token': return Session.get('btcChange24h');
-      case 'Euro Token': return Session.get('eurChange24h');
-      case 'Rep Token': return Session.get('repChange24h');
-      default: return '';
+      case 'Ether Token':
+        return Session.get('ethChange24h');
+      case 'Melon Token':
+        return Session.get('mlnChange24h');
+      case 'Bitcoin Token':
+        return Session.get('btcChange24h');
+      case 'Euro Token':
+        return Session.get('eurChange24h');
+      case 'Rep Token':
+        return Session.get('repChange24h');
+      default:
+        return '';
     }
   },
 });

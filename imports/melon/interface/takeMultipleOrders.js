@@ -27,9 +27,7 @@ const takeMultipleOrders = async (
         coreAddress,
         remainingQuantity,
       );
-      accumulator.remainingQuantity = remainingQuantity.minus(
-        result.executedQuantity,
-      );
+      accumulator.remainingQuantity = remainingQuantity.minus(result.executedQuantity);
       accumulator.transactions.push(result.transaction);
     }
 

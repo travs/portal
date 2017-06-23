@@ -3,5 +3,4 @@ const convertFromTokenPrecision = (value, precision, targetPrecision = 4) => {
   return (value / divisor).toFixed(targetPrecision);
 };
 
-
 export default convertFromTokenPrecision;

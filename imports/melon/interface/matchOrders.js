@@ -3,18 +3,14 @@ import BigNumber from 'bignumber.js';
 
 import getPrices from './helpers/getPrices';
 
-type OrderTypes = "buy" | "sell";
+type OrderTypes = 'buy' | 'sell';
 
 /*
   @pre: orders are only from the selected asset pair
   @pre: the orders are from getOrder (howMuch as BigNumber)
   @returns: filtered and sorted set of orders
 */
-const matchOrders = (
-  orderType: OrderTypes,
-  priceThreshold: BigNumber,
-  orders: Array<mixed>,
-) => {
+const matchOrders = (orderType: OrderTypes, priceThreshold: BigNumber, orders: Array<mixed>) => {
   if (orderType === 'sell') {
     return orders
       .filter(order => getPrices(order).sell.lte(priceThreshold))
