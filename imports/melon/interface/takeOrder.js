@@ -22,6 +22,8 @@ const takeOrder = (
   getOrder(id).then(async (order) => {
     const Vault = contract(VaultJson);
 
+    // if no quantity specified OR a a specified quantity greater than the selling quantity of the
+    // order, execute the full order. Otherwise, execute quantityAsked of the full order.
     const quantity = !quantityAsked || quantityAsked.gte(order.sell.howMuch)
       ? order.sell.howMuch
       : quantityAsked;

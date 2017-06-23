@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import takeOrder from './takeOrder';
 
+import ensureBigNumber from './helpers/ensureBigNumber';
 /*
   @pre: orders are retrieved from the matchOrders (sorted, and filtered)
         and BigNumberified
@@ -33,6 +34,6 @@ const takeMultipleOrders = async (
     }
 
     return accumulator;
-  }, Promise.resolve({ remainingQuantity: totalQuantityAsked, transactions: [] }));
+  }, Promise.resolve({ remainingQuantity: ensureBigNumber(totalQuantityAsked), transactions: [] }));
 
 export default takeMultipleOrders;

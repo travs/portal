@@ -9,7 +9,8 @@ import { getBaseTokens, getQuoteTokens, getTokenPrecisionBySymbol } from '/impor
 
 export const initialState = {
   selectedOrderId: undefined,
-  orderType: 'buy',
+  theirOrderType: undefined,
+  ourOrderType: 'buy',
   volume: undefined,
   maxVolume: undefined,
   maxTotal: undefined,
@@ -47,9 +48,9 @@ export const creators = {
     type: types.SELECT_ORDER,
     selectedOrderId: parseInt(orderId, 10),
   }),
-  loadOrder: ({ orderType, volume, averagePrice, total }) => ({
+  loadOrder: ({ theirOrderType, volume, averagePrice, total }) => ({
     type: types.LOAD_ORDER,
-    orderType,
+    theirOrderType,
     volume,
     averagePrice,
     total,
@@ -115,7 +116,7 @@ export const middleware = store => next => (action) => {
     case types.SELECT_ASSET_PAIR:
       store.dispatch(
         creators.loadOrder({
-          orderType: 'buy',
+          theirOrderType: 'buy',
           volume: undefined,
           averagePrice: undefined,
           total: undefined,
@@ -128,24 +129,25 @@ export const middleware = store => next => (action) => {
         quoteTokenSymbol,
       } = currentState.currentAssetPair;
       const selectedOrder = Orders.findOne({ id: params.selectedOrderId });
-      const orderType = selectedOrder.sell.symbol === 'ETH-T' ? 'buy' : 'sell';
+      const theirOrderType = selectedOrder.sell.symbol === 'ETH-T' ? 'buy' : 'sell';
+      const ourOrderType = selectedOrder.sell.symbol === 'ETH-T' ? 'sell' : 'buy';
       const orders = Orders.find(
-        filterByAssetPair(baseTokenSymbol, quoteTokenSymbol, orderType, true),
+        filterByAssetPair(baseTokenSymbol, quoteTokenSymbol, theirOrderType, true),
       ).fetch();
       const matchedOrders = matchOrders(
-        orderType,
-        getPrices(selectedOrder)[orderType],
+        theirOrderType,
+        getPrices(selectedOrder)[theirOrderType],
         orders,
       );
-      const averagePrice = calcAveragePrice(orderType, matchedOrders);
-      const volume = cumulativeVolume(orderType, matchedOrders);
+      const averagePrice = calcAveragePrice(theirOrderType, matchedOrders);
+      const volume = cumulativeVolume(theirOrderType, matchedOrders);
       const total = volume.times(averagePrice);
 
       window.setTimeout(
         () =>
           store.dispatch(
             creators.loadOrder({
-              orderType,
+              theirOrderType,
               volume: volume.toPrecision(
                 getTokenPrecisionBySymbol(baseTokenSymbol),
               ),

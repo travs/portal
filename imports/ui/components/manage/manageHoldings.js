@@ -4,7 +4,6 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { bootstrapSwitch } from 'bootstrap-switch';
 import { Session } from 'meteor/session';
 import { ReactiveDict } from 'meteor/reactive-dict';
-import BigNumber from 'bignumber.js';
 // Contracts
 import contract from 'truffle-contract';
 import VaultJson from '@melonproject/protocol/build/contracts/Vault.json'; // Get Smart Contract JSON
@@ -17,9 +16,13 @@ import Vaults from '/imports/api/vaults';
 import Orders from '/imports/api/orders';
 // specs
 import specs from '/imports/melon/interface/helpers/specs';
+import getPrices from '/imports/melon/interface/helpers/getPrices';
+// query
+import filterByAssetPair from '/imports/melon/interface/query/filterByAssetPair';
+
 // Interface
-import getOrder from '/imports/melon/interface/getOrder';
-import takeOrder from '/imports/melon/interface/takeOrder';
+import matchOrders from '/imports/melon/interface/matchOrders';
+import takeMultipleOrders from '/imports/melon/interface/takeMultipleOrders';
 
 import store from '/imports/startup/client/store';
 import { creators } from '/imports/redux/manageHoldings';
@@ -67,8 +70,8 @@ Template.manageHoldings.helpers({
     const doc = Vaults.findOne({ address });
     return (doc === undefined || address === undefined) ? '' : doc;
   },
-  orderType: () => Template.instance().state.get('orderType'),
-  isBuyingSelected: () => Template.instance().state.get('orderType') === 'sell',
+  orderType: () => Template.instance().state.get('theirOrderType') === 'buy' ? 'sell' : 'buy',
+  isBuyingSelected: () => Template.instance().state.get('theirOrderType') !== 'buy',
   currentAssetPair: () => {
     if (Template.instance().state.get('buyingSelected')) {
       return Session.get('currentAssetPair');
@@ -130,16 +133,11 @@ Template.manageHoldings.events({
   'input input.js-total': (event, templateInstance) => {
     store.dispatch(creators.changeTotal(event.currentTarget.value));
   },
-  'click .js-placeorder': (event, templateInstance) => {
-    console.log('click .js-placeorder', event, templateInstance);
+  'click .js-placeorder': async (event, templateInstance) => {
     event.preventDefault();
 
     window.scrollTo(0, 0);
     Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
-
-    const buy = Template.instance().state.get('buyingSelected');
-
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
 
     const managerAddress = Session.get('selectedAccount');
     if (managerAddress === undefined) {
@@ -149,89 +147,30 @@ Template.manageHoldings.events({
     }
     const coreAddress = FlowRouter.getParam('address');
 
-    // Case 1: form pre-filled w order book information (when user selects an order book)
-    if (Session.get('selectedOrderId') !== null) {
-      const setOfOrders = prefillTakeOrder(Session.get('selectedOrderId')).setOfOrders;
-      // const totalWantedBuyAmount = prefillTakeOrder(Session.get('selectedOrderId')).totalWantedBuyAmount;
+    const theirOrderType = Template.instance().state.get('theirOrderType');
+    const ourOrderType = Template.instance().state.get('theirOrderType') === 'sell' ? 'buy' : 'sell';
+    const selectedOrderId = Template.instance().state.get('selectedOrderId');
+    const selectedOrder = Orders.findOne({ id: selectedOrderId });
+    const priceTreshold = getPrices(selectedOrder)[theirOrderType];
+    const currentAssetPair = Template.instance().state.get('currentAssetPair');
+    const orders = Orders.find(filterByAssetPair(currentAssetPair.baseTokenSymbol, currentAssetPair.quoteTokenSymbol, theirOrderType, true)).fetch();
 
-      // Get token address, precision and base unit volume for buy token and sell token
-      const buyTokenAddress = specs.getTokenAddress(setOfOrders[0].sell.symbol);
-      const buyTokenPrecision = specs.getTokenPrecisionByAddress(buyTokenAddress);
-      // const buyBaseUnitVolume = totalWantedBuyAmount * Math.pow(10, buyTokenPrecision);
-      const sellTokenAddress = specs.getTokenAddress(setOfOrders[0].buy.symbol);
-      const sellTokenPrecision = specs.getTokenPrecisionByAddress(sellTokenAddress);
 
-      const isSell = prefillTakeOrder(Session.get('selectedOrderId')).orderType === 'Sell';
+    const matchedOrders = matchOrders(theirOrderType, priceTreshold, orders);
 
-      let quantity = 0;
-      let quantityToApprove = 0; // will be used in case 1.2
-      if (isSell) {
-        quantity = new BigNumber(templateInstance.find('input.js-total').value)
-          .times(Math.pow(10, buyTokenPrecision));
-        quantityToApprove = new BigNumber(templateInstance.find('input.js-volume').value)
-          .times(Math.pow(10, sellTokenPrecision));
-      } else {
-        quantity = new BigNumber(templateInstance.find('input.js-volume').value)
-          .times(Math.pow(10, buyTokenPrecision));
-        quantityToApprove = new BigNumber(templateInstance.find('input.js-total').value)
-          .times(Math.pow(10, sellTokenPrecision));
-      }
-      // Case 1.1 : Take offer -> Trade through fund
-      if (Session.get('fromPortfolio')) {
-        for (let i = 0; i < setOfOrders.length; i += 1) {
-          // const sellPrecision = setOfOrders[i].sell.precision;
-          const sellHowMuchPrecise = new BigNumber(setOfOrders[i].sell.howMuchPrecise);
-          // const buyHowMuchPrecise = new BigNumber(setOfOrders[i].buy.howMuchPrecise);
-          console.log('quantity ', quantity.toNumber());
-          console.log('sellHowMuchPrecise ', sellHowMuchPrecise.toNumber());
-          if (quantity.toNumber()) {
-            if (quantity.gte(sellHowMuchPrecise)) {
-              takeOrder(
-                setOfOrders[i].id,
-                managerAddress,
-                coreAddress,
-                sellHowMuchPrecise,
-              )
-              .then((result) => {
-                console.log('Transaction for order id ', setOfOrders[i].id, ' sent!', result);
-                Session.get('selectedOrderId') !== null;
-                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-                toastr.success('Order successfully executed!');
-              }).catch((err) => {
-                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
-                toastr.error('Oops, an error has occurred. Please verify the transaction informations');
-                throw err;
-              });
-              quantity = quantity.minus(sellHowMuchPrecise);
-            } else if (quantity.lt(sellHowMuchPrecise)) {
-              // Select more than one order
-              // TODO: Check if its works!
-              console.log(addressList.exchange, setOfOrders[i].id, quantity.toString(), { from: managerAddress });
-              takeOrder(
-                setOfOrders[i].id,
-                managerAddress,
-                coreAddress,
-                quantity,
-              )
-              .then((result) => {
-                console.log('Transaction for order id ', setOfOrders[i].id, ' executed!', result);
-                Session.set('selectedOrderId', null);
-                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-                toastr.success('Order successfully executed!');
-              }).catch((err) => {
-                Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
-                toastr.error('Oops, an error has occurred. Please verify the transaction informations');
-                throw err;
-              });
-              quantity = new BigNumber(0);
-            }
-          }
-        }
-      } else {
-        // Case 1.2 : Take offer -> Trade through manager's wallet
-        // TODO: Implement this
-        console.warn('Not implemented yet');
-      }
+    const quantityAsked = ourOrderType === 'buy'
+    ? Template.instance().state.get('volume')
+    : Template.instance().state.get('total');
+
+    try {
+      await takeMultipleOrders(matchedOrders, managerAddress, coreAddress, quantityAsked);
+      Session.get('selectedOrderId') !== null;
+      Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
+      toastr.success('Order successfully executed!');
+    } catch (e) {
+      console.error(e);
+      Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: true, isMined: false });
+      toastr.error('Oops, an error has occurred. Please verify the transaction informations');
     }
   },
 });
