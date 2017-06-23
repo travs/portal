@@ -22,7 +22,8 @@ import getOrder from '/imports/melon/interface/getOrder';
 import takeOrder from '/imports/melon/interface/takeOrder';
 
 import store from '/imports/startup/client/store';
-import { creators } from '/imports/redux/preferences';
+import { creators } from '/imports/redux/manageHoldings';
+
 import './manageHoldings.html';
 
 const Vault = contract(VaultJson);
@@ -84,6 +85,8 @@ Template.manageHoldings.helpers({
   preFillPrice: () => Template.instance().state.get('averagePrice'),
   preFillVolume: () => Template.instance().state.get('volume'),
   preFillTotal: () => Template.instance().state.get('total'),
+  preFillVolumeMax: () => Template.instance().state.get('maxVolume'),
+  preFillTotalMax: () => Template.instance().state.get('maxTotal'),
 });
 
 Template.manageHoldings.onRendered(() => {
@@ -122,18 +125,10 @@ Template.manageHoldings.events({
     else if (!isNaN(total)) templateInstance.find('input.js-volume').value = total / price;
   },
   'input input.js-volume': (event, templateInstance) => {
-    const price = parseFloat(templateInstance.find('input.js-price').value, 10);
-    const volume = parseFloat(templateInstance.find('input.js-volume').value, 10);
-    if (Session.get('selectedOrderId') && volume > prefillTakeOrder(Session.get('selectedOrderId')).volume) {
-      templateInstance.find('input.js-volume').value = prefillTakeOrder(Session.get('selectedOrderId')).volume;
-    } else {
-      templateInstance.find('input.js-total').value = price * volume;
-    }
+    store.dispatch(creators.changeVolume(event.currentTarget.value));
   },
   'input input.js-total': (event, templateInstance) => {
-    const price = parseFloat(templateInstance.find('input.js-price').value, 10);
-    const total = parseFloat(templateInstance.find('input.js-total').value, 10);
-    templateInstance.find('input.js-volume').value = total / price;
+    store.dispatch(creators.changeTotal(event.currentTarget.value));
   },
   'click .js-placeorder': (event, templateInstance) => {
     console.log('click .js-placeorder', event, templateInstance);
