@@ -5,7 +5,7 @@
         "trackingId": "UA-80990528-3"
       }
     },
-    "disableSync": true
+    "disableSync": false
   },
   "galaxy.meteor.com": {
     "env": {
