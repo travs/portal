@@ -124,88 +124,88 @@ Transactions.watch = () => {
     );
 
     // Rewards Converted
-    const rewardsConverted = vaultContract.RewardsConverted(
-      {},
-      {
-        fromBlock: 0,
-        toBlock: 'latest',
-      },
-    );
+    // const rewardsConverted = vaultContract.RewardsConverted(
+    //   {},
+    //   {
+    //     fromBlock: 0,
+    //     toBlock: 'latest',
+    //   },
+    // );
 
-    rewardsConverted.watch(
-      Meteor.bindEnvironment((err, event) => {
-        if (err) throw err;
+    // rewardsConverted.watch(
+    //   Meteor.bindEnvironment((err, event) => {
+    //     if (err) throw err;
 
-        const {
-          atTimestamp: timeStamp,
-          numSharesConverted,
-          numUnclaimedFees,
-        } = event.args;
+    //     const {
+    //       atTimestamp: timeStamp,
+    //       numSharesConverted,
+    //       numUnclaimedFees,
+    //     } = event.args;
 
-        console.log(
-          'Rewards Converted Transaction Upsert ',
-          event.transactionHash,
-        );
-        Transactions.upsert(
-          {
-            transactionHash: event.transactionHash,
-          },
-          {
-            transactionType: event.event,
-            vaultAddress: event.address,
-            owner: event.owner,
-            numSharesConverted,
-            numUnclaimedFees,
-            blockHash: event.blockHash,
-            blockNumber: event.blockNumber,
-            transactionHash: event.transactionHash,
-            timeStamp,
-          },
-        );
-      }),
-    );
+    //     console.log(
+    //       'Rewards Converted Transaction Upsert ',
+    //       event.transactionHash,
+    //     );
+    //     Transactions.upsert(
+    //       {
+    //         transactionHash: event.transactionHash,
+    //       },
+    //       {
+    //         transactionType: event.event,
+    //         vaultAddress: event.address,
+    //         owner: event.owner,
+    //         numSharesConverted,
+    //         numUnclaimedFees,
+    //         blockHash: event.blockHash,
+    //         blockNumber: event.blockNumber,
+    //         transactionHash: event.transactionHash,
+    //         timeStamp,
+    //       },
+    //     );
+    //   }),
+    // );
 
     // Rewards Payed Out
-    const rewardsPayedOut = vaultContract.RewardsPayedOut(
-      {},
-      {
-        fromBlock: 0,
-        toBlock: 'latest',
-      },
-    );
+    // const rewardsPayedOut = vaultContract.RewardsPayedOut(
+    //   {},
+    //   {
+    //     fromBlock: 0,
+    //     toBlock: 'latest',
+    //   },
+    // );
 
-    rewardsPayedOut.watch(
-      Meteor.bindEnvironment((err, event) => {
-        if (err) throw err;
+    // rewardsPayedOut.watch(
+    //   Meteor.bindEnvironment((err, event) => {
+    //     if (err) throw err;
 
-        const {
-          byParticipant: manager,
-          atTimestamp: timeStamp,
-          numSharesPayedOut,
-        } = event.args;
+    //     const {
+    //       byParticipant: manager,
+    //       atTimestamp: timeStamp,
+    //       numSharesPayedOut,
+    //     } = event.args;
 
-        console.log(
-          'Rewards Converted Transaction Upsert ',
-          event.transactionHash,
-        );
-        Transactions.upsert(
-          {
-            transactionHash: event.transactionHash,
-          },
-          {
-            transactionType: event.event,
-            vaultAddress: event.address,
-            owner: event.owner,
-            numSharesPayedOut,
-            atSharePrice: event.atSharePrice,
-            blockHash: event.blockHash,
-            blockNumber: event.blockNumber,
-            transactionHash: event.transactionHash,
-            timeStamp,
-          },
-        );
-      }),
-    );
+    //     console.log(
+    //       'Rewards Converted Transaction Upsert ',
+    //       event.transactionHash,
+    //     );
+    //     Transactions.upsert(
+    //       {
+    //         transactionHash: event.transactionHash,
+    //       },
+    //       {
+    //         transactionType: event.event,
+    //         vaultAddress: event.address,
+    //         owner: event.owner,
+    //         numSharesPayedOut,
+    //         atSharePrice: event.atSharePrice,
+    //         blockHash: event.blockHash,
+    //         blockNumber: event.blockNumber,
+    //         transactionHash: event.transactionHash,
+    //         timeStamp,
+    //       },
+    //     );
+    //   }),
+    // );
   }
 };
 
