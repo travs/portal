@@ -10,7 +10,7 @@ async function updateWeb3() {
   const provider = (() => {
     if (web3.currentProvider.isMetaMask) {
       return 'MetaMask';
-    } else if (typeof web3.currentProvider.host === 'string') {
+    } else if (typeof web3.currentProvider === 'object') {
       return 'LocalNode';
     }
     return 'Unknown';
