@@ -60,7 +60,7 @@ Vaults.syncVaultById = (id) => {
   Version.setProvider(web3.currentProvider);
   const versionContract = Version.at(addressList.version);
 
-  let coreContract;
+  let vaultContract;
   // Description of Vault
   let address;
   let owner;
@@ -83,22 +83,22 @@ Vaults.syncVaultById = (id) => {
     .vaults(id)
     .then((info) => {
       [address, owner, name, symbol, decimals, isActive] = info;
-      coreContract = Vault.at(address);
-      return coreContract.getUniverseAddress();
+      vaultContract = Vault.at(address);
+      return vaultContract.getUniverseAddress();
     })
     .then((result) => {
       universeAddress = result;
-      return coreContract.getReferenceAsset();
+      return vaultContract.getReferenceAsset();
     })
     .then((result) => {
       referenceAsset = result;
-      return coreContract.performCalculations();
+      return vaultContract.performCalculations();
     })
     .then((calculations) => {
       // [gav, managementFee, performanceFee, unclaimedFees, nav, sharePrice] = calculations;
       nav = calculations[4];
       sharePrice = calculations[5];
-      return coreContract.totalSupply();
+      return vaultContract.totalSupply();
     })
     .then((result) => {
       currTotalSupply = result;

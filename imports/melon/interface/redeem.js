@@ -11,7 +11,9 @@ const redeemContract = Redeem.at(addressList.redeem);
 /*
   @param quantityAsked: BigNumber quantity of Shares wanted to redeem
 */
-const redeem = (id, managerAddress, coreAddress, quantityAsked) =>
-  redeemContract.redeemShares(coreAddress, quantityAsked, { from: managerAddress });
+const redeem = (id, managerAddress, vaultAddress, quantityAsked) =>
+  redeemContract.redeemShares(vaultAddress, quantityAsked, {
+    from: managerAddress,
+  });
 
 export default redeem;

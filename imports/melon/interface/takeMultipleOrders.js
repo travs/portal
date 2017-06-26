@@ -13,7 +13,7 @@ import ensureBigNumber from './helpers/ensureBigNumber';
 const takeMultipleOrders = async (
   orders: Array,
   managerAddress: string,
-  coreAddress: string,
+  vaultAddress: string,
   totalQuantityAsked: BigNumber,
 ) =>
   orders.reduce(async (accumulatorPromise: Promise, currentOrder: any) => {
@@ -24,10 +24,12 @@ const takeMultipleOrders = async (
       const result = await takeOrder(
         currentOrder.id,
         managerAddress,
-        coreAddress,
+        vaultAddress,
         remainingQuantity,
       );
-      accumulator.remainingQuantity = remainingQuantity.minus(result.executedQuantity);
+      accumulator.remainingQuantity = remainingQuantity.minus(
+        result.executedQuantity,
+      );
       accumulator.transactions.push(result.transaction);
     }
 

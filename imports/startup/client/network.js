@@ -37,7 +37,8 @@ async function updateWeb3() {
 
   const previousState = store.getState().web3;
   const needsUpdate = Object.keys(web3State).reduce(
-    (accumulator, currentKey) => accumulator || web3State[currentKey] !== previousState[currentKey],
+    (accumulator, currentKey) =>
+      accumulator || web3State[currentKey] !== previousState[currentKey],
     false,
   );
 

@@ -16,7 +16,7 @@ import getOrder from './getOrder';
 const takeOrder = (
   id: number,
   managerAddress: string,
-  coreAddress: string,
+  vaultAddress: string,
   quantityAsked: BigNumber,
 ) =>
   getOrder(id).then(async (order) => {
@@ -29,9 +29,9 @@ const takeOrder = (
       : quantityAsked;
 
     Vault.setProvider(web3.currentProvider);
-    const coreContract = Vault.at(coreAddress);
+    const vaultContract = Vault.at(vaultAddress);
 
-    const transaction = await coreContract.takeOrder(
+    const transaction = await vaultContract.takeOrder(
       addressList.exchange,
       order.id,
       removePrecision(quantity, order.sell.symbol),

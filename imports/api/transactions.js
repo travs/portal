@@ -30,9 +30,9 @@
 
 //   const Vault = contract(VaultJson);
 //   Vault.setProvider(web3.currentProvider);
-//   const coreContract = Vault.at(FUNDADDRESS); //TODO: define fund address (from URL)
+//   const vaultContract = Vault.at(FUNDADDRESS); //TODO: define fund address (from URL)
 
-//   const transactions = coreContract.SharesCreated({}, {
+//   const transactions = vaultContract.SharesCreated({}, {
 //     fromBlock: web3.eth.blockNumber,
 //     toBlock: 'latest',
 //   });
