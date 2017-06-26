@@ -6,12 +6,11 @@ import store from '/imports/startup/client/store';
 import { creators } from '/imports/redux/web3';
 import { networkMapping } from '/imports/melon/interface/helpers/specs';
 
-
 async function updateWeb3() {
   const provider = (() => {
     if (web3.currentProvider.isMetaMask) {
       return 'MetaMask';
-    } else if (typeof (web3.currentProvider.host) === 'string') {
+    } else if (typeof web3.currentProvider === 'object') {
       return 'LocalNode';
     }
     return 'Unknown';
@@ -37,9 +36,11 @@ async function updateWeb3() {
   }
 
   const previousState = store.getState().web3;
-  const needsUpdate = Object.keys(web3State).reduce((accumulator, currentKey) =>
-    accumulator || (web3State[currentKey] !== previousState[currentKey])
-  , false);
+  const needsUpdate = Object.keys(web3State).reduce(
+    (accumulator, currentKey) =>
+      accumulator || web3State[currentKey] !== previousState[currentKey],
+    false,
+  );
 
   if (needsUpdate) store.dispatch(creators.update(web3State));
 }

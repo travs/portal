@@ -21,7 +21,6 @@ Template.uxIndexGraph.onRendered(() => {});
 
 Template.uxIndexGraph.events({});
 
-
 Template.uxServerConnection.onCreated(() => {});
 
 Template.uxServerConnection.helpers({});

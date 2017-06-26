@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import takeOrder from './takeOrder';
 
+import ensureBigNumber from './helpers/ensureBigNumber';
 /*
   @pre: orders are retrieved from the matchOrders (sorted, and filtered)
         and BigNumberified
@@ -12,16 +13,27 @@ import takeOrder from './takeOrder';
 const takeMultipleOrders = async (
   orders: Array,
   managerAddress: string,
-  coreAddress: string,
+  vaultAddress: string,
   totalQuantityAsked: BigNumber,
-) => orders.reduce(async (remainingQuantity: BigNumber, currentOrder: any) => {
-  if (remainingQuantity.gt(0)) {
-    await takeOrder(currentOrder.id, managerAddress, coreAddress, remainingQuantity);
-    return remainingQuantity.minus(currentOrder.sell.howMuchBigNumber);
-  }
+) =>
+  orders.reduce(async (accumulatorPromise: Promise, currentOrder: any) => {
+    const accumulator = await accumulatorPromise;
+    const remainingQuantity = accumulator.remainingQuantity;
 
-  return remainingQuantity;
-}, totalQuantityAsked);
+    if (remainingQuantity.gt(0)) {
+      const result = await takeOrder(
+        currentOrder.id,
+        managerAddress,
+        vaultAddress,
+        remainingQuantity,
+      );
+      accumulator.remainingQuantity = remainingQuantity.minus(
+        result.executedQuantity,
+      );
+      accumulator.transactions.push(result.transaction);
+    }
 
+    return accumulator;
+  }, Promise.resolve({ remainingQuantity: ensureBigNumber(totalQuantityAsked), transactions: [] }));
 
 export default takeMultipleOrders;

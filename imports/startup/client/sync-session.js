@@ -11,7 +11,10 @@ import store from '/imports/startup/client/store';
 // sync from redux store to session
 store.subscribe(() => {
   const currentState = store.getState();
-  Session.set('currentAssetPair', currentState.preferences.currentAssetPair);
+  Session.set(
+    'currentAssetPair',
+    Object.values(currentState.manageHoldings.currentAssetPair).join('/'),
+  );
   Session.set('isClientConnected', currentState.web3.isConnected);
   Session.set('isServerConnected', currentState.web3.isServerConnected);
   Session.set('selectedAccount', currentState.web3.account);
@@ -25,7 +28,6 @@ store.subscribe(() => {
 // initialize the other session vars
 // TODO: Remove this
 Meteor.startup(() => {
-  console.log('METEOR STARTUP');
   Session.set('fromPortfolio', true);
   Session.set('selectedOrderId', null);
   Session.set('showModal', true);

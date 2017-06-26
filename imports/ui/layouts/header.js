@@ -11,8 +11,7 @@ Template.layout_header.onCreated(() => {
   Meteor.subscribe('vaults');
 });
 
-Template.layout_header.onRendered(() => {
-});
+Template.layout_header.onRendered(() => {});
 
 Template.layout_header.helpers({
   isNew() {
@@ -48,7 +47,9 @@ Template.layout_header.events({
     }
   },
   'click .newclick'() {
-    if (Session.get('isNew'))      { toastr.success('Well done! Now start by investing some K-ETH'); }
+    if (Session.get('isNew')) {
+      toastr.success('Well done! Now start by investing some K-ETH');
+    }
     Session.set('isNew', false);
   },
 });

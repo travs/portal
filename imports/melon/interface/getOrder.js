@@ -5,14 +5,17 @@ import web3 from '/imports/lib/web3';
 import addressList from './addressList';
 import { getTokenPrecisionByAddress, getTokenSymbolByAddress } from './helpers/specs';
 
-
+/*
+  @ returns the order with volume as a big number with precision
+*/
 const getOrder = (id) => {
   const Exchange = contract(ExchangeJson);
   Exchange.setProvider(web3.currentProvider);
   const exchangeContract = Exchange.at(addressList.exchange); // Initialize contract instance
 
   return exchangeContract.orders(id).then((order) => {
-    const [sellHowMuch,
+    const [
+      sellHowMuch,
       sellWhichToken,
       buyHowMuch,
       buyWhichToken,
@@ -24,33 +27,22 @@ const getOrder = (id) => {
     const sellPrecision = getTokenPrecisionByAddress(sellWhichToken);
     const buySymbol = getTokenSymbolByAddress(buyWhichToken);
     const sellSymbol = getTokenSymbolByAddress(sellWhichToken);
-    const sellPrice = buyHowMuch / (sellHowMuch * Math.pow(10, sellPrecision - buyPrecision));
-    const buyPrice = sellHowMuch / (buyHowMuch * Math.pow(10, buyPrecision - sellPrecision));
 
     return {
       id,
       owner,
       isActive,
       buy: {
-        token: buyWhichToken,
         symbol: buySymbol,
-        howMuch: buyHowMuch.toNumber(),
-        howMuchPrecise: buyHowMuch.toString(),
-        precision: buyPrecision,
-        price: buyPrice,
+        howMuch: buyHowMuch.div(Math.pow(10, buyPrecision)),
       },
       sell: {
-        token: sellWhichToken,
         symbol: sellSymbol,
-        howMuch: sellHowMuch.toNumber(),
-        howMuchPrecise: sellHowMuch.toString(),
-        precision: sellPrecision,
-        price: sellPrice,
+        howMuch: sellHowMuch.div(Math.pow(10, sellPrecision)),
       },
       timestamp,
     };
   });
 };
-
 
 export default getOrder;

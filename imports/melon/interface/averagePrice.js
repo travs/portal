@@ -6,13 +6,16 @@ import BigNumber from 'bignumber.js';
 */
 
 const averagePrice = (orderType, orders) => {
-  const cumulatedVolumes = orders.reduce((accumulator, current) => ({
-    buy: accumulator.buy.add(current.buy.howMuchBigNumber),
-    sell: accumulator.sell.add(current.sell.howMuchBigNumber),
-  }), {
-    buy: new BigNumber(0),
-    sell: new BigNumber(0),
-  });
+  const cumulatedVolumes = orders.reduce(
+    (accumulator, current) => ({
+      buy: accumulator.buy.add(current.buy.howMuch),
+      sell: accumulator.sell.add(current.sell.howMuch),
+    }),
+    {
+      buy: new BigNumber(0),
+      sell: new BigNumber(0),
+    },
+  );
 
   if (orderType === 'buy') {
     return cumulatedVolumes.sell.div(cumulatedVolumes.buy);
@@ -22,6 +25,5 @@ const averagePrice = (orderType, orders) => {
 
   throw new Error('You need to specify orderType to be either "sell" or "buy"');
 };
-
 
 export default averagePrice;

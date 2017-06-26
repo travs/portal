@@ -1,108 +1,136 @@
 <template name="orderBookContents">
-    <div class="row order-book-head">
-      <div class="col-md-12">
-        <h2 class="exchange-title">Order Book of {{currentAssetPair}}</h2>
+  <div class="row order-book-head">
+    <div class="col-md-12">
+      <h2 class="exchange-title">Order Book of {{currentAssetPair}}</h2>
+    </div>
+  </div>
+
+  <div class="row order-book-table">
+    <div class="col-md-6">
+      <div class="table-responsive" style="position: relative;">
+        <!-- this is a shadow table just to visualise the cumulated volume -->
+        <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0"
+          width="100%" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;">
+          <thead>
+            <tr>
+              <th>Cum. Vol.
+                <p>({{baseTokenSymbol}})</p>
+              </th>
+              <th>Vol
+                <p>({{baseTokenSymbol}})</p>
+              </th>
+              <th>Bid
+                <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each order in buyOrders}}
+            <tr style="position: relative">
+              <td colspan="3" style="position: relative; color: transparent;">
+                {{percentageOfTotalVolume order "buy"}}
+                <div style="position: absolute; background-color:rgba(40, 193, 44, 0.3); height: 100%; width: {{percentageOfTotalVolume order "buy"}}%; right: 0; top: 0; "></div>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <!-- here comes the real table :D -->
+        <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0"
+          width="100%" style="position: relative; z-index: 10; overflow:auto;">
+          <thead>
+            <tr>
+              <th>Cum. Vol.
+                <p>({{baseTokenSymbol}})</p>
+              </th>
+              <th>Vol
+                <p>({{baseTokenSymbol}})</p>
+              </th>
+              <th>Bid
+                <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each order in buyOrders}}
+            <tr class="js-takeorder interactive" data-id="{{order.id}}">
+              <td>{{cumulativeVolume order "buy"}}</td>
+              <td>{{displayVolume order.buy.howMuch 4}}</td>
+              <td>{{calcBuyPrice order}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <div class="row order-book-table">
-      <div class="col-md-6">
-        <div class="table-responsive" style="position: relative;">
-          <!-- this is a shadow table just to visualise the cumulated volume -->
-          <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;">
-            <thead>
-              <tr>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Bid <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each order in buyOrders}}
-              <tr style="position: relative">
-                <td colspan="3" style="position: relative; color: transparent;">
-                  {{percentageOfBuySum order.buy.price order.buy.precision @index}}
-                  <div style="position: absolute; background-color:rgba(40, 193, 44, 0.3); height: 100%; width: {{percentageOfBuySum order.buy.price order.buy.precision @index}}%; right: 0; top: 0; "></div>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-          <!-- here comes the real table :D -->
-          <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%" style="position: relative; z-index: 10; overflow:auto;">
-            <thead>
-              <tr>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Bid <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each order in buyOrders}}
-              <tr class="js-takeorder interactive" data-id="{{order.id}}">
-                <td>{{calcBuyCumulativeVolume order.buy.price order.buy.precision @index}}</td>
-                <td>{{displayBigNumber order.buy.howMuchPrecise order.buy.precision 4}}</td>
-                <td>{{calcBuyPrice order.sell.howMuchPrecise order.sell.precision order.buy.howMuchPrecise order.buy.precision}}</td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div class="col-md-6">
+      <div class="table-responsive" style="position: relative;">
+        <!-- Shadow table for sell side -->
+        <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0"
+          width="100%" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;">
+          <thead>
+            <tr>
+              <th>Ask
+                <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p>
+              </th>
+              <th>Vol
+                <p>({{baseTokenSymbol}})</p>
+              </th>
+              <th>Cum. Vol.
+                <p>({{baseTokenSymbol}})</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each order in sellOrders}}
+            <tr style="position: relative">
+              <td colspan="3" style="position: relative; color: transparent;">
+                {{percentageOfTotalVolume order "sell"}}
+                <div style="position: absolute; background-color:rgba(255, 0, 0, 0.4); height: 100%; width: {{percentageOfTotalVolume order "sell"}}%; left: 0; top: 0; "></div>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
 
-      <div class="col-md-6">
-        <div class="table-responsive" style="position: relative;">
-     <!-- Shadow table for sell side -->
-          <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;">
-            <thead>
-              <tr>
-                <th>Ask <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each order in sellOrders}}
-                <tr style="position: relative">
-                <td colspan="3" style="position: relative; color: transparent;">
-                  {{percentageOfSellSum order.sell.price order.sell.precision @index}}
-                  <div style="position: absolute; background-color:rgba(255, 0, 0, 0.4); height: 100%; width: {{percentageOfSellSum order.sell.price order.sell.precision @index}}%; left: 0; top: 0; "></div>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-
-          <!-- Real table for sell side -->
-          <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0" width="100%" style="position: relative; z-index: 10;">
-            <thead>
-              <tr>
-                <th>Ask <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p></th>
-                <th>Vol <p>({{baseTokenSymbol}})</p></th>
-                <th>Cum. Vol. <p>({{baseTokenSymbol}})</p></th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each order in sellOrders}}
-              <tr class="js-takeorder interactive" data-id="{{order.id}}">
-                <td>{{calcSellPrice order.sell.howMuchPrecise order.sell.precision order.buy.howMuchPrecise order.buy.precision}}</td>
-                <td>{{displayBigNumber order.sell.howMuchPrecise order.sell.precision 4}}</td>
-                <td>{{calcSellCumulativeVolume order.sell.price order.sell.precision @index}}</td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
+        <!-- Real table for sell side -->
+        <table class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table order-book" cellspacing="0"
+          width="100%" style="position: relative; z-index: 10;">
+          <thead>
+            <tr>
+              <th>Ask
+                <p>({{quoteTokenSymbol}}/{{baseTokenSymbol}})</p>
+              </th>
+              <th>Vol
+                <p>({{baseTokenSymbol}})</p>
+              </th>
+              <th>Cum. Vol.
+                <p>({{baseTokenSymbol}})</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each order in sellOrders}}
+            <tr class="js-takeorder interactive" data-id="{{order.id}}">
+              <td>{{calcSellPrice order}}</td>
+              <td>{{displayVolume order.sell.howMuch 4}}</td>
+              <td>{{cumulativeVolume order "sell"}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
 
-    {{#if more}}
-    <div class="row order-book-more">
-      <div class="col-md-12">
-        <div class="table-load-more">
-          <a href="" class="btn btn-normal btn-outline-blue">Load More</a>
-        </div>
+  {{#if more}}
+  <div class="row order-book-more">
+    <div class="col-md-12">
+      <div class="table-load-more">
+        <a href="" class="btn btn-normal btn-outline-blue">Load More</a>
       </div>
     </div>
-    {{/if}}
+  </div>
+  {{/if}}
 </template>

@@ -18,7 +18,6 @@ import Orders from '/imports/api/orders';
 // Corresponding html file
 import './openOrders.html';
 
-
 Template.openOrders.onCreated(() => {});
 
 Template.openOrders.helpers({
@@ -27,7 +26,8 @@ Template.openOrders.helpers({
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
   quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   getOpenOrders() {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
+      .split('/');
     const owner = Session.get('fromPortfolio')
       ? FlowRouter.getParam('address')
       : Session.get('selectedAccount');
@@ -42,20 +42,29 @@ Template.openOrders.helpers({
     });
   },
   buyOrSell(order) {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
+      .split('/');
 
     if (order.buy.symbol === baseTokenSymbol) return 'Buy';
     return 'Sell';
   },
   getPrice(order) {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
+      .split('/');
 
-    if (order.buy.symbol === baseTokenSymbol) return (convertFromTokenPrecision(order.sell.howMuch, order.sell.precision) / convertFromTokenPrecision(order.buy.howMuch, order.buy.precision)).toFixed(4);
-    return (convertFromTokenPrecision(order.buy.howMuch, order.buy.precision) / convertFromTokenPrecision(order.sell.howMuch, order.sell.precision)).toFixed(4);
+    if (order.buy.symbol === baseTokenSymbol) {
+      return (convertFromTokenPrecision(order.sell.howMuch, order.sell.precision) /
+        convertFromTokenPrecision(order.buy.howMuch, order.buy.precision)).toFixed(4);
+    }
+    return (convertFromTokenPrecision(order.buy.howMuch, order.buy.precision) /
+      convertFromTokenPrecision(order.sell.howMuch, order.sell.precision)).toFixed(4);
   },
   getVolume(order) {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    if (order.buy.symbol === baseTokenSymbol) return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
+    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
+      .split('/');
+    if (order.buy.symbol === baseTokenSymbol) {
+      return convertFromTokenPrecision(order.buy.howMuch, order.buy.precision);
+    }
     return convertFromTokenPrecision(order.sell.howMuch, order.sell.precision);
   },
   formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
@@ -76,14 +85,17 @@ Template.openOrders.events({
     const managerAddress = Session.get('selectedAccount');
 
     if (Session.get('fromPortfolio')) {
-      coreContract.cancelOrder(addressList.exchange, event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
-        console.log(result);
-      });
+      coreContract
+        .cancelOrder(addressList.exchange, event.currentTarget.dataset.id, { from: managerAddress })
+        .then((result) => {
+          console.log(result);
+        });
     } else {
-      exchangeContract.cancel(event.currentTarget.dataset.id, { from: managerAddress }).then((result) => {
-        console.log(result);
-      });
+      exchangeContract
+        .cancel(event.currentTarget.dataset.id, { from: managerAddress })
+        .then((result) => {
+          console.log(result);
+        });
     }
   },
 });
-

@@ -11,7 +11,6 @@ import '/imports/ui/pages/fund';
 import '/imports/ui/pages/manage';
 import '/imports/ui/pages/wallet';
 
-
 // Default route
 FlowRouter.route('/', {
   name: 'portal',
@@ -60,7 +59,6 @@ FlowRouter.route('/manage/:address', {
     });
   },
 });
-
 
 // Route for account
 FlowRouter.route('/account/:address', {

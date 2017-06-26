@@ -2,7 +2,6 @@
 import { Meteor } from 'meteor/meteor';
 import Web3 from 'web3';
 
-
 if (Meteor.isClient) window.__AppInitializedBeforeWeb3__ = false;
 
 let web3Instance = new Web3();
@@ -10,15 +9,17 @@ let initialized = false;
 
 const initWeb3Instance = () => {
   if (!initialized && !window.__AppInitializedBeforeWeb3__) {
-    throw new Error(`
+    throw new Error(
+      `
       Tryin to access web3 before app is initialized.
       Did you set window.__AppInitializedBeforeWeb3__ = true in your app startup code?
-    `);
+    `,
+    );
   }
 
   if (window.web3 === undefined) console.warn('no injected web3 found');
 
-  web3Instance = (window.web3 === undefined)
+  web3Instance = window.web3 === undefined
     ? new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
     : new Web3(window.web3.currentProvider);
 
@@ -37,8 +38,8 @@ const initWeb3Instance = () => {
   initialized = true;
 };
 
-const web3Proxy = (Meteor.isClient) ?
-  new Proxy(web3Instance, {
+const web3Proxy = Meteor.isClient
+  ? new Proxy(web3Instance, {
     get(target, property) {
       initWeb3Instance();
       return web3Instance[property];

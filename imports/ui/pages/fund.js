@@ -7,21 +7,18 @@ import '/imports/ui/components/portfolio/portfolioContents';
 import '/imports/ui/components/portfolio/manageParticipation';
 import './fund.html';
 
-
 Template.fund.onCreated(() => {
   Meteor.subscribe('vaults');
   Meteor.subscribe('assets', FlowRouter.getParam('address'));
 });
 
-
 Template.fund.helpers({
   getPortfolioDoc() {
     const address = FlowRouter.getParam('address');
     const doc = Vaults.findOne({ address });
-    return (doc === undefined || address === undefined) ? '' : doc;
+    return doc === undefined || address === undefined ? '' : doc;
   },
 });
-
 
 Template.fund.onRendered(() => {
   const address = FlowRouter.getParam('address'); // Address of Vault

@@ -12,8 +12,8 @@ const etherTokenContract = EtherToken.at(addressList.etherToken);
   @param quantity: BigNumber
 */
 const depositAndApproveEther = (fromAddress, toBeApprovedAddress, quantity) =>
-  etherTokenContract.deposit({ from: fromAddress, value: quantity })
-  .then(() => etherTokenContract.approve(
-      toBeApprovedAddress, quantity, { from: fromAddress }));
+  etherTokenContract
+    .deposit({ from: fromAddress, value: quantity })
+    .then(() => etherTokenContract.approve(toBeApprovedAddress, quantity, { from: fromAddress }));
 
 export default depositAndApproveEther;

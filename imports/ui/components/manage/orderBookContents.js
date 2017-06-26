@@ -1,162 +1,83 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { ReactiveDict } from 'meteor/reactive-dict';
+import { Tracker } from 'meteor/tracker';
 import BigNumber from 'bignumber.js';
 // Collections
 import Orders from '/imports/api/orders';
 // Utils
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+// Melon interface
+import cumulativeVolume from '/imports/melon/interface/cumulativeVolume';
+import matchOrders from '/imports/melon/interface/matchOrders';
+import getPrices from '/imports/melon/interface/helpers/getPrices';
+import filterByAssetPair from '/imports/melon/interface/query/filterByAssetPair';
+import sortByPrice from '/imports/melon/interface/query/sortByPrice';
+// Redux
+import store from '/imports/startup/client/store';
+import { creators } from '/imports/redux/manageHoldings';
 
 // Corresponding html file
 import './orderBookContents.html';
 import addressList from '/imports/melon/interface/addressList';
 
+const getOrders = (orderType) => {
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
+    .split('/');
+  return Orders.find(filterByAssetPair(baseTokenSymbol, quoteTokenSymbol, orderType, true), {
+    sort: sortByPrice('buy'),
+  }).fetch();
+};
+
 Template.orderBookContents.onCreated(() => {
   Meteor.subscribe('orders', Session.get('currentAssetPair'));
+  Template.instance().state = new ReactiveDict();
+  const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
+    .split('/');
+  Template.instance().state.set({ baseTokenSymbol, quoteTokenSymbol });
 });
 
 Template.orderBookContents.helpers({
   convertFromTokenPrecision,
   more: false,
   displayBigNumber: (numberPrecise, precision, decimals) =>
-    (new BigNumber(numberPrecise)).div(Math.pow(10, precision)).toFixed(decimals),
+    new BigNumber(numberPrecise).div(Math.pow(10, precision)).toFixed(decimals),
   currentAssetPair: () => Session.get('currentAssetPair'),
   baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
   quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   buyOrders() {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    const liquidityProviderOrders = Orders.find({
-      isActive: true,
-      'buy.symbol': baseTokenSymbol,
-      'sell.symbol': quoteTokenSymbol,
-      owner: addressList.liquidityProvider,
-    }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } });
-    const allOrders = Orders.find({
-      isActive: true,
-      'buy.symbol': baseTokenSymbol,
-      'sell.symbol': quoteTokenSymbol,
-    }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } });
-    if (Session.get('fromPortfolio')) return liquidityProviderOrders;
-    else if (!Session.get('fromPortfolio')) return allOrders;
-  },
-  calcBuyPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    const sellBigNumber = new BigNumber(sellHowMuch);
-    const buyBigNumber = new BigNumber(buyHowMuch);
-    return sellBigNumber.div(buyBigNumber).div(Math.pow(10, sellPrecision - buyPrecision)).toFixed(4);
-  },
-  calcSellPrice(sellHowMuch, sellPrecision, buyHowMuch, buyPrecision) {
-    const sellBigNumber = new BigNumber(sellHowMuch);
-    const buyBigNumber = new BigNumber(buyHowMuch);
-    return buyBigNumber.div(sellBigNumber).div(Math.pow(10, buyPrecision - sellPrecision)).toFixed(4);
+    return getOrders('buy');
   },
   sellOrders() {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    const liquidityProviderOrders = Orders.find({
-      isActive: true,
-      'buy.symbol': quoteTokenSymbol,
-      'sell.symbol': baseTokenSymbol,
-      owner: addressList.liquidityProvider,
-    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
-    const allOrders = Orders.find({
-      isActive: true,
-      'buy.symbol': quoteTokenSymbol,
-      'sell.symbol': baseTokenSymbol,
-    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } });
-
-    if (Session.get('fromPortfolio')) return liquidityProviderOrders;
-    else if (!Session.get('fromPortfolio')) return allOrders;
+    return getOrders('sell');
   },
-  calcBuyCumulativeVolume(buyPrice, precision, index) {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    let cheaperOrders;
-
-    if (Session.get('fromPortfolio')) {
-      cheaperOrders = Orders.find({
-        isActive: true,
-        'buy.price': { $gte: buyPrice },
-        'buy.symbol': baseTokenSymbol,
-        'sell.symbol': quoteTokenSymbol,
-        owner: addressList.liquidityProvider,
-      }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
-    } else {
-      cheaperOrders = Orders.find({
-        isActive: true,
-        'buy.price': { $gte: buyPrice },
-        'buy.symbol': baseTokenSymbol,
-        'sell.symbol': quoteTokenSymbol,
-      }, { sort: { 'buy.price': -1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
-    }
-    let cumulativeDouble = 0;
-
-    for (let i = 0; i <= index; i += 1) {
-      cumulativeDouble += cheaperOrders[i].buy.howMuch;
-    }
-
-    return convertFromTokenPrecision(cumulativeDouble, precision);
+  calcBuyPrice: order => getPrices(order).buy.toFixed(4),
+  calcSellPrice: order => getPrices(order).sell.toFixed(4),
+  displayVolume: (howMuch, dec) => howMuch.toFixed(dec),
+  cumulativeVolume(order, orderType) {
+    const orders = getOrders(orderType);
+    const priceThreshold = getPrices(order)[orderType];
+    const matchedOrders = matchOrders(orderType, priceThreshold, orders);
+    return cumulativeVolume(orderType, matchedOrders).toNumber().toFixed(4);
   },
-  calcSellCumulativeVolume(sellPrice, precision, index) {
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    let cheaperOrders;
-    if (Session.get('fromPortfolio')) {
-      cheaperOrders = Orders.find({
-        isActive: true,
-        'sell.price': { $lte: sellPrice },
-        'sell.symbol': baseTokenSymbol,
-        'buy.symbol': quoteTokenSymbol,
-        owner: addressList.liquidityProvider,
-      }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
-    } else {
-      cheaperOrders = Orders.find({
-        isActive: true,
-        'sell.price': { $lte: sellPrice },
-        'sell.symbol': baseTokenSymbol,
-        'buy.symbol': quoteTokenSymbol,
-      }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } }).fetch();
-    }
+  percentageOfTotalVolume(order, orderType) {
+    const orders = getOrders(orderType);
+    const priceThreshold = getPrices(order)[orderType];
+    const matchedOrders = matchOrders(orderType, priceThreshold, orders);
+    const currentCumulativeVolume = cumulativeVolume(orderType, matchedOrders);
+    const totalCumulativeVolume = cumulativeVolume(orderType, orders);
 
-    let cumulativeDouble = 0;
-
-    for (let i = 0; i <= index; i += 1) {
-      cumulativeDouble += cheaperOrders[i].sell.howMuch;
-    }
-
-    return convertFromTokenPrecision(cumulativeDouble, precision);
-  },
-  percentageOfBuySum(buyPrice, precision, index) {
-    const currentCumVol = Template.orderBookContents.__helpers.get('calcBuyCumulativeVolume').call(this, buyPrice, precision, index);
-
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    const total = Orders.find({
-      isActive: true,
-      'sell.symbol': quoteTokenSymbol,
-      'buy.symbol': baseTokenSymbol,
-    }, { sort: { 'sell.price': 1, 'buy.howMuch': 1, createdAt: 1 } })
-    .fetch()
-    .reduce((accumulator, currentValue) => accumulator + currentValue.buy.howMuch, 0);
-    return (currentCumVol / convertFromTokenPrecision(total, precision)) * 100;
-  },
-  percentageOfSellSum(sellPrice, precision, index) {
-    const currentCumVol = Template.orderBookContents.__helpers.get('calcSellCumulativeVolume').call(this, sellPrice, precision, index);
-
-    const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---').split('/');
-    const total = Orders.find({
-      isActive: true,
-      'sell.symbol': baseTokenSymbol,
-      'buy.symbol': quoteTokenSymbol,
-    }, { sort: { 'buy.price': 1, 'sell.howMuch': 1, createdAt: 1 } })
-    .fetch()
-    .reduce((accumulator, currentValue) => accumulator + currentValue.sell.howMuch, 0);
-
-    return (currentCumVol / convertFromTokenPrecision(total, precision)) * 100;
+    return currentCumulativeVolume.div(totalCumulativeVolume).times(100);
   },
 });
 
-Template.orderBookContents.onRendered(() => {
-});
+Template.orderBookContents.onRendered(() => {});
 
 Template.orderBookContents.events({
   'click .js-takeorder': (event) => {
-    Session.set('selectedOrderId', event.currentTarget.dataset.id);
-    console.log(Session.get('selectedOrderId'));
+    // Session.set('selectedOrderId', event.currentTarget.dataset.id);
+    store.dispatch(creators.selectOrder(event.currentTarget.dataset.id));
+
     location.hash = 'manage-holdings';
     history.replaceState(null, null, location.pathname);
   },

@@ -1,4 +1,3 @@
-
 // Load global components
 import '/imports/ui/components/ux/uxPages';
 import '/imports/ui/components/summary/melonSummary';

@@ -11,7 +11,6 @@ import './portalNew.html';
 
 const Version = contract(VersionJson);
 
-
 Template.portalNew.onCreated(() => {
   Session.set('showModal', true);
   Meteor.subscribe('vaults');
@@ -52,42 +51,59 @@ Template.portalNew.events({
     const PORTFOLIO_DECIMALS = 18;
     // Deploy
     const versionContract = Version.at(addressList.version);
-    Session.set('NetworkStatus', { isInactive: false, isMining: true, isError: false, isMined: false });
-    versionContract.createVault(
-      PORTFOLIO_NAME,
-      PORTFOLIO_SYMBOL,
-      PORTFOLIO_DECIMALS,
-      /* TODO take below address from user input */
-      addressList.universe,
-      addressList.subscribe,
-      addressList.redeem,
-      addressList.riskMgmt,
-      addressList.managementFee,
-      addressList.performanceFee,
-      { from: Session.get('selectedAccount') },
-    )
-    .then((result) => {
-      let id;
-      for (let i = 0; i < result.logs.length; i += 1) {
-        if (result.logs[i].event === 'VaultUpdate') {
-          id = result.logs[i].args.id.toNumber();
-          console.log('Vault has been created');
-          console.log(`Vault id: ${id}`);
-          Session.set('isNew', true);
-          toastr.success('Fund successfully created! You can now invest in your fund!');
-        }
-      }
-      return versionContract.getVault(id);
-    })
-    .then((info) => {
-      const address = info[0];
-      Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-      FlowRouter.go(`/fund/${address}`);
-    }).catch((err) => {
-      toastr.error('Oops, an error has occurred. Please verify your fund informations.');
-      Session.set('NetworkStatus', { isInactive: false, isMining: false, isError: false, isMined: true });
-      throw err;
+    Session.set('NetworkStatus', {
+      isInactive: false,
+      isMining: true,
+      isError: false,
+      isMined: false,
     });
+    versionContract
+      .createVault(
+        PORTFOLIO_NAME,
+        PORTFOLIO_SYMBOL,
+        PORTFOLIO_DECIMALS,
+        /* TODO take below address from user input */
+        addressList.universe,
+        addressList.subscribe,
+        addressList.redeem,
+        addressList.riskMgmt,
+        addressList.managementFee,
+        addressList.performanceFee,
+        { from: Session.get('selectedAccount') },
+      )
+      .then((result) => {
+        let id;
+        for (let i = 0; i < result.logs.length; i += 1) {
+          if (result.logs[i].event === 'VaultUpdate') {
+            id = result.logs[i].args.id.toNumber();
+            console.log('Vault has been created');
+            console.log(`Vault id: ${id}`);
+            Session.set('isNew', true);
+            toastr.success('Fund successfully created! You can now invest in your fund!');
+          }
+        }
+        return versionContract.getVault(id);
+      })
+      .then((info) => {
+        const address = info[0];
+        Session.set('NetworkStatus', {
+          isInactive: false,
+          isMining: false,
+          isError: false,
+          isMined: true,
+        });
+        FlowRouter.go(`/fund/${address}`);
+      })
+      .catch((err) => {
+        toastr.error('Oops, an error has occurred. Please verify your fund informations.');
+        Session.set('NetworkStatus', {
+          isInactive: false,
+          isMining: false,
+          isError: false,
+          isMined: true,
+        });
+        throw err;
+      });
   },
 });
 
