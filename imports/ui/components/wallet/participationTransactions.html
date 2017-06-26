@@ -14,9 +14,6 @@
             <tr>
               <th>Time</th>
               <th>Type</th>
-              <th>Share Price
-                <p></p>
-              </th>
               <th>Amount
                 <p></p>
               </th>
@@ -25,10 +22,9 @@
           <tbody>
             {{#each transaction in getParticipationTransactions}}
             <tr>
-              <td>XX</td>
-              <td>{{ transaction.transactionType }}</td>
-              <td>XX</td>
-              <td>XX</td>
+              <td>{{formatDate transaction.blockTimestamp}}</td>
+              <td>{{displayType transaction.transactionType }}</td>
+              <td>{{displayVolume transaction.amountOfShares }}</td>
             </tr>
             {{/each}}
           </tbody>

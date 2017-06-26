@@ -5,7 +5,7 @@ import moment from 'moment';
 // Collections
 import Transactions from '/imports/api/transactions';
 // Utils
-import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+import BigNumber from 'bignumber.js';
 
 // Corresponding html file
 import './participationTransactions.html';
@@ -15,47 +15,15 @@ Template.participationTransactions.onCreated(() => {
 });
 
 Template.participationTransactions.helpers({
-  // more: false,
-  // currentAssetPair: () => Session.get('currentAssetPair'),
-  // baseTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[0],
-  // quoteTokenSymbol: () => (Session.get('currentAssetPair') || '---/---').split('/')[1],
   getParticipationTransactions: () => {
-    const managerAddress = FlowRouter.getParam('address');
-    const trans = Transactions.find({}).fetch();
-    console.log(trans);
-    return trans;
-    // return Transactions.find({
-    //   manager: managerAddress,
-    //   $or: [
-    //     { transactionType: 'SharesCreated' },
-    //     { transactionType: 'SharesAnnihilated' },
-    //   ],
-    // }).fetch();
+    const transac = Transactions.find({}).fetch();
+    console.log(transac.amountOfShares);
+    return Transactions.find({}).fetch();
   },
-  // buyOrSell: buyTokenSymbol =>
-  //   buyTokenSymbol === (Session.get('currentAssetPair') || '---/---').split('/')[1]
-  //     ? 'buy'
-  //     : 'sell',
-  // getPrice(trade) {
-  //   const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
-  //     .split('/');
-
-  //   if (trade.buy.symbol === baseTokenSymbol) {
-  //     return (convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision) /
-  //       convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision)).toFixed(4);
-  //   }
-  //   return (convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision) /
-  //     convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision)).toFixed(4);
-  // },
-  // getVolume(trade) {
-  //   const [baseTokenSymbol, quoteTokenSymbol] = (Session.get('currentAssetPair') || '---/---')
-  //     .split('/');
-  //   if (trade.buy.symbol === baseTokenSymbol) {
-  //     return convertFromTokenPrecision(trade.buy.howMuch, trade.buy.precision);
-  //   }
-  //   return convertFromTokenPrecision(trade.sell.howMuch, trade.sell.precision);
-  // },
-  // formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
+  displayType: eventType =>
+    eventType === 'SharesCreated' ? 'Invest' : 'Redeem',
+  displayVolume: amount => Number(amount) / Math.pow(10, 18),
+  formatDate: date => moment(date).format('D.M.YYYY HH:mm:ss'),
 });
 
 Template.participationTransactions.onRendered(() => {});
