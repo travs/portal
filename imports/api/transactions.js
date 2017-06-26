@@ -23,7 +23,7 @@ if (Meteor.isServer) {
       },
       {
         sort: {
-          blockTimestamp: -1,
+          date: -1,
         },
       },
     );
@@ -73,12 +73,13 @@ Transactions.watch = () => {
             vaultAddress: event.address,
             manager,
             amountOfShares: numCreatedShares.toString(),
-            blockHash: event.blockHash,
-            blockNumber: event.blockNumber,
-            blockTimestamp: new Date(
+            date: new Date(
               web3.eth.getBlock(event.blockNumber).timestamp * 1000,
             ),
+            blockHash: event.blockHash,
+            blockNumber: event.blockNumber,
             transactionHash: event.transactionHash,
+            transactionIndex: event.transactionIndex,
             timeStamp,
           },
         );
@@ -117,12 +118,13 @@ Transactions.watch = () => {
             vaultAddress: event.address,
             manager,
             amountOfShares: numAnnihilatedShares.toString(),
-            blockHash: event.blockHash,
-            blockNumber: event.blockNumber,
-            blockTimestamp: new Date(
+            date: new Date(
               web3.eth.getBlock(event.blockNumber).timestamp * 1000,
             ),
+            blockHash: event.blockHash,
+            blockNumber: event.blockNumber,
             transactionHash: event.transactionHash,
+            transactionIndex: event.transactionIndex,
             timeStamp,
           },
         );

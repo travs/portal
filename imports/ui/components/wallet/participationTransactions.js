@@ -15,11 +15,7 @@ Template.participationTransactions.onCreated(() => {
 });
 
 Template.participationTransactions.helpers({
-  getParticipationTransactions: () => {
-    const transac = Transactions.find({}).fetch();
-    console.log(transac.amountOfShares);
-    return Transactions.find({}).fetch();
-  },
+  getParticipationTransactions: () => Transactions.find({}).fetch(),
   displayType: eventType =>
     eventType === 'SharesCreated' ? 'Invest' : 'Redeem',
   displayVolume: amount => Number(amount) / Math.pow(10, 18),

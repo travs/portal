@@ -2,7 +2,7 @@
 
   <div class="row order-book-head">
     <div class="col-md-12">
-      <h2 class="exchange-title">Participation Transactions</h2>
+      <h2 class="exchange-title">Invest/Redeem Transactions History</h2>
     </div>
   </div>
   <div class="row order-book-table">
@@ -22,7 +22,7 @@
           <tbody>
             {{#each transaction in getParticipationTransactions}}
             <tr>
-              <td>{{formatDate transaction.blockTimestamp}}</td>
+              <td>{{formatDate transaction.date}}</td>
               <td>{{displayType transaction.transactionType }}</td>
               <td>{{displayVolume transaction.amountOfShares }}</td>
             </tr>
