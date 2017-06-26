@@ -11,6 +11,7 @@
     "testrpc": "testrpc",
     "deploy:webfront": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy portal.melonport.com --owner melonproject --settings ./settings/webfront.json",
     "deploy:sync": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy melon-sync.eu.meteorapp.com --owner melonproject --settings ./settings/blockchain-sync.json",
+    "deploy:stage": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy melon-stage.eu.meteorapp.com --owner melonproject --settings ./settings/stage.json",
     "test:chimp:watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
     "test:chimp:once": "chimp --ddp=http://localhost:3000 --mocha --path=tests",
     "format": "prettier-eslint --write \"imports/**/*.js\""

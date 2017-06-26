@@ -81,16 +81,20 @@ Try install [Watchman](https://facebook.github.io/watchman/docs/install.html) wi
 
 Deployment is on [Meteors Galaxy](https://www.meteor.com/hosting). There are two types of possible deployments:
 
-1. Full deployments (as in dev mode): Server syncs with blockchain. Vertical scale.
+1. Full deployments (as in dev mode / stage / one sync service for live): Server syncs with blockchain. Vertical scale.
 2. Webfront: Server does not sync with the blockchain. Horizontal scale.
 
 The idea is to have only one full instance (ie. container) running which scales vertically (more CPU/RAM)
 and multiple webfront instances to scale horizontally.
 
-Deploy with:
+Deploy the live system with:
     
     npm run deploy:sync
     npm run deploy:webfront
+
+Deploy the stage system with:
+
+    npm run deploy:stage
 
 Everyone is free to host & run this portal elsewhere. All the important data is
 synced from the blockchain.
