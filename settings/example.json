@@ -1,0 +1,17 @@
+{
+  "public": {
+    "analyticsSettings": {
+      "Google Analytics": {
+        "trackingId": "UA-80990528-3"
+      }
+    },
+    "disableSync": true
+  },
+  "galaxy.meteor.com": {
+    "env": {
+      "MONGO_URL": "mongodb://*",
+      "ROOT_URL": "https://example.melonport.com",
+      "MAIL_URL": "melonport.com"
+    }
+  }
+}
