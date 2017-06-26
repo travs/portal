@@ -4,17 +4,22 @@
       {{#if selectedAccount}}
       <div class="row exchange-overview wallet">
         <!-- Wallets exist for this user -->
-          <div class="col-md-6 asset-overview">
-            {{> walletOverview}}
-          </div>
-          <div class="col-md-6 asset-overview">
-            {{> manageSettings}}
-          </div>
+        <div class="col-md-6 asset-overview">
+          {{> walletOverview}}
+        </div>
+        <div class="col-md-6 asset-overview">
+          {{> manageSettings}}
+        </div>
       </div>
       <div class="row exchange-order">
-          <div class="col-md-12">
-            {{> walletContents}}
-          </div>
+        <div class="col-md-12">
+          {{> walletContents}}
+        </div>
+      </div>
+      <div class="row exchange-order">
+        <div class="col-md-12">
+          {{> participationTransactions}}
+        </div>
       </div>
       {{/if}}
     </div>
