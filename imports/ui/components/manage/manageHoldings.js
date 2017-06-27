@@ -144,7 +144,6 @@ Template.manageHoldings.events({
   },
   'click .js-placeorder': async (event, templateInstance) => {
     event.preventDefault();
-    console.log(Template.instance().state.get('selectedOrderId'));
     if(Template.instance().state.get('selectedOrderId') !== undefined) {
       window.scrollTo(0, 0);
       Session.set('NetworkStatus', {
