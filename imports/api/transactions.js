@@ -30,193 +30,191 @@ if (Meteor.isServer) {
   });
 }
 
-const vaults = Vaults.find().fetch();
-
 // COLLECTION METHODS
 Transactions.watch = () => {
   if (Meteor.isClient) return;
+  Vaults.find({}).observeChanges({
+    added(id, vault) {
+      const Vault = contract(VaultJson);
+      Vault.setProvider(web3.currentProvider);
+      const vaultContract = Vault.at(vault.address);
 
-  const Vault = contract(VaultJson);
-  Vault.setProvider(web3.currentProvider);
-  for (let i = 0; i < vaults.length; i += 1) {
-    const vaultContract = Vault.at(vaults[i].address);
+      // Share Creation Event
+      const sharesCreated = vaultContract.SharesCreated(
+        {},
+        {
+          fromBlock: 0,
+          toBlock: 'latest',
+        },
+      );
 
-    // Share Creation Event
-    const sharesCreated = vaultContract.SharesCreated(
-      {},
-      {
-        fromBlock: 0,
-        toBlock: 'latest',
-      },
-    );
+      sharesCreated.watch(
+        Meteor.bindEnvironment((err, event) => {
+          if (err) throw err;
 
-    sharesCreated.watch(
-      Meteor.bindEnvironment((err, event) => {
-        if (err) throw err;
+          const {
+            byParticipant: manager,
+            atTimestamp: timeStamp,
+            numShares: numCreatedShares,
+          } = event.args;
 
-        const {
-          byParticipant: manager,
-          atTimestamp: timeStamp,
-          numShares: numCreatedShares,
-        } = event.args;
+          console.log(
+            'Share Creation Transaction Upsert ',
+            event.transactionHash,
+          );
+          Transactions.upsert(
+            {
+              transactionHash: event.transactionHash,
+            },
+            {
+              transactionType: event.event,
+              vaultAddress: event.address,
+              manager,
+              amountOfShares: numCreatedShares.toString(),
+              date: new Date(
+                web3.eth.getBlock(event.blockNumber).timestamp * 1000,
+              ),
+              blockHash: event.blockHash,
+              blockNumber: event.blockNumber,
+              transactionHash: event.transactionHash,
+              transactionIndex: event.transactionIndex,
+              timeStamp,
+            },
+          );
+        }),
+      );
 
-        console.log(
-          'Share Creation Transaction Upsert ',
-          event.transactionHash,
-        );
-        Transactions.upsert(
-          {
-            transactionHash: event.transactionHash,
-          },
-          {
-            transactionType: event.event,
-            vaultAddress: event.address,
-            manager,
-            amountOfShares: numCreatedShares.toString(),
-            date: new Date(
-              web3.eth.getBlock(event.blockNumber).timestamp * 1000,
-            ),
-            blockHash: event.blockHash,
-            blockNumber: event.blockNumber,
-            transactionHash: event.transactionHash,
-            transactionIndex: event.transactionIndex,
-            timeStamp,
-          },
-        );
-      }),
-    );
+      // Share Annihilation Event
+      const sharesAnnihilated = vaultContract.SharesAnnihilated(
+        {},
+        {
+          fromBlock: 0,
+          toBlock: 'latest',
+        },
+      );
 
-    // Share Annihilation Event
-    const sharesAnnihilated = vaultContract.SharesAnnihilated(
-      {},
-      {
-        fromBlock: 0,
-        toBlock: 'latest',
-      },
-    );
+      sharesAnnihilated.watch(
+        Meteor.bindEnvironment((err, event) => {
+          if (err) throw err;
 
-    sharesAnnihilated.watch(
-      Meteor.bindEnvironment((err, event) => {
-        if (err) throw err;
+          const {
+            byParticipant: manager,
+            atTimestamp: timeStamp,
+            numShares: numAnnihilatedShares,
+          } = event.args;
 
-        const {
-          byParticipant: manager,
-          atTimestamp: timeStamp,
-          numShares: numAnnihilatedShares,
-        } = event.args;
-
-        console.log(
-          'Share Annihilation Transaction Upsert ',
-          event.transactionHash,
-        );
-        Transactions.upsert(
-          {
-            transactionHash: event.transactionHash,
-          },
-          {
-            transactionType: event.event,
-            vaultAddress: event.address,
-            manager,
-            amountOfShares: numAnnihilatedShares.toString(),
-            date: new Date(
-              web3.eth.getBlock(event.blockNumber).timestamp * 1000,
-            ),
-            blockHash: event.blockHash,
-            blockNumber: event.blockNumber,
-            transactionHash: event.transactionHash,
-            transactionIndex: event.transactionIndex,
-            timeStamp,
-          },
-        );
-      }),
-    );
-
-    // Rewards Converted
-    // const rewardsConverted = vaultContract.RewardsConverted(
-    //   {},
-    //   {
-    //     fromBlock: 0,
-    //     toBlock: 'latest',
-    //   },
-    // );
-
-    // rewardsConverted.watch(
-    //   Meteor.bindEnvironment((err, event) => {
-    //     if (err) throw err;
-
-    //     const {
-    //       atTimestamp: timeStamp,
-    //       numSharesConverted,
-    //       numUnclaimedFees,
-    //     } = event.args;
-
-    //     console.log(
-    //       'Rewards Converted Transaction Upsert ',
-    //       event.transactionHash,
-    //     );
-    //     Transactions.upsert(
-    //       {
-    //         transactionHash: event.transactionHash,
-    //       },
-    //       {
-    //         transactionType: event.event,
-    //         vaultAddress: event.address,
-    //         owner: event.owner,
-    //         numSharesConverted,
-    //         numUnclaimedFees,
-    //         blockHash: event.blockHash,
-    //         blockNumber: event.blockNumber,
-    //         transactionHash: event.transactionHash,
-    //         timeStamp,
-    //       },
-    //     );
-    //   }),
-    // );
-
-    // Rewards Payed Out
-    // const rewardsPayedOut = vaultContract.RewardsPayedOut(
-    //   {},
-    //   {
-    //     fromBlock: 0,
-    //     toBlock: 'latest',
-    //   },
-    // );
-
-    // rewardsPayedOut.watch(
-    //   Meteor.bindEnvironment((err, event) => {
-    //     if (err) throw err;
-
-    //     const {
-    //       byParticipant: manager,
-    //       atTimestamp: timeStamp,
-    //       numSharesPayedOut,
-    //     } = event.args;
-
-    //     console.log(
-    //       'Rewards Converted Transaction Upsert ',
-    //       event.transactionHash,
-    //     );
-    //     Transactions.upsert(
-    //       {
-    //         transactionHash: event.transactionHash,
-    //       },
-    //       {
-    //         transactionType: event.event,
-    //         vaultAddress: event.address,
-    //         owner: event.owner,
-    //         numSharesPayedOut,
-    //         atSharePrice: event.atSharePrice,
-    //         blockHash: event.blockHash,
-    //         blockNumber: event.blockNumber,
-    //         transactionHash: event.transactionHash,
-    //         timeStamp,
-    //       },
-    //     );
-    //   }),
-    // );
-  }
+          console.log(
+            'Share Annihilation Transaction Upsert ',
+            event.transactionHash,
+          );
+          Transactions.upsert(
+            {
+              transactionHash: event.transactionHash,
+            },
+            {
+              transactionType: event.event,
+              vaultAddress: event.address,
+              manager,
+              amountOfShares: numAnnihilatedShares.toString(),
+              date: new Date(
+                web3.eth.getBlock(event.blockNumber).timestamp * 1000,
+              ),
+              blockHash: event.blockHash,
+              blockNumber: event.blockNumber,
+              transactionHash: event.transactionHash,
+              transactionIndex: event.transactionIndex,
+              timeStamp,
+            },
+          );
+        }),
+      );
+    },
+  });
 };
 
+// Rewards Converted
+// const rewardsConverted = vaultContract.RewardsConverted(
+//   {},
+//   {
+//     fromBlock: 0,
+//     toBlock: 'latest',
+//   },
+// );
+
+// rewardsConverted.watch(
+//   Meteor.bindEnvironment((err, event) => {
+//     if (err) throw err;
+
+//     const {
+//       atTimestamp: timeStamp,
+//       numSharesConverted,
+//       numUnclaimedFees,
+//     } = event.args;
+
+//     console.log(
+//       'Rewards Converted Transaction Upsert ',
+//       event.transactionHash,
+//     );
+//     Transactions.upsert(
+//       {
+//         transactionHash: event.transactionHash,
+//       },
+//       {
+//         transactionType: event.event,
+//         vaultAddress: event.address,
+//         owner: event.owner,
+//         numSharesConverted,
+//         numUnclaimedFees,
+//         blockHash: event.blockHash,
+//         blockNumber: event.blockNumber,
+//         transactionHash: event.transactionHash,
+//         timeStamp,
+//       },
+//     );
+//   }),
+// );
+
+// Rewards Payed Out
+// const rewardsPayedOut = vaultContract.RewardsPayedOut(
+//   {},
+//   {
+//     fromBlock: 0,
+//     toBlock: 'latest',
+//   },
+// );
+
+// rewardsPayedOut.watch(
+//   Meteor.bindEnvironment((err, event) => {
+//     if (err) throw err;
+
+//     const {
+//       byParticipant: manager,
+//       atTimestamp: timeStamp,
+//       numSharesPayedOut,
+//     } = event.args;
+
+//     console.log(
+//       'Rewards Converted Transaction Upsert ',
+//       event.transactionHash,
+//     );
+//     Transactions.upsert(
+//       {
+//         transactionHash: event.transactionHash,
+//       },
+//       {
+//         transactionType: event.event,
+//         vaultAddress: event.address,
+//         owner: event.owner,
+//         numSharesPayedOut,
+//         atSharePrice: event.atSharePrice,
+//         blockHash: event.blockHash,
+//         blockNumber: event.blockNumber,
+//         transactionHash: event.transactionHash,
+//         timeStamp,
+//       },
+//     );
+//   }),
+// );
 export default Transactions;
 
 /* Share Created Shape

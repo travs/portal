@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+
 // NPM imports
 import moment from 'moment';
 // Collections
@@ -15,7 +17,10 @@ Template.participationTransactions.onCreated(() => {
 });
 
 Template.participationTransactions.helpers({
-  getParticipationTransactions: () => Transactions.find({}).fetch(),
+  getParticipationTransactions: () => {
+    const manager = FlowRouter.getParam('address');
+    return Transactions.find({ manager }).fetch();
+  },
   displayType: eventType =>
     eventType === 'SharesCreated' ? 'Invest' : 'Redeem',
   displayVolume: amount => Number(amount) / Math.pow(10, 18),
