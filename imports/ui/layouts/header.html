@@ -12,12 +12,10 @@
       </div>
       <div class="collapse navbar-collapse" id="default-header">
         <ul class="nav navbar-nav navbar-right">
-          {{#if isClientConnected}}
-            {{#if selectedAccount}}
-              {{#if isKovanNetwork}}
-                <li><a href="/account/{{selectedAccount}}">My Account</a></li>
-                <li class="has-badge">
-                  <a class="portfolio" href="#">
+          {{#if isClientConnected}} {{#if selectedAccount}} {{#if isKovanNetwork}}
+          <li><a href="/account/{{selectedAccount}}">My Account</a></li>
+          <li class="has-badge">
+            <a class="portfolio" href="#">
                     {{#if hasManagerCreatedVault}}
                       My Fund
                       {{#if getIsNewOfVault}}
@@ -29,14 +27,11 @@
                       Melon Fund <span class="badge btn-outline-blue" data-badge-caption="Create">Create</span>
                     {{/if}}
                   </a>
-                </li>
-                {{#if getIsFundedVault}}
-                <li class="manage btn-request"><a href="#" class="btn outline-white">Manage</a></li>
-                {{/if}}
-              {{/if}}
-            {{/if}}
-          {{else}}
-            <li class="btn-request"><a href="https://medium.com/@melonproject/2a81102b03fd" target="_blank" class="btn btn-outline-white">Instructions</a></li>
+          </li>
+          {{#if getIsFundedVault}}
+          <li class="manage btn-request"><a href="#" class="btn outline-white">Manage</a></li>
+          {{/if}} {{/if}} {{/if}} {{else}}
+          <li class="btn-request"><a href="https://medium.com/@melonproject/2a81102b03fd" target="_blank" class="btn btn-outline-white" rel="noopener">Instructions</a></li>
           {{/if}}
         </ul>
       </div>

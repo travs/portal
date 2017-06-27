@@ -8,8 +8,12 @@ Template.uxIndexPortal.onCreated(() => {
 });
 
 Template.uxIndexPortal.events({
-  'input #searchVaults': (event, template) => {
+  'input #searchVaults': (event) => {
     Session.set('searchVaults', event.currentTarget.value);
+  },
+  'submit .js-suppress-submit'(event) {
+    window.$('#searchVaults').select();
+    event.preventDefault();
   },
 });
 

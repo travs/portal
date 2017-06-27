@@ -25,14 +25,16 @@ async function updateWeb3() {
     web3State.isServerConnected = await pify(Meteor.call)('isServerConnected');
 
     const accounts = await pify(web3.eth.getAccounts)();
-    const balance = await pify(web3.eth.getBalance)(accounts[0]);
-    web3State.account = accounts[0];
-    web3State.network = networkMapping[await pify(web3.version.getNetwork)()];
-    web3State.balance = balance ? balance.div(10 ** 18).toString() : null;
-    web3State.currentBlock = await pify(web3.eth.getBlockNumber)();
-    web3State.isSynced = !await pify(web3.eth.getSyncing)();
+    if (accounts.length) {
+      const balance = await pify(web3.eth.getBalance)(accounts[0]);
+      web3State.account = accounts[0];
+      web3State.network = networkMapping[await pify(web3.version.getNetwork)()];
+      web3State.balance = balance ? balance.div(10 ** 18).toString() : null;
+      web3State.currentBlock = await pify(web3.eth.getBlockNumber)();
+      web3State.isSynced = !await pify(web3.eth.getSyncing)();
+    }
   } catch (e) {
-    console.error(e);
+    console.warn(e);
   }
 
   const previousState = store.getState().web3;
@@ -45,7 +47,8 @@ async function updateWeb3() {
   if (needsUpdate) store.dispatch(creators.update(web3State));
 }
 
-// We need to wait for the page load instead of meteor startup to be certain that metamask is injected.
+// We need to wait for the page load instead of meteor startup
+// to be certain that metamask is injected.
 window.addEventListener('load', function() {
   /* eslint-disable no-underscore-dangle */
   window.__AppInitializedBeforeWeb3__ = true;

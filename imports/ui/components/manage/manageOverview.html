@@ -9,7 +9,7 @@
         <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="name">Name</label>
         <div class="col-md-8 col-sm-6 col-xs-12">
           <p>
-            <a class="table-link" href="https://kovan.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+            <a class="table-link" href="https://kovan.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank" rel="noopener">
               {{getPortfolioDoc.name}}
             </a>
           </p>
@@ -19,7 +19,8 @@
       <div class="form-group">
         <label class="col-md-4 col-sm-6 col-xs-12 control-label" for="name">AUM:</label>
         <div class="col-md-8 col-sm-6 col-xs-12">
-          <p>{{dapp_formatBalance (getPortfolioDoc.nav) "0,0.0[00] UNIT"}}</p> <!-- Static -->
+          <p>{{dapp_formatBalance (getPortfolioDoc.nav) "0,0.0[00] UNIT"}}</p>
+          <!-- Static -->
         </div>
       </div>
 
@@ -27,7 +28,7 @@
         <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Share Price:</label>
         <div class="col-md-8 col-sm-8 col-xs-12">
           <p>
-            <a class="table-link" href="https://kovan.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank">
+            <a class="table-link" href="https://kovan.etherscan.io/address/{{getPortfolioDoc.address}}" target="_blank" rel="noopener">
               {{dapp_formatBalance (getPortfolioDoc.sharePrice) "0,0.0[00] unit" "finney"}}/share
             </a>
           </p>

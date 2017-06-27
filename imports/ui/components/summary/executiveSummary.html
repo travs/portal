@@ -6,47 +6,44 @@
       {{#if selectedAccount}}
       <p class="value">
         {{# if selectedAccountBalance }}
-          <a href="/account/{{selectedAccount}}" class="truncate green-text text-lighten-2">
+        <a href="/account/{{selectedAccount}}" class="truncate green-text text-lighten-2">
             {{displayBigNumber selectedAccountBalance 4}} ETH
-          </a>
-        {{else}}
-          <a href="https://github.com/kovan-testnet/faucet" class="truncate blue-text text-lighten-2 new badge-hero" target="_blank">
+          </a> {{else}}
+        <a href="https://github.com/kovan-testnet/faucet" class="truncate blue-text text-lighten-2 new badge-hero" target="_blank"
+          rel="noopener">
             Get Kovan Test Ether
-          </a>
-        {{/if}}
+          </a> {{/if}}
       </p>
       {{else}}
-        <p class="value">No account selected</p>
+      <p class="value">No account selected</p>
       {{/if}}
     </li>
     <li>
       <p class="status">Fund</p>
       {{#if hasManagerCreatedVault}}
-        <p class="value">
-          <a href="/fund/{{getManagerAddressOfVault}}" class="truncate green-text text-lighten-2">{{getManagerNameOfVault}}</a>
-        </p>
+      <p class="value">
+        <a href="/fund/{{getManagerAddressOfVault}}" class="truncate green-text text-lighten-2">{{getManagerNameOfVault}}</a>
+      </p>
+      {{else}} {{#if selectedAccount}}
+      <p class="value">
+        <a href="/" class="truncate blue-text text-lighten-2 new badge-hero">Create fund</a>
+      </p>
       {{else}}
-        {{#if selectedAccount}}
-          <p class="value">
-            <a href="/" class="truncate blue-text text-lighten-2 new badge-hero">Create fund</a>
-          </p>
-        {{else}}
-          <p class="value">
-            N/A
-          </p>
-        {{/if}}
-      {{/if}}
+      <p class="value">
+        N/A
+      </p>
+      {{/if}} {{/if}}
     </li>
     <li>
       <p class="status">Share Price</p>
       {{#if hasManagerCreatedVault}}
-        <p class="value">
-          <a href="/fund/{{getManagerAddressOfVault}}" class="truncate green-text text-lighten-2">{{dapp_formatBalance getSharePrice "0,0.0" "finney"}}</a>
-        </p>
+      <p class="value">
+        <a href="/fund/{{getManagerAddressOfVault}}" class="truncate green-text text-lighten-2">{{dapp_formatBalance getSharePrice "0,0.0" "finney"}}</a>
+      </p>
       {{else}}
-        <p class="value">
-          <a href="/" class="truncate blue-text text-lighten-2 badge-hero">Create portfolio</a>
-        </p>
+      <p class="value">
+        <a href="/" class="truncate blue-text text-lighten-2 badge-hero">Create portfolio</a>
+      </p>
       {{/if}}
     </li>
   </ul>

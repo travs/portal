@@ -1,91 +1,85 @@
 <template name="portalNew">
-  {{#if isInactiveNetworkStatus}}
+  {{#if isInactiveNetworkStatus}} {{#if showModal}} {{> disclaimerModal}} {{/if}}
 
 
-    {{#if showModal}}
-      {{> disclaimerModal}}
-    {{/if}}
-
-
-    <section class="mp-portal setup-portfolio">
-      <!-- term&condition -->
-      <div class="container">
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1 setup-portfolio-wrapper">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="setup-header">
-                  <h4>Set up a new fund</h4>
-                  <p>Create a new fund and deploy it to the Ethereum blockchain.</p>
-                </div>
+  <section class="mp-portal setup-portfolio">
+    <!-- term&condition -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 setup-portfolio-wrapper">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="setup-header">
+                <h4>Set up a new fund</h4>
+                <p>Create a new fund and deploy it to the Ethereum blockchain.</p>
               </div>
             </div>
-            <div class="row">
-              <div class="line-divider"></div>
-              <form class="col s12 new-portfolio" id="new_portfolio">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="setup-form">
-                      <div class="mp-form">
-                        <div class="form-group">
-                          <input id="portfolio_name" type="text" class="form-control validate" minlength="3" placeholder="Your Fund Name (Visible to others)" required>
-                        </div>
+          </div>
+          <div class="row">
+            <div class="line-divider"></div>
+            <form class="col s12 new-portfolio" id="new_portfolio">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="setup-form">
+                    <div class="mp-form">
+                      <div class="form-group">
+                        <input id="portfolio_name" type="text" class="form-control validate" minlength="3" placeholder="Your Fund Name (Visible to others)"
+                          required>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="line-divider"></div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="setup-module">
-                      <h6 style="color:grey">Universe Module: </h6>
-                      <p>Melon Universe</p>
-                      <ul class="setup-module-list">
-                        <li><a href="https://kovan.etherscan.io/address/{{etherToken}}" target="_blank">Ether Token (ETH-T)</a></li>
-                        <li><a href="https://kovan.etherscan.io/address/{{melonToken}}" target="_blank">Melon Token (MLN-T)</a></li>
-                        <li><a href="https://kovan.etherscan.io/address/{{bitcoinToken}}" target="_blank">Bitcoin Token (BTC-T)</a></li>
-                        <li><a href="https://kovan.etherscan.io/address/{{euroToken}}" target="_blank">Euro Token (EUR-T)</a></li>
-                        <li><a href="https://kovan.etherscan.io/address/{{repToken}}" target="_blank">Rep Token (Rep)</a></li>
-                      </ul>
-                    </div>
+              </div>
+              <div class="line-divider"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="setup-module">
+                    <h6 style="color:grey">Universe Module: </h6>
+                    <p>Melon Universe</p>
+                    <ul class="setup-module-list">
+                      <li><a href="https://kovan.etherscan.io/address/{{etherToken}}" target="_blank" rel="noopener">Ether Token (ETH-T)</a></li>
+                      <li><a href="https://kovan.etherscan.io/address/{{melonToken}}" target="_blank" rel="noopener">Melon Token (MLN-T)</a></li>
+                      <li><a href="https://kovan.etherscan.io/address/{{bitcoinToken}}" target="_blank" rel="noopener">Bitcoin Token (BTC-T)</a></li>
+                      <li><a href="https://kovan.etherscan.io/address/{{euroToken}}" target="_blank" rel="noopener">Euro Token (EUR-T)</a></li>
+                      <li><a href="https://kovan.etherscan.io/address/{{repToken}}" target="_blank" rel="noopener">Rep Token (Rep)</a></li>
+                    </ul>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="setup-module">
-                      <h6 style="color:grey">Exchange Module:</h6>
-                      <ul class="setup-module-list">
-                        <li><a href="https://kovan.etherscan.io/address/{{exchange}} " target="_blank">Melon Exchange</a></li>
-                      </ul>
-                    </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="setup-module">
+                    <h6 style="color:grey">Exchange Module:</h6>
+                    <ul class="setup-module-list">
+                      <li><a href="https://kovan.etherscan.io/address/{{exchange}} " target="_blank" rel="noopener">Melon Exchange</a></li>
+                    </ul>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="setup-module">
-                      <h6 style="color:grey">Price Feed Module:</h6>
-                      <ul class="setup-module-list">
-                        <li><a href="https://kovan.etherscan.io/address/{{cryptoCompare}}" target="_blank">Cryptocompare</a></li>
-                      </ul>
-                    </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="setup-module">
+                    <h6 style="color:grey">Price Feed Module:</h6>
+                    <ul class="setup-module-list">
+                      <li><a href="https://kovan.etherscan.io/address/{{cryptoCompare}}" target="_blank" rel="noopener">Cryptocompare</a></li>
+                    </ul>
                   </div>
                 </div>
-                <div class="line-divider"></div>
-                <div class="row">
-                  <div class="col-md-12 btn-portfolio text-left">
-                    <button type="submit" class="btn btn-light-blue">Create New Fund</button>
-                  </div>
+              </div>
+              <div class="line-divider"></div>
+              <div class="row">
+                <div class="col-md-12 btn-portfolio text-left">
+                  <button type="submit" class="btn btn-light-blue">Create New Fund</button>
                 </div>
-                <div class="clear"></div>
-              </form>
-            </div>
+              </div>
+              <div class="clear"></div>
+            </form>
           </div>
         </div>
       </div>
-    </section>
-  {{else}}
-
-  {{/if}}
+    </div>
+  </section>
+  {{else}} {{/if}}
 </template>
 
 
@@ -99,9 +93,17 @@
           <h4 class="modal-title" id="myModalLabel" style="color: red; text-align: center;">DISCLAIMER</h4>
         </div>
         <div class="modal-body">
-          <p style="font-weight: bold;">Please note that this is a beta version of the Melon portal with purpose intended for testing a software only. DO NOT USE REAL ETHER OR VALUE TOKEN. All data collected will be deleted from our database regularly. </p>
-          <p style="font-weight: bold;">The User understands and accepts that in the event of announcing any Melon related competitions, the winners and prizes will be determined at full discretion by Melonport AG and Melonport AG alone.</p>
-          <p style="font-weight: bold;">The user understands and accepts that this software is provided “as is” and any expressed or implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall the regrets or contributors be liable of any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption). However caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.</p>
+          <p style="font-weight: bold;">Please note that this is a beta version of the Melon portal with purpose intended for testing a software only.
+            DO NOT USE REAL ETHER OR VALUE TOKEN. All data collected will be deleted from our database regularly. </p>
+          <p style="font-weight: bold;">The User understands and accepts that in the event of announcing any Melon related competitions, the winners and
+            prizes will be determined at full discretion by Melonport AG and Melonport AG alone.</p>
+          <p style="font-weight: bold;">The user understands and accepts that this software is provided “as is” and any expressed or implied warranties
+            of merchantability and fitness for a particular purpose are disclaimed. In no event shall the regrets or contributors
+            be liable of any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not
+            limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption).
+            However caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence
+            or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such
+            damage.</p>
           <p style="font-weight: bold;">Any applicable law is Swiss law.</p>
         </div>
         <div class="modal-footer">

@@ -1,12 +1,12 @@
 <template name="uxIndexPortal">
   <section class="mp-hero mp-portal-hero">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
           <h1>The Future of Asset Management</h1>
-          <form>
+          <form class="js-suppress-submit">
             <div class="input-group input-newsletter">
-              <input id="searchVaults" type="text" value="" class="form-control" placeholder="Search for Managers and Funds" required>
+              <input id="searchVaults" type="text" value="" class="form-control" placeholder="Search for Managers and Funds" required autocomplete="off">
               <span class="input-group-link">
                 <button type="submit" value="Subscribe" name="subscribe" class="button"><i class="ion-ios-search-strong"></i></button>
               </span>
@@ -14,52 +14,52 @@
           </form>
         </div>
         {{> ux_index_summaries}}
-			</div>
-		</div>
-	</section>
+      </div>
+    </div>
+  </section>
 </template>
 
 <template name="uxIndexGraph">
   <section class="mp-hero mp-portal-hero">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
-          {{#if isClientConnected}}
-            {{#if selectedAccount}}
-              {{#if isKovanNetwork}}
-                {{#if hasManagerCreatedVault}}
-                  <div class="hero-charts">
-                    <svg class="js-charts charts" height="250"></svg>
-                  </div>
-                {{else}} <!-- hasManagerCreatedVault -->
-                  <h1>You are good to go!</h1>
-                  <p>Explore the future of finance with Melon</p>
-                {{/if}}
-              {{else}} <!-- isKovanNetwork -->
-                <h1>Great you're connected!</h1>
-                <p>Now switch to the <a class="blue-text text-lighten-2">Ethereum testnet</a> to use this application</p>
-              {{/if}}
-	          {{else}} <!-- selectedAccount -->
-              <h1>Great you're connected!</h1>
-              <p>Now select an <a class="blue-text text-lighten-2">Ethereum account</a> to use this application</p>
-             {{/if}}
-          {{else}} <!-- isClientConnected -->
-            <p>Start by installing <a class="white-text" href="https://parity.io/" target="_blank"><b>Parity</b></a>, <a class="white-text" href="https://metamask.io/" target="_blank"><b>MetaMask</b></a> or <a class="white-text" href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank"><b>Mist</b></a></p>
-          {{/if}}
-        </div>
-        {{> ux_index_summaries}}
-			</div>
-		</div>
-	</section>
-</template>
-
-<template name="ux_walletOverview">
- <section class="mp-hero mp-portal-hero">
     <div class="container">
       <div class="row">
         <div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
-            <h1>My Account</h1>
-            <p class="blue-text text-lighten-2">Overview of your personal account</p>
+          {{#if isClientConnected}} {{#if selectedAccount}} {{#if isKovanNetwork}} {{#if hasManagerCreatedVault}}
+          <div class="hero-charts">
+            <svg class="js-charts charts" height="250"></svg>
+          </div>
+          {{else}}
+          <!-- hasManagerCreatedVault -->
+          <h1>You are good to go!</h1>
+          <p>Explore the future of finance with Melon</p>
+          {{/if}} {{else}}
+          <!-- isKovanNetwork -->
+          <h1>Great you're connected!</h1>
+          <p>Now switch to the <a class="blue-text text-lighten-2">Ethereum testnet</a> to use this application</p>
+          {{/if}} {{else}}
+          <!-- selectedAccount -->
+          <h1>Great you're connected!</h1>
+          <p>Now select an <a class="blue-text text-lighten-2">Ethereum account</a> to use this application</p>
+          {{/if}} {{else}}
+          <!-- isClientConnected -->
+          <p>Start by installing <a class="white-text" href="https://parity.io/" target="_blank" rel="noopener"><b>Parity</b></a>,
+            <a class="white-text" href="https://metamask.io/" target="_blank" rel="noopener"><b>MetaMask</b></a> or <a class="white-text"
+              href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank" rel="noopener"><b>Mist</b></a></p>
+          {{/if}}
+        </div>
+        {{> ux_index_summaries}}
+      </div>
+    </div>
+  </section>
+</template>
+
+<template name="ux_walletOverview">
+  <section class="mp-hero mp-portal-hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
+          <h1>My Account</h1>
+          <p class="blue-text text-lighten-2">Overview of your personal account</p>
         </div>
         {{> ux_index_summaries}}
       </div>
@@ -68,12 +68,12 @@
 </template>
 
 <template name="ux_portfolioOverview">
- <section class="mp-hero mp-portal-hero">
+  <section class="mp-hero mp-portal-hero">
     <div class="container">
       <div class="row">
         <div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
-            <h1>{{getPortfolioDoc.name}}</h1>
-            <p class="blue-text text-lighten-2">Overview of your Melon fund</p>
+          <h1>{{getPortfolioDoc.name}}</h1>
+          <p class="blue-text text-lighten-2">Overview of your Melon fund</p>
         </div>
         {{> ux_index_summaries}}
       </div>
@@ -82,12 +82,12 @@
 </template>
 
 <template name="ux_manageOverview">
- <section class="mp-hero mp-portal-hero">
+  <section class="mp-hero mp-portal-hero">
     <div class="container">
       <div class="row">
         <div class="col-md-7 col-sm-7 col-xs-12 text-center hero-text">
-            <h1>Manage on Exchange</h1>
-            <p class="blue-text text-lighten-2">Improve your performance by trading your assets</p>
+          <h1>Manage on Exchange</h1>
+          <p class="blue-text text-lighten-2">Improve your performance by trading your assets</p>
         </div>
         {{> ux_index_summaries}}
       </div>
@@ -97,27 +97,28 @@
 
 <template name="ux_index_summaries">
   {{#if isClientConnected}}
-    <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
-      <div class="row">
-        <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
-          {{> melonSummary}}
-        </div>
-        <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
-          {{> executiveSummary}}
-        </div>
+  <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
+    <div class="row">
+      <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
+        {{> melonSummary}}
+      </div>
+      <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
+        {{> executiveSummary}}
       </div>
     </div>
-  {{else}} <!-- isClientConnected -->
-    <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
-      <div class="row">
-        <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
-          {{> visitorAccess}}
-        </div>
-        <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
-          {{> fullAccess}}
-        </div>
+  </div>
+  {{else}}
+  <!-- isClientConnected -->
+  <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
+    <div class="row">
+      <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
+        {{> visitorAccess}}
+      </div>
+      <div class="hero-network-summary col-md-6 col-sm-6 col-xs-6">
+        {{> fullAccess}}
       </div>
     </div>
+  </div>
   {{/if}}
 </template>
 
@@ -129,7 +130,9 @@
         <img src="/dist/img/ethereum_node_down.png">
         <h2 class="about-title">Ethereum node down</h2>
         <p>Unfortunately the server-side Ethereum node seems to be down.</p>
-        <p><a href="mailto:team@melonport.com?subject=Server Side Ethereum Node Down on Portal app" target="_top">Please contact us</a>. Thanks.</p>
+        <p><a href="mailto:team@melonport.com?subject=Server Side Ethereum Node Down on Portal app" target="_top">Please contact us</a>.
+          Thanks.
+        </p>
       </div>
     </div>
   </div>
@@ -155,8 +158,10 @@
       <div id="results" class="col-md-12 text-center error-message">
         <img src="/dist/img/ethereum_node_down.png">
         <h2 class="about-title">No connection</h2>
-        <p>No connection to the Ethereum Network. Please check if your local node or Metamask is running. Since this is a test version, please select the Kovan Network. If the page takes too long to reload, please refresh.</p>
-        <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" class="btn btn-def btn-light-blue" target="blank">Dowload Metamask here</a>
+        <p>No connection to the Ethereum Network. Please check if your local node or Metamask is running. Since this is a test
+          version, please select the Kovan Network. If the page takes too long to reload, please refresh.</p>
+        <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" class="btn btn-def btn-light-blue"
+          target="blank" rel="noopener">Dowload Metamask here</a>
       </div>
     </div>
   </div>
@@ -169,8 +174,10 @@
       <div id="results" class="col-md-12 text-center error-message">
         <img src="/dist/img/no_account_selected.png">
         <h2 class="about-title">No account selected</h2>
-        <p> To get started, please type in your password into Metamask and select an account. Since this is a test version, please select the Kovan Network. If the page takes too long to reload, please refresh.</p>
-        <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" class="btn btn-def btn-light-blue" target="blank">Dowload Metamask here</a>
+        <p> To get started, please type in your password into Metamask and select an account. Since this is a test version, please
+          select the Kovan Network. If the page takes too long to reload, please refresh.</p>
+        <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" class="btn btn-def btn-light-blue"
+          target="blank" rel="noopener">Dowload Metamask here</a>
       </div>
     </div>
   </div>
@@ -184,7 +191,7 @@
         <img src="/dist/img/insufficient_funds.png">
         <h2 class="about-title">Insufficient funds</h2>
         <p>In order to create a fund, you need to have some kovan test ether in your wallet.</p>
-        <a href="https://github.com/kovan-testnet/faucet" class="btn btn-def btn-light-blue" target="blank">Get some k-ethers here</a>
+        <a href="https://github.com/kovan-testnet/faucet" class="btn btn-def btn-light-blue" target="blank" rel="noopener">Get some k-ethers here</a>
       </div>
     </div>
   </div>
@@ -197,8 +204,8 @@
       <div id="results" class="col-md-12 text-center error-message">
         <img src="/dist/img/switch_network.png">
         <h2 class="about-title">Ethereum Testnet</h2>
-        <p>Well done you're connected with Metamask. Now switch to the Kovan network to use this application. You will be asked to type your password again. If the page takes too long to reload, please refresh.</p>
-       <!--  <a href="#" class="btn btn-def btn-light-blue">Switch Now</a> -->
+        <p>Well done you're connected with Metamask. Now switch to the Kovan network to use this application. You will be asked
+          to type your password again. If the page takes too long to reload, please refresh.</p>
       </div>
     </div>
   </div>
@@ -208,7 +215,7 @@
 <template name="visitorAccess">
   <span>Visitor Access</span>
   <ul>
-  <li class="btn-request"><a href="/visit" class="btn btn-outline-white">Visitor View</a></li>
+    <li class="btn-request"><a href="/visit" class="btn btn-outline-white">Visitor View</a></li>
   </ul>
 </template>
 
@@ -218,7 +225,8 @@
   <ul>
     <li>
       <li>
-      <p class="status"><b>Compatible with: </b></p></li>
+        <p class="status"><b>Compatible with: </b></p>
+      </li>
       <li><a class="white-text" href="https://parity.io/" target="_blank">Parity</a></li>
       <li><a class="white-text" href="https://metamask.io/" target="_blank">MetaMask</a></li>
       <li><a class="white-text" href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank">Mist</a></li>
