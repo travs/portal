@@ -38,6 +38,10 @@ Template.manageParticipation.helpers({
       return web3.fromWei(doc.sharePrice, 'ether');
     }
   },
+  getSharePrice() {
+    const address = FlowRouter.getParam('address');
+
+  },
   selectedTypeName() {
     switch (Template.instance().typeValue.get()) {
       case 0:
@@ -101,16 +105,16 @@ Template.manageParticipation.events({
       // Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
       return;
     }
-    const coreAddress = FlowRouter.getParam('address');
-    const doc = Vaults.findOne({ address: coreAddress });
+    const vaultAddress = FlowRouter.getParam('address');
+    const doc = Vaults.findOne({ address: vaultAddress });
     // Check if core is stored in database
     if (doc === undefined) {
       // TODO replace toast
-      // Materialize.toast(`Portfolio could not be found\n ${coreAddress}`, 4000, 'red');
+      // Materialize.toast(`Portfolio could not be found\n ${vaultAddress}`, 4000, 'red');
       return;
     }
 
-    const coreContract = Vault.at(coreAddress);
+    const vaultContract = Vault.at(vaultAddress);
     Vault.setProvider(web3.currentProvider);
 
     // Is mining
@@ -135,9 +139,9 @@ Template.manageParticipation.events({
       case 0:
         EtherTokenContract.deposit({ from: managerAddress, value: weiTotal })
           .then(result =>
-            EtherTokenContract.approve(coreAddress, baseUnitVolume, { from: managerAddress }),
+            EtherTokenContract.approve(vaultAddress, baseUnitVolume, { from: managerAddress }),
           )
-          .then(result => coreContract.createShares(baseUnitVolume, { from: managerAddress }))
+          .then(result => vaultContract.createShares(baseUnitVolume, { from: managerAddress }))
           .then((result) => {
             Session.set('NetworkStatus', {
               isInactive: false,
@@ -147,9 +151,9 @@ Template.manageParticipation.events({
             });
             toastr.success('Shares successfully created!');
             console.log(`Shares successfully created. Tx Hash: ${result}`);
-            Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+            Meteor.call('assets.sync', vaultAddress); // Upsert Assets Collection
             Meteor.call('vaults.syncVaultById', doc.id);
-            return coreContract.totalSupply();
+            return vaultContract.totalSupply();
           })
           .catch((error) => {
             console.log(error);
@@ -170,7 +174,7 @@ Template.manageParticipation.events({
 
       // Redeem case
       case 1:
-        coreContract
+        vaultContract
           .annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress })
           .then((result) => {
             Session.set('NetworkStatus', {
@@ -181,10 +185,10 @@ Template.manageParticipation.events({
             });
             toastr.success('Shares successfully redeemed!');
             console.log(`Shares annihilated successfully. Tx Hash: ${result}`);
-            Meteor.call('assets.sync', coreAddress); // Upsert Assets Collection
+            Meteor.call('assets.sync', vaultAddress); // Upsert Assets Collection
             templateInstance.find('input#total').value = '';
             templateInstance.find('input#volume').value = '';
-            return coreContract.totalSupply();
+            return vaultContract.totalSupply();
           })
           .catch((error) => {
             console.log(error);
