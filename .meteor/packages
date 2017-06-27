@@ -38,3 +38,4 @@ ethereum:tools
 ethereum:elements
 flawless:meteor-toastr
 dynamic-import@0.1.0
+mdg:meteor-apm-agent
