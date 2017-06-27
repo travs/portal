@@ -15,23 +15,31 @@
           <p class="value">Sent</p>
       {{/if}}
 
-      {{#if isInactiveNetworkStatus}}
-        {{#if isMainNetwork}}
-          <p class="value">{{getNetwork}} != Kovan</p>
+  {{#if isInactiveNetworkStatus}}
+    {{#if isServerConnected}}
+      {{#if isClientConnected}}
+        {{#if selectedAccount}}
+          {{#if isKovanNetwork}}
+            {{#if sufficientFund}}
+              <p class="value">Connected</p>
+            {{else}} <!-- Client balance zero -->
+              <p class="value">Insufficient Funds</p>
+            {{/if}}
+          {{else}} <!-- Client not on Kovan -->
+            <p class="value">Connected to {{getNetwork}} nertwork. Please switch to Kovan testnet</p>
+          {{/if}}
+        {{else}} <!-- Client has no account selected -->
+          <p class="value">No account selected</p>
         {{/if}}
-        {{#if isMordenNetwork}}
-          <p class="value">{{getNetwork}} != Kovan</p>
-        {{/if}}
-        {{#if isRopstenNetwork}}
-          <p class="value">{{getNetwork}} != Kovan</p>
-        {{/if}}
-        {{#if isPrivateNetwork}}
-          <p class="value">{{getNetwork}} != Kovan</p>
-        {{/if}}
-        {{#if isKovanNetwork}}
-          <p class="value">Connected</p>
-        {{/if}}
+      {{else}} <!-- Client not connected -->
+        <p class="value">No connection</p>
       {{/if}}
+    {{else}} <!-- Server not connected -->
+      <p class="value">Ethereum node down</p>
+    {{/if}}
+  {{/if}}
+
+
     </li>
 
     {{#if isMiningNetworkStatus}}

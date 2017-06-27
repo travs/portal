@@ -144,65 +144,68 @@ Template.manageHoldings.events({
   },
   'click .js-placeorder': async (event, templateInstance) => {
     event.preventDefault();
-
-    window.scrollTo(0, 0);
-    Session.set('NetworkStatus', {
-      isInactive: false,
-      isMining: true,
-      isError: false,
-      isMined: false,
-    });
-
-    const managerAddress = Session.get('selectedAccount');
-    if (managerAddress === undefined) {
-      // TODO replace toast
-      // Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
-      return;
-    }
-    const coreAddress = FlowRouter.getParam('address');
-
-    const theirOrderType = Template.instance().state.get('theirOrderType');
-    const ourOrderType = Template.instance().state.get('theirOrderType') === 'sell'
-      ? 'buy'
-      : 'sell';
-    const selectedOrderId = Template.instance().state.get('selectedOrderId');
-    const selectedOrder = Orders.findOne({ id: selectedOrderId });
-    const priceTreshold = getPrices(selectedOrder)[theirOrderType];
-    const currentAssetPair = Template.instance().state.get('currentAssetPair');
-    const orders = Orders.find(
-      filterByAssetPair(
-        currentAssetPair.baseTokenSymbol,
-        currentAssetPair.quoteTokenSymbol,
-        theirOrderType,
-        true,
-      ),
-    ).fetch();
-
-    const matchedOrders = matchOrders(theirOrderType, priceTreshold, orders);
-
-    const quantityAsked = ourOrderType === 'buy'
-      ? Template.instance().state.get('volume')
-      : Template.instance().state.get('total');
-
-    try {
-      await takeMultipleOrders(matchedOrders, managerAddress, coreAddress, quantityAsked);
-      Session.get('selectedOrderId') !== null;
+    if(Template.instance().state.get('selectedOrderId') !== undefined) {
+      window.scrollTo(0, 0);
       Session.set('NetworkStatus', {
         isInactive: false,
-        isMining: false,
+        isMining: true,
         isError: false,
-        isMined: true,
-      });
-      toastr.success('Order successfully executed!');
-    } catch (e) {
-      console.error(e);
-      Session.set('NetworkStatus', {
-        isInactive: false,
-        isMining: false,
-        isError: true,
         isMined: false,
       });
-      toastr.error('Oops, an error has occurred. Please verify the transaction informations');
+
+      const managerAddress = Session.get('selectedAccount');
+      if (managerAddress === undefined) {
+        // TODO replace toast
+        // Materialize.toast('Not connected, use Parity, Mist or MetaMask', 4000, 'blue');
+        return;
+      }
+      const coreAddress = FlowRouter.getParam('address');
+
+      const theirOrderType = Template.instance().state.get('theirOrderType');
+      const ourOrderType = Template.instance().state.get('theirOrderType') === 'sell'
+        ? 'buy'
+        : 'sell';
+      const selectedOrderId = Template.instance().state.get('selectedOrderId');
+      const selectedOrder = Orders.findOne({ id: selectedOrderId });
+      const priceTreshold = getPrices(selectedOrder)[theirOrderType];
+      const currentAssetPair = Template.instance().state.get('currentAssetPair');
+      const orders = Orders.find(
+        filterByAssetPair(
+          currentAssetPair.baseTokenSymbol,
+          currentAssetPair.quoteTokenSymbol,
+          theirOrderType,
+          true,
+        ),
+      ).fetch();
+
+      const matchedOrders = matchOrders(theirOrderType, priceTreshold, orders);
+
+      const quantityAsked = ourOrderType === 'buy'
+        ? Template.instance().state.get('volume')
+        : Template.instance().state.get('total');
+
+      try {
+        await takeMultipleOrders(matchedOrders, managerAddress, coreAddress, quantityAsked);
+        Session.get('selectedOrderId') !== null;
+        Session.set('NetworkStatus', {
+          isInactive: false,
+          isMining: false,
+          isError: false,
+          isMined: true,
+        });
+        toastr.success('Order successfully executed!');
+      } catch (e) {
+        console.error(e);
+        Session.set('NetworkStatus', {
+          isInactive: false,
+          isMining: false,
+          isError: true,
+          isMined: false,
+        });
+        toastr.error('Oops, an error has occurred. Please verify the transaction informations');
+      }
+    } else {
+      toastr.error('Oops, you need to select an order from the order book!');
     }
   },
 });
