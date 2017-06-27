@@ -14,6 +14,9 @@ import addressList from '/imports/melon/interface/addressList';
 // Collections
 import Vaults from '/imports/api/vaults';
 
+import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
+
+
 import './manageParticipation.html';
 
 const Vault = contract(VaultJson); // Set Provider
@@ -22,6 +25,7 @@ Template.manageParticipation.onCreated(() => {
   // TODO update vaults param
   Meteor.subscribe('vaults');
   Template.instance().typeValue = new ReactiveVar(0);
+  Template.instance().sharePrice = new ReactiveVar();
 });
 
 Template.manageParticipation.helpers({
@@ -39,8 +43,18 @@ Template.manageParticipation.helpers({
     }
   },
   getSharePrice() {
-    const address = FlowRouter.getParam('address');
+    const template = Template.instance();
+    const vaultAddress = FlowRouter.getParam('address');
+    Vault.setProvider(web3.currentProvider);
+    const vaultContract = Vault.at(vaultAddress);
+    let sharePrice;
+    vaultContract.performCalculations().then((result) => {
+      console.log('----------------- ', convertFromTokenPrecision(result[5].toNumber(), 18));
+      template.sharePrice.set(convertFromTokenPrecision(result[5].toNumber(), 18));
 
+      // return convertFromTokenPrecision(result[5].toNumber(), 18);
+    })
+    return template.sharePrice.get();
   },
   selectedTypeName() {
     switch (Template.instance().typeValue.get()) {
