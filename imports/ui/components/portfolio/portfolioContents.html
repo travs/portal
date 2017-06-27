@@ -8,27 +8,38 @@
   <div class="row order-book-table">
     <div class="col-md-12">
       <div class="table-responsive">
-        <table id="table-open-orders" class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table" cellspacing="0" width="100%">
+        <table id="table-open-orders" class="table table-bordered table-hover mp-daemon-table mp-daemon-table-data mp-exchange-table"
+          cellspacing="0" width="100%">
           <thead>
             <tr>
-              <th>Asset <p>(Name)</p></th>
-              <th>Quantity<p>(#)</p></th>
-              <th>Price<p>({{refCurrency}})</p></th>
-              <th>Portfolio <p>(%)</p></th>
-              <th>Change 24h<p>(%)</p></th>
+              <th>Asset
+                <p>(Name)</p>
+              </th>
+              <th>Quantity
+                <p>(#)</p>
+              </th>
+              <th>Price
+                <p>({{refCurrency}})</p>
+              </th>
+              <th>Portfolio
+                <p>(%)</p>
+              </th>
+              <th>Change 24h
+                <p>(%)</p>
+              </th>
             </tr>
           </thead>
           <tbody>
             {{#each assets}}
             <tr>
               <td>
-                <a class="table-link" href="https://kovan.etherscan.io/address/{{this.address}}" target="_blank">
+                <a class="table-link" href="https://kovan.etherscan.io/address/{{this.address}}" target="_blank" rel="noopener">
                 {{this.name}} ({{this.symbol}})
                 </a>
               </td>
               <td>{{convertFromTokenPrecision this.holdings}}</td>
               <td>
-                <a class="table-link" href="https://kovan.etherscan.io/address/{{this.priceFeed.address}}" target="_blank">
+                <a class="table-link" href="https://kovan.etherscan.io/address/{{this.priceFeed.address}}" target="_blank" rel="noopener">
                 {{dapp_formatBalance this.priceFeed.price "0,0.0000"}}
                 </a>
               </td>
