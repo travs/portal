@@ -45,15 +45,13 @@ Template.manageParticipation.helpers({
   getSharePrice() {
     const template = Template.instance();
     const vaultAddress = FlowRouter.getParam('address');
+    const vaultId = Vaults.findOne({ address: vaultAddress }).id;
     Vault.setProvider(web3.currentProvider);
     const vaultContract = Vault.at(vaultAddress);
-    let sharePrice;
     vaultContract.performCalculations().then((result) => {
-      console.log('----------------- ', convertFromTokenPrecision(result[5].toNumber(), 18));
       template.sharePrice.set(convertFromTokenPrecision(result[5].toNumber(), 18));
-
-      // return convertFromTokenPrecision(result[5].toNumber(), 18);
-    })
+      Meteor.call('vaults.syncVaultById', vaultId)
+    });
     return template.sharePrice.get();
   },
   selectedTypeName() {
