@@ -46,16 +46,16 @@ const assetPairs = [...Array(numberOfQuoteTokens * numberOfBaseTokens).keys()]
 
 Template.manageHoldings.onCreated(() => {
   Meteor.subscribe('vaults');
-  const instance = Template.instance();
-  instance.state = new ReactiveDict();
-  instance.state.set({ buyingSelected: true });
+  const template = Template.instance();
+  template.state = new ReactiveDict();
+  template.state.set({ buyingSelected: true });
   // Creation of contract object
   Vault.setProvider(web3.currentProvider);
   Exchange.setProvider(web3.currentProvider);
 
   store.subscribe(() => {
     const currentState = store.getState().manageHoldings;
-    instance.state.set({
+    template.state.set({
       ...currentState,
     });
   });

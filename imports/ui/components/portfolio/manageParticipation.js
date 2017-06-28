@@ -5,6 +5,7 @@ import { Session } from 'meteor/session';
 import { ReactiveVar } from 'meteor/reactive-var';
 import select2 from 'select2';
 import contract from 'truffle-contract';
+import BigNumber from 'bignumber.js';
 // Contracts
 import VaultJson from '@melonproject/protocol/build/contracts/Vault.json'; // Get Smart Contract JSON
 import EtherTokenJson from '@melonproject/protocol/build/contracts/EtherToken.json';
@@ -16,6 +17,8 @@ import Vaults from '/imports/api/vaults';
 
 import convertFromTokenPrecision from '/imports/melon/interface/helpers/convertFromTokenPrecision';
 
+import store from '/imports/startup/client/store';
+import { creators } from '/imports/redux/vault';
 
 import './manageParticipation.html';
 
@@ -23,9 +26,15 @@ const Vault = contract(VaultJson); // Set Provider
 
 Template.manageParticipation.onCreated(() => {
   // TODO update vaults param
+  const template = Template.instance();
+  template.sharePrice = new ReactiveVar();
+  template.typeValue = new ReactiveVar(0);
   Meteor.subscribe('vaults');
-  Template.instance().typeValue = new ReactiveVar(0);
-  Template.instance().sharePrice = new ReactiveVar();
+  store.subscribe(() => {
+    const currentState = store.getState().vault;
+    template.sharePrice.set(new BigNumber(currentState.sharePrice).toFixed(4));
+  });
+  store.dispatch(creators.requestCalculations(FlowRouter.getParam('address')));
 });
 
 Template.manageParticipation.helpers({
@@ -44,14 +53,6 @@ Template.manageParticipation.helpers({
   },
   getSharePrice() {
     const template = Template.instance();
-    const vaultAddress = FlowRouter.getParam('address');
-    const vaultId = Vaults.findOne({ address: vaultAddress }).id;
-    Vault.setProvider(web3.currentProvider);
-    const vaultContract = Vault.at(vaultAddress);
-    vaultContract.performCalculations().then((result) => {
-      template.sharePrice.set(convertFromTokenPrecision(result[5].toNumber(), 18));
-      Meteor.call('vaults.syncVaultById', vaultId)
-    });
     return template.sharePrice.get();
   },
   selectedTypeName() {
@@ -72,19 +73,31 @@ Template.manageParticipation.onRendered(() => {
 
 Template.manageParticipation.events({
   'change select#type': (event, templateInstance) => {
-    const currentlySelectedTypeValue = parseFloat(templateInstance.find('select#type').value, 10);
+    const currentlySelectedTypeValue = parseFloat(
+      templateInstance.find('select#type').value,
+      10,
+    );
     Template.instance().typeValue.set(currentlySelectedTypeValue);
   },
   'input input#price': (event, templateInstance) => {
     const price = parseFloat(templateInstance.find('input#price').value, 10);
     const volume = parseFloat(templateInstance.find('input#volume').value, 10);
     const total = parseFloat(templateInstance.find('input#total').value, 10);
-    if (!isNaN(volume)) templateInstance.find('input#total').value = price * volume;
-    else if (!isNaN(total)) templateInstance.find('input#volume').value = total / price;
+    if (!isNaN(volume)) {
+      templateInstance.find('input#total').value = price * volume;
+    } else if (!isNaN(total)) {
+      templateInstance.find('input#volume').value = total / price;
+    }
   },
   'input input#volume': (event, templateInstance) => {
-    const price = parseFloat(templateInstance.find('input#price').value || 0, 10);
-    const volume = parseFloat(templateInstance.find('input#volume').value || 0, 10);
+    const price = parseFloat(
+      templateInstance.find('input#price').value || 0,
+      10,
+    );
+    const volume = parseFloat(
+      templateInstance.find('input#volume').value || 0,
+      10,
+    );
     console.log('price: ', price, 'volume: ', volume);
     /* eslint no-param-reassign: ["error", { "props": false }]*/
     templateInstance.find('input#total').value = price * volume;
@@ -151,9 +164,13 @@ Template.manageParticipation.events({
       case 0:
         EtherTokenContract.deposit({ from: managerAddress, value: weiTotal })
           .then(result =>
-            EtherTokenContract.approve(vaultAddress, baseUnitVolume, { from: managerAddress }),
+            EtherTokenContract.approve(vaultAddress, baseUnitVolume, {
+              from: managerAddress,
+            }),
           )
-          .then(result => vaultContract.createShares(baseUnitVolume, { from: managerAddress }))
+          .then(result =>
+            vaultContract.createShares(baseUnitVolume, { from: managerAddress }),
+          )
           .then((result) => {
             Session.set('NetworkStatus', {
               isInactive: false,
