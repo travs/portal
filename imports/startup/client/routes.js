@@ -1,5 +1,6 @@
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+import Vaults from '/imports/api/vaults';
 
 // Import to load these templates
 import '/imports/ui/layouts/main';
@@ -38,13 +39,23 @@ FlowRouter.route('/visit', {
 
 FlowRouter.route('/fund/:address', {
   name: 'fund',
-  action() {
-    BlazeLayout.render('layout_main', {
-      nav: 'layout_header',
-      header: 'ux_portfolioOverview',
-      main: 'fund',
-      footer: 'layout_footer',
-    });
+  action(params) {
+    if(Vaults.findOne({ address: params.address })) {
+      BlazeLayout.render('layout_main', {
+        nav: 'layout_header',
+        header: 'ux_portfolioOverview',
+        main: 'fund',
+        footer: 'layout_footer',
+      });
+    }
+    else {
+      BlazeLayout.render('layout_main', {
+        nav: 'layout_header',
+        header: 'ux_portfolioOverview',
+        main: 'uxFundNotFound',
+        footer: 'layout_footer',
+      });
+    }
   },
 });
 
