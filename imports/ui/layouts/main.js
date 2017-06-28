@@ -7,22 +7,20 @@ import './header';
 import './footer';
 
 Template.layout_main.onCreated(() => {
-  const instance = Template.instance();
-  instance.readyState = new ReactiveVar();
+  const template = Template.instance();
+  template.readyState = new ReactiveVar();
 
   store.subscribe(() => {
     const currentState = store.getState().web3;
-    instance.readyState.set(currentState.readyState);
+    template.readyState.set(currentState.readyState);
   });
 });
 
 Template.layout_main.helpers({
   getMain() {
-    const instance = Template.instance();
-    const readyState = instance.readyState.get();
-    const main = instance.data.main();
-
-    console.log(this, instance);
+    const template = Template.instance();
+    const readyState = template.readyState.get();
+    const main = template.data.main();
 
     if (main === 'visit') {
       const stateTemplateMap = {
