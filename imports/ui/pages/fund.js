@@ -18,6 +18,7 @@ Template.fund.helpers({
     const doc = Vaults.findOne({ address });
     return doc === undefined || address === undefined ? '' : doc;
   },
+  isVisitor: () => Template.instance().data.visit,
 });
 
 Template.fund.onRendered(() => {

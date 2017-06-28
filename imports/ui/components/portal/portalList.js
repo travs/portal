@@ -7,7 +7,6 @@ import './portalList.html';
 
 Template.portalList.onCreated(() => {
   Meteor.subscribe('vaults');
-  console.log(Template.instance().data.main());
 });
 
 Template.portalList.helpers({
