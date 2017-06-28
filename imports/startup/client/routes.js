@@ -28,7 +28,7 @@ FlowRouter.route('/', {
 FlowRouter.route('/visit', {
   name: 'visit',
   action() {
-    BlazeLayout.render('layout_min', {
+    BlazeLayout.render('layout_main', {
       nav: 'layout_header',
       header: 'uxIndexPortal',
       main: 'visit',
