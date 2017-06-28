@@ -27,12 +27,14 @@ const Vault = contract(VaultJson); // Set Provider
 Template.manageParticipation.onCreated(() => {
   // TODO update vaults param
   const template = Template.instance();
-  template.sharePrice = new ReactiveVar();
+  template.sharePrice = new ReactiveVar(0);
   template.typeValue = new ReactiveVar(0);
   Meteor.subscribe('vaults');
   store.subscribe(() => {
     const currentState = store.getState().vault;
-    template.sharePrice.set(new BigNumber(currentState.sharePrice).toFixed(4));
+    template.sharePrice.set(
+      new BigNumber(currentState.sharePrice || 0).toString(),
+    );
   });
   store.dispatch(creators.requestCalculations(FlowRouter.getParam('address')));
 });
