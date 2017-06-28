@@ -16,7 +16,7 @@ const getReadyState = (state: State): DerivedState => {
     state.isServerConnected
   ) {
     return {
-      readyState: 'Sufficient Fund',
+      readyState: 'Ready',
       isReady: true,
     };
   } else if (
@@ -26,22 +26,27 @@ const getReadyState = (state: State): DerivedState => {
     state.isServerConnected
   ) {
     return {
-      readyState: 'Supported Network',
+      readyState: 'Insufficient Fund',
       isReady: false,
     };
   } else if (state.account && state.isConnected && state.isServerConnected) {
     return {
-      readyState: 'Account Selected',
+      readyState: 'Unsupported Network',
       isReady: false,
     };
   } else if (state.isConnected && state.isServerConnected) {
     return {
-      readyState: 'Client Connected',
+      readyState: 'No Account Selected',
       isReady: false,
     };
   } else if (state.isServerConnected) {
     return {
-      readyState: 'Server Connected',
+      readyState: 'Client Not Connected',
+      isReady: false,
+    };
+  } else if (!state.isServerConnected) {
+    return {
+      readyState: 'Server Not Connected',
       isReady: false,
     };
   }

@@ -10,11 +10,12 @@ export type Providers =
 export type Networks = "Rinkeby" | "Ropsten" | "Kovan" | "Main" | "Private";
 export type ReadyState =
   | "Loading"
-  | "Server Connected"
-  | "Client Connected"
-  | "Account Selected"
-  | "Supported Network"
-  | "Sufficient Fund";
+  | "Server Not Connected"
+  | "Client Not Connected"
+  | "No Account Selected"
+  | "Unsupported Network"
+  | "Insufficient Fund"
+  | "Ready";
 
 type ObservedState = {
   isSynced: boolean,
