@@ -6,7 +6,7 @@ import './main.html';
 import './header';
 import './footer';
 
-Template.layout_main.onCreated(() => {
+Template.layoutMain.onCreated(() => {
   const template = Template.instance();
   template.readyState = new ReactiveVar();
 
@@ -16,7 +16,7 @@ Template.layout_main.onCreated(() => {
   });
 });
 
-Template.layout_main.helpers({
+Template.layoutMain.helpers({
   getMain() {
     const template = Template.instance();
     const readyState = template.readyState.get();
