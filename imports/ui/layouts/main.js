@@ -21,8 +21,9 @@ Template.layout_main.helpers({
     const template = Template.instance();
     const readyState = template.readyState.get();
     const main = template.data.main();
+    const visit = template.data.visit && template.data.visit();
 
-    if (main === 'visit') {
+    if (visit) {
       const stateTemplateMap = {
         Loading: 'uxLoading',
         'Server Not Connected': 'uxServerConnection',

@@ -7,6 +7,7 @@ import './portalList.html';
 
 Template.portalList.onCreated(() => {
   Meteor.subscribe('vaults');
+  console.log(Template.instance().data.main());
 });
 
 Template.portalList.helpers({
@@ -15,6 +16,10 @@ Template.portalList.helpers({
       { name: { $regex: `.*${Session.get('searchVaults')}.*`, $options: 'i' } },
       { sort: { sharePrice: -1, createdAt: -1 } },
     ),
+  getVaultLink: address =>
+    Template.instance().data.main() === 'visit'
+      ? `/visit/${address}`
+      : `/fund/${address}`,
 });
 
 Template.portalList.onRendered(() => {});

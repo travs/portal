@@ -33,6 +33,20 @@ FlowRouter.route('/visit', {
       header: 'uxIndexPortal',
       main: 'visit',
       footer: 'layout_footer',
+      visit: true,
+    });
+  },
+});
+
+FlowRouter.route('/visit/:address', {
+  name: 'visit',
+  action() {
+    BlazeLayout.render('layout_main', {
+      nav: 'layout_header',
+      header: 'uxIndexPortal',
+      main: 'fund',
+      footer: 'layout_footer',
+      visit: true,
     });
   },
 });
