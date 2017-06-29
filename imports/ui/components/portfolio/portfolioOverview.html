@@ -35,6 +35,7 @@
           </p>
         </div>
       </div>
+      {{#unless isVisitor }}
       <div class="line-divider"></div>
       <div class="form-group">
         <label class="col-md-4 col-sm-4 col-xs-12 control-label" for="name">Personal Stake:</label>
@@ -48,6 +49,7 @@
           <p>{{getPersonalStakeValue}} ETHER</p>
         </div>
       </div>
+      {{/unless}}
     </div>
   </div>
 </template>

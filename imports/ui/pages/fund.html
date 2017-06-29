@@ -11,7 +11,7 @@
 
         <div class="col-md-6 asset-overview">
           <div class="asset-overview-wrapper">
-            {{> manageParticipation}}
+            {{#unless isVisitor }} {{> manageParticipation}} {{/unless}}
           </div>
         </div>
       </div>
@@ -19,7 +19,7 @@
       <div class="row exchange-order">
         <div class="col-md-12">
           <div class="exchange-order-wrapper">
-              {{> portfolioContents}}
+            {{> portfolioContents}}
           </div>
         </div>
       </div>

@@ -15,6 +15,10 @@ Template.portalList.helpers({
       { name: { $regex: `.*${Session.get('searchVaults')}.*`, $options: 'i' } },
       { sort: { sharePrice: -1, createdAt: -1 } },
     ),
+  getVaultLink: address =>
+    Template.instance().data.main() === 'visit'
+      ? `/visit/${address}`
+      : `/fund/${address}`,
 });
 
 Template.portalList.onRendered(() => {});

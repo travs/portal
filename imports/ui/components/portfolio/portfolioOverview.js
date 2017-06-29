@@ -64,6 +64,7 @@ Template.portfolioOverview.helpers({
     const finneySharePrice = (template.sharePrice.get() * 1000).toFixed(1);
     return finneySharePrice;
   },
+  isVisitor: () => Template.instance().data.visit,
 });
 
 Template.portfolioOverview.onRendered(() => {});
