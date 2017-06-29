@@ -1,25 +1,49 @@
 // @flow
-type Providers = 'MetaMask' | 'Mist' | 'Parity' | 'LocalNode' | 'Unknown';
-type Networks = 'Rinkeby' | 'Ropsten' | 'Kovan' | 'Main' | 'Private';
+import getReadyState from './utils/getReadyState';
 
-type State = {
-  isConnected: boolean,
+export type Providers =
+  | "MetaMask"
+  | "Mist"
+  | "Parity"
+  | "LocalNode"
+  | "Unknown";
+export type Networks = "Rinkeby" | "Ropsten" | "Kovan" | "Main" | "Private";
+export type ReadyState =
+  | "Loading"
+  | "Server Not Connected"
+  | "Client Not Connected"
+  | "No Account Selected"
+  | "Unsupported Network"
+  | "Insufficient Fund"
+  | "Ready";
+
+type ObservedState = {
   isSynced: boolean,
-  network?: Networks,
+  isConnected: boolean,
   currentBlock: number,
+  balance: string,
+  network?: Networks,
   account?: string,
   provider?: Providers,
   // balance in ETH is stored as a string with precision
   // '1.234' and not '1231'
-  balance?: string,
-  isServerConnected: boolean,
+  isServerConnected?: boolean
 };
+
+export type DerivedState = {
+  readyState: ReadyState,
+  isReady: boolean
+};
+
+export type State = ObservedState & DerivedState;
 
 export const initialState: State = {
   isSynced: false,
   isConnected: false,
-  isServerConnected: null,
   currentBlock: 0,
+  readyState: 'Loading',
+  isReady: false,
+  balance: '0',
 };
 
 export const types = {
@@ -38,11 +62,17 @@ export const reducer = (state: State = initialState, action: string) => {
 
   switch (type) {
     // simple state updaters
-    case types.UPDATE:
-      return {
+    case types.UPDATE: {
+      const newState = {
         ...state,
         ...params,
       };
+
+      return {
+        ...newState,
+        ...getReadyState(newState),
+      };
+    }
     default:
       return state;
   }

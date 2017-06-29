@@ -16,7 +16,7 @@ import '/imports/ui/pages/wallet';
 FlowRouter.route('/', {
   name: 'portal',
   action() {
-    BlazeLayout.render('layout_main', {
+    BlazeLayout.render('layoutMain', {
       nav: 'layout_header',
       header: 'uxIndexPortal',
       main: 'portal',
@@ -28,11 +28,25 @@ FlowRouter.route('/', {
 FlowRouter.route('/visit', {
   name: 'visit',
   action() {
-    BlazeLayout.render('layout_main', {
+    BlazeLayout.render('layoutMain', {
       nav: 'layout_header',
       header: 'uxIndexPortal',
       main: 'visit',
       footer: 'layout_footer',
+      visit: true,
+    });
+  },
+});
+
+FlowRouter.route('/visit/:address', {
+  name: 'visit',
+  action() {
+    BlazeLayout.render('layoutMain', {
+      nav: 'layout_header',
+      header: 'uxIndexPortal',
+      main: 'fund',
+      footer: 'layout_footer',
+      visit: true,
     });
   },
 });
@@ -40,15 +54,14 @@ FlowRouter.route('/visit', {
 FlowRouter.route('/fund/:address', {
   name: 'fund',
   action(params) {
-    if(Vaults.findOne({ address: params.address })) {
+    if (Vaults.findOne({ address: params.address })) {
       BlazeLayout.render('layout_main', {
         nav: 'layout_header',
         header: 'ux_portfolioOverview',
         main: 'fund',
         footer: 'layout_footer',
       });
-    }
-    else {
+    } else {
       BlazeLayout.render('layout_main', {
         nav: 'layout_header',
         header: 'ux_portfolioOverview',
@@ -62,7 +75,7 @@ FlowRouter.route('/fund/:address', {
 FlowRouter.route('/manage/:address', {
   name: 'manage',
   action() {
-    BlazeLayout.render('layout_main', {
+    BlazeLayout.render('layoutMain', {
       nav: 'layout_header',
       header: 'ux_manageOverview',
       main: 'manage',
@@ -75,7 +88,7 @@ FlowRouter.route('/manage/:address', {
 FlowRouter.route('/account/:address', {
   name: 'account',
   action() {
-    BlazeLayout.render('layout_main', {
+    BlazeLayout.render('layoutMain', {
       nav: 'layout_header',
       header: 'ux_walletOverview',
       main: 'wallet',

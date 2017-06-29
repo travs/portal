@@ -46,6 +46,7 @@ Template.portfolioOverview.helpers({
     const template = Template.instance();
     return template.personalShareAmount.get();
   },
+  isVisitor: () => Template.instance().data.visit,
 });
 
 Template.portfolioOverview.onRendered(() => {});

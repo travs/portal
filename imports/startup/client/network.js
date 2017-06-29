@@ -6,6 +6,9 @@ import store from '/imports/startup/client/store';
 import { creators } from '/imports/redux/web3';
 import { networkMapping } from '/imports/melon/interface/helpers/specs';
 
+const baseInterval = 4000;
+let interval = 4000;
+
 async function updateWeb3() {
   const provider = (() => {
     if (web3.currentProvider.isMetaMask) {
@@ -32,9 +35,17 @@ async function updateWeb3() {
       web3State.balance = balance ? balance.div(10 ** 18).toString() : null;
       web3State.currentBlock = await pify(web3.eth.getBlockNumber)();
       web3State.isSynced = !await pify(web3.eth.getSyncing)();
+      interval = baseInterval;
     }
   } catch (e) {
-    console.warn(e);
+    interval *= 2;
+    console.warn(
+      'Error with web3 connection. Doubling polling interval to:',
+      interval,
+      e,
+    );
+  } finally {
+    window.setTimeout(updateWeb3, interval);
   }
 
   const previousState = store.getState().web3;
@@ -54,5 +65,5 @@ window.addEventListener('load', function() {
   window.__AppInitializedBeforeWeb3__ = true;
   /* eslint-enable */
   updateWeb3();
-  window.setInterval(updateWeb3, 4000);
+  window.setTimeout(updateWeb3, interval);
 });
