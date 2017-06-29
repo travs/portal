@@ -9,11 +9,15 @@ export const initialState = {
   unclaimedFees: undefined,
   nav: undefined,
   sharePrice: undefined,
+  personalStake: undefined,
+  totalSupply: undefined,
 };
 
 export const types = {
   REQUEST_CALCULATIONS: 'REQUEST_CALCULATIONS:vaults:portal.melonport.com',
   UPDATE_CALCULATIONS: 'UPDATE_CALCULATIONS:vaults:portal.melonport.com',
+  REQUEST_PARTICIPATION: 'REQUEST_PARTICIPATION:vaults:portal.melonport.com',
+  UPDATE_PARTICIPATION: 'UPDATE_PARTICIPATION:vaults:portal.melonport.com',
 };
 
 export const creators = {
@@ -25,6 +29,14 @@ export const creators = {
     type: types.UPDATE_CALCULATIONS,
     ...calculations,
   }),
+  requestParticipation: (vaultAddress, managerAddress) => ({
+    type: types.REQUEST_PARTICIPATION,
+    managerAddress,
+  }),
+  updateParticipation: participation => ({
+    type: types.UPDATE_PARTICIPATION,
+    ...participation,
+  }),
 };
 
 export const reducer = (state = initialState, action) => {
@@ -34,6 +46,17 @@ export const reducer = (state = initialState, action) => {
       return state;
     }
     case types.UPDATE_CALCULATIONS: {
+      return {
+        ...state,
+        ...params,
+      };
+    }
+    case types.REQUEST_PARTICIPATION: {
+      return {
+        state,
+      };
+    }
+    case types.UPDATE_PARTICIPATION: {
       return {
         ...state,
         ...params,
@@ -62,6 +85,8 @@ export const middleware = store => next => (action) => {
         store.dispatch(creators.updateCalculations(serializedCalculations));
       });
       break;
+    }
+    case types.REQUEST_PARTICIPATION: {
     }
     default:
   }
