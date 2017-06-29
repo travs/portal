@@ -8,7 +8,7 @@
     "jest": "jest",
     "jest:watch": "jest --watch",
     "pretest": "npm run lint --silent",
-    "testrpc": "testrpc",
+    "testrpc": "testrpc --port=8547",
     "deploy:webfront": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy portal.melonport.com --owner melonproject --settings ./settings/webfront.json",
     "deploy:sync": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy melon-sync.eu.meteorapp.com --owner melonproject --settings ./settings/blockchain-sync.json",
     "deploy:stage": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy staging.melonport.com --owner melonproject --settings ./settings/stage.json",
