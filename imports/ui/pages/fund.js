@@ -13,17 +13,19 @@ Template.fund.onCreated(() => {
 });
 
 Template.fund.helpers({
-  getPortfolioDoc() {
+  fundExisting() {
     const address = FlowRouter.getParam('address');
     const doc = Vaults.findOne({ address });
-    return doc === undefined || address === undefined ? '' : doc;
+    return !(doc === undefined || address === undefined);
   },
   isVisitor: () => Template.instance().data.visit,
 });
 
 Template.fund.onRendered(() => {
-  const address = FlowRouter.getParam('address'); // Address of Vault
-  Meteor.call('assets.sync', address);
-  const doc = Vaults.findOne({ address: FlowRouter.getParam('address') }); // loading delay
-  Meteor.call('vaults.syncVaultById', doc.id);
+  const address = FlowRouter.getParam('address');
+  const doc = Vaults.findOne({ address });
+  if (doc) {
+    Meteor.call('vaults.syncVaultById', doc.id);
+    Meteor.call('assets.sync', address);
+  }
 });
