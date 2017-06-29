@@ -23,42 +23,41 @@ const Vault = contract(VaultJson); // Set Provider
 Template.portfolioOverview.onCreated(() => {
   const template = Template.instance();
   Meteor.subscribe('vaults');
-  Template.instance().totalShareAmount = new ReactiveVar();
-  Template.instance().personalShareAmount = new ReactiveVar();
-  // TODO send command to server to update current coreContract
+  template.totalShareAmount = new ReactiveVar(0);
+  template.personalShareAmount = new ReactiveVar(0);
+  template.personalStakeValue = new ReactiveVar(0);
   template.sharePrice = new ReactiveVar(0);
   store.subscribe(() => {
     const currentState = store.getState().vault;
     template.sharePrice.set(
       new BigNumber(currentState.sharePrice || 0).toString(),
     );
+    template.totalShareAmount.set(
+      new BigNumber(currentState.totalSupply || 0).toString(),
+    );
+    template.personalShareAmount.set(
+      new BigNumber(currentState.personalStake || 0).toString(),
+    );
+    template.personalStakeValue.set(
+      Number(template.personalShareAmount.get()) *
+        Number(template.sharePrice.get()),
+    );
   });
-  store.dispatch(creators.requestCalculations(FlowRouter.getParam('address')));
+  const managerAddress = Session.get('selectedAccount');
+  const vaultAddress = FlowRouter.getParam('address');
+  store.dispatch(creators.requestCalculations(vaultAddress));
+  store.dispatch(creators.requestParticipation(vaultAddress, managerAddress));
 });
 
 Template.portfolioOverview.helpers({
-  // TODO implement cleaner
   getPersonalStake() {
     const template = Template.instance();
-    const address = FlowRouter.getParam('address');
-    Vault.setProvider(web3.currentProvider);
-    const coreContract = Vault.at(address);
-    coreContract
-      .totalSupply()
-      .then((result) => {
-        template.totalShareAmount.set(result.toNumber());
-        return coreContract.balanceOf(Session.get('selectedAccount'));
-      })
-      .then((result) => {
-        template.personalShareAmount.set(result.toNumber());
-      });
-    return `${web3.fromWei(template.personalShareAmount.get(), 'ether')} of
-      ${web3.fromWei(template.totalShareAmount.get(), 'ether')}`;
+    return `${template.personalShareAmount.get()} of
+      ${template.totalShareAmount.get()}`;
   },
-  // TODO implement cleaner
-  getShareAmount() {
+  getPersonalStakeValue() {
     const template = Template.instance();
-    return template.personalShareAmount.get();
+    return template.personalStakeValue.get().toFixed(1);
   },
   getSharePrice() {
     const template = Template.instance();

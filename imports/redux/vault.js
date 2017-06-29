@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Vaults from '/imports/api/vaults';
 import performCalculations from '/imports/melon/interface/performCalculations';
+import getParticipation from '/imports/melon/interface/getParticipation';
 
 export const initialState = {
   gav: undefined,
@@ -31,6 +32,7 @@ export const creators = {
   }),
   requestParticipation: (vaultAddress, managerAddress) => ({
     type: types.REQUEST_PARTICIPATION,
+    vaultAddress,
     managerAddress,
   }),
   updateParticipation: participation => ({
@@ -87,6 +89,20 @@ export const middleware = store => next => (action) => {
       break;
     }
     case types.REQUEST_PARTICIPATION: {
+      getParticipation(
+        params.vaultAddress,
+        params.managerAddress,
+      ).then((participation) => {
+        const serializedParticipation = Object.keys(participation).reduce(
+          (accumulator, currentKey) => ({
+            ...accumulator,
+            [currentKey]: participation[currentKey].toString(),
+          }),
+          {},
+        );
+        store.dispatch(creators.updateParticipation(serializedParticipation));
+      });
+      break;
     }
     default:
   }
