@@ -174,6 +174,11 @@ Template.manageParticipation.events({
             vaultContract.createShares(baseUnitVolume, { from: managerAddress }),
           )
           .then((result) => {
+            store.dispatch(
+              creators.requestParticipation(vaultAddress, managerAddress),
+            );
+            store.dispatch(creators.requestCalculations(vaultAddress));
+
             Session.set('NetworkStatus', {
               isInactive: false,
               isMining: false,
@@ -208,6 +213,10 @@ Template.manageParticipation.events({
         vaultContract
           .annihilateShares(baseUnitVolume, weiTotal, { from: managerAddress })
           .then((result) => {
+            store.dispatch(
+              creators.requestParticipation(vaultAddress, managerAddress),
+            );
+            store.dispatch(creators.requestCalculations(vaultAddress));
             Session.set('NetworkStatus', {
               isInactive: false,
               isMining: false,
