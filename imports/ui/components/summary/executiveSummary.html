@@ -38,7 +38,7 @@
       <p class="status">Share Price</p>
       {{#if hasManagerCreatedVault}}
       <p class="value">
-        <a href="/fund/{{getManagerAddressOfVault}}" class="truncate green-text text-lighten-2">{{dapp_formatBalance getSharePrice "0,0.0" "finney"}}</a>
+        <a href="/fund/{{getManagerAddressOfVault}}" class="truncate green-text text-lighten-2">{{getSharePrice}}</a>
       </p>
       {{else}}
       <p class="value">

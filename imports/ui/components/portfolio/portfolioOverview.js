@@ -3,6 +3,8 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { ReactiveVar } from 'meteor/reactive-var';
+import BigNumber from 'bignumber.js';
+
 // Smart contracts
 import contract from 'truffle-contract';
 import VaultJson from '@melonproject/protocol/build/contracts/Vault.json'; // Get Smart Contract JSON
@@ -11,15 +13,27 @@ import web3 from '/imports/lib/web3/client';
 // Collections
 import Vaults from '/imports/api/vaults';
 
+import store from '/imports/startup/client/store';
+import { creators } from '/imports/redux/vault';
+
 // Corresponding html file
 import './portfolioOverview.html';
 
 const Vault = contract(VaultJson); // Set Provider
 Template.portfolioOverview.onCreated(() => {
+  const template = Template.instance();
   Meteor.subscribe('vaults');
   Template.instance().totalShareAmount = new ReactiveVar();
   Template.instance().personalShareAmount = new ReactiveVar();
   // TODO send command to server to update current coreContract
+  template.sharePrice = new ReactiveVar(0);
+  store.subscribe(() => {
+    const currentState = store.getState().vault;
+    template.sharePrice.set(
+      new BigNumber(currentState.sharePrice || 0).toString(),
+    );
+  });
+  store.dispatch(creators.requestCalculations(FlowRouter.getParam('address')));
 });
 
 Template.portfolioOverview.helpers({
@@ -45,6 +59,11 @@ Template.portfolioOverview.helpers({
   getShareAmount() {
     const template = Template.instance();
     return template.personalShareAmount.get();
+  },
+  getSharePrice() {
+    const template = Template.instance();
+    const finneySharePrice = (template.sharePrice.get() * 1000).toFixed(1);
+    return finneySharePrice;
   },
 });
 
