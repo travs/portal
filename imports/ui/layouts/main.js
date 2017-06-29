@@ -38,8 +38,8 @@ Template.layoutMain.helpers({
       'Server Not Connected': 'uxServerConnection',
       'Client Not Connected': 'uxNoConnection',
       'No Account Selected': 'uxNoAccountSelected',
-      'Unsupported Network': 'ux_ethereum_testnet',
-      'Insufficient Fund': 'ux_insufficient_funds',
+      'Unsupported Network': 'uxEthereumTestnet',
+      'Insufficient Fund': 'uxInsufficientFunds',
       Ready: main,
     };
 

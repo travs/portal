@@ -17,10 +17,10 @@ FlowRouter.route('/', {
   name: 'portal',
   action() {
     BlazeLayout.render('layoutMain', {
-      nav: 'layout_header',
+      nav: 'layoutHeader',
       header: 'uxIndexPortal',
       main: 'portal',
-      footer: 'layout_footer',
+      footer: 'layoutFooter',
     });
   },
 });
@@ -29,10 +29,10 @@ FlowRouter.route('/visit', {
   name: 'visit',
   action() {
     BlazeLayout.render('layoutMain', {
-      nav: 'layout_header',
+      nav: 'layoutHeader',
       header: 'uxIndexPortal',
       main: 'visit',
-      footer: 'layout_footer',
+      footer: 'layoutFooter',
       visit: true,
     });
   },
@@ -42,10 +42,10 @@ FlowRouter.route('/visit/:address', {
   name: 'visit',
   action() {
     BlazeLayout.render('layoutMain', {
-      nav: 'layout_header',
+      nav: 'layoutHeader',
       header: 'uxIndexPortal',
       main: 'fund',
-      footer: 'layout_footer',
+      footer: 'layoutFooter',
       visit: true,
     });
   },
@@ -55,18 +55,18 @@ FlowRouter.route('/fund/:address', {
   name: 'fund',
   action(params) {
     if (Vaults.findOne({ address: params.address })) {
-      BlazeLayout.render('layout_main', {
-        nav: 'layout_header',
-        header: 'ux_portfolioOverview',
+      BlazeLayout.render('layoutMain', {
+        nav: 'layoutHeader',
+        header: 'uxPortfolioOverview',
         main: 'fund',
-        footer: 'layout_footer',
+        footer: 'layoutFooter',
       });
     } else {
-      BlazeLayout.render('layout_main', {
-        nav: 'layout_header',
-        header: 'ux_portfolioOverview',
+      BlazeLayout.render('layoutMain', {
+        nav: 'layoutHeader',
+        header: 'uxPortfolioOverview',
         main: 'uxFundNotFound',
-        footer: 'layout_footer',
+        footer: 'layoutFooter',
       });
     }
   },
@@ -76,10 +76,10 @@ FlowRouter.route('/manage/:address', {
   name: 'manage',
   action() {
     BlazeLayout.render('layoutMain', {
-      nav: 'layout_header',
-      header: 'ux_manageOverview',
+      nav: 'layoutHeader',
+      header: 'uxManageOverview',
       main: 'manage',
-      footer: 'layout_footer',
+      footer: 'layoutFooter',
     });
   },
 });
@@ -89,10 +89,10 @@ FlowRouter.route('/account/:address', {
   name: 'account',
   action() {
     BlazeLayout.render('layoutMain', {
-      nav: 'layout_header',
-      header: 'ux_walletOverview',
+      nav: 'layoutHeader',
+      header: 'uxWalletOverview',
       main: 'wallet',
-      footer: 'layout_footer',
+      footer: 'layoutFooter',
     });
   },
 });
