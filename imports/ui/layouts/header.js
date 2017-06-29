@@ -7,25 +7,27 @@ import Vaults from '/imports/api/vaults';
 
 import './header.html';
 
-Template.layout_header.onCreated(() => {
+Template.layoutHeader.onCreated(() => {
   Meteor.subscribe('vaults');
 });
 
-Template.layout_header.onRendered(() => {});
+Template.layoutHeader.onRendered(() => {});
 
-Template.layout_header.helpers({
+Template.layoutHeader.helpers({
   isNew() {
     return Session.get('isNew');
   },
 });
 
-Template.layout_header.events({
+Template.layoutHeader.events({
   'click .portfolio'(event) {
     // Prevent default browser form submit
     event.preventDefault();
 
     // Update Portfolio collection
-    const numberOfVaults = Vaults.find({ owner: Session.get('selectedAccount') }).count();
+    const numberOfVaults = Vaults.find({
+      owner: Session.get('selectedAccount'),
+    }).count();
     if (numberOfVaults === 0) {
       FlowRouter.go('/');
     } else {
@@ -38,7 +40,9 @@ Template.layout_header.events({
     event.preventDefault();
 
     // Update Portfolio collection
-    const numberOfVaults = Vaults.find({ owner: Session.get('selectedAccount') }).count();
+    const numberOfVaults = Vaults.find({
+      owner: Session.get('selectedAccount'),
+    }).count();
     if (numberOfVaults === 0) {
       FlowRouter.go('/');
     } else {

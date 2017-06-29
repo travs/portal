@@ -74,18 +74,25 @@ export const middleware = store => next => (action) => {
 
   switch (type) {
     case types.REQUEST_CALCULATIONS: {
-      const vaultId = Vaults.findOne({ address: params.vaultAddress }).id;
-      Meteor.call('vaults.syncVaultById', vaultId);
-      performCalculations(params.vaultAddress).then((calculations) => {
-        const serializedCalculations = Object.keys(calculations).reduce(
-          (accumulator, currentKey) => ({
-            ...accumulator,
-            [currentKey]: calculations[currentKey].toString(),
-          }),
-          {},
+      const vault = Vaults.findOne({ address: params.vaultAddress });
+      if (vault) {
+        Meteor.call('vaults.syncVaultById', vault.id);
+        performCalculations(params.vaultAddress).then((calculations) => {
+          const serializedCalculations = Object.keys(calculations).reduce(
+            (accumulator, currentKey) => ({
+              ...accumulator,
+              [currentKey]: calculations[currentKey].toString(),
+            }),
+            {},
+          );
+          store.dispatch(creators.updateCalculations(serializedCalculations));
+        });
+      } else {
+        console.warn(
+          'REQUEST_CALCULATIONS failed, no vault found with address',
+          params.vaultAddress,
         );
-        store.dispatch(creators.updateCalculations(serializedCalculations));
-      });
+      }
       break;
     }
     case types.REQUEST_PARTICIPATION: {

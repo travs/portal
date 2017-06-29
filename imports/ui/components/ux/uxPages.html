@@ -13,7 +13,7 @@
             </div>
           </form>
         </div>
-        {{> ux_index_summaries}}
+        {{> uxIndexSummaries}}
       </div>
     </div>
   </section>
@@ -47,13 +47,13 @@
               href="https://github.com/ethereum/mist/releases/tag/v0.8.8" target="_blank" rel="noopener"><b>Mist</b></a></p>
           {{/if}}
         </div>
-        {{> ux_index_summaries}}
+        {{> uxIndexSummaries}}
       </div>
     </div>
   </section>
 </template>
 
-<template name="ux_walletOverview">
+<template name="uxWalletOverview">
   <section class="mp-hero mp-portal-hero">
     <div class="container">
       <div class="row">
@@ -61,13 +61,13 @@
           <h1>My Account</h1>
           <p class="blue-text text-lighten-2">Overview of your personal account</p>
         </div>
-        {{> ux_index_summaries}}
+        {{> uxIndexSummaries}}
       </div>
     </div>
   </section>
 </template>
 
-<template name="ux_portfolioOverview">
+<template name="uxPortfolioOverview">
   <section class="mp-hero mp-portal-hero">
     <div class="container">
       <div class="row">
@@ -75,13 +75,13 @@
           <h1>{{getPortfolioDoc.name}}</h1>
           <p class="blue-text text-lighten-2">Overview of your Melon fund</p>
         </div>
-        {{> ux_index_summaries}}
+        {{> uxIndexSummaries}}
       </div>
     </div>
   </section>
 </template>
 
-<template name="ux_manageOverview">
+<template name="uxManageOverview">
   <section class="mp-hero mp-portal-hero">
     <div class="container">
       <div class="row">
@@ -89,13 +89,13 @@
           <h1>Manage on Exchange</h1>
           <p class="blue-text text-lighten-2">Improve your performance by trading your assets</p>
         </div>
-        {{> ux_index_summaries}}
+        {{> uxIndexSummaries}}
       </div>
     </div>
   </section>
 </template>
 
-<template name="ux_index_summaries">
+<template name="uxIndexSummaries">
   {{#if isClientConnected}}
   <div class="col-md-5 col-sm-5 col-xs-12 hero-summary">
     <div class="row">
@@ -182,7 +182,7 @@
 </template>
 
 <!-- Insufficient Funds -->
-<template name="ux_insufficient_funds">
+<template name="uxInsufficientFunds">
   <div class="container">
     <div class="row">
       <div id="results" class="col-md-12 text-center error-message">
@@ -196,7 +196,7 @@
 </template>
 
 <!-- Ethereum Testnet -->
-<template name="ux_ethereum_testnet">
+<template name="uxEthereumTestnet">
   <div class="container">
     <div class="row">
       <div id="results" class="col-md-12 text-center error-message">
@@ -233,11 +233,9 @@
 </template>
 
 <template name="uxFundNotFound">
-  <!-- Loading the ethereum node -->
   <div class="container">
     <div class="row">
       <div id="results" class="col-md-12 text-center error-message">
-        <!-- <img src="/dist/img/ethereum_node_down.png"> -->
         <h2 class="about-title">Oops, this fund does not exist!</h2>
         <p>Click on "My Fund" tab to access your fund page.</p>
       </div>
