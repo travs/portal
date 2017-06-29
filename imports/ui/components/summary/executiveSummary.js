@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import BigNumber from 'bignumber.js';
-
-import Vaults from '/imports/api/vaults';
 
 import store from '/imports/startup/client/store';
 import { creators } from '/imports/redux/vault';
@@ -20,7 +19,11 @@ Template.executiveSummary.onCreated(() => {
       new BigNumber(currentState.sharePrice || 0).toString(),
     );
   });
-  store.dispatch(creators.requestCalculations(FlowRouter.getParam('address')));
+  if (FlowRouter.getParam('address')) {
+    store.dispatch(
+      creators.requestCalculations(FlowRouter.getParam('address')),
+    );
+  }
 });
 
 Template.executiveSummary.helpers({
