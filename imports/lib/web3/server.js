@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Web3 from 'web3';
 
-const localNode = 'http://localhost:8547';
+const localNode = 'http://localhost:8545';
 const kovanNode = 'https://kovan.melonport.com';
 
 export default (() => {
